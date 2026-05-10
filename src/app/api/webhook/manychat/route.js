@@ -5,6 +5,7 @@ export async function POST(request) {
     // 1. Recebe o body enviado pelo ManyChat
     const body = await request.json();
     const userMessage = body.message;
+    const historyString = body.history; // Histórico recebido do ManyChat
 
     // Se não houver mensagem, retorna erro
     if (!userMessage) {
@@ -25,25 +26,37 @@ export async function POST(request) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey || apiKey === 'coloque_sua_chave_aqui') {
       console.error("GEMINI_API_KEY não configurada.");
-      return generateManyChatResponse("Desculpe, nossa assistente virtual está em manutenção no momento. (Erro: API Key faltando)");
+      return generateManyChatResponse("Desculpe, nossa assistente virtual está em manutenção no momento. (Erro: API Key faltando)", "[]");
     }
 
-    // 4. Faz a requisição para a API do Google Gemini (usando Gemini Flash por ser rápido para chat)
+    // 4. Monta o histórico de conversa
+    let contents = [];
+    if (historyString && historyString.trim() !== "") {
+      try {
+        contents = JSON.parse(historyString);
+      } catch (e) {
+        console.error("Erro ao fazer parse do histórico, iniciando nova conversa.", e);
+        contents = [];
+      }
+    }
+
+    // Adiciona a nova mensagem do usuário ao histórico
+    contents.push({
+      role: "user",
+      parts: [{ text: userMessage }]
+    });
+
+    // 5. Faz a requisição para a API do Google Gemini
     const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
     
     const geminiPayload = {
       system_instruction: {
         parts: { text: systemInstruction }
       },
-      contents: [
-        {
-          role: "user",
-          parts: [{ text: userMessage }]
-        }
-      ],
+      contents: contents, // Passa o histórico completo aqui
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 250, // Respostas curtas
+        maxOutputTokens: 250, 
       }
     };
 
@@ -58,24 +71,31 @@ export async function POST(request) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Erro da API Gemini:", errorText);
-      return generateManyChatResponse("Desculpe, ocorreu um erro de conexão. Tente novamente em instantes.");
+      return generateManyChatResponse("Desculpe, ocorreu um erro de conexão. Tente novamente em instantes.", JSON.stringify(contents));
     }
 
     const data = await response.json();
     const geminiReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Desculpe, não consegui processar sua mensagem.";
 
-    // 5. Retorna a resposta no formato exato que o ManyChat exige
-    return generateManyChatResponse(geminiReply);
+    // Adiciona a resposta do robô ao histórico para a próxima rodada
+    contents.push({
+      role: "model",
+      parts: [{ text: geminiReply }]
+    });
+
+    // 6. Retorna a resposta e o histórico atualizado
+    return generateManyChatResponse(geminiReply, JSON.stringify(contents));
 
   } catch (error) {
     console.error("Erro no Webhook ManyChat:", error);
-    return generateManyChatResponse("Erro interno no servidor. Por favor, aguarde o atendimento humano.");
+    return generateManyChatResponse("Erro interno no servidor. Por favor, aguarde o atendimento humano.", "[]");
   }
 }
 
 // Função auxiliar para formatar o JSON de resposta (Formato Simples)
-function generateManyChatResponse(textMessage) {
+function generateManyChatResponse(textMessage, historyJson) {
   return NextResponse.json({
-    resposta: textMessage
+    resposta: textMessage,
+    historico: historyJson
   });
 }
