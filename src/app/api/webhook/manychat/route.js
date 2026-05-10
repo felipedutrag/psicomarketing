@@ -33,9 +33,11 @@ export async function POST(request) {
     let contents = [];
     if (historyString && historyString.trim() !== "") {
       try {
-        contents = JSON.parse(historyString);
+        // Descodifica o histórico de Base64 para evitar quebra de JSON no ManyChat
+        const decodedHistory = Buffer.from(historyString, 'base64').toString('utf-8');
+        contents = JSON.parse(decodedHistory);
       } catch (e) {
-        console.error("Erro ao fazer parse do histórico, iniciando nova conversa.", e);
+        console.error("Erro ao decodificar histórico Base64, iniciando nova conversa.", e);
         contents = [];
       }
     }
@@ -51,12 +53,12 @@ export async function POST(request) {
     
     const geminiPayload = {
       system_instruction: {
-        parts: { text: systemInstruction }
+        parts: [{ text: systemInstruction }] // FORMATO CORRIGIDO (Array)
       },
       contents: contents, // Passa o histórico completo aqui
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 250, 
+        // Removido maxOutputTokens para não cortar a resposta
       }
     };
 
@@ -71,7 +73,8 @@ export async function POST(request) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Erro da API Gemini:", errorText);
-      return generateManyChatResponse("Desculpe, ocorreu um erro de conexão. Tente novamente em instantes.", JSON.stringify(contents));
+      // Retorna base64 vazio no erro para não quebrar fluxos futuros
+      return generateManyChatResponse("Desculpe, ocorreu um erro de conexão. Tente novamente em instantes.", ""); 
     }
 
     const data = await response.json();
@@ -83,19 +86,20 @@ export async function POST(request) {
       parts: [{ text: geminiReply }]
     });
 
-    // 6. Retorna a resposta e o histórico atualizado
-    return generateManyChatResponse(geminiReply, JSON.stringify(contents));
+    // 6. Retorna a resposta e o histórico codificado em Base64
+    const historyBase64 = Buffer.from(JSON.stringify(contents)).toString('base64');
+    return generateManyChatResponse(geminiReply, historyBase64);
 
   } catch (error) {
     console.error("Erro no Webhook ManyChat:", error);
-    return generateManyChatResponse("Erro interno no servidor. Por favor, aguarde o atendimento humano.", "[]");
+    return generateManyChatResponse("Erro interno no servidor. Por favor, aguarde o atendimento humano.", "");
   }
 }
 
 // Função auxiliar para formatar o JSON de resposta (Formato Simples)
-function generateManyChatResponse(textMessage, historyJson) {
+function generateManyChatResponse(textMessage, historyBase64) {
   return NextResponse.json({
     resposta: textMessage,
-    historico: historyJson
+    historico: historyBase64
   });
 }
