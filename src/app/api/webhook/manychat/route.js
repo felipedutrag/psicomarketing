@@ -66,7 +66,7 @@ export async function POST(request) {
 
     } catch (geminiError) {
       console.error("Falha no Gemini, ativando fallback Groq:", geminiError.message);
-      
+
       // TENTATIVA 2: GROQ (FALLBACK)
       try {
         if (!groqApiKey) throw new Error("GROQ_API_KEY não configurada.");
