@@ -116,13 +116,31 @@ export async function POST(request) {
       parts: [{ text: aiReply }]
     });
 
+    // Formata a resposta para o WhatsApp antes de enviar
+    const formattedReply = formatToWhatsApp(aiReply);
+
     const historyBase64 = Buffer.from(JSON.stringify(contents)).toString('base64');
-    return generateManyChatResponse(aiReply, historyBase64);
+    return generateManyChatResponse(formattedReply, historyBase64);
 
   } catch (error) {
     console.error("Erro geral no Webhook:", error);
     return generateManyChatResponse("Erro interno.", "");
   }
+}
+
+// Converte a formatação Markdown da IA para o formato do WhatsApp
+function formatToWhatsApp(text) {
+  if (!text) return text;
+  
+  // 1. Substitui negrito Markdown (**texto**) por negrito WhatsApp (*texto*)
+  let formatted = text.replace(/\*\*(.*?)\*\*/g, '*$1*');
+  
+  // 2. Converte cabeçalhos Markdown (### Título) para negrito do WhatsApp (*Título*)
+  formatted = formatted.replace(/^### (.*?)$/gm, '*$1*');
+  formatted = formatted.replace(/^## (.*?)$/gm, '*$1*');
+  formatted = formatted.replace(/^# (.*?)$/gm, '*$1*');
+  
+  return formatted;
 }
 
 function generateManyChatResponse(textMessage, historyBase64) {
