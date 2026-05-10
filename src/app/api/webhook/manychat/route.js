@@ -28,8 +28,8 @@ export async function POST(request) {
       return generateManyChatResponse("Desculpe, nossa assistente virtual está em manutenção no momento. (Erro: API Key faltando)");
     }
 
-    // 4. Faz a requisição para a API do Google Gemini (usando Gemini 1.5 Flash por ser rápido para chat)
-    const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // 4. Faz a requisição para a API do Google Gemini (usando Gemini Flash por ser rápido para chat)
+    const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
     
     const geminiPayload = {
       system_instruction: {
