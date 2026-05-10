@@ -90,7 +90,7 @@ export async function POST(request) {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: "llama3-70b-8192", // Modelo ultrarrápido e super inteligente
+            model: "llama-3.3-70b-versatile", // Modelo atualizado
             messages: groqMessages,
             temperature: 0.7,
             max_tokens: 300
