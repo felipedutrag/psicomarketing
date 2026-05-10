@@ -73,17 +73,9 @@ export async function POST(request) {
   }
 }
 
-// Função auxiliar para formatar o JSON de Dynamic Content do ManyChat
+// Função auxiliar para formatar o JSON de resposta (Formato Simples)
 function generateManyChatResponse(textMessage) {
   return NextResponse.json({
-    version: "v2",
-    content: {
-      messages: [
-        {
-          type: "text",
-          text: textMessage
-        }
-      ]
-    }
+    resposta: textMessage
   });
 }
