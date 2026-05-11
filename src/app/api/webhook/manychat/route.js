@@ -56,12 +56,12 @@ export async function POST(request) {
 
     let aiReply = "";
 
-    // MOTOR PRINCIPAL: Gemini 1.5 Flash (Foco em velocidade e estabilidade)
+    // MOTOR PRINCIPAL: Gemini 3 Flash Preview (V1 - Ultra Performance)
     try {
       if (!geminiApiKey) throw new Error("Chave GEMINI_API_KEY não encontrada");
 
       const startTime = Date.now();
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -69,13 +69,13 @@ export async function POST(request) {
           contents: contents,
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 400, // Limita a verbosidade da IA na raiz
+            maxOutputTokens: 400,
           }
         })
       });
 
       const endTime = Date.now();
-      console.log(`[Vesper] Gemini 1.5 Status: ${response.status} (${endTime - startTime}ms)`);
+      console.log(`[Vesper] Gemini 3 Status: ${response.status} (${endTime - startTime}ms)`);
 
       const data = await response.json();
 
