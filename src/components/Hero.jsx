@@ -25,11 +25,7 @@ export default function Hero() {
         </div>
       </div>
       
-      <div className={styles.scrollIndicator}>
-        <div className={styles.mouse}>
-          <div className={styles.wheel}></div>
-        </div>
-      </div>
+      {/* Scroll Indicator removido conforme solicitado */}
     </section>
   );
 }

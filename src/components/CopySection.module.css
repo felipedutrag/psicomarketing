@@ -371,6 +371,10 @@
 
 /* ——— RESPONSIVE ——— */
 @media (max-width: 992px) {
+  .copySection {
+    padding: 60px 0;
+  }
+
   .painGrid {
     grid-template-columns: 1fr;
     gap: 16px;

@@ -223,6 +223,11 @@
 }
 
 @media (max-width: 768px) {
+  .hero {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
   .hero::before,
   .hero::after {
     display: none;

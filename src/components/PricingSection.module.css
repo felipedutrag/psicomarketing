@@ -204,6 +204,10 @@
 }
 
 @media (max-width: 992px) {
+  .pricingSection {
+    padding: 60px 0;
+  }
+
   .grid {
     grid-template-columns: 1fr;
     gap: 4rem;

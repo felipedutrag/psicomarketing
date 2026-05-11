@@ -43,8 +43,8 @@ export default function BookingCalendar({ onSelect }) {
 
   return (
     <div className={styles.calendarContainer}>
-      <h3 className={styles.title}>Agende a instalação de sua IA</h3>
-      <p className={styles.subtitle}>Selecione uma data para sua Sessão Estratégica e Ativação da sua IA</p>
+      <h3 className={styles.title}>Agende sua instalação</h3>
+      <p className={styles.subtitle}>Selecione uma data para sua instalação</p>
 
       {loadingSlots ? (
         <div className={styles.loadingContainer}>
