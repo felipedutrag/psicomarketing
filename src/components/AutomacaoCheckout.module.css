@@ -417,12 +417,7 @@
   color: #fff;
 }
 
-.summaryBenefits {
-  padding: 120px 0 160px;
-  background-color: var(--bg-primary);
-  position: relative;
-  overflow: hidden;
-}
+
 
 .section::before {
   content: "";
