@@ -16,6 +16,7 @@ export async function POST(request) {
       - Termine SEMPRE com uma pergunta provocativa.
       - NUNCA use "Doutor" ou "Doutora". Chame EXCLUSIVAMENTE pelo primeiro nome: ${userName}.
       - Respostas CURTAS e fatais (máximo 2 parágrafos).
+      - LINKS: Envie links apenas como URL pura (texto), JAMAIS use colchetes ou formato markdown [texto](link).
       - IDENTIDADE: Por padrão, não se apresente. Se o usuário perguntar quem você é, revele que seu nome é Vesper. JAMAIS mencione o nome "Numbly" proativamente.
 
       [PROTOCOLO]
@@ -96,7 +97,13 @@ export async function POST(request) {
 
     // Limpeza e Formatação
     contents.push({ role: "model", parts: [{ text: aiReply }] });
-    const formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*');
+    
+    // 1. Converte negrito markdown para itálico (estilo Vesper)
+    // 2. Remove links em formato markdown [texto](link) e deixa apenas o link
+    let formattedReply = aiReply
+      .replace(/\*\*(.*?)\*\*/g, '*$1*')
+      .replace(/\[.*?\]\((https?:\/\/.*?)\)/g, '$1');
+
     const historyBase64 = Buffer.from(JSON.stringify(contents.slice(-10))).toString('base64');
 
     console.log(`[Vesper] Resposta Final (Tamanho: ${formattedReply.length} chars): "${formattedReply.substring(0, 50)}..."`);
