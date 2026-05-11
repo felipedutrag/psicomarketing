@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "commit": "node scripts/auto-commit-gemini.js"
   },
   "dependencies": {
     "cheerio": "^1.2.0",
@@ -15,6 +16,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.6"
   }
