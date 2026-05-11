@@ -15,7 +15,7 @@ export default function Hero() {
             <span className={styles.highlight}>converte</span> enquanto você atende
           </h1>
           <p className={styles.subtitle}>
-            Pare de perder pacientes enquanto você está em sessão. Uma IA humanizada trabalhando 24h por você.
+            Pare de perder pacientes enquanto você está em sessão. Implementamos uma Secretária de IA no seu WhatsApp que acolhe, tira dúvidas e agenda consultas automaticamente.
           </p>
           <div className={styles.actions}>
             <a href="#automacao" className="btn-primary">
