@@ -61,6 +61,12 @@
   gap: 2rem;
 }
 
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .brand h3 {
   font-size: 1.2rem;
   color: var(--accent-primary);
