@@ -223,10 +223,11 @@ export async function POST(request) {
         ];
 
         contents.forEach(msg => {
-          if (msg.parts[0].text) {
+          const textContent = msg.parts?.filter(p => p.text).map(p => p.text).join('\n') || "";
+          if (textContent) {
             groqMessages.push({
               role: msg.role === "model" ? "assistant" : "user",
-              content: msg.parts[0].text
+              content: textContent
             });
           }
         });
@@ -267,13 +268,32 @@ export async function POST(request) {
         if (!groqData) throw new Error("Todos os modelos do Groq falharam.");
 
         let responseMessage = groqData.choices?.[0]?.message;
+        let toolCalls = responseMessage?.tool_calls || [];
+        
+        // Tenta extrair ferramenta de tags de texto (fallback para alucinação de modelos menores)
+        if (toolCalls.length === 0 && responseMessage?.content?.includes('<function')) {
+          const match = responseMessage.content.match(/<function=(.*?)>(.*?)<\/function>/);
+          if (match) {
+            toolCalls.push({
+              id: "call_hallucinated_" + Date.now(),
+              type: "function",
+              function: {
+                name: match[1],
+                arguments: match[2]
+              }
+            });
+            console.log(`[Groq] Capturada função alucinada no texto: ${match[1]}`);
+          }
+        }
 
-        if (responseMessage?.tool_calls) {
+        if (toolCalls.length > 0) {
           groqMessages.push(responseMessage);
           
-          for (const toolCall of responseMessage.tool_calls) {
+          for (const toolCall of toolCalls) {
             const functionName = toolCall.function.name;
-            const args = JSON.parse(toolCall.function.arguments);
+            const args = typeof toolCall.function.arguments === 'string' 
+              ? JSON.parse(toolCall.function.arguments) 
+              : toolCall.function.arguments;
             
             let functionResult;
             if (functionName === 'get_available_times') {
