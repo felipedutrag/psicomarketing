@@ -7,12 +7,6 @@ export async function POST(request) {
     const historyString = body.history;
     const userName = body.name || "Colega";
 
-    console.log(`[Vesper] Recebido de ${userName}: ${userMessage}`);
-
-    if (!userMessage) {
-      return NextResponse.json({ error: 'Message field is required' }, { status: 400 });
-    }
-
     const systemInstruction = `
       Você é Vesper, a estrategista da Numbly. Você é sofisticada, irônica e brilhante.
       Sua missão é converter psicólogos desafiando a zona de conforto deles.
@@ -48,13 +42,22 @@ export async function POST(request) {
     // Adiciona a mensagem atual se o histórico estiver vazio ou for o início
     contents.push({ role: "user", parts: [{ text: userMessage }] });
 
+    console.log(`[Vesper] Recebido de ${userName}: "${userMessage}"`);
+    console.log(`[Vesper] Tamanho do histórico: ${contents.length} mensagens`);
+
+    if (!userMessage) {
+      console.warn("[Vesper] Mensagem vazia recebida");
+      return NextResponse.json({ error: 'Message field is required' }, { status: 400 });
+    }
+
     let aiReply = "";
 
     // USANDO GEMINI COMO PRINCIPAL (Já que a chave está no .env)
     try {
       if (!geminiApiKey) throw new Error("Chave Gemini não encontrada");
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${geminiApiKey}`, {
+      const startTime = Date.now();
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -67,13 +70,19 @@ export async function POST(request) {
         })
       });
 
+      const endTime = Date.now();
+      console.log(`[Vesper] Gemini Status: ${response.status} (${endTime - startTime}ms)`);
+
       const data = await response.json();
       
       if (data.candidates && data.candidates[0]) {
         aiReply = data.candidates[0].content.parts[0].text;
       } else {
-        console.error("Erro na resposta do Gemini:", JSON.stringify(data));
-        throw new Error("Resposta inválida do Gemini");
+        console.error("[Vesper] Erro na resposta do Gemini:", JSON.stringify(data, null, 2));
+        if (response.status === 429) {
+          console.error("[Vesper] ALERTA: Limite de cota (Quota) atingido na Gemini API!");
+        }
+        throw new Error(`Resposta inválida do Gemini: ${response.status}`);
       }
 
     } catch (err) {
@@ -86,13 +95,15 @@ export async function POST(request) {
     const formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*');
     const historyBase64 = Buffer.from(JSON.stringify(contents)).toString('base64');
     
+    console.log(`[Vesper] Resposta Final enviada: "${formattedReply.substring(0, 50)}..."`);
+    
     return NextResponse.json({ 
       resposta: formattedReply, 
       historico: historyBase64 
     });
 
   } catch (error) {
-    console.error("[Vesper] Erro Fatal:", error);
-    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
+    console.error("[Vesper] Erro Fatal no Webhook:", error);
+    return NextResponse.json({ error: "Erro interno", details: error.message }, { status: 500 });
   }
 }
