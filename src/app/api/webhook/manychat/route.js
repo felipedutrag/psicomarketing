@@ -26,6 +26,9 @@ export async function POST(request) {
       - Não entregue tudo de cara. Faça perguntas curtas investigativas, como: "Como você faz o controle dos seus agendamentos hoje? É você mesmo quem responde todo mundo no WhatsApp?"
       - Agite a dor: concorde que é exaustivo ter que parar a vida para responder pacientes e que isso limita o crescimento dele.
       - Apresente a solução (nossa IA de agendamento automático).
+      - [AGENDAMENTO PELA IA]: Você possui integração direta com o Cal.com. Quando o psicólogo demonstrar interesse e quiser agendar a Sessão Estratégica com nossos especialistas, USE A FERRAMENTA para consultar horários disponíveis nos próximos 5 a 7 dias e dê as opções para ele. Se ele escolher, peça o nome completo e e-mail, e USE A FERRAMENTA para realizar o agendamento no sistema. 
+
+      A DATA DE HOJE É: ${new Date().toISOString().split('T')[0]}.
 
       [REGRAS DE FORMATAÇÃO]
       - Responda sempre de forma CURTA e direta (1 a 2 parágrafos no máximo). Mensagens longas não funcionam no WhatsApp.
@@ -81,6 +84,35 @@ export async function POST(request) {
       const geminiPayload = {
         system_instruction: { parts: [{ text: dynamicSystemInstruction }] },
         contents: contents,
+        tools: [{
+          function_declarations: [
+            {
+              name: "get_available_times",
+              description: "Retorna os horários disponíveis na agenda do especialista. Use antes de sugerir horários.",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  dateFrom: { type: "STRING", description: "Data inicial (YYYY-MM-DD)" },
+                  dateTo: { type: "STRING", description: "Data final (YYYY-MM-DD)" }
+                },
+                required: ["dateFrom", "dateTo"]
+              }
+            },
+            {
+              name: "book_appointment",
+              description: "Agenda o horário na agenda. Solicite nome e email antes de chamar.",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  name: { type: "STRING", description: "Nome do paciente/psicólogo" },
+                  email: { type: "STRING", description: "Email do paciente/psicólogo" },
+                  startTime: { type: "STRING", description: "Horário (ISO 8601 UTC, ex: 2024-05-15T14:30:00.000Z)" }
+                },
+                required: ["name", "email", "startTime"]
+              }
+            }
+          ]
+        }],
         generationConfig: { temperature: 0.7 }
       };
 
@@ -95,7 +127,42 @@ export async function POST(request) {
       }
 
       const data = await response.json();
-      aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      let candidate = data.candidates?.[0];
+      let aiReply = candidate?.content?.parts?.[0]?.text;
+      const functionCall = candidate?.content?.parts?.[0]?.functionCall;
+
+      if (functionCall) {
+        let functionResult;
+        if (functionCall.name === 'get_available_times') {
+          functionResult = await checkCalAvailability(functionCall.args.dateFrom, functionCall.args.dateTo);
+        } else if (functionCall.name === 'book_appointment') {
+          functionResult = await bookCalAppointment(functionCall.args.name, functionCall.args.email, functionCall.args.startTime);
+        }
+
+        contents.push({
+          role: "model",
+          parts: [{ functionCall: functionCall }]
+        });
+        contents.push({
+          role: "function",
+          parts: [{ functionResponse: { name: functionCall.name, response: functionResult || { error: "unknown error" } } }]
+        });
+
+        const secondPayload = {
+          system_instruction: { parts: [{ text: dynamicSystemInstruction }] },
+          contents: contents,
+          generationConfig: { temperature: 0.7 }
+        };
+
+        const response2 = await fetch(geminiEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(secondPayload)
+        });
+        
+        const data2 = await response2.json();
+        aiReply = data2.candidates?.[0]?.content?.parts?.[0]?.text;
+      }
 
       if (!aiReply) throw new Error("Gemini returned empty response");
 
@@ -223,5 +290,46 @@ async function scrapeWebsite(url) {
   } catch (err) {
     console.error(`Erro ao fazer scraping do site ${url}:`, err.message);
     return null;
+  }
+}
+
+// INTEGRAÇÃO CAL.COM
+async function checkCalAvailability(dateFrom, dateTo) {
+  const apiKey = process.env.CAL_API_KEY;
+  if (!apiKey) return { error: "CAL_API_KEY não configurada" };
+  try {
+    const response = await fetch(`https://api.cal.com/v2/slots/available?eventTypeId=4565935&startTime=${dateFrom}&endTime=${dateTo}`, {
+      headers: { 'Authorization': `Bearer ${apiKey}` },
+      cache: 'no-store'
+    });
+    return await response.json();
+  } catch (e) {
+    return { error: e.message };
+  }
+}
+
+async function bookCalAppointment(name, email, startTime) {
+  const apiKey = process.env.CAL_API_KEY;
+  if (!apiKey) return { error: "CAL_API_KEY não configurada" };
+  try {
+    const response = await fetch('https://api.cal.com/v2/bookings', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        start: startTime,
+        eventTypeId: 4565935,
+        attendee: {
+          name: name,
+          email: email,
+          timeZone: "America/Sao_Paulo"
+        }
+      })
+    });
+    return await response.json();
+  } catch (e) {
+    return { error: e.message };
   }
 }
