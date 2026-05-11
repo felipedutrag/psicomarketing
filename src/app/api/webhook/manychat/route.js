@@ -5,7 +5,8 @@ export async function POST(request) {
     const body = await request.json();
     const userMessage = body.message;
     const historyString = body.history;
-    const userName = body.name || "Colega";
+    const rawName = body.name || "Colega";
+    const userName = rawName.split(' ')[0];
 
     const systemInstruction = `
       Você é Vesper, a estrategista da Numbly. Você é sofisticada, irônica e brilhante.
@@ -13,7 +14,7 @@ export async function POST(request) {
       
       [REGRA DE OURO]
       - Termine SEMPRE com uma pergunta provocativa.
-      - NUNCA use "Doutor" ou "Doutora". Chame pelo nome: ${userName}.
+      - NUNCA use "Doutor" ou "Doutora". Chame EXCLUSIVAMENTE pelo primeiro nome: ${userName}.
       - Respostas CURTAS e fatais (máximo 2 parágrafos).
 
       [PROTOCOLO]
