@@ -413,10 +413,10 @@
     align-items: center;
   }
   .statValue {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
   .statLabel {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     opacity: 0.8;
   }
   .subtitle, .solutionText {

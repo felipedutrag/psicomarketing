@@ -222,5 +222,10 @@
   
   .slotsGrid {
     grid-template-columns: repeat(2, 1fr);
+    scrollbar-width: none;
+  }
+
+  .slotsGrid::-webkit-scrollbar {
+    display: none;
   }
 }
