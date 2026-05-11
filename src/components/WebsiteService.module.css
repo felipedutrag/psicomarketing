@@ -541,6 +541,12 @@
   .container {
     flex-direction: column;
     gap: 4rem;
+    text-align: center;
+  }
+  
+  .description {
+    font-size: 1rem;
+    text-align: center;
   }
   
   .visual {
