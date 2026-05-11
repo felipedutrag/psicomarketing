@@ -28,9 +28,9 @@
 
 /* ——— HEADER ——— */
 .header {
-  text-align: left;
-  max-width: 800px;
-  margin: 0;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .eyebrow {
@@ -81,8 +81,6 @@
   padding: 36px 32px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
   gap: 14px;
   transition: all 0.4s ease;
   position: relative;
@@ -146,7 +144,7 @@
   align-items: center;
   gap: 24px;
   max-width: 850px;
-  margin: 40px 0 0;
+  margin: 40px auto 0;
   position: relative;
   overflow: hidden;
 }
@@ -214,7 +212,6 @@
   letter-spacing: 4px;
   color: var(--accent-primary);
   white-space: nowrap;
-  padding-left: 0;
 }
 
 /* ——— SOLUTION CARD ——— */

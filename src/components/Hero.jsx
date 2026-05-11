@@ -11,7 +11,8 @@ export default function Hero() {
             Inteligência Artificial para Psicólogos
           </div>
           <h1 className={styles.title}>
-            Atendimento <span className={styles.highlight}>enquanto você atende</span>
+            Atendimento que <br />
+            <span className={styles.highlight}>converte</span> enquanto você atende
           </h1>
           <p className={styles.subtitle}>
             Pare de perder pacientes enquanto você está em sessão. Implementamos uma Secretária de IA no seu WhatsApp que acolhe, tira dúvidas e agenda consultas automaticamente.
