@@ -18,6 +18,22 @@ export default function AutomacaoCheckout() {
   const [pixLoading, setPixLoading] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("pending"); 
   const [copied, setCopied] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutos em segundos
+
+  useEffect(() => {
+    if (step === 2 && paymentStatus === "pending" && timeLeft > 0) {
+      const timer = setTimeout(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [step, paymentStatus, timeLeft]);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -25,10 +41,32 @@ export default function AutomacaoCheckout() {
     if (savedSlot) {
       setSelectedSlot(savedSlot);
     } else {
-      // Se não houver slot, redireciona de volta para escolher um
       window.location.href = "/#preco";
     }
+
+    // Persistência do PIX
+    const savedPix = localStorage.getItem('pixData');
+    const savedPixTime = localStorage.getItem('pixTimestamp');
+    if (savedPix && savedPixTime) {
+      const elapsed = (Date.now() - parseInt(savedPixTime)) / 1000;
+      if (elapsed < 15 * 60) {
+        setPixData(JSON.parse(savedPix));
+        setStep(2);
+        setTimeLeft(Math.floor(15 * 60 - elapsed));
+      } else {
+        localStorage.removeItem('pixData');
+        localStorage.removeItem('pixTimestamp');
+      }
+    }
   }, []);
+
+  const handleReset = () => {
+    localStorage.removeItem('pixData');
+    localStorage.removeItem('pixTimestamp');
+    setPixData(null);
+    setStep(1);
+    setTimeLeft(15 * 60);
+  };
 
   // Polling de Status de Pagamento
   useEffect(() => {
@@ -74,6 +112,8 @@ export default function AutomacaoCheckout() {
       if (data.status !== "success") throw new Error(data.error || "Erro ao processar");
 
       setPixData(data);
+      localStorage.setItem('pixData', JSON.stringify(data));
+      localStorage.setItem('pixTimestamp', Date.now().toString());
       setStep(2); // Avança para o pagamento
       setStatus("success");
     } catch (e) {
@@ -179,40 +219,61 @@ export default function AutomacaoCheckout() {
             {step === 2 && pixData && paymentStatus !== "approved" && (
               <div className={styles.pixContent}>
                 <div className={styles.pixHeader}>
-                  <h3 className={styles.formTitle}>Aguardando Pagamento</h3>
-                  <div className={styles.timerBadge}>Vence em 2h</div>
+                  <h3 className={styles.pixTitle}>Aguardando Pagamento</h3>
+                  <p className={styles.timerSub}>Não feche essa tela enquanto realiza o pagamento para garantir a detecção instantânea.</p>
+                  <div className={styles.timerBadge}>Expira em {formatTime(timeLeft)}</div>
+                  <p className={styles.timerNotice}>Sua reserva é válida por 15 minutos</p>
                 </div>
-                <div className={styles.pixBody}>
-                  <div className={styles.qrCodeContainer}>
-                    {(pixData.pix?.code) ? (
-                      <img
-                        src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(pixData.pix.code)}`}
-                        alt="QR Code PIX"
-                        className={styles.qrCode}
-                      />
-                    ) : <div className={styles.pixLoading}>Gerando QR Code...</div>}
+
+                {timeLeft === 0 ? (
+                  <div className={styles.expiredContent}>
+                    <div className={styles.expiredIcon}>!</div>
+                    <h3 className={styles.formTitle}>Tempo Expirado</h3>
+                    <p className={styles.expiredText}>O prazo de 15 minutos para esta reserva terminou. Clique no botão abaixo para gerar um novo código.</p>
+                    <button onClick={handleReset} className={styles.submitBtn}>Gerar Novo QR Code</button>
                   </div>
-                  <div className={styles.pixInstructions}>
-                    <p>1. Abra o app do seu banco</p>
-                    <p>2. Escolha "Pagar via Pix QR Code"</p>
-                    <p>3. Aponte a câmera ou cole o código abaixo</p>
-                  </div>
-                  <div className={styles.pixCopyPaste}>
-                    <div className={styles.copyInputGroup}>
-                      <input readOnly value={pixData.pix?.code || ""} className={styles.copyInput} />
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(pixData.pix?.code || "");
-                          setCopied(true);
-                          setTimeout(() => setCopied(false), 2000);
-                        }}
-                        className={styles.copyBtn}
-                      >
-                        {copied ? "✓ Copiado!" : "Copiar"}
-                      </button>
+                ) : (
+                  <div className={styles.pixBody}>
+                    <div className={styles.qrCodeContainer}>
+                      {(pixData.pix?.code) ? (
+                        <img
+                          src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(pixData.pix.code)}`}
+                          alt="QR Code PIX"
+                          className={styles.qrCode}
+                        />
+                      ) : <div className={styles.pixLoading}>Gerando QR Code...</div>}
+                    </div>
+                    <div className={styles.pixInstructions}>
+                      <div className={styles.instructionItem}>
+                        <div className={styles.instructionIcon}>1</div>
+                        <p>Abra o app do seu banco preferido</p>
+                      </div>
+                      <div className={styles.instructionItem}>
+                        <div className={styles.instructionIcon}>2</div>
+                        <p>Escolha a opção de pagar via <strong>Pix QR Code</strong></p>
+                      </div>
+                      <div className={styles.instructionItem}>
+                        <div className={styles.instructionIcon}>3</div>
+                        <p>Aponte a câmera ou cole o código copia e cola abaixo</p>
+                      </div>
+                    </div>
+                    <div className={styles.pixCopyPaste}>
+                      <div className={styles.copyInputGroup}>
+                        <input readOnly value={pixData.pix?.code || ""} className={styles.copyInput} />
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(pixData.pix?.code || "");
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 2000);
+                          }}
+                          className={styles.copyBtn}
+                        >
+                          {copied ? "✓ Copiado!" : "Copiar"}
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
                 <div className={styles.paymentStatus}><div className={styles.statusSpinner}></div>Monitorando pagamento em tempo real...</div>
               </div>
             )}
@@ -236,10 +297,14 @@ export default function AutomacaoCheckout() {
               <div className={styles.summaryItem}><span>Setup & Ativação</span><span className={styles.free}>INCLUSO</span></div>
             </div>
             <div className={styles.summaryTotal}><span>Total</span><span className={styles.totalAmount}>R$ 99,00</span></div>
+            <div className={styles.activationPlan}>
+              <h4>Plano de Ativação</h4>
+              <p>Sua primeira sessão de ajuste e ativação está inclusa no valor mensal. <strong>Cancele quando quiser.</strong></p>
+            </div>
             <ul className={styles.summaryBenefits}>
               <li>✦ IA de Atendimento 24/7</li>
               <li>✦ Agendamento Inteligente</li>
-              <li>✦ Sessão de Setup Inclusa</li>
+              <li>✦ Sem fidelidade ou multas</li>
             </ul>
           </div>
         </div>

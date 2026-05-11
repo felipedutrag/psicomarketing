@@ -170,18 +170,71 @@
 
 .pixHeader {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
+  margin-bottom: 25px;
+  gap: 6px;
+}
+
+.pixTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px !important; /* Aumentado conforme solicitado */
+  letter-spacing: -0.02em;
+}
+
+.timerSub {
+  font-size: 0.9rem;
+  color: #888;
+  max-width: 420px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.timerNotice {
+  font-size: 0.85rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.expiredContent {
+  text-align: center;
+  padding: 40px 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+.expiredIcon {
+  width: 60px;
+  height: 60px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.expiredText {
+  color: #888;
   margin-bottom: 30px;
+  line-height: 1.6;
 }
 
 .timerBadge {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
   color: #ef4444;
-  padding: 4px 12px;
+  padding: 6px 16px;
   border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .pixBody {
@@ -193,9 +246,17 @@
 
 .qrCodeContainer {
   background: #fff;
-  padding: 15px;
-  border-radius: 20px;
-  box-shadow: 0 0 30px rgba(197, 160, 89, 0.2);
+  padding: 16px;
+  border-radius: 24px;
+  box-shadow: 0 0 50px rgba(197, 160, 89, 0.3);
+  position: relative;
+  animation: qrPulse 2s infinite ease-in-out;
+}
+
+@keyframes qrPulse {
+  0% { transform: scale(1); box-shadow: 0 0 30px rgba(197, 160, 89, 0.2); }
+  50% { transform: scale(1.02); box-shadow: 0 0 60px rgba(197, 160, 89, 0.4); }
+  100% { transform: scale(1); box-shadow: 0 0 30px rgba(197, 160, 89, 0.2); }
 }
 
 .qrCode {
@@ -205,19 +266,39 @@
   filter: contrast(1.1);
 }
 
-
 .pixInstructions {
   text-align: left;
   width: 100%;
   color: #888;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 20px;
-  border-radius: 20px;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 24px;
+  border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 10px;
+}
+
+.instructionItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.instructionIcon {
+  width: 24px;
+  height: 24px;
+  background: rgba(197, 160, 89, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  flex-shrink: 0;
 }
 
 .pixCopyPaste {
@@ -310,17 +391,33 @@
   margin-bottom: 30px;
 }
 
-.planInfo {
-  margin-bottom: 20px;
+.activationPlan {
+  margin: 25px 0;
+  padding: 15px;
+  background: rgba(197, 160, 89, 0.05);
+  border-left: 2px solid var(--accent-primary);
+  border-radius: 0 12px 12px 0;
 }
 
-.free {
-  color: #22c55e;
-  font-weight: 700;
-  font-size: 0.75rem;
+.activationPlan h4 {
+  font-size: 0.9rem;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
 }
 
-.section {
+.activationPlan p {
+  font-size: 0.85rem;
+  color: #888;
+  line-height: 1.5;
+}
+
+.activationPlan p strong {
+  color: #fff;
+}
+
+.summaryBenefits {
   padding: 120px 0 160px;
   background-color: var(--bg-primary);
   position: relative;
