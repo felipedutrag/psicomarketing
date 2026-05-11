@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 
 const CAL_API_KEY = process.env.CAL_API_KEY;
-const EVENT_TYPE_ID = 4565935; // viabilidade-patente
+const EVENT_TYPE_ID = 5650035; // evento com disponibilidade completa
 
 // GET /api/cal/slots?days=14
 export async function GET(request) {
@@ -10,7 +10,6 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const days = parseInt(searchParams.get('days') || '21');
 
-    // Janela de 1 dia para o primeiro horário
     const from = new Date();
     from.setDate(from.getDate() + 1);
     from.setHours(0, 0, 0, 0);
@@ -18,15 +17,16 @@ export async function GET(request) {
     const to = new Date();
     to.setDate(to.getDate() + days);
 
-    // Cal.com V2 endpoint oficial para slots
+    // Cal.com V2 endpoint - timeZone garante que as datas retornem no fuso correto
     const url = `https://api.cal.com/v2/slots/available?startTime=${encodeURIComponent(from.toISOString())}&endTime=${encodeURIComponent(to.toISOString())}&eventTypeId=${EVENT_TYPE_ID}&timeZone=America/Sao_Paulo`;
 
+    // Sem cache para sempre pegar horários frescos do Cal.com
     const res = await fetch(url, {
       headers: {
         'Authorization': `Bearer ${CAL_API_KEY}`,
-        'cal-api-version': '2024-06-11', // Versão usada nos outros scripts do projeto
+        'cal-api-version': '2024-06-11',
       },
-      next: { revalidate: 60 },
+      cache: 'no-store',
     });
 
     const data = await res.json();
@@ -36,54 +36,71 @@ export async function GET(request) {
       return NextResponse.json({ error: data.error?.message || 'Erro ao buscar slots' }, { status: 500 });
     }
 
-    let rawSlots = data.data?.slots || data.data || {};
+    // Log para debugar a estrutura real do Cal.com
+    const rawSlots = data.data?.slots || data.data || {};
+    console.log('[cal/slots] Tipo de rawSlots:', Array.isArray(rawSlots) ? 'ARRAY' : 'OBJETO');
+    console.log('[cal/slots] Raw data (primeiras chaves):', JSON.stringify(rawSlots).slice(0, 500));
+
     const processedSlots = {};
 
-    // Se a API retornar um array flat (comum na v2 às vezes), agrupamos por data
     if (Array.isArray(rawSlots)) {
+      // Array flat — agrupa por data usando o fuso America/Sao_Paulo
       const grouped = {};
       rawSlots.forEach(s => {
         const time = typeof s === 'string' ? s : (s.time || s.start);
         if (!time) return;
-        const d = new Date(time);
-        const dateKey = d.toISOString().split('T')[0];
+        // Usa fuso BRT para calcular o dateKey correto
+        const dateKey = new Date(time).toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' }); // formato YYYY-MM-DD
         if (!grouped[dateKey]) grouped[dateKey] = [];
         grouped[dateKey].push(s);
       });
-      rawSlots = grouped;
+
+      Object.keys(grouped).forEach(dateKey => {
+        const daySlots = grouped[dateKey];
+        const validSlots = daySlots.map(s => {
+          const time = typeof s === 'string' ? s : (s.time || s.start);
+          return { time };
+        }).filter(s => {
+          if (!s.time) return false;
+          const hourBRT = parseInt(new Date(s.time).toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', hour12: false }));
+          return hourBRT >= 10 && hourBRT < 17;
+        });
+
+        if (validSlots.length > 0) {
+          const count = Math.floor(Math.random() * 3) + 2; // 2, 3 ou 4
+          processedSlots[dateKey] = validSlots
+            .sort(() => Math.random() - 0.5)
+            .slice(0, count)
+            .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+        }
+      });
+    } else {
+      Object.keys(rawSlots).forEach(dateKey => {
+        const daySlots = rawSlots[dateKey];
+        if (!Array.isArray(daySlots)) return;
+
+        const validSlots = daySlots.map(s => {
+          const time = typeof s === 'string' ? s : (s.time || s.start);
+          return { time };
+        }).filter(s => {
+          if (!s.time) return false;
+          const hourBRT = parseInt(new Date(s.time).toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', hour12: false }));
+          return hourBRT >= 10 && hourBRT < 17;
+        });
+
+        if (validSlots.length > 0) {
+          const count = Math.floor(Math.random() * 3) + 2; // 2, 3 ou 4
+          processedSlots[dateKey] = validSlots
+            .sort(() => Math.random() - 0.5)
+            .slice(0, count)
+            .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+        }
+      });
     }
 
-
-    Object.keys(rawSlots).forEach(dateKey => {
-      let daySlots = rawSlots[dateKey];
-      if (!Array.isArray(daySlots)) return;
-
-      // Normaliza e filtra horários comerciais (09:00 - 17:00 em Brasília UTC-3)
-      const validSlots = daySlots.map(s => {
-        const time = typeof s === 'string' ? s : (s.time || s.start);
-        return { time };
-      }).filter(s => {
-        if (!s.time) return false;
-        
-        const date = new Date(s.time);
-        // Forçamos o cálculo para o fuso de Brasília (UTC-3)
-        // Mesmo que o servidor esteja em UTC, isso garante a hora local correta
-        const utcHour = date.getUTCHours();
-        const hourBRT = (utcHour - 3 + 24) % 24;
-        
-        return hourBRT >= 9 && hourBRT <= 17;
-      });
-
-      if (validSlots.length > 0) {
-        // Pega até 3 aleatórios para escassez
-        processedSlots[dateKey] = validSlots
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 3)
-          .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
-      }
-    });
-
     console.log('[cal/slots] Dias processados:', Object.keys(processedSlots).length);
+    console.log('[cal/slots] Horários por dia:', JSON.stringify(Object.fromEntries(Object.entries(processedSlots).map(([k, v]) => [k, v.length]))));
+
     return NextResponse.json({ 
       slots: processedSlots, 
       status: 'success'
@@ -98,12 +115,12 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { name, email, start } = body;
+    const { name, email, phone, start } = body;
 
-    console.log('[cal/booking] Tentando agendar:', { name, email, start });
+    console.log('[cal/booking] Tentando agendar:', { name, email, phone, start });
 
-    if (!name || !email || !start) {
-      return NextResponse.json({ error: 'Campos obrigatórios: name, email, start' }, { status: 400 });
+    if (!name || !email || !phone || !start) {
+      return NextResponse.json({ error: 'Campos obrigatórios: name, email, phone, start' }, { status: 400 });
     }
 
     // Verificação de segurança: Janela de 1 dia
@@ -118,11 +135,47 @@ export async function POST(request) {
       }, { status: 400 });
     }
 
+    // 1. --- GERAÇÃO DE PIX ANTES DO AGENDAMENTO ---
+    let pixInfo = null;
+    let descriptionText = "Sessão de Consultoria Estratégica.";
+    
+    try {
+      const externalId = crypto.randomUUID();
+      const amountCents = 2900; // R$ 29,00
+      
+      const ggRes = await fetch('https://ggpixapi.com/api/v1/pix/in', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': process.env.GGPIX_API_KEY || '',
+        },
+        body: JSON.stringify({
+          amountCents: amountCents,
+          description: `Agendamento Numbly - ${externalId.slice(0, 8)}`,
+          externalId: externalId,
+          payerName: name,
+          payerEmail: email,
+          payerPhone: phone,
+          payerDocument: "12345678909", 
+          expiresIn: 7200
+        })
+      });
+      
+      const ggData = await ggRes.json();
+      if (ggRes.ok) {
+        pixInfo = ggData;
+        descriptionText = `⚠️ PAGAMENTO PENDENTE (R$ 29,00)\n\nPara confirmar sua sessão, realize o pagamento via PIX abaixo:\n\n${pixInfo.pixCopyPaste}\n\nApós o pagamento, sua reserva será validada automaticamente em nosso sistema.`;
+      }
+    } catch (pixErr) {
+      console.error('[pix/booking] Erro ao gerar PIX:', pixErr.message);
+    }
+
+    // 2. --- CRIAÇÃO DO AGENDAMENTO NO CAL.COM ---
     const res = await fetch('https://api.cal.com/v2/bookings', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${CAL_API_KEY}`,
-        'cal-api-version': '2024-08-13', // Mantido para evitar o erro 404
+        'cal-api-version': '2024-08-13', 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -131,6 +184,7 @@ export async function POST(request) {
         attendee: {
           name,
           email,
+          phoneNumber: phone,
           timeZone: 'America/Sao_Paulo'
         }
       }),
@@ -144,36 +198,6 @@ export async function POST(request) {
       return NextResponse.json({ error: errorMsg, details: data }, { status: res.status });
     }
 
-    // --- LÓGICA DE GERAÇÃO DE PIX PARA INSERIR NO AGENDAMENTO ---
-    let pixInfo = null;
-    try {
-      const externalId = crypto.randomUUID();
-      const amountCents = 2900; // R$ 29,00
-      
-      const ggRes = await fetch('https://ggpixapi.com/api/v1/pix/in', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-API-Key': process.env.GGPIX_API_KEY || '',
-        },
-        body: JSON.stringify({
-          amountCents: amountCents,
-          description: `Agendamento Psicomarketing - ${externalId.slice(0, 8)}`,
-          externalId: externalId,
-          payerName: name,
-          payerDocument: "12345678909", // CPF Genérico para agilizar
-          expiresIn: 7200
-        })
-      });
-      
-      const ggData = await ggRes.json();
-      if (ggRes.ok) {
-        pixInfo = ggData;
-      }
-    } catch (pixErr) {
-      console.error('[pix/booking] Erro ao gerar PIX:', pixErr.message);
-    }
-
     return NextResponse.json({
       status: 'success',
       bookingId: data.data?.uid || data.uid,
@@ -181,7 +205,7 @@ export async function POST(request) {
       start: data.data?.start || data.start,
       pix: pixInfo ? {
         code: pixInfo.pixCopyPaste,
-        qrCode: pixInfo.pixCode, // URL do QR Code se houver
+        qrCode: pixInfo.pixCode, 
         id: pixInfo.id
       } : null
     });

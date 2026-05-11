@@ -25,13 +25,40 @@ export default function GoogleAdsService() {
                 <span>📞 (11) 99999-9999</span>
               </div>
             </div>
+
+            <div className={styles.adResult}>
+              <div className={styles.adBadge}>Patrocinado</div>
+              <h4 className={styles.adTitle}>Terapia Online Especializada</h4>
+              <p className={styles.adLink}>www.seusite.com.br/online</p>
+              <p className={styles.adDesc}>
+                Sessões por vídeo com total sigilo e conforto. Comece sua jornada 
+                de autoconhecimento hoje mesmo.
+              </p>
+              <div className={styles.adExtensions}>
+                <span>🌐 Atendimento em todo Brasil</span>
+              </div>
+            </div>
           </div>
           
           <div className={styles.floatingGraph}>
-            <div className={styles.graphBar} style={{ height: '40%' }}></div>
-            <div className={styles.graphBar} style={{ height: '65%' }}></div>
-            <div className={styles.graphBar} style={{ height: '85%' }}></div>
-            <div className={styles.graphBar} style={{ height: '100%', background: 'var(--accent-gold)' }}></div>
+            <div className={styles.graphHeader}>
+              <span className={styles.graphLabel}>Cliques no Anúncio</span>
+              <span className={styles.graphTrend}>↑ 214%</span>
+            </div>
+            <div className={styles.graphBars}>
+              <div className={styles.graphBarWrap}>
+                <div className={styles.graphBar} style={{ height: '35%' }}></div>
+              </div>
+              <div className={styles.graphBarWrap}>
+                <div className={styles.graphBar} style={{ height: '55%' }}></div>
+              </div>
+              <div className={styles.graphBarWrap}>
+                <div className={styles.graphBar} style={{ height: '72%' }}></div>
+              </div>
+              <div className={styles.graphBarWrap}>
+                <div className={`${styles.graphBar} ${styles.graphBarHighlight}`} style={{ height: '100%' }}></div>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -1,59 +1,42 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import styles from "./AutomacaoCheckout.module.css";
 
-const DIAS_PT = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-const MESES_PT = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-
-const IS_DEV = process.env.NODE_ENV === "development";
-
-// ——— Formata ISO em hora local BR ———
-function formatHour(isoString) {
-  const d = new Date(isoString);
-  return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", timeZone: "America/Sao_Paulo" });
-}
-
-// ——— Formata data local BR ———
-function formatDateLabel(dateStr) {
-  const [y, m, day] = dateStr.split("-").map(Number);
-  const d = new Date(y, m - 1, day);
-  return {
-    dayName: DIAS_PT[d.getDay()],
-    dayNum: d.getDate(),
-    month: MESES_PT[d.getMonth()],
-    dateStr,
-  };
-}
-
 export default function AutomacaoCheckout() {
-  // Estado dos slots vindos da API
-  const [days, setDays] = useState([]);       // [{dayName, dayNum, month, dateStr, slots:[{start}]}]
-  const [loading, setLoading] = useState(true);
-  const [apiError, setApiError] = useState(null);
-
-  // Navegação do carrossel
-  const [currentDay, setCurrentDay] = useState(0);
-  const [selectedSlot, setSelectedSlot] = useState(null);  // ISO string
-
-  // Formulário
-  const [form, setForm] = useState({ nome: "", email: "" });
-  const [status, setStatus] = useState("idle"); // idle | submitting | success | error
-  const [bookingResult, setBookingResult] = useState(null);
+  const [mounted, setMounted] = useState(false);
+  const [step, setStep] = useState(1); // 1: Form, 2: Payment
+  const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
+  const [status, setStatus] = useState("idle"); 
   const [submitError, setSubmitError] = useState(null);
+
+  // Scheduling (now comes from Landing Page)
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   // PIX
   const [pixData, setPixData] = useState(null);
   const [pixLoading, setPixLoading] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState("pending"); // pending | approved | cancelled
+  const [paymentStatus, setPaymentStatus] = useState("pending"); 
+  const [copied, setCopied] = useState(false);
 
-  // ——— Polling de Status de Pagamento ———
+  useEffect(() => {
+    setMounted(true);
+    const savedSlot = localStorage.getItem('selectedSlot');
+    if (savedSlot) {
+      setSelectedSlot(savedSlot);
+    } else {
+      // Se não houver slot, redireciona de volta para escolher um
+      window.location.href = "/#preco";
+    }
+  }, []);
+
+  // Polling de Status de Pagamento
   useEffect(() => {
     let interval;
-    if (pixData && paymentStatus === "pending" && status === "success") {
+    if (pixData && paymentStatus === "pending" && step === 2) {
       interval = setInterval(async () => {
         try {
-          const res = await fetch(`/api/ggpix/payment-status?order_id=${pixData.order_id}`);
+          const res = await fetch(`/api/ggpix/payment-status?order_id=${pixData.order_id || pixData.id}`);
           const data = await res.json();
           if (data.success && data.status === "approved") {
             setPaymentStatus("approved");
@@ -62,399 +45,184 @@ export default function AutomacaoCheckout() {
         } catch (e) {
           console.error("Erro ao verificar status:", e);
         }
-      }, 5000); // Verifica a cada 5 segundos
+      }, 5000);
     }
     return () => clearInterval(interval);
-  }, [pixData, paymentStatus, status]);
+  }, [pixData, paymentStatus, step]);
 
-  // ——— Busca slots na nossa API proxy ———
-  const fetchSlots = useCallback(async () => {
-    setLoading(true);
-    setApiError(null);
-    try {
-      const res = await fetch("/api/cal/slots?days=21");
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro desconhecido");
-
-      // Converte objeto {date: [{start}]} → array de dias com metadados
-      const rawSlots = data.slots || {};
-      const parsed = Object.entries(rawSlots)
-        .sort(([a], [b]) => a.localeCompare(b))
-        .slice(0, 7) // máx 7 dias no carrossel
-        .map(([dateStr, slots]) => ({
-          ...formatDateLabel(dateStr),
-          slots,
-        }));
-
-      setDays(parsed);
-      setCurrentDay(0);
-      setSelectedSlot(null);
-    } catch (e) {
-      setApiError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { fetchSlots(); }, [fetchSlots]);
-
-  // ——— Simula slots fake para testes DEV ———
-  function loadFakeSlots() {
-    const today = new Date();
-    const fakeDays = Array.from({ length: 5 }, (_, i) => {
-      const d = new Date(today);
-      d.setDate(today.getDate() + 4 + i);
-      const dateStr = d.toISOString().split("T")[0];
-      const hour1 = new Date(d); hour1.setUTCHours(12, 0, 0, 0); // 09h BRT
-      const hour2 = new Date(d); hour2.setUTCHours(17, 0, 0, 0); // 14h BRT
-      return {
-        ...formatDateLabel(dateStr),
-        slots: [{ start: hour1.toISOString() }, { start: hour2.toISOString() }],
-      };
-    });
-    setDays(fakeDays);
-    setCurrentDay(0);
-    setSelectedSlot(null);
-    setApiError(null);
-    setLoading(false);
-  }
-
-  // ——— Gera PIX ———
-  async function generatePix(name) {
+  async function handleFinalSubmit(e) {
+    if (e) e.preventDefault();
+    if (!form.nome || !form.email || !form.telefone || !selectedSlot) return;
+    
+    setStatus("submitting");
     setPixLoading(true);
+    setSubmitError(null);
+
     try {
-      const res = await fetch("/api/ggpix/pix", {
+      const res = await fetch("/api/cal/slots", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          total: 29.00,
-          name: name
+          name: form.nome,
+          email: form.email,
+          phone: form.telefone,
+          start: selectedSlot
         }),
       });
+      
       const data = await res.json();
-      if (data.success) {
-        setPixData(data);
-      }
+      if (data.status !== "success") throw new Error(data.error || "Erro ao processar");
+
+      setPixData(data);
+      setStep(2); // Avança para o pagamento
+      setStatus("success");
     } catch (e) {
-      console.error("Erro ao gerar PIX:", e);
+      setSubmitError(e.message);
+      setStatus("error");
     } finally {
       setPixLoading(false);
     }
   }
 
-  // ——— Submete agendamento ———
-  async function handleSubmit(e) {
-    e.preventDefault();
-    if (!form.nome || !form.email || !selectedSlot) return;
-    setStatus("submitting");
-    setSubmitError(null);
-    try {
-      const res = await fetch("/api/cal/slots", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: form.nome, email: form.email, start: selectedSlot }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro no agendamento");
-      
-      setBookingResult(data);
-      setStatus("success");
-      
-      // Se a API de agendamento já retornou o PIX, usamos ele
-      if (data.pix) {
-        // Precisamos do base64 do QR code
-        const qrRes = await fetch("/api/ggpix/pix", {
-           method: "POST",
-           headers: { "Content-Type": "application/json" },
-           body: JSON.stringify({ total: 29.00, name: form.nome })
-        });
-        const qrData = await qrRes.json();
-        if (qrData.success) {
-           setPixData(qrData);
-        }
-      } else {
-        // Fallback para gerar manualmente se o agendamento não trouxe
-        generatePix(form.nome);
-      }
-    } catch (e) {
-      setSubmitError(e.message);
-      setStatus("error");
-    }
+  function formatSelectedDate(dateStr) {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("pt-BR", { 
+      day: "numeric", 
+      month: "long", 
+      hour: "2-digit", 
+      minute: "2-digit" 
+    });
   }
 
-  const activeDay = days[currentDay];
-
-  // ——— Tela de Sucesso ———
-  if (status === "success" && bookingResult) {
-    return (
-      <section className={styles.section} id="checkout">
-        <div className={`container ${styles.container}`}>
-          <div className={styles.successBox}>
-            <div className={styles.successIcon}>✓</div>
-            <h2 className={styles.successTitle}>Instalação agendada!</h2>
-            <p className={styles.successText}>
-              Agendamento confirmado para <strong>{form.nome}</strong>.<br />
-              Um convite foi enviado para <strong>{form.email}</strong>.
-            </p>
-            
-            {/* Seção PIX */}
-            <div className={styles.pixSection}>
-              {paymentStatus === "approved" ? (
-                <div className={styles.paymentApproved}>
-                  <div className={styles.approvedBadge}>✓ PAGAMENTO CONFIRMADO</div>
-                  <h3 className={styles.pixTitle}>Tudo pronto!</h3>
-                  <p className={styles.pixSubtitle}>Seu pagamento foi processado. Nossa equipe entrará em contato em breve para a instalação.</p>
-                </div>
-              ) : (
-                <>
-                  <h3 className={styles.pixTitle}>Taxa de Ativação</h3>
-                  <p className={styles.pixSubtitle}>Pague o PIX de <strong>R$ 29,00</strong> para confirmar a configuração da sua IA.</p>
-                  
-                  {pixLoading ? (
-                    <div className={styles.pixLoading}>Gerando código PIX...</div>
-                  ) : pixData ? (
-                    <>
-                      <div className={styles.qrCodeContainer}>
-                        {pixData.qr_code_base64 ? (
-                          <img 
-                            src={`data:image/png;base64,${pixData.qr_code_base64}`} 
-                            alt="QR Code PIX" 
-                            className={styles.qrCode}
-                          />
-                        ) : (
-                          <div className={styles.pixLoading}>Carregando QR Code...</div>
-                        )}
-                      </div>
-                      <div className={styles.pixCopyPaste}>
-                        <span className={styles.copyLabel}>Copia e Cola</span>
-                        <div className={styles.copyInputGroup}>
-                          <input 
-                            readOnly 
-                            value={pixData.pix_code} 
-                            className={styles.copyInput} 
-                          />
-                          <button 
-                            onClick={() => {
-                              navigator.clipboard.writeText(pixData.pix_code);
-                              alert("Código copiado!");
-                            }}
-                            className={styles.copyBtn}
-                          >
-                            Copiar
-                          </button>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div className={styles.pixError}>Não foi possível gerar o PIX automaticamente. Entre em contato com o suporte.</div>
-                  )}
-                </>
-              )}
-            </div>
-
-            {bookingResult.meetingUrl && (
-              <a href={bookingResult.meetingUrl} target="_blank" rel="noopener noreferrer" className={`btn-primary ${styles.meetBtn}`}>
-                Abrir link do Google Meet →
-              </a>
-            )}
-          </div>
-        </div>
-      </section>
-    );
-  }
+  if (!mounted) return null;
 
   return (
-    <section className={styles.section} id="checkout">
+    <section className={styles.section}>
       <div className={`container ${styles.container}`}>
-
-        {/* — Cabeçalho — */}
         <div className={styles.header}>
           <div className={styles.badge}>
             <span className={styles.badgeDot}></span>
-            Instalação da Automação IA
+            Finalização de Reserva
           </div>
           <h2 className={styles.title}>
-            Sua secretária de IA pronta{" "}
-            <span className={styles.highlight}>em 24 horas</span>
+            {paymentStatus === "approved" ? "Pacto Confirmado!" : "Quase lá..."}
           </h2>
-          <p className={styles.subtitle}>
-            Escolha um horário para a nossa equipe instalar e configurar a Automação de WhatsApp com IA no seu consultório. A sessão é gratuita e dura 60 minutos.
-          </p>
-
-          {/* — Botão DEV (apenas em development) — */}
-          {IS_DEV && (
-            <div className={styles.devBar}>
-              <span className={styles.devLabel}>🛠 DEV MODE</span>
-              <button className={styles.devBtn} onClick={loadFakeSlots}>
-                Carregar Slots Fake
-              </button>
-              <button className={styles.devBtn} onClick={fetchSlots}>
-                Buscar Slots Reais
-              </button>
-              {apiError && <span className={styles.devError}>{apiError}</span>}
-            </div>
-          )}
         </div>
 
-        {/* — Estado de carregamento — */}
-        {loading ? (
-          <div className={styles.loadingBox}>
-            <div className={styles.spinner}></div>
-            <p>Buscando horários disponíveis…</p>
-          </div>
-        ) : apiError && !IS_DEV ? (
-          <div className={styles.errorBox}>
-            <p>⚠️ Não foi possível carregar os horários. <button onClick={fetchSlots} className={styles.retryBtn}>Tentar novamente</button></p>
-          </div>
-        ) : days.length === 0 ? (
-          <div className={styles.emptyBox}>
-            <p>Nenhum horário disponível nos próximos dias. Entre em contato diretamente pelo WhatsApp.</p>
-          </div>
-        ) : (
+        <div className={styles.checkoutWrapper}>
+          <div className={styles.mainCard}>
+            
+            {/* INDICADOR DE PASSOS (AGORA SÓ 2) */}
+            <div className={styles.stepIndicator}>
+              {[1, 2].map((s) => (
+                <div key={s} className={`${styles.step} ${step >= s ? styles.stepActive : ""}`}>
+                  <div className={styles.stepDot}>{s}</div>
+                  <span className={styles.stepLabel}>{s === 1 ? "Seus Dados" : "Pagamento"}</span>
+                </div>
+              ))}
+            </div>
+            
+            {/* PASSO 1: DADOS */}
+            {step === 1 && (
+              <div className={styles.formContent}>
+                <div className={styles.selectedTimeInfo}>
+                  <p>Horário reservado:</p>
+                  <strong>{formatSelectedDate(selectedSlot)}</strong>
+                  <a href="/#preco" className={styles.changeTime}>Alterar horário</a>
+                </div>
 
-          /* — Grid principal — */
-          <div className={styles.grid}>
-
-            {/* Coluna 1 – Formulário */}
-            <div className={styles.formCol}>
-              <div className={styles.formCard}>
-                <h3 className={styles.formTitle}>Seus dados</h3>
-                <form onSubmit={handleSubmit} className={styles.form}>
+                <h3 className={styles.formTitle}>Dados para a Ativação</h3>
+                <form onSubmit={handleFinalSubmit} className={styles.form}>
                   <div className={styles.field}>
-                    <label htmlFor="nome" className={styles.label}>Nome completo</label>
-                    <input
-                      id="nome"
-                      type="text"
-                      placeholder="Dra. Ana Silva"
-                      className={styles.input}
-                      value={form.nome}
-                      onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                      required
-                    />
+                    <label className={styles.label}>Seu Nome</label>
+                    <input type="text" placeholder="Dra. Ana Silva" className={styles.input} value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} required />
                   </div>
                   <div className={styles.field}>
-                    <label htmlFor="email" className={styles.label}>E-mail profissional</label>
-                    <input
-                      id="email"
-                      type="email"
-                      placeholder="ana@clinica.com.br"
-                      className={styles.input}
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      required
-                    />
+                    <label className={styles.label}>E-mail</label>
+                    <input type="email" placeholder="ana@clinica.com.br" className={styles.input} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
                   </div>
-
-                  {/* Resumo do horário selecionado */}
-                  <div className={styles.selectedSummary}>
-                    {selectedSlot ? (
-                      <>
-                        <span className={styles.summaryCheck}>✓</span>
-                        <span>
-                          <strong>{activeDay?.dayName}, {activeDay?.dayNum}/{activeDay?.month}</strong>
-                          {" "}às <strong>{formatHour(selectedSlot)}</strong>
-                        </span>
-                      </>
-                    ) : (
-                      <span className={styles.summaryEmpty}>← Escolha um horário no calendário</span>
-                    )}
+                  <div className={styles.field}>
+                    <label className={styles.label}>WhatsApp / Telefone</label>
+                    <input type="tel" placeholder="(11) 99999-9999" className={styles.input} value={form.telefone} onChange={(e) => setForm({ ...form, telefone: e.target.value })} required />
                   </div>
-
-                  {submitError && (
-                    <div className={styles.submitError}>{submitError}</div>
-                  )}
-
-                  <button
-                    type="submit"
-                    id="btn-confirmar-agendamento"
-                    className={`btn-primary ${styles.submitBtn}`}
-                    disabled={!selectedSlot || !form.nome || !form.email || status === "submitting"}
-                  >
-                    {status === "submitting" ? "Confirmando…" : "Confirmar instalação grátis →"}
+                  <button type="submit" className={styles.submitBtn} disabled={pixLoading}>
+                    {pixLoading ? "Processando..." : "Gerar QR Code PIX →"}
                   </button>
-
-                  <p className={styles.disclaimer}>
-                    Sessão gratuita, sem compromisso. Você receberá uma confirmação por e-mail.
-                  </p>
+                  <div className={styles.secureBadge}>Sua vaga está garantida por 15 minutos</div>
                 </form>
+                {submitError && <div className={styles.submitError}>{submitError}</div>}
               </div>
-            </div>
+            )}
 
-            {/* Coluna 2 – Carrossel de calendário */}
-            <div className={styles.calCol}>
-              <div className={styles.calCard}>
-                <div className={styles.calHeader}>
-                  <button
-                    className={styles.navBtn}
-                    onClick={() => { setCurrentDay((p) => Math.max(0, p - 1)); setSelectedSlot(null); }}
-                    disabled={currentDay === 0}
-                    aria-label="Dia anterior"
-                  >‹</button>
-
-                  <div className={styles.calDateInfo}>
-                    <span className={styles.calDayName}>{activeDay?.dayName}</span>
-                    <span className={styles.calDayNum}>{activeDay?.dayNum}</span>
-                    <span className={styles.calMonth}>{activeDay?.month}</span>
+            {/* PASSO 2: PAGAMENTO (PIX) */}
+            {step === 2 && pixData && paymentStatus !== "approved" && (
+              <div className={styles.pixContent}>
+                <div className={styles.pixHeader}>
+                  <h3 className={styles.formTitle}>Aguardando Pagamento</h3>
+                  <div className={styles.timerBadge}>Vence em 2h</div>
+                </div>
+                <div className={styles.pixBody}>
+                  <div className={styles.qrCodeContainer}>
+                    {(pixData.pix?.code) ? (
+                      <img
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(pixData.pix.code)}`}
+                        alt="QR Code PIX"
+                        className={styles.qrCode}
+                      />
+                    ) : <div className={styles.pixLoading}>Gerando QR Code...</div>}
                   </div>
-
-                  <button
-                    className={styles.navBtn}
-                    onClick={() => { setCurrentDay((p) => Math.min(days.length - 1, p + 1)); setSelectedSlot(null); }}
-                    disabled={currentDay === days.length - 1}
-                    aria-label="Próximo dia"
-                  >›</button>
-                </div>
-
-                {/* Paginação de pontos */}
-                <div className={styles.dots}>
-                  {days.map((day, i) => (
-                    <button
-                      key={day.dateStr || i}
-                      className={`${styles.dot} ${i === currentDay ? styles.dotActive : ""}`}
-                      onClick={() => { setCurrentDay(i); setSelectedSlot(null); }}
-                      aria-label={`Dia ${i + 1}`}
-                    />
-                  ))}
-                </div>
-
-                {/* Slots de horário */}
-                {activeDay?.slots?.length ? (
-                  <div className={styles.slots}>
-                    {activeDay.slots.map((slot, idx) => (
+                  <div className={styles.pixInstructions}>
+                    <p>1. Abra o app do seu banco</p>
+                    <p>2. Escolha "Pagar via Pix QR Code"</p>
+                    <p>3. Aponte a câmera ou cole o código abaixo</p>
+                  </div>
+                  <div className={styles.pixCopyPaste}>
+                    <div className={styles.copyInputGroup}>
+                      <input readOnly value={pixData.pix?.code || ""} className={styles.copyInput} />
                       <button
-                        key={slot.start || idx}
-                        id={`slot-${slot.start}`}
-                        className={`${styles.slot} ${selectedSlot === slot.start ? styles.slotSelected : ""}`}
-                        onClick={() => setSelectedSlot(slot.start)}
+                        onClick={() => {
+                          navigator.clipboard.writeText(pixData.pix?.code || "");
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className={styles.copyBtn}
                       >
-                        <span className={styles.slotIcon}>
-                          {new Date(slot.start).getUTCHours() < 13 ? "🌅" : "🌤️"}
-                        </span>
-                        <span className={styles.slotLabel}>{formatHour(slot.start)}</span>
-                        {selectedSlot === slot.start && <span className={styles.slotCheck}>✓</span>}
+                        {copied ? "✓ Copiado!" : "Copiar"}
                       </button>
-                    ))}
+                    </div>
                   </div>
-                ) : (
-                  <div className={styles.busyBox}>
-                    <span className={styles.busyIcon}>⏳</span>
-                    <p className={styles.busyText}>Sem horários neste dia</p>
-                    <p className={styles.busyHint}>Selecione outro dia →</p>
-                  </div>
-                )}
-
-                <div className={styles.calFooter}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                  </svg>
-                  <span>Confirmação imediata via Google Meet</span>
                 </div>
+                <div className={styles.paymentStatus}><div className={styles.statusSpinner}></div>Monitorando pagamento em tempo real...</div>
               </div>
-            </div>
+            )}
 
+            {/* SUCESSO: APROVADO */}
+            {paymentStatus === "approved" && (
+              <div className={styles.approvedContent}>
+                <div className={styles.successIcon}>✓</div>
+                <h3 className={styles.approvedTitle}>Pacto Confirmado!</h3>
+                <p className={styles.approvedText}>Recebemos seu pagamento. A <strong>Dra. Lilith</strong> já está preparando sua automação.</p>
+                <button className={styles.submitBtn} onClick={() => window.location.href = "/"}>Voltar ao Início</button>
+              </div>
+            )}
           </div>
-        )}
 
+          {/* CARD DE RESUMO (LATERAL) */}
+          <div className={styles.summaryCard}>
+            <h3 className={styles.formTitle}>Resumo do Pedido</h3>
+            <div className={styles.planInfo}>
+              <div className={styles.summaryItem}><span>Assinatura Mensal IA</span><span>R$ 99,00</span></div>
+              <div className={styles.summaryItem}><span>Setup & Ativação</span><span className={styles.free}>INCLUSO</span></div>
+            </div>
+            <div className={styles.summaryTotal}><span>Total</span><span className={styles.totalAmount}>R$ 99,00</span></div>
+            <ul className={styles.summaryBenefits}>
+              <li>✦ IA de Atendimento 24/7</li>
+              <li>✦ Agendamento Inteligente</li>
+              <li>✦ Sessão de Setup Inclusa</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,38 +1,33 @@
 import styles from "./FooterCTA.module.css";
+import Logo from "./Logo";
 
 export default function FooterCTA() {
   return (
     <footer className={styles.footerCTA} id="contato">
       <div className={`container ${styles.container}`}>
         
-
-        <div className={styles.footerLinks}>
-          <div className={styles.brand}>
-            <h3>PsicoMarketing</h3>
-            <p>Agência premium de marketing digital para psicólogos.</p>
-          </div>
-          
-          <div className={styles.linksGroup}>
-            <h4>Navegação</h4>
-            <ul>
-              <li><a href="#">Início</a></li>
-              <li><a href="#copy">Nossa Abordagem</a></li>
-              <li><a href="#servicos">Serviços</a></li>
-            </ul>
-          </div>
-          
-          <div className={styles.linksGroup}>
-            <h4>Contato</h4>
-            <ul>
-              <li>WhatsApp: (11) 99999-9999</li>
-              <li>Email: contato@psicomarketing.com.br</li>
-              <li>São Paulo, SP</li>
-            </ul>
-          </div>
+        <div className={styles.ctaWrapper}>
+          <h2 className={styles.ctaTitle}>Automatize seu crescimento</h2>
+          <p className={styles.ctaSubtitle}>Recupere seu tempo e multiplique seus pacientes com IA.</p>
+          <a href="https://wa.me/5511999999999" className="btn-primary">Falar com um Especialista</a>
         </div>
-        
-        <div className={styles.copyright}>
-          <p>&copy; {new Date().getFullYear()} PsicoMarketing. Todos os direitos reservados.</p>
+
+        <div className={styles.footerBottom}>
+          <div className={styles.brand}>
+            <Logo />
+            <p>Inteligência artificial para clínicas e profissionais de elite.</p>
+          </div>
+          
+          <nav className={styles.nav}>
+            <a href="#">Início</a>
+            <a href="#automacao">Automação</a>
+            <a href="#servicos">Serviços</a>
+            <a href="mailto:contato@numbly.com.br">Contato</a>
+          </nav>
+          
+          <div className={styles.copyright}>
+            <p>&copy; {new Date().getFullYear()} Numbly. Todos os direitos reservados.</p>
+          </div>
         </div>
       </div>
     </footer>

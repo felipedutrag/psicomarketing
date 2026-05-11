@@ -1,0 +1,11 @@
+.pageWrapper {
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  padding-top: 80px; /* Space for absolute header */
+}

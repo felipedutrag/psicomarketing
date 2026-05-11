@@ -1,54 +1,161 @@
 import styles from "./CopySection.module.css";
 
+const PAINS = [
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+    ),
+    title: "Demora na Resposta",
+    text: "Sua atenção está no paciente, mas o celular não para. Sem resposta rápida, o próximo contato já agendou com outro profissional.",
+  },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 18s-2-1.5-2-3"/>
+      </svg>
+    ),
+    title: "Triagem de Curiosos",
+    text: "Horas gastas respondendo as mesmas dúvidas para contatos que somem no momento em que você envia o valor.",
+  },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/>
+      </svg>
+    ),
+    title: "Agenda Desorganizada",
+    text: "Reagendamentos por WhatsApp, mensagens perdidas e energia vital desperdiçada.",
+  },
+];
+
+const FLOW = [
+  { 
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    ), 
+    label: "Paciente entra em contato" 
+  },
+  { 
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path x1="17" y1="19" x2="21" y2="19"/>
+      </svg>
+    ), 
+    label: "IA responde em segundos" 
+  },
+  { 
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/>
+      </svg>
+    ), 
+    label: "Agenda marcada automaticamente" 
+  },
+  { 
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/>
+      </svg>
+    ), 
+    label: "Você só aparece na sessão" 
+  },
+];
+
 export default function CopySection() {
   return (
     <section className={styles.copySection} id="copy">
       <div className={`container ${styles.container}`}>
-        <div className={styles.grid}>
-          
-          <div className={styles.painPoints}>
-            <h2 className={styles.title}>
-              O paciente de hoje <span className={styles.highlight}>não tem paciência</span> para esperar.
-            </h2>
-            <ul className={styles.list}>
-              <li className={styles.listItem}>
-                <div className={styles.icon}>✕</div>
-                <p><strong>Demora na resposta:</strong> Você está em sessão e leva horas para responder. O paciente procura o próximo da lista do Google.</p>
-              </li>
-              <li className={styles.listItem}>
-                <div className={styles.icon}>✕</div>
-                <p><strong>Alergia a "preço por direct":</strong> Passar o dia inteiro respondendo a mesma coisa, apenas para o contato sumir ao saber o valor da consulta.</p>
-              </li>
-              <li className={styles.listItem}>
-                <div className={styles.icon}>✕</div>
-                <p><strong>Desorganização:</strong> Tentativas falhas de alinhar agendas, mensagens perdidas e reagendamentos que tomam sua energia vital.</p>
-              </li>
-            </ul>
-          </div>
 
-          <div className={styles.solution}>
-            <div className={styles.card}>
-              <h3 className={styles.cardTitle}>A Solução: IA Humanizada no WhatsApp</h3>
-              <p className={styles.cardText}>
-                Nós transformamos seu WhatsApp em uma <strong>máquina de triagem e agendamento</strong>, trabalhando por você 24 horas por dia.
-              </p>
-              <p className={styles.cardText}>
-                A Inteligência Artificial tem a sua personalidade: acolhe, responde dúvidas, filtra "curiosos" e já insere o paciente na sua agenda.
-              </p>
-              <div className={styles.stats}>
-                <div className={styles.statItem}>
-                  <span className={styles.statNumber}>1 min</span>
-                  <span className={styles.statLabel}>Tempo de Resposta</span>
-                </div>
-                <div className={styles.statItem}>
-                  <span className={styles.statNumber}>-80%</span>
-                  <span className={styles.statLabel}>Tempo Gasto no Celular</span>
-                </div>
+        {/* Header centralizado */}
+        <div className={styles.header}>
+          <div className={styles.eyebrow}>O Problema Real</div>
+          <h2 className={styles.title}>
+            O paciente de hoje{" "}
+            <span className={styles.highlight}>não tem paciência</span>{" "}
+            para esperar.
+          </h2>
+          <p className={styles.subtitle}>
+            Enquanto você entrega o seu melhor em sessão, pacientes em potencial estão sendo perdidos no vácuo — e agendando com quem respondeu primeiro.
+          </p>
+        </div>
+
+        {/* Cards de dor */}
+        <div className={styles.painGrid}>
+          {PAINS.map((p, i) => (
+            <div key={i} className={styles.painCard}>
+              <div className={styles.painIcon}>{p.icon}</div>
+              <h3 className={styles.painTitle}>{p.title}</h3>
+              <p className={styles.painText}>{p.text}</p>
+              <div className={styles.painBadge}>✕ Problema</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Alerta de ROI */}
+        <div className={styles.roiWarning}>
+          <span className={styles.warningIcon}>⚠️</span>
+          <p>
+            <strong>A verdade brutal:</strong> Pagar por tráfego e não atender na hora é, literalmente, <span>jogar dinheiro fora.</span> Você paga o clique, mas quem atende mais rápido fica com o paciente.
+          </p>
+        </div>
+
+        {/* Divisor "A SOLUÇÃO" */}
+        <div className={styles.divider}>
+          <div className={styles.dividerLine}></div>
+          <span className={styles.dividerLabel}>A SOLUÇÃO</span>
+          <div className={styles.dividerLine}></div>
+        </div>
+
+        {/* Card de solução */}
+        <div className={styles.solutionCard}>
+          <div className={styles.solutionLeft}>
+            <h3 className={styles.solutionTitle}>
+              IA Humanizada no WhatsApp,{" "}
+              <span className={styles.highlight}>trabalhando 24h por você</span>
+            </h3>
+            <p className={styles.solutionText}>
+              Transformamos seu WhatsApp numa máquina de triagem e agendamento. A IA tem a sua personalidade: acolhe, responde dúvidas, filtra "curiosos" e insere o paciente diretamente na sua agenda.
+            </p>
+
+            <div className={styles.stats}>
+              <div className={styles.statItem}>
+                <span className={styles.statNumber}>&lt;1min</span>
+                <span className={styles.statLabel}>Tempo de Resposta</span>
+              </div>
+              <div className={styles.statItem}>
+                <span className={styles.statNumber}>-80%</span>
+                <span className={styles.statLabel}>Tempo no Celular</span>
+              </div>
+              <div className={styles.statItem}>
+                <span className={styles.statNumber}>24/7</span>
+                <span className={styles.statLabel}>Disponibilidade</span>
               </div>
             </div>
           </div>
 
+          {/* Fluxo visual */}
+          <div className={styles.solutionRight}>
+            <div className={styles.flowLabel}>Como funciona</div>
+            <div className={styles.flow}>
+              {FLOW.map((step, i) => (
+                <div key={i} className={styles.flowStep}>
+                  <div className={styles.flowTimeline}>
+                    <div className={styles.flowIcon}>{step.icon}</div>
+                    {i < FLOW.length - 1 && <div className={styles.flowLine}></div>}
+                  </div>
+                  <div className={styles.flowContent}>
+                    <span className={styles.flowText}>{step.label}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
   );

@@ -12,8 +12,11 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: "Marketing para Psicólogos | Lote sua Agenda",
-  description: "Serviços premium de marketing digital para psicólogos: Sites, Google Ads e Automação de WhatsApp.",
+  title: "Numbly | Automação e Marketing Premium para Psicólogos",
+  description: "Aumente sua conversão e lote sua agenda com IA Humanizada no WhatsApp. Sites luxuosos e tráfego estratégico para psicólogos de elite.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
