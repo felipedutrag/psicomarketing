@@ -12,29 +12,31 @@ export async function POST(request) {
     }
 
     const systemInstruction = `
-      Você é a assistente virtual da PsicoMarketing, uma agência especializada em marketing e captação de pacientes particulares para psicólogos.
-      Seu objetivo é ser acolhedora, persuasiva e extremamente profissional.
-      Você deve explicar brevemente os nossos recursos quando perguntada (Criação de Consultório Digital, Campanhas no Google Ads, Automação de WhatsApp e Estratégias de Captação).
-      Seu objetivo principal é conduzir o psicólogo (usuário) a agendar uma "Sessão Estratégica" sem compromisso com nossa equipe.
-      Quando o usuário demonstrar interesse, forneça sempre este link direto para ele escolher o horário: https://cal.com/fdgoncalves/viabilidade-patente
-      Responda sempre de forma curta e amigável, ideal para mensagens de WhatsApp (máximo 2 parágrafos). Nunca seja robótica.
+      Você é a assistente virtual da PsicoMarketing, uma agência focada em captação de pacientes particulares para psicólogos.
+      Seu tom de voz deve ser extremamente natural, acolhedor e empático, como uma conversa humana no WhatsApp. Nunca pareça um robô.
+      Seu objetivo é entender o momento atual do psicólogo (se ele já tem pacientes, se atende online/presencial, qual a dificuldade dele) e mostrar como podemos ajudá-lo com nossas estratégias (Tráfego Pago, Consultório Digital, etc).
+      Não mande links diretos de agendamento logo de cara. Conduza a conversa fazendo perguntas abertas e investigativas para gerar interesse numa "Sessão Estratégica" com nossos especialistas.
+      Responda sempre de forma curta (1 a 2 parágrafos no máximo) e use emojis com moderação.
     `;
 
     let dynamicSystemInstruction = systemInstruction;
 
-    // Detecta URL na mensagem para scraping
-    const urlRegex = /(https?:\/\/[^\s]+|(?:www\.)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[^\s]*)/g;
+    // Detecta URL na mensagem para scraping (suporta http, www e domínios comuns mesmo sem http)
+    const urlRegex = /(https?:\/\/[^\s]+|(?:www\.)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[^\s]*|[a-zA-Z0-9.-]+\.(?:com|br|net|org|link|bio|me|app|site|psi)[^\s]*)/gi;
     const urlMatch = userMessage.match(urlRegex);
     
     if (urlMatch) {
       let url = urlMatch[0];
+      // Remove pontuação acidental no final do link (ex: site.com.br.)
+      url = url.replace(/[.,;!?]$/, '');
+      
       if (!url.startsWith('http')) {
         url = 'https://' + url;
       }
       
       const siteContent = await scrapeWebsite(url);
       if (siteContent) {
-        dynamicSystemInstruction += `\n\nO usuário compartilhou o link do seu site/perfil (${url}). Aqui está o conteúdo extraído:\n"${siteContent}"\n\nUse essas informações sobre a especialidade, nome ou abordagem do psicólogo para personalizar a sua resposta, elogiar o trabalho de forma sutil e mostrar como a PsicoMarketing pode potencializar a captação de pacientes dele. Não diga explicitamente 'eu li no seu site', apenas demonstre que você já o conhece e sabe o que ele faz.`;
+        dynamicSystemInstruction += `\n\n[CONTEXTO OCULTO]: O usuário compartilhou o link do seu site/perfil (${url}). O sistema extraiu automaticamente este conteúdo de lá:\n"""\n${siteContent}\n"""\n\nUse essas informações sobre a especialidade, nome ou abordagem do psicólogo para guiar a conversa, elogiar o trabalho dele de forma sutil e mostrar que você entende o perfil dele. Não diga explicitamente 'eu li no seu site' ou 'vi no seu link', apenas haja naturalmente como se você tivesse dado uma olhadinha no perfil dele.`;
       }
     }
 
@@ -174,26 +176,38 @@ async function scrapeWebsite(url) {
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
       },
-      signal: AbortSignal.timeout(5000) // Timeout de 5 segundos para não atrasar o webhook
+      signal: AbortSignal.timeout(8000), // Timeout de 8 segundos
+      cache: 'no-store' // Evita cache do Next.js
     });
     
-    if (!response.ok) return null;
+    if (!response.ok) {
+      console.warn(`Scraping falhou para ${url}: Status ${response.status}`);
+      return null;
+    }
     
     const html = await response.text();
     const $ = cheerio.load(html);
     
-    // Remove elementos irrelevantes
-    $('script, style, noscript, iframe, svg, img, video, header, footer').remove();
+    const title = $('title').text().trim();
+    const description = $('meta[name="description"]').attr('content') || '';
+    
+    // Remove elementos irrelevantes para focar apenas no texto útil
+    $('script, style, noscript, iframe, svg, img, video, header, footer, nav').remove();
     
     // Extrai o texto visível
     const text = $('body').text().replace(/\s+/g, ' ').trim();
     
-    // Limita o tamanho para economizar tokens
-    return text.substring(0, 4000);
+    let finalContent = `Título da página: ${title}\n`;
+    if (description) finalContent += `Descrição: ${description}\n`;
+    finalContent += `Conteúdo principal: ${text.substring(0, 3000)}`;
+    
+    return finalContent;
   } catch (err) {
-    console.error("Erro ao fazer scraping do site:", err.message);
+    console.error(`Erro ao fazer scraping do site ${url}:`, err.message);
     return null;
   }
 }
