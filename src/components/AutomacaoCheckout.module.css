@@ -1,14 +1,81 @@
 /* ===== CHECKOUT LAYOUT ===== */
 .section {
-  padding: 140px 0;
+  padding: 100px 0 140px;
   position: relative;
-  background-color: var(--bg-secondary);
+  background-color: #020202;
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(197, 160, 89, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(93, 0, 255, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(197, 160, 89, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(93, 0, 255, 0.03) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, #050505 0%, #000000 100%);
+  background-size: 200% 200%;
+  animation: meshFlow 20s ease infinite;
+  overflow: hidden;
+}
+
+.section::before,
+.section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(1px 1px at 10% 10%, #fff 100%, transparent 0),
+    radial-gradient(1.5px 1.5px at 20% 30%, #c5a059 100%, transparent 0),
+    radial-gradient(1px 1px at 40% 70%, #fff 100%, transparent 0),
+    radial-gradient(1px 1px at 50% 50%, #fff 100%, transparent 0),
+    radial-gradient(1.5px 1.5px at 70% 20%, #c5a059 100%, transparent 0),
+    radial-gradient(1px 1px at 80% 80%, #fff 100%, transparent 0),
+    radial-gradient(1px 1px at 90% 40%, #c5a059 100%, transparent 0),
+    radial-gradient(1.5px 1.5px at 25% 60%, #fff 100%, transparent 0),
+    radial-gradient(1px 1px at 60% 10%, #c5a059 100%, transparent 0),
+    radial-gradient(1px 1px at 15% 85%, #fff 100%, transparent 0);
+  background-size: 400px 400px;
+  z-index: 1;
+}
+
+.section::before {
+  opacity: 0.5;
+  animation: stardust 100s linear infinite;
+}
+
+.section::after {
+  opacity: 0.3;
+  background-position: 200px 200px;
+  animation: 
+    stardust 150s linear infinite reverse,
+    twinkle 4s ease-in-out infinite;
+}
+
+@keyframes meshFlow {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+@keyframes stardust {
+  0% { transform: scale(1); background-position: 0% 0%; }
+  50% { transform: scale(1.05); background-position: 50% 50%; }
+  100% { transform: scale(1); background-position: 100% 100%; }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
+}
+
+.header, .checkoutWrapper {
+  position: relative;
+  z-index: 3;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 80px;
-  margin-top: 40px;
+  margin-bottom: 50px;
+  margin-top: 0;
 }
 
 .checkoutWrapper {
@@ -166,6 +233,12 @@
   .mainCard {
     padding: 30px;
     min-height: auto;
+  }
+
+  .badge {
+    font-size: 0.55rem;
+    padding: 6px 14px;
+    letter-spacing: 1px;
   }
 }
 

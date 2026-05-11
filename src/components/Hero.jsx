@@ -12,7 +12,7 @@ export default function Hero() {
           </div>
           <h1 className={styles.title}>
             Atendimento que <br />
-            <span className={styles.highlight}>converte</span> enquanto você atende
+            <span className={styles.highlight}>converte</span> enquanto você atende, dorme ou viaja
           </h1>
           <p className={styles.subtitle}>
             Pare de perder pacientes enquanto você está em sessão. Implementamos uma Secretária de IA no seu WhatsApp que acolhe, tira dúvidas e agenda consultas automaticamente.

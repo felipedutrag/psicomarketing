@@ -10,7 +10,7 @@
 
 .header {
   text-align: center;
-  margin-bottom: 70px;
+  margin-bottom: 45px;
 }
 
 .badge {
@@ -65,6 +65,7 @@
   border-radius: 24px;
   padding: 35px;
   display: flex;
+  align-items: center;
   gap: 20px;
   transition: all 0.3s ease;
 }
@@ -130,9 +131,23 @@
   .title {
     font-size: 2rem;
   }
+
+  .badge {
+    font-size: 0.55rem;
+    padding: 6px 14px;
+    letter-spacing: 1px;
+  }
   
   .card {
     padding: 25px;
+  }
+
+  .description {
+    font-size: 0.95rem;
+  }
+
+  .cardContent p {
+    font-size: 0.85rem;
   }
 
   .securitySection {

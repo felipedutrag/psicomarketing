@@ -63,7 +63,7 @@
 .point {
   display: flex;
   gap: 1.2rem;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .pointIcon {
@@ -220,8 +220,14 @@
     font-size: 2rem;
   }
 
+  .badge {
+    font-size: 0.55rem;
+    padding: 6px 14px;
+    letter-spacing: 1px;
+  }
+
   .description {
-    font-size: 1rem;
+    font-size: 0.95rem;
     margin-bottom: 2rem;
   }
 
@@ -240,7 +246,7 @@
   }
 
   .point p {
-    font-size: 1rem;
+    font-size: 0.85rem;
   }
   
   .pricingWrapper {

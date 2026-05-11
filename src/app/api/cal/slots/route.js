@@ -11,7 +11,7 @@ export async function GET(request) {
     const days = parseInt(searchParams.get('days') || '21');
 
     const from = new Date();
-    from.setDate(from.getDate() + 1);
+    from.setDate(from.getDate() + 2);
     from.setHours(0, 0, 0, 0);
 
     const to = new Date();
@@ -128,9 +128,9 @@ export async function POST(request) {
     const now = new Date();
     const diffHours = (startTime - now) / (1000 * 60 * 60);
 
-    if (diffHours < 24) { 
+    if (diffHours < 48) { 
       return NextResponse.json({ 
-        error: 'Data inválida: O agendamento deve ser feito com pelo menos 24h de antecedência.',
+        error: 'Data inválida: O agendamento deve ser feito com pelo menos 48h de antecedência.',
         details: { requested: start, now: now.toISOString() }
       }, { status: 400 });
     }

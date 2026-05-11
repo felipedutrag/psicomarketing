@@ -184,7 +184,7 @@
   margin-bottom: 6px;
 }
 
-.roiWarning span {
+.roiWarning p span {
   color: #fff;
   font-weight: 700;
   background: linear-gradient(transparent 70%, rgba(239, 68, 68, 0.3) 70%);
@@ -415,12 +415,22 @@
     font-size: 0.8rem;
     opacity: 0.8;
   }
-  .subtitle, .painText, .solutionText {
-    font-size: 1rem;
+  .subtitle, .solutionText {
+    font-size: 0.95rem;
     text-align: center;
   }
 
+  .painText {
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .eyebrow, .painBadge {
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+  }
+
   .roiWarning p {
-    font-size: 1rem;
+    font-size: 0.85rem;
   }
 }
