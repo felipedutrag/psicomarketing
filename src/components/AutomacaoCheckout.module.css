@@ -230,6 +230,11 @@
 }
 
 @media (max-width: 768px) {
+  .section::before,
+  .section::after {
+    display: none;
+  }
+
   .mainCard {
     padding: 30px;
     min-height: auto;

@@ -220,6 +220,10 @@
     font-size: 2rem;
   }
 
+  .mobileBreak {
+    display: block;
+  }
+
   .badge {
     font-size: 0.55rem;
     padding: 6px 14px;

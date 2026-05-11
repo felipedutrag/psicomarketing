@@ -223,6 +223,11 @@
 }
 
 @media (max-width: 768px) {
+  .hero::before,
+  .hero::after {
+    display: none;
+  }
+
   .badge {
     font-size: 0.55rem;
     padding: 8px 18px;
