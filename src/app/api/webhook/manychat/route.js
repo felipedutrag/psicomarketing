@@ -55,16 +55,16 @@ export async function POST(request) {
     // Detecta URL na mensagem para scraping (suporta http, www e domínios comuns mesmo sem http)
     const urlRegex = /(https?:\/\/[^\s]+|(?:www\.)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[^\s]*|[a-zA-Z0-9.-]+\.(?:com|br|net|org|link|bio|me|app|site|psi)[^\s]*)/gi;
     const urlMatch = userMessage.match(urlRegex);
-    
+
     if (urlMatch) {
       let url = urlMatch[0];
       // Remove pontuação acidental no final do link (ex: site.com.br.)
       url = url.replace(/[.,;!?]$/, '');
-      
+
       if (!url.startsWith('http')) {
         url = 'https://' + url;
       }
-      
+
       const siteContent = await scrapeWebsite(url);
       if (siteContent) {
         dynamicSystemInstruction += `\n\n[CONTEXTO OCULTO]: O usuário compartilhou o link do seu site/perfil (${url}). O sistema extraiu automaticamente este conteúdo de lá:\n"""\n${siteContent}\n"""\n\nUse essas informações sobre a especialidade, nome ou abordagem do psicólogo para guiar a conversa, elogiar o trabalho dele de forma sutil e mostrar que você entende o perfil dele. Não diga explicitamente 'eu li no seu site' ou 'vi no seu link', apenas haja naturalmente como se você tivesse dado uma olhadinha no perfil dele.`;
@@ -182,23 +182,23 @@ export async function POST(request) {
 
       let responseMessage = groqData.choices?.[0]?.message;
       let toolCalls = responseMessage?.tool_calls || [];
-      
+
       if (toolCalls.length > 0) {
         groqMessages.push(responseMessage);
-        
+
         for (const toolCall of toolCalls) {
           const functionName = toolCall.function.name;
-          const args = typeof toolCall.function.arguments === 'string' 
-            ? JSON.parse(toolCall.function.arguments) 
+          const args = typeof toolCall.function.arguments === 'string'
+            ? JSON.parse(toolCall.function.arguments)
             : toolCall.function.arguments;
-          
+
           let functionResult;
           if (functionName === 'get_available_times') {
             functionResult = await checkCalAvailability(args.dateFrom, args.dateTo);
           } else if (functionName === 'book_appointment') {
             functionResult = await bookCalAppointment(args.name, args.email, args.startTime);
           }
-          
+
           groqMessages.push({
             tool_call_id: toolCall.id,
             role: "tool",
@@ -219,7 +219,7 @@ export async function POST(request) {
             temperature: 0.7
           })
         });
-        
+
         if (!groqResponse2.ok) throw new Error(`Groq 2nd API Error: ${groqResponse2.status}`);
         const groqData2 = await groqResponse2.json();
         aiReply = groqData2.choices?.[0]?.message?.content || "Desculpe, não consegui processar.";
@@ -302,7 +302,7 @@ export async function POST(request) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ system_instruction: { parts: [{ text: dynamicSystemInstruction }] }, contents: contents, generationConfig: { temperature: 0.7 } })
           });
-          
+
           const data2 = await response2.json();
           const parts2 = data2.candidates?.[0]?.content?.parts || [];
           aiReply = parts2.find(p => p.text)?.text;
@@ -345,15 +345,15 @@ export async function POST(request) {
 // Converte a formatação Markdown da IA para o formato do WhatsApp
 function formatToWhatsApp(text) {
   if (!text) return text;
-  
+
   // 1. Substitui negrito Markdown (**texto**) por negrito WhatsApp (*texto*)
   let formatted = text.replace(/\*\*(.*?)\*\*/g, '*$1*');
-  
+
   // 2. Converte cabeçalhos Markdown (### Título) para negrito do WhatsApp (*Título*)
   formatted = formatted.replace(/^### (.*?)$/gm, '*$1*');
   formatted = formatted.replace(/^## (.*?)$/gm, '*$1*');
   formatted = formatted.replace(/^# (.*?)$/gm, '*$1*');
-  
+
   return formatted;
 }
 
@@ -376,28 +376,28 @@ async function scrapeWebsite(url) {
       signal: AbortSignal.timeout(8000), // Timeout de 8 segundos
       cache: 'no-store' // Evita cache do Next.js
     });
-    
+
     if (!response.ok) {
       console.warn(`Scraping falhou para ${url}: Status ${response.status}`);
       return null;
     }
-    
+
     const html = await response.text();
     const $ = cheerio.load(html);
-    
+
     const title = $('title').text().trim();
     const description = $('meta[name="description"]').attr('content') || '';
-    
+
     // Remove elementos irrelevantes para focar apenas no texto útil
     $('script, style, noscript, iframe, svg, img, video, header, footer, nav').remove();
-    
+
     // Extrai o texto visível
     const text = $('body').text().replace(/\s+/g, ' ').trim();
-    
+
     let finalContent = `Título da página: ${title}\n`;
     if (description) finalContent += `Descrição: ${description}\n`;
     finalContent += `Conteúdo principal: ${text.substring(0, 3000)}`;
-    
+
     return finalContent;
   } catch (err) {
     console.error(`Erro ao fazer scraping do site ${url}:`, err.message);
@@ -423,13 +423,13 @@ async function checkCalAvailability(dateFrom, dateTo) {
     console.log(`[Cal.com] Buscando slots: ${url}`);
 
     const response = await fetch(url, {
-      headers: { 
+      headers: {
         'Authorization': `Bearer ${apiKey}`,
         'cal-api-version': '2024-09-04'
       },
       cache: 'no-store'
     });
-    
+
     const data = await response.json();
     return data;
   } catch (e) {
@@ -444,7 +444,7 @@ async function bookCalAppointment(name, email, startTime) {
     console.error("CAL_API_KEY não configurada no .env");
     return { error: "CAL_API_KEY não configurada" };
   }
-  
+
   const start = new Date(startTime);
   console.log(`Iniciando agendamento para ${name} (${email}) em ${start.toISOString()}`);
 
@@ -454,7 +454,7 @@ async function bookCalAppointment(name, email, startTime) {
   if (diffDays < 2.9) {
     return { error: "Data inválida: O agendamento deve ser feito com pelo menos 3 dias de antecedência." };
   }
-  
+
   try {
     const response = await fetch('https://api.cal.com/v2/bookings', {
       method: 'POST',
@@ -473,15 +473,15 @@ async function bookCalAppointment(name, email, startTime) {
         }
       })
     });
-    
+
     const data = await response.json();
     console.log("Resposta do Cal.com Bookings:", JSON.stringify(data));
-    
+
     if (!response.ok) {
       const errorMsg = data.error?.message || data.message || "Erro no agendamento";
       return { error: errorMsg, details: data };
     }
-    
+
     return data;
   } catch (e) {
     console.error("Erro fatal ao agendar no Cal.com:", e.message);
