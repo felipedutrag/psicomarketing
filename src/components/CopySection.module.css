@@ -57,12 +57,15 @@
 }
 
 .highlight {
-  color: var(--accent-primary);
-  text-shadow: 0 0 30px rgba(197, 160, 89, 0.3);
+  background: linear-gradient(135deg, #c5a059 0%, #f1d39b 50%, #c5a059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
 
 .subtitle {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   color: var(--text-secondary);
   line-height: 1.7;
 }
@@ -81,7 +84,9 @@
   padding: 24px 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
   transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
@@ -107,7 +112,7 @@
 }
 
 .painTitle {
-  font-size: 1.05rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
@@ -121,17 +126,19 @@
 }
 
 .painBadge {
-  display: inline-flex;
-  align-self: flex-start;
-  font-size: 0.7rem;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #ef4444;
   background: rgba(239, 68, 68, 0.08);
   border: 1px solid rgba(239, 68, 68, 0.2);
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
+  opacity: 0.7;
 }
 
 /* ——— ROI WARNING ——— */
@@ -163,7 +170,7 @@
 }
 
 .roiWarning p {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   color: var(--text-secondary);
   line-height: 1.6;
 }
@@ -279,10 +286,9 @@
 }
 
 .statLabel {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.5px;
   font-weight: 500;
   opacity: 0.8;
 }
@@ -296,7 +302,7 @@
 }
 
 .flowLabel {
-  font-size: 0.65rem;
+  font-size: 0.58rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -402,8 +408,19 @@
   .statItem {
     align-items: center;
   }
-  .subtitle, .painText, .roiWarning p, .solutionText {
-    font-size: 1.15rem;
+  .statValue {
+    font-size: 1.5rem;
+  }
+  .statLabel {
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+  .subtitle, .painText, .solutionText {
+    font-size: 1rem;
     text-align: center;
+  }
+
+  .roiWarning p {
+    font-size: 1rem;
   }
 }

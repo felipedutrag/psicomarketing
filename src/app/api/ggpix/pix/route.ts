@@ -13,8 +13,8 @@ export async function POST(req: Request) {
     const externalId = crypto.randomUUID();
 
     // Calculate total in cents
-    // Default to R$ 29.00 if not provided
-    let total = 29.00;
+    // Default to R$ 99.00 if not provided
+    let total = 99.00;
     
     if (body.products) {
          total = body.products.reduce((acc: number, item: any) => acc + (item.price * item.qty), 0);

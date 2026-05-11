@@ -8,7 +8,7 @@ const PAINS = [
       </svg>
     ),
     title: "Demora na Resposta",
-    text: "Sua atenção está no paciente, mas o celular não para. Sem resposta rápida, o próximo contato já agendou com outro profissional.",
+    text: "Sua atenção está no paciente, mas o celular não para. Sem resposta rápida, o próximo contato já agendou com outro colega.",
   },
   {
     icon: (
@@ -17,7 +17,7 @@ const PAINS = [
       </svg>
     ),
     title: "Triagem de Curiosos",
-    text: "Horas gastas respondendo as mesmas dúvidas para contatos que somem no momento em que você envia o valor.",
+    text: "Horas preciosas desperdiçadas respondendo as mesmas dúvidas para contatos curiosos que somem no momento de fechar o valor.",
   },
   {
     icon: (
@@ -26,7 +26,7 @@ const PAINS = [
       </svg>
     ),
     title: "Agenda Desorganizada",
-    text: "Reagendamentos por WhatsApp, mensagens perdidas e energia vital desperdiçada.",
+    text: "Gerenciar reagendamentos, lidar com mensagens perdidas e desperdiçar sua energia vital com processos manuais e ineficientes.",
   },
 ];
 
@@ -114,16 +114,15 @@ export default function CopySection() {
         <div className={styles.solutionCard}>
           <div className={styles.solutionLeft}>
             <h3 className={styles.solutionTitle}>
-              IA Humanizada,{" "}
-              <span className={styles.highlight}>trabalhando 24h por você</span>
+              Sua secretária que <span className={styles.highlight}>não dorme e não tira férias</span> ⚡
             </h3>
             <p className={styles.subtitle}>
-              Transformamos seu WhatsApp numa máquina de triagem e agendamento. A IA tem a sua personalidade: acolhe, responde dúvidas, filtra "curiosos" e insere o paciente diretamente na sua agenda.
+              Sua IA tira dúvidas e filtra pacientes reais 24h por dia, inserindo os agendamentos diretamente na sua agenda.
             </p>
 
             <div className={styles.stats}>
               <div className={styles.statItem}>
-                <span className={styles.statNumber}>&lt;1min</span>
+                <span className={styles.statNumber}>&lt; 1min</span>
                 <span className={styles.statLabel}>Tempo de Resposta</span>
               </div>
               <div className={styles.statItem}>

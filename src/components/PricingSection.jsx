@@ -22,8 +22,8 @@ export default function PricingSection() {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </div>
                 <div>
-                  <strong>Setup Completo</strong>
-                  <p>Configuramos toda a IA com a sua personalidade e horários da sua clínica.</p>
+                  <strong>Setup e Assessoria Estratégica</strong>
+                  <p>Orientamos a melhor forma de personalizar sua IA de acordo com seu fluxo.</p>
                 </div>
               </div>
               <div className={styles.point}>
@@ -31,8 +31,8 @@ export default function PricingSection() {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 </div>
                 <div>
-                  <strong>ROI Imediato</strong>
-                  <p>Um único paciente novo agendado já paga meses da ferramenta.</p>
+                  <strong>Alto Retorno (ROI)</strong>
+                  <p>Aqui, um único paciente novo agendado já paga meses da ferramenta, garantindo retorno de seu investimento.</p>
                 </div>
               </div>
               <div className={styles.point}>
@@ -40,8 +40,8 @@ export default function PricingSection() {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </div>
                 <div>
-                  <strong>Plano de Ativação</strong>
-                  <p>Sua primeira sessão de ajuste e ativação está inclusa no valor mensal.</p>
+                  <strong>Personalização Completa</strong>
+                  <p>Sua IA personalizada do jeito que você desejar, com sua abordagem clínica e integração total com sua agenda.</p>
                 </div>
               </div>
             </div>

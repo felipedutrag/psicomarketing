@@ -45,11 +45,12 @@
 }
 
 .ctaSubtitle {
-  font-size: 1rem;
-  color: #666;
-  max-width: 500px;
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  max-width: 600px;
   margin: 0 auto 2rem;
-  line-height: 1.5;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
 }
 
 .footerBottom {
@@ -121,5 +122,9 @@
   
   .ctaTitle {
     font-size: 1.8rem;
+  }
+  .ctaSubtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
   }
 }

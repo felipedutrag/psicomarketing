@@ -8,7 +8,7 @@ export default function WhatsappAutomation() {
         <div className={styles.content}>
           <div className={styles.badge}>Nosso Carro-Chefe</div>
           <h2 className={styles.title}>
-            Atendimento que <span className={styles.highlight}>converte</span> enquanto você atende
+            Sua IA atende, <span className={styles.highlight}>tria e agenda</span> por você
           </h2>
           <p className={styles.description}>
             Psicólogos perdem até 40% dos contatos porque demoram a responder enquanto estão em sessão. Implementamos uma secretária digital inteligente no seu WhatsApp.

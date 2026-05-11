@@ -43,8 +43,8 @@ export default function BookingCalendar({ onSelect }) {
 
   return (
     <div className={styles.calendarContainer}>
-      <h3 className={styles.title}>Escolha seu horário de ativação</h3>
-      <p className={styles.subtitle}>Selecione uma data para sua primeira sessão de configuração da IA.</p>
+      <h3 className={styles.title}>Agende a instalação de sua IA</h3>
+      <p className={styles.subtitle}>Selecione uma data para sua Sessão Estratégica e Ativação da sua IA</p>
 
       {loadingSlots ? (
         <div className={styles.loadingContainer}>
@@ -93,7 +93,7 @@ export default function BookingCalendar({ onSelect }) {
           
           <div className={styles.pricingSummary}>
             <div className={styles.priceInfo}>
-              <span className={styles.priceLabel}>Valor da Ativação</span>
+              <span className={styles.priceLabel}>Investimento Mensal <br /> <small>(Cancele quando quiser)</small></span>
               <div className={styles.priceValue}>
                 <span className={styles.currency}>R$</span>
                 <span className={styles.amount}>99</span>

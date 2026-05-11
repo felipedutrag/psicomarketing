@@ -141,7 +141,7 @@ export async function POST(request) {
     
     try {
       const externalId = crypto.randomUUID();
-      const amountCents = 2900; // R$ 29,00
+      const amountCents = 9900; // R$ 99,00
       
       const ggRes = await fetch('https://ggpixapi.com/api/v1/pix/in', {
         method: 'POST',
@@ -164,7 +164,7 @@ export async function POST(request) {
       const ggData = await ggRes.json();
       if (ggRes.ok) {
         pixInfo = ggData;
-        descriptionText = `⚠️ PAGAMENTO PENDENTE (R$ 29,00)\n\nPara confirmar sua sessão, realize o pagamento via PIX abaixo:\n\n${pixInfo.pixCopyPaste}\n\nApós o pagamento, sua reserva será validada automaticamente em nosso sistema.`;
+        descriptionText = `⚠️ PAGAMENTO PENDENTE (R$ 99,00)\n\nPara confirmar sua sessão, realize o pagamento via PIX abaixo:\n\n${pixInfo.pixCopyPaste}\n\nApós o pagamento, sua reserva será validada automaticamente em nosso sistema.`;
       }
     } catch (pixErr) {
       console.error('[pix/booking] Erro ao gerar PIX:', pixErr.message);

@@ -8,22 +8,14 @@ export default function FooterCTA() {
         
         <div className={styles.ctaWrapper}>
           <h2 className={styles.ctaTitle}>Automatize seu crescimento</h2>
-          <p className={styles.ctaSubtitle}>Recupere seu tempo e multiplique seus pacientes com IA.</p>
-          <a href="https://wa.me/5511999999999" className="btn-primary">Falar com um Especialista</a>
+          <p className={styles.ctaSubtitle}>Pare de perder pacientes por falta de tempo. Domine sua agenda e escale sua clínica com inteligência artificial.</p>
+          <a href="#preco" className="btn-primary">Agendar Assessoria</a>
         </div>
 
         <div className={styles.footerBottom}>
           <div className={styles.brand}>
             <Logo />
-            <p>Inteligência artificial para clínicas e profissionais de elite.</p>
           </div>
-          
-          <nav className={styles.nav}>
-            <a href="#">Início</a>
-            <a href="#automacao">Automação</a>
-            <a href="#servicos">Serviços</a>
-            <a href="mailto:contato@numbly.com.br">Contato</a>
-          </nav>
           
           <div className={styles.copyright}>
             <p>&copy; {new Date().getFullYear()} Numbly. Todos os direitos reservados.</p>

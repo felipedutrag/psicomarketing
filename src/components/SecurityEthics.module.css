@@ -36,8 +36,12 @@
 }
 
 .highlight {
-  color: var(--accent-primary);
-  text-shadow: 0 0 30px rgba(197, 160, 89, 0.3);
+  background: linear-gradient(135deg, #c5a059 0%, #f1d39b 50%, #c5a059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  font-weight: 800;
 }
 
 .description {

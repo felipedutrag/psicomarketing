@@ -37,13 +37,16 @@
 }
 
 .highlight {
-  color: var(--accent-primary);
+  background: linear-gradient(135deg, #c5a059 0%, #f1d39b 50%, #c5a059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
   font-weight: 800;
-  text-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
 }
 
 .subtitle {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 2.5rem;
@@ -83,7 +86,7 @@
 .features span {
   color: var(--text-secondary);
   line-height: 1.5;
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 .features strong {
@@ -547,6 +550,10 @@
   .subtitle {
     font-size: 1rem;
     text-align: center;
+  }
+
+  .features span {
+    font-size: 1rem;
   }
   
   .visual {

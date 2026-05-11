@@ -29,7 +29,7 @@
 }
 
 .subtitle {
-  font-size: 0.9rem;
+  font-size: 1.15rem;
   color: var(--text-secondary);
   text-align: center;
   margin-bottom: 2.5rem;
@@ -168,9 +168,16 @@
 }
 
 .priceLabel {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 0.85rem;
+  color: #888;
   font-weight: 500;
+  line-height: 1.2;
+}
+
+.priceLabel small {
+  font-size: 0.7rem;
+  color: #666;
+  font-weight: 400;
 }
 
 .priceValue {
@@ -207,6 +214,10 @@
 @media (max-width: 600px) {
   .calendarContainer {
     padding: 2rem 1.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
   }
   
   .slotsGrid {

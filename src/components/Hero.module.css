@@ -103,7 +103,7 @@
   border: 1px solid rgba(197, 160, 89, 0.2);
   color: var(--accent-primary);
   border-radius: 999px;
-  font-size: 0.65rem;
+  font-size: 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.2px;
@@ -123,7 +123,7 @@
 }
 
 .title {
-  font-size: 3.9rem;
+  font-size: 3.4rem;
   line-height: 1.1;
   margin-bottom: 1.5rem;
   color: var(--text-primary);
@@ -132,9 +132,12 @@
 }
 
 .highlight {
-  color: var(--accent-primary);
+  background: linear-gradient(135deg, #c5a059 0%, #f1d39b 50%, #c5a059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
   font-weight: 800;
-  text-shadow: 0 0 25px rgba(197, 160, 89, 0.5);
 }
 
 .subtitle {
@@ -186,7 +189,7 @@
   }
 
   .subtitle {
-    font-size: 1.15rem;
+    font-size: 1rem;
     margin-left: auto;
     margin-right: auto;
   }
@@ -198,7 +201,7 @@
 
 @media (max-width: 768px) {
   .badge {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     padding: 8px 18px;
     margin-bottom: 1.5rem;
   }
@@ -206,7 +209,7 @@
     font-size: 2.4rem;
   }
   .subtitle {
-    font-size: 1.15rem;
+    font-size: 1rem;
   }
 }
 

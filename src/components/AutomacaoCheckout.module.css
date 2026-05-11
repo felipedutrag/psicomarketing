@@ -197,18 +197,20 @@
   letter-spacing: -0.02em;
 }
 
-.subtitle {
-  font-size: 0.9rem;
+.pixContent .subtitle {
+  font-size: 0.95rem !important;
   color: #888;
   max-width: 420px;
   line-height: 1.4;
   margin-bottom: 8px;
+  text-align: center;
 }
 
 .timerNotice {
   font-size: 0.85rem;
   color: #555;
   font-weight: 500;
+  margin-top: 10px;
 }
 
 .expiredContent {
@@ -484,8 +486,11 @@
 }
 
 .highlight {
-  color: var(--accent-primary);
-  text-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+  background: linear-gradient(135deg, #c5a059 0%, #f1d39b 50%, #c5a059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
 
 .subtitle {

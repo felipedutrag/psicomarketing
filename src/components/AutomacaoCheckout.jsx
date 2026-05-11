@@ -298,8 +298,8 @@ export default function AutomacaoCheckout() {
             </div>
             <div className={styles.summaryTotal}><span>Total</span><span className={styles.totalAmount}>R$ 99,00</span></div>
             <div className={styles.activationPlan}>
-              <h4>Plano de Ativação</h4>
-              <p className={styles.subtitle}>Sua primeira sessão de ajuste e ativação está inclusa no valor mensal. <strong>Cancele quando quiser.</strong></p>
+              <h4>Personalização Completa</h4>
+              <p className={styles.subtitle}>Sua IA personalizada do jeito que você desejar, com sua abordagem clínica e integração total com sua agenda. <strong>Cancele quando quiser.</strong></p>
             </div>
             <ul className={styles.summaryBenefits}>
               <li>✦ IA de Atendimento 24/7</li>
