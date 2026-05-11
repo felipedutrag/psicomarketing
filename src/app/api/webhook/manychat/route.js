@@ -26,7 +26,7 @@ export async function POST(request) {
       - **Emojis:** Não se limite a apenas um, mas use com classe. Varie entre (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷). Mostre personalidade.
     `;
 
-    const geminiApiKey = process.env.GEMINI_API_KEY;
+    const groqApiKey = process.env.GROQ_API_KEY;
 
     let contents = [];
     if (historyString) {
@@ -39,11 +39,24 @@ export async function POST(request) {
       }
     }
 
-    // Adiciona a mensagem atual se o histórico estiver vazio ou for o início
+    // Adiciona a mensagem atual
     contents.push({ role: "user", parts: [{ text: userMessage }] });
 
+    // Transformar histórico de Gemini (parts) para Groq (content) de forma segura
+    let groqMessages = contents.map(msg => {
+      // Extrai o texto da primeira parte, se existir
+      const textContent = msg.parts?.[0]?.text || "";
+      return {
+        role: msg.role === "model" ? "assistant" : "user",
+        content: textContent
+      };
+    }).filter(m => m.content.trim() !== ""); // Remove mensagens vazias que podem quebrar a API
+
+    // Inserir System Instruction no topo para Groq
+    groqMessages.unshift({ role: "system", content: systemInstruction });
+
     console.log(`[Vesper] Recebido de ${userName}: "${userMessage}"`);
-    console.log(`[Vesper] Tamanho do histórico: ${contents.length} mensagens`);
+    console.log(`[Vesper] Tamanho do histórico: ${groqMessages.length - 1} mensagens`);
 
     if (!userMessage) {
       console.warn("[Vesper] Mensagem vazia recebida");
@@ -52,48 +65,54 @@ export async function POST(request) {
 
     let aiReply = "";
 
-    // USANDO GEMINI COMO PRINCIPAL (Já que a chave está no .env)
     try {
-      if (!geminiApiKey) throw new Error("Chave Gemini não encontrada");
+      if (!groqApiKey) throw new Error("Chave GROQ_API_KEY não encontrada");
 
       const startTime = Date.now();
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${geminiApiKey}`, {
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${groqApiKey}`
+        },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemInstruction }] },
-          contents: contents,
-          generationConfig: {
-            temperature: 0.8,
-            maxOutputTokens: 800,
-          }
+          model: "llama-3.1-70b-versatile",
+          messages: groqMessages,
+          temperature: 0.7,
+          max_tokens: 1024,
         })
       });
 
       const endTime = Date.now();
-      console.log(`[Vesper] Gemini Status: ${response.status} (${endTime - startTime}ms)`);
+      console.log(`[Vesper] Groq Status: ${response.status} (${endTime - startTime}ms)`);
 
       const data = await response.json();
       
-      if (data.candidates && data.candidates[0]) {
-        aiReply = data.candidates[0].content.parts[0].text;
+      if (data.choices && data.choices[0]) {
+        aiReply = data.choices[0].message.content;
       } else {
-        console.error("[Vesper] Erro na resposta do Gemini:", JSON.stringify(data, null, 2));
+        console.error("[Vesper] Erro na resposta da Groq:", JSON.stringify(data, null, 2));
         if (response.status === 429) {
-          console.error("[Vesper] ALERTA: Limite de cota (Quota) atingido na Gemini API!");
+          console.error("[Vesper] ALERTA: Limite de cota (Rate Limit) atingido na Groq API!");
         }
-        throw new Error(`Resposta inválida do Gemini: ${response.status}`);
+        throw new Error(`Resposta inválida da Groq: ${response.status}`);
       }
 
     } catch (err) {
-      console.error("[Vesper] Erro na IA:", err.message);
+      console.error("[Vesper] Erro na IA (Groq):", err.message);
       aiReply = `Eu estava refletindo sobre como a eficiência é rara hoje em dia, ${userName}. Mas diga-me, o que exatamente você busca mudar no seu atendimento agora? 🌑`;
     }
 
     // Limpeza e Formatação
-    contents.push({ role: "model", parts: [{ text: aiReply }] });
+    // Convertemos de volta para o formato que o código original esperava para o histórico (Gemini style)
+    const finalHistory = groqMessages.slice(1).map(m => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: m.content }]
+    }));
+    finalHistory.push({ role: "model", parts: [{ text: aiReply }] });
+
     const formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*');
-    const historyBase64 = Buffer.from(JSON.stringify(contents)).toString('base64');
+    const historyBase64 = Buffer.from(JSON.stringify(finalHistory)).toString('base64');
     
     console.log(`[Vesper] Resposta Final enviada: "${formattedReply.substring(0, 50)}..."`);
     
