@@ -12,10 +12,10 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: "Numbly | Automação e Marketing Premium para Psicólogos",
+  title: "Psicomarketing | Inteligência Artificial e Alta Performance para Psicólogos",
   description: "Aumente sua conversão e lote sua agenda com IA Humanizada no WhatsApp. Sites luxuosos e tráfego estratégico para psicólogos de elite.",
   icons: {
-    icon: "/favicon.png",
+    icon: "/icon.svg",
   },
 };
 

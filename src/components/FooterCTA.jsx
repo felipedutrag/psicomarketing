@@ -18,7 +18,7 @@ export default function FooterCTA() {
           </div>
           
           <div className={styles.copyright}>
-            <p>&copy; {new Date().getFullYear()} Numbly. Todos os direitos reservados.</p>
+            <p>&copy; {new Date().getFullYear()} Psicomarketing. Todos os direitos reservados.</p>
           </div>
         </div>
       </div>

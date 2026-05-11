@@ -28,7 +28,7 @@ export default function Logo({ centered = false }) {
           </defs>
         </svg>
       </div>
-      <span className={styles.brandName}>Num<span className={styles.highlight}>bly</span></span>
+      <span className={styles.brandName}>Psico<span className={styles.highlight}>marketing</span></span>
     </div>
   );
 }
