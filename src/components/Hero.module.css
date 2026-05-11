@@ -72,9 +72,9 @@
 .heroWrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  text-align: center;
+  text-align: left;
   gap: 2rem;
   position: relative;
   z-index: 3;
@@ -145,14 +145,14 @@
   max-width: 600px;
   font-weight: 400;
   letter-spacing: -0.01em;
-  margin-left: auto;
+  margin-left: 0;
   margin-right: auto;
 }
 
 .actions {
   display: flex;
   gap: 1.2rem;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 @keyframes fadeInRight {
@@ -177,8 +177,8 @@
   .content, .agendaWrapper {
     flex: 1;
     width: 100%;
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: flex-start;
   }
 
   .title {

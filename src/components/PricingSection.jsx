@@ -10,7 +10,7 @@ export default function PricingSection() {
           <div className={styles.content}>
             <div className={styles.badge}>Investimento Estratégico</div>
             <h2 className={styles.title}>
-              Quanto vale o seu <span className={styles.highlight}>tempo hoje?</span>
+              Quanto vale seu <span className={styles.highlight}>tempo?</span>
             </h2>
             <p className={styles.description}>
               Nossa automação não é um custo, é uma secretária de alta performance que trabalha 24h por dia, sem férias ou encargos.

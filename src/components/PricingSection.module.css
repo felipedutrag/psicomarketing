@@ -50,6 +50,8 @@
   margin-bottom: 3rem;
 }
 
+
+
 .valuePoints {
   display: flex;
   flex-direction: column;
@@ -206,10 +208,10 @@
   }
   
   .content {
-    text-align: center;
+    text-align: left;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
   
   .title {
