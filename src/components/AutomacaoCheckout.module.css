@@ -1,4 +1,16 @@
 /* ===== CHECKOUT LAYOUT ===== */
+.section {
+  padding: 140px 0;
+  position: relative;
+  background-color: var(--bg-secondary);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 80px;
+  margin-top: 40px;
+}
+
 .checkoutWrapper {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -437,10 +449,6 @@
 }
 
 /* ===== HEADER ===== */
-.header {
-  text-align: center;
-  margin-bottom: 80px;
-}
 
 .badge {
   display: inline-flex;
