@@ -8,7 +8,7 @@ export default function FooterCTA() {
         
         <div className={styles.ctaWrapper}>
           <h2 className={styles.ctaTitle}>Automatize seu crescimento</h2>
-          <p className={styles.ctaSubtitle}>Pare de perder pacientes por falta de tempo. Domine sua agenda e escale sua clínica com inteligência artificial.</p>
+          <p className={styles.ctaSubtitle}>Domine sua agenda e escale sua clínica com inteligência artificial.</p>
           <a href="#preco" className="btn-primary">Agendar Assessoria</a>
         </div>
 

@@ -4,7 +4,7 @@ export default function SecurityEthics() {
   const points = [
     {
       title: "Não Substitui o Terapeuta",
-      text: "A IA é uma ferramenta administrativa. Ela não realiza sessões, não oferece aconselhamento e não interfere no processo clínico."
+      text: "A IA é uma ferramenta. Ela não realiza sessões, não oferece aconselhamento e não interfere no processo clínico."
     },
     {
       title: "Sem Diagnósticos",
@@ -12,7 +12,7 @@ export default function SecurityEthics() {
     },
     {
       title: "Ética e LGPD",
-      text: "Todos os dados são tratados com sigilo absoluto, respeitando as normas do CRP e as diretrizes da Lei Geral de Proteção de Dados."
+      text: "Todos os dados são tratados com sigilo, respeitando as normas do CRP e as diretrizes da Lei Geral de Proteção de Dados.",
     },
     {
       title: "Controle Total",

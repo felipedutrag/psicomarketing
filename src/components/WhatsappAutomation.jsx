@@ -27,7 +27,7 @@ export default function WhatsappAutomation() {
                 </svg>
               </div>
               <div>
-                <strong>Respostas Imediatas e Humanizadas</strong>
+                <strong>Respostas Imediatas</strong>
                 <p>Saudação acolhedora, explicação de valores e triagem automática.</p>
               </div>
             </li>

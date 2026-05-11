@@ -6,14 +6,23 @@ export default function Logo({ centered = false }) {
   return (
     <div className={`${styles.logoWrapper} ${centered ? styles.centered : ""}`} onClick={() => window.location.href = '/'}>
       <div className={styles.logoIcon}>
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 5V35" stroke="url(#paint0_linear)" strokeWidth="3" strokeLinecap="round"/>
-          <path d="M10 15C10 15 10 28 20 28C30 28 30 15 30 15" stroke="url(#paint0_linear)" strokeWidth="3" strokeLinecap="round"/>
-          <circle cx="20" cy="5" r="3" fill="var(--accent-primary)"/>
-          <path d="M35 10L32 13M35 10L38 7M35 10L38 13M35 10L32 7" stroke="var(--accent-primary)" strokeWidth="1.5" strokeLinecap="round"/>
+        <svg width="44" height="44" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Architectural Frame */}
+          <path d="M20 2L35 11V29L20 38L5 29V11L20 2Z" stroke="url(#gold_grad)" strokeWidth="1" strokeLinejoin="round" opacity="0.5"/>
+          
+          {/* Minimalist Psi */}
+          <path d="M20 12V30" stroke="url(#gold_grad)" strokeWidth="1.5" strokeLinecap="round"/>
+          <path d="M14 18C14 18 14 26 20 26C26 26 26 18 26 18" stroke="url(#gold_grad)" strokeWidth="1.5" strokeLinecap="round"/>
+          
+          {/* Top Diamond Point */}
+          <path d="M20 2L24 6L20 10L16 6L20 2Z" fill="url(#gold_grad)">
+            <animate attributeName="opacity" values="0.4;1;0.4" dur="4s" repeatCount="indefinite" />
+          </path>
+
           <defs>
-            <linearGradient id="paint0_linear" x1="20" y1="5" x2="20" y2="35" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#C5A059"/>
+            <linearGradient id="gold_grad" x1="5" y1="2" x2="35" y2="38" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#F1D39B"/>
+              <stop offset="0.5" stopColor="#C5A059"/>
               <stop offset="1" stopColor="#8A6E35"/>
             </linearGradient>
           </defs>

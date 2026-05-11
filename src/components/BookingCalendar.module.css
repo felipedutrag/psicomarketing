@@ -1,6 +1,6 @@
 .calendarContainer {
   width: 100%;
-  max-width: 500px;
+  max-width: 100%;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(197, 160, 89, 0.2);
   border-radius: 40px;
@@ -227,5 +227,10 @@
 
   .slotsGrid::-webkit-scrollbar {
     display: none;
+  }
+
+  .emptySlots {
+    grid-column: span 2;
+    padding: 30px 0;
   }
 }

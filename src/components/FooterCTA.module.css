@@ -45,9 +45,9 @@
 }
 
 .ctaSubtitle {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 100%;
   margin: 0 auto 2rem;
   line-height: 1.7;
   letter-spacing: -0.01em;
@@ -133,7 +133,7 @@
     font-size: 1.8rem;
   }
   .ctaSubtitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     margin-bottom: 1.8rem;
   }
 }
