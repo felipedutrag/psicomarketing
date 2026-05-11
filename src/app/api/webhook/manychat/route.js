@@ -95,19 +95,20 @@ export async function POST(request) {
       aiReply = `Eu estava refletindo sobre como a eficiência é rara hoje em dia, ${userName}. Mas diga-me, o que exatamente você busca mudar no seu atendimento agora? 🌑`;
     }
 
-    // Limpeza e Formatação
+    // Limpeza e Formatação para WhatsApp
     contents.push({ role: "model", parts: [{ text: aiReply }] });
     
-    // 1. Converte negrito markdown para itálico (estilo Vesper)
-    // 2. Remove links em formato markdown [texto](link) e deixa apenas o link
     let formattedReply = aiReply
-      .replace(/\*\*(.*?)\*\*/g, '*$1*')
-      .replace(/\[.*?\]\((https?:\/\/.*?)\)/g, '$1');
+      .replace(/\*\*(.*?)\*\*/g, '*$1*') // Garante negrito padrão WhatsApp
+      .replace(/\[.*?\]\((https?:\/\/.*?)\)/g, '$1') // Remove links markdown
+      .replace(/\r?\n|\r/g, ' ') // Transforma quebras de linha em espaços para evitar erros de parse no ManyChat/WhatsApp
+      .replace(/\s{2,}/g, ' ') // Remove espaços múltiplos
+      .trim();
 
     // Mantém as últimas 6 mensagens no histórico final para o próximo turno
     const historyBase64 = Buffer.from(JSON.stringify(contents.slice(-6))).toString('base64');
 
-    console.log(`[Vesper] Resposta Final (Tamanho: ${formattedReply.length} chars): "${formattedReply.substring(0, 50)}..."`);
+    console.log(`[Vesper] Resposta Sanitizada (Tamanho: ${formattedReply.length}): "${formattedReply.substring(0, 100)}..."`);
 
     return NextResponse.json({
       resposta: formattedReply,
