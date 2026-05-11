@@ -14,10 +14,10 @@ export default function Home() {
       <Header />
       <Hero />
       <CopySection />
+      <WhatsappAutomation />
       <WebsiteService />
       <Portfolio />
       <GoogleAdsService />
-      <WhatsappAutomation />
       <Schedule />
       <FooterCTA />
     </main>

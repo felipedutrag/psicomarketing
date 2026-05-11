@@ -393,7 +393,13 @@ async function checkCalAvailability(dateFrom, dateTo) {
 
 async function bookCalAppointment(name, email, startTime) {
   const apiKey = process.env.CAL_API_KEY;
-  if (!apiKey) return { error: "CAL_API_KEY não configurada" };
+  if (!apiKey) {
+    console.error("CAL_API_KEY não configurada no .env");
+    return { error: "CAL_API_KEY não configurada" };
+  }
+  
+  console.log(`Iniciando agendamento para ${name} (${email}) em ${startTime}`);
+  
   try {
     const response = await fetch('https://api.cal.com/v2/bookings', {
       method: 'POST',
@@ -404,15 +410,26 @@ async function bookCalAppointment(name, email, startTime) {
       body: JSON.stringify({
         start: startTime,
         eventTypeId: 4565935,
-        attendee: {
+        responses: {
           name: name,
-          email: email,
-          timeZone: "America/Sao_Paulo"
-        }
+          email: email
+        },
+        timeZone: "America/Sao_Paulo",
+        language: "pt",
+        metadata: {}
       })
     });
-    return await response.json();
+    
+    const data = await response.json();
+    console.log("Resposta do Cal.com Bookings:", JSON.stringify(data));
+    
+    if (!response.ok) {
+      return { error: data.message || "Erro no agendamento", details: data };
+    }
+    
+    return data;
   } catch (e) {
+    console.error("Erro fatal ao agendar no Cal.com:", e.message);
     return { error: e.message };
   }
 }

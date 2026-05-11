@@ -6,7 +6,7 @@ export default function WhatsappAutomation() {
       <div className={`container ${styles.container}`}>
         
         <div className={styles.content}>
-          <div className={styles.badge}>Serviço 03</div>
+          <div className={styles.badge}>Nosso Carro-Chefe</div>
           <h2 className={styles.title}>
             Atendimento que <span className={styles.highlight}>converte</span> enquanto você atende
           </h2>

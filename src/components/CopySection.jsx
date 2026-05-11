@@ -8,41 +8,41 @@ export default function CopySection() {
           
           <div className={styles.painPoints}>
             <h2 className={styles.title}>
-              A psicologia moderna exige mais que apenas <span className={styles.highlight}>indicações</span>.
+              O paciente de hoje <span className={styles.highlight}>não tem paciência</span> para esperar.
             </h2>
             <ul className={styles.list}>
               <li className={styles.listItem}>
                 <div className={styles.icon}>✕</div>
-                <p><strong>Cansado de depender de planos de saúde?</strong> Sessões mal remuneradas que esgotam sua energia e limitam seu faturamento.</p>
+                <p><strong>Demora na resposta:</strong> Você está em sessão e leva horas para responder. O paciente procura o próximo da lista do Google.</p>
               </li>
               <li className={styles.listItem}>
                 <div className={styles.icon}>✕</div>
-                <p><strong>Agenda instável?</strong> Semanas lotadas seguidas de buracos enormes e imprevisibilidade financeira.</p>
+                <p><strong>Alergia a "preço por direct":</strong> Passar o dia inteiro respondendo a mesma coisa, apenas para o contato sumir ao saber o valor da consulta.</p>
               </li>
               <li className={styles.listItem}>
                 <div className={styles.icon}>✕</div>
-                <p><strong>Medo de ferir a ética do CRP?</strong> Dificuldade em fazer marketing sem parecer "vendedor" ou antiético.</p>
+                <p><strong>Desorganização:</strong> Tentativas falhas de alinhar agendas, mensagens perdidas e reagendamentos que tomam sua energia vital.</p>
               </li>
             </ul>
           </div>
 
           <div className={styles.solution}>
             <div className={styles.card}>
-              <h3 className={styles.cardTitle}>A Solução: Captação Ativa & Ética</h3>
+              <h3 className={styles.cardTitle}>A Solução: IA Humanizada no WhatsApp</h3>
               <p className={styles.cardText}>
-                Nossa metodologia é baseada em <strong>posicionamento de autoridade</strong>. Não fazemos dancinhas ou promessas milagrosas.
+                Nós transformamos seu WhatsApp em uma <strong>máquina de triagem e agendamento</strong>, trabalhando por você 24 horas por dia.
               </p>
               <p className={styles.cardText}>
-                Construímos um funil de captação onde <strong>o paciente ideal encontra você</strong> no exato momento em que busca ajuda profissional.
+                A Inteligência Artificial tem a sua personalidade: acolhe, responde dúvidas, filtra "curiosos" e já insere o paciente na sua agenda.
               </p>
               <div className={styles.stats}>
                 <div className={styles.statItem}>
-                  <span className={styles.statNumber}>100%</span>
-                  <span className={styles.statLabel}>Alinhado ao CRP</span>
+                  <span className={styles.statNumber}>1 min</span>
+                  <span className={styles.statLabel}>Tempo de Resposta</span>
                 </div>
                 <div className={styles.statItem}>
-                  <span className={styles.statNumber}>+300%</span>
-                  <span className={styles.statLabel}>Valor Percebido</span>
+                  <span className={styles.statNumber}>-80%</span>
+                  <span className={styles.statLabel}>Tempo Gasto no Celular</span>
                 </div>
               </div>
             </div>
