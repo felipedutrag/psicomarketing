@@ -23,7 +23,7 @@ export async function POST(request) {
 
       [TONALIDADE & EMOJIS]
       - Humor seco. Elegância. Autoridade.
-      - **Emojis:** Não se limite a apenas um, mas use com classe. Varie entre (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷). Mostre personalidade.
+      - **Emojis:** Não se limite a apenas um, mas use com classe. Varie envtre (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷). Mostre personalidade.
     `;
 
     const geminiApiKey = process.env.GEMINI_API_KEY;
@@ -34,8 +34,8 @@ export async function POST(request) {
         const decoded = Buffer.from(historyString, 'base64').toString('utf-8');
         contents = JSON.parse(decoded);
         if (contents.length > 8) contents = contents.slice(-8);
-      } catch (e) { 
-        contents = []; 
+      } catch (e) {
+        contents = [];
       }
     }
 
@@ -74,7 +74,7 @@ export async function POST(request) {
       console.log(`[Vesper] Gemini 2.5 Status: ${response.status} (${endTime - startTime}ms)`);
 
       const data = await response.json();
-      
+
       if (data.candidates && data.candidates[0]) {
         aiReply = data.candidates[0].content.parts[0].text;
       } else {
@@ -95,12 +95,12 @@ export async function POST(request) {
     contents.push({ role: "model", parts: [{ text: aiReply }] });
     const formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*');
     const historyBase64 = Buffer.from(JSON.stringify(contents.slice(-10))).toString('base64');
-    
+
     console.log(`[Vesper] Resposta Final enviada: "${formattedReply.substring(0, 50)}..."`);
-    
-    return NextResponse.json({ 
-      resposta: formattedReply, 
-      historico: historyBase64 
+
+    return NextResponse.json({
+      resposta: formattedReply,
+      historico: historyBase64
     });
 
   } catch (error) {
