@@ -76,7 +76,7 @@ export async function POST(request) {
           'Authorization': `Bearer ${groqApiKey}`
         },
         body: JSON.stringify({
-          model: "llama-3.1-70b-versatile",
+          model: "llama-3.3-70b-versatile",
           messages: groqMessages,
           temperature: 0.7,
           max_tokens: 1024,
@@ -91,11 +91,12 @@ export async function POST(request) {
       if (data.choices && data.choices[0]) {
         aiReply = data.choices[0].message.content;
       } else {
-        console.error("[Vesper] Erro na resposta da Groq:", JSON.stringify(data, null, 2));
+        const errorDetail = data.error?.message || JSON.stringify(data);
+        console.error("[Vesper] Erro na resposta da Groq:", errorDetail);
         if (response.status === 429) {
           console.error("[Vesper] ALERTA: Limite de cota (Rate Limit) atingido na Groq API!");
         }
-        throw new Error(`Resposta inválida da Groq: ${response.status}`);
+        throw new Error(`Groq ${response.status}: ${errorDetail}`);
       }
 
     } catch (err) {
