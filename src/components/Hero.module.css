@@ -103,10 +103,10 @@
   border: 1px solid rgba(197, 160, 89, 0.2);
   color: var(--accent-primary);
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   margin-bottom: 2.5rem;
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);

@@ -21,9 +21,6 @@ export default function Hero() {
             <a href="#automacao" className="btn-primary">
               Conhecer a Automação
             </a>
-            <a href="#servicos" className="btn-outline">
-              Nossos Serviços
-            </a>
           </div>
         </div>
       </div>
