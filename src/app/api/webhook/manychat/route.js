@@ -178,33 +178,116 @@ export async function POST(request) {
           { role: "system", content: dynamicSystemInstruction }
         ];
 
+        const groqTools = [
+          {
+            type: "function",
+            function: {
+              name: "get_available_times",
+              description: "Retorna os horários disponíveis na agenda do especialista. Use antes de sugerir horários.",
+              parameters: {
+                type: "object",
+                properties: {
+                  dateFrom: { type: "string", description: "Data inicial (YYYY-MM-DD)" },
+                  dateTo: { type: "string", description: "Data final (YYYY-MM-DD)" }
+                },
+                required: ["dateFrom", "dateTo"]
+              }
+            }
+          },
+          {
+            type: "function",
+            function: {
+              name: "book_appointment",
+              description: "Agenda o horário na agenda. Solicite nome e email antes de chamar.",
+              parameters: {
+                type: "object",
+                properties: {
+                  name: { type: "string", description: "Nome do paciente/psicólogo" },
+                  email: { type: "string", description: "Email do paciente/psicólogo" },
+                  startTime: { type: "string", description: "Horário (ISO 8601 UTC)" }
+                },
+                required: ["name", "email", "startTime"]
+              }
+            }
+          }
+        ];
+
         contents.forEach(msg => {
-          groqMessages.push({
-            role: msg.role === "model" ? "assistant" : "user",
-            content: msg.parts[0].text || ""
-          });
+          if (msg.parts[0].text) {
+            groqMessages.push({
+              role: msg.role === "model" ? "assistant" : "user",
+              content: msg.parts[0].text
+            });
+          }
         });
 
-        const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        const groqPayload = {
+          model: "llama-3.3-70b-versatile",
+          messages: groqMessages,
+          temperature: 0.7,
+          tools: groqTools,
+          tool_choice: "auto"
+        };
+
+        let groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${groqApiKey}`,
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({
-            model: "llama-3.3-70b-versatile", // Modelo atualizado
-            messages: groqMessages,
-            temperature: 0.7,
-            max_tokens: 300
-          })
+          body: JSON.stringify(groqPayload)
         });
 
         if (!groqResponse.ok) {
           throw new Error(`Groq API Error: ${groqResponse.status}`);
         }
 
-        const groqData = await groqResponse.json();
-        aiReply = groqData.choices?.[0]?.message?.content || "Desculpe, não consegui processar.";
+        let groqData = await groqResponse.json();
+        let responseMessage = groqData.choices?.[0]?.message;
+
+        if (responseMessage?.tool_calls) {
+          groqMessages.push(responseMessage);
+          
+          for (const toolCall of responseMessage.tool_calls) {
+            const functionName = toolCall.function.name;
+            const args = JSON.parse(toolCall.function.arguments);
+            
+            let functionResult;
+            if (functionName === 'get_available_times') {
+              functionResult = await checkCalAvailability(args.dateFrom, args.dateTo);
+            } else if (functionName === 'book_appointment') {
+              functionResult = await bookCalAppointment(args.name, args.email, args.startTime);
+            }
+            
+            groqMessages.push({
+              tool_call_id: toolCall.id,
+              role: "tool",
+              name: functionName,
+              content: JSON.stringify(functionResult || { error: "unknown error" })
+            });
+          }
+
+          const secondGroqPayload = { ...groqPayload, messages: groqMessages };
+          delete secondGroqPayload.tools;
+          delete secondGroqPayload.tool_choice;
+
+          groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${groqApiKey}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(secondGroqPayload)
+          });
+          
+          if (!groqResponse.ok) {
+            throw new Error(`Groq 2nd API Error: ${groqResponse.status}`);
+          }
+          groqData = await groqResponse.json();
+          aiReply = groqData.choices?.[0]?.message?.content || "Desculpe, não consegui processar.";
+        } else {
+          aiReply = responseMessage?.content || "Desculpe, não consegui processar.";
+        }
 
       } catch (groqError) {
         console.error("Falha fatal no Fallback Groq:", groqError.message);
