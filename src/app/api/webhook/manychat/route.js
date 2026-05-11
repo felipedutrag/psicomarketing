@@ -173,11 +173,6 @@ export async function POST(request) {
       try {
         if (!groqApiKey) throw new Error("GROQ_API_KEY não configurada.");
 
-        // Traduz o formato de histórico do Gemini para o formato da OpenAI/Groq
-        const groqMessages = [
-          { role: "system", content: dynamicSystemInstruction }
-        ];
-
         const groqTools = [
           {
             type: "function",
@@ -212,6 +207,10 @@ export async function POST(request) {
           }
         ];
 
+        const groqMessages = [
+          { role: "system", content: dynamicSystemInstruction }
+        ];
+
         contents.forEach(msg => {
           if (msg.parts[0].text) {
             groqMessages.push({
@@ -221,28 +220,41 @@ export async function POST(request) {
           }
         });
 
-        const groqPayload = {
-          model: "llama-3.3-70b-versatile",
-          messages: groqMessages,
-          temperature: 0.7,
-          tools: groqTools,
-          tool_choice: "auto"
-        };
+        const models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"];
+        let groqData = null;
+        let selectedModel = null;
 
-        let groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${groqApiKey}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(groqPayload)
-        });
+        for (const model of models) {
+          try {
+            const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${groqApiKey}`,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                model: model,
+                messages: groqMessages,
+                temperature: 0.7,
+                tools: groqTools,
+                tool_choice: "auto"
+              })
+            });
 
-        if (!groqResponse.ok) {
-          throw new Error(`Groq API Error: ${groqResponse.status}`);
+            if (groqResponse.ok) {
+              groqData = await groqResponse.json();
+              selectedModel = model;
+              break;
+            } else {
+              console.warn(`Groq erro no modelo ${model}: ${groqResponse.status}`);
+            }
+          } catch (e) {
+            console.error(`Erro ao chamar Groq ${model}:`, e.message);
+          }
         }
 
-        let groqData = await groqResponse.json();
+        if (!groqData) throw new Error("Todos os modelos do Groq falharam.");
+
         let responseMessage = groqData.choices?.[0]?.message;
 
         if (responseMessage?.tool_calls) {
@@ -267,30 +279,30 @@ export async function POST(request) {
             });
           }
 
-          const secondGroqPayload = { ...groqPayload, messages: groqMessages };
-          delete secondGroqPayload.tools;
-          delete secondGroqPayload.tool_choice;
-
-          groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          const groqResponse2 = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
               "Authorization": `Bearer ${groqApiKey}`,
               "Content-Type": "application/json"
             },
-            body: JSON.stringify(secondGroqPayload)
+            body: JSON.stringify({
+              model: selectedModel,
+              messages: groqMessages,
+              temperature: 0.7
+            })
           });
           
-          if (!groqResponse.ok) {
-            throw new Error(`Groq 2nd API Error: ${groqResponse.status}`);
+          if (!groqResponse2.ok) {
+            throw new Error(`Groq 2nd API Error: ${groqResponse2.status}`);
           }
-          groqData = await groqResponse.json();
-          aiReply = groqData.choices?.[0]?.message?.content || "Desculpe, não consegui processar.";
+          const groqData2 = await groqResponse2.json();
+          aiReply = groqData2.choices?.[0]?.message?.content || "Desculpe, não consegui processar.";
         } else {
           aiReply = responseMessage?.content || "Desculpe, não consegui processar.";
         }
 
       } catch (groqError) {
-        console.error("Falha fatal no Fallback Groq:", groqError.message);
+        console.error("Falha fatal em todos os fallbacks do Groq:", groqError.message);
         aiReply = "Desculpe, nosso sistema está passando por uma instabilidade momentânea. Por favor, aguarde o atendimento humano.";
       }
     }
