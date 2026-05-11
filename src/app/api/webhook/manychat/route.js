@@ -128,7 +128,8 @@ export async function POST(request) {
       });
 
       if (!response.ok) {
-        throw new Error(`Gemini API Error: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`Gemini API Error: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
@@ -137,7 +138,7 @@ export async function POST(request) {
       let candidate = data.candidates?.[0];
       let parts = candidate?.content?.parts || [];
       
-      let aiReply = parts.find(p => p.text)?.text;
+      aiReply = parts.find(p => p.text)?.text;
       const functionCall = parts.find(p => p.functionCall)?.functionCall;
 
       if (functionCall) {
@@ -361,7 +362,7 @@ export async function POST(request) {
     return generateManyChatResponse(formattedReply, historyBase64);
 
   } catch (error) {
-    console.error("Erro geral no Webhook:", error);
+    console.error("Erro geral no Webhook:", error.message, error.stack);
     return generateManyChatResponse("Erro interno.", "");
   }
 }
