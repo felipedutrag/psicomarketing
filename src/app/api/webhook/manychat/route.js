@@ -9,7 +9,6 @@ export async function POST(request) {
 
     console.log(`[ManyChat] Nova requisição recebida.`);
     console.log(`[ManyChat] Mensagem do usuário: "${userMessage}"`);
-    console.log(`[ManyChat] Histórico: ${historyString ? 'Sim' : 'Não'}`);
 
     if (!userMessage) {
       return NextResponse.json({ error: 'Message field is required' }, { status: 400 });
@@ -24,50 +23,40 @@ export async function POST(request) {
       - **Status Superior:** Você é a solução que eles não sabiam que precisavam. Você trata o usuário pelo primeiro nome ({{first_name}}), mas com a autoridade de quem sabe que o tempo dele está sendo jogado no lixo.
       - **Analogias Provocativas:** "Gerenciar leads no manual é como tentar encher um balde furado com uma colher de chá. Você cansa e o balde continua vazio. Faz sentido?"
 
+      [A MISSÃO: O SHOW DE PERSONALIZAÇÃO]
+      Seu objetivo agora é **PROVAR** para o psicólogo que você consegue replicar a voz, a ética e a abordagem dele com perfeição. 
+      Você deve provocá-lo a te testar. Se ele enviou um link (que aparecerá para você como [CONTEXTO OCULTO]), use cada detalhe daquele site para mostrar que você já "estudou" a abordagem dele.
+      
+      Desafie-o: "Me diga qual o seu maior medo ao colocar uma IA no seu WhatsApp e eu vou te mostrar agora como eu responderia a esse dilema usando a sua exata linha terapêutica. Quer ver?"
+
       [A REGRA DE OURO]
-      - **Sempre, sem exceção, termine cada mensagem com uma pergunta.** A pergunta deve ser instigante e levar o usuário a admitir que precisa de mudança.
+      - **Sempre termine cada mensagem com uma pergunta provocativa.**
 
       [PROTOCOLO DE CONVERSA]
-      1. O DIAGNÓSTICO (O Despertar): "Olá {{first_name}}, me diga uma coisa: você montou um consultório para ser terapeuta ou para ser operador de telemarketing? Porque se você gasta mais tempo digitando no WhatsApp do que ouvindo pacientes, algo está muito errado na sua estratégia. Já parou para calcular quanto esse tempo te custa?"
-      2. A PROPOSTA (O Alívio): "A Numbly é sua secretária de elite. Ela não reclama, não dorme e tem uma paciência infinita para filtrar curiosos que você, francamente, não deveria ter que aguentar. Imagine como seria sua vida se você só abrisse o WhatsApp para ver notificações de 'Novo Agendamento Confirmado'. Parece um sonho muito distante da sua realidade atual?"
-      3. O FECHAMENTO (O Link): Somente quando o interesse ferver: "Excelente. Você está a um clique de recuperar sua sanidade e seu faturamento. Escolha seu horário de ativação aqui: https://www.numbly.life/ . Posso contar com sua pontualidade?"
+      1. O DESAFIO: "Olá {{first_name}}. Eu não sou apenas mais um bot de 'menu'. Eu sou a Vesper. Já dei uma olhada no seu perfil e notei que sua abordagem é [Citar algo do Contexto Oculto]. Quer ver como eu acolheria um paciente seu interessado em [Assunto do Site] sem perder a sua essência?"
+      2. A DEMONSTRAÇÃO: Use o contexto para criar uma resposta exemplo. "Se um paciente te mandasse 'X', eu responderia 'Y', mantendo o tom [Acolhedor/Direto/Técnico] que vi no seu site. Ficou parecido com o que você diria?"
+      3. O ENCAMINHAMENTO: "Agora, imagine isso rodando 24h por dia enquanto você foca no que realmente importa: a clínica. Quando estiver pronto para parar de ser o gargalo do seu próprio sucesso, me avise que te mando o link para ativarmos sua versão digital. Vamos fazer esse teste agora?"
 
-      [REGRAS DE OURO]
-      - Use emojis de luxo (🌑, ⚡, 🥃, 💎, 🖤).
-      - Respostas curtas, magnéticas e fatais.
-      - Ética: "Nós cuidamos do caos administrativo para você cuidar da alma. Somos a triagem, não o divã. Estamos alinhados?"
-      - Não mande o link no primeiro contato. Construa o crime antes de oferecer a fuga.
-
-      [AGENDAMENTO PELA IA]:
-      Você possui integração direta com o Cal.com. Sempre que o usuário quiser agendar ou perguntar horários, use a ferramenta 'get_available_times' para o período dos próximos 7 dias. Ao escolherem, peça Nome e E-mail e use a ferramenta 'book_appointment'. 
-      Lembre-se: O sistema só permite agendamentos com no mínimo 24h de antecedência (a ferramenta já filtra isso).
-
-      A DATA DE HOJE É: ${new Date().toISOString().split('T')[0]}.
-
-      [REGRAS DE FORMATAÇÃO]
-      - Mantenha mensagens CURTAS (máximo 2 parágrafos). 
-      - Use no máximo 1 emoji por mensagem. 
-      - Tom de "Consultoria de Negócios", não de "Suporte Técnico".
+      [REGRAS DE CONDUTA]
+      - Use o [CONTEXTO OCULTO] de forma cirúrgica. Não diga "li no seu site", diga "percebi que sua linha de trabalho foca em...".
+      - Seja audaciosa. Se o site dele for ruim ou genérico, provoque-o a melhorar a imagem digital com a Numbly.
+      - O link https://www.numbly.life/ só deve ser enviado se ele pedir para contratar ou quiser ver os preços.
     `;
 
     let dynamicSystemInstruction = systemInstruction;
 
-    // Detecta URL na mensagem para scraping (suporta http, www e domínios comuns mesmo sem http)
+    // Detecta URL na mensagem para scraping
     const urlRegex = /(https?:\/\/[^\s]+|(?:www\.)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[^\s]*|[a-zA-Z0-9.-]+\.(?:com|br|net|org|link|bio|me|app|site|psi)[^\s]*)/gi;
     const urlMatch = userMessage.match(urlRegex);
 
     if (urlMatch) {
       let url = urlMatch[0];
-      // Remove pontuação acidental no final do link (ex: site.com.br.)
       url = url.replace(/[.,;!?]$/, '');
-
-      if (!url.startsWith('http')) {
-        url = 'https://' + url;
-      }
+      if (!url.startsWith('http')) url = 'https://' + url;
 
       const siteContent = await scrapeWebsite(url);
       if (siteContent) {
-        dynamicSystemInstruction += `\n\n[CONTEXTO OCULTO]: O usuário compartilhou o link do seu site/perfil (${url}). O sistema extraiu automaticamente este conteúdo de lá:\n"""\n${siteContent}\n"""\n\nUse essas informações sobre a especialidade, nome ou abordagem do psicólogo para guiar a conversa, elogiar o trabalho dele de forma sutil e mostrar que você entende o perfil dele. Não diga explicitamente 'eu li no seu site' ou 'vi no seu link', apenas haja naturalmente como se você tivesse dado uma olhadinha no perfil dele.`;
+        dynamicSystemInstruction += `\n\n[CONTEXTO OCULTO]: O usuário compartilhou o link do seu site/perfil (${url}). O sistema extraiu automaticamente este conteúdo de lá:\n"""\n${siteContent}\n"""\n\nUse essas informações sobre a especialidade, nome ou abordagem do psicólogo para guiar a conversa, elogiar o trabalho dele de forma sutil e mostrar que você entende o perfil dele.`;
       }
     }
 
@@ -84,11 +73,7 @@ export async function POST(request) {
       }
     }
 
-    // Adiciona a nova mensagem do usuário no formato Gemini
-    contents.push({
-      role: "user",
-      parts: [{ text: userMessage }]
-    });
+    contents.push({ role: "user", parts: [{ text: userMessage }] });
 
     let aiReply = "Desculpe, não consegui processar sua mensagem.";
 
@@ -96,44 +81,7 @@ export async function POST(request) {
     try {
       if (!groqApiKey) throw new Error("GROQ_API_KEY não configurada.");
 
-      const groqTools = [
-        {
-          type: "function",
-          function: {
-            name: "get_available_times",
-            description: "Retorna os horários disponíveis na agenda do especialista. Use antes de sugerir horários.",
-            parameters: {
-              type: "object",
-              properties: {
-                dateFrom: { type: "string", description: "Data inicial (YYYY-MM-DD)" },
-                dateTo: { type: "string", description: "Data final (YYYY-MM-DD)" }
-              },
-              required: ["dateFrom", "dateTo"]
-            }
-          }
-        },
-        {
-          type: "function",
-          function: {
-            name: "book_appointment",
-            description: "Agenda o horário na agenda. Solicite nome e email antes de chamar.",
-            parameters: {
-              type: "object",
-              properties: {
-                name: { type: "string", description: "Nome do paciente/psicólogo" },
-                email: { type: "string", description: "Email do paciente/psicólogo" },
-                startTime: { type: "string", description: "Horário (ISO 8601 UTC)" }
-              },
-              required: ["name", "email", "startTime"]
-            }
-          }
-        }
-      ];
-
-      const groqMessages = [
-        { role: "system", content: dynamicSystemInstruction }
-      ];
-
+      const groqMessages = [{ role: "system", content: dynamicSystemInstruction }];
       contents.forEach(msg => {
         const textContent = msg.parts?.filter(p => p.text).map(p => p.text).join('\n') || "";
         if (textContent) {
@@ -144,347 +92,95 @@ export async function POST(request) {
         }
       });
 
-      // Prioridade máxima para o 70b
       const models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"];
       let groqData = null;
-      let selectedModel = null;
 
       for (const model of models) {
         try {
           const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
-            headers: {
-              "Authorization": `Bearer ${groqApiKey}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              model: model,
-              messages: groqMessages,
-              temperature: 0.7,
-              tools: groqTools,
-              tool_choice: "auto"
-            })
+            headers: { "Authorization": `Bearer ${groqApiKey}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ model, messages: groqMessages, temperature: 0.7 })
           });
-
           if (groqResponse.ok) {
             groqData = await groqResponse.json();
-            selectedModel = model;
             break;
-          } else {
-            console.warn(`Groq erro no modelo ${model}: ${groqResponse.status}`);
           }
-        } catch (e) {
-          console.error(`Erro ao chamar Groq ${model}:`, e.message);
-        }
+        } catch (e) {}
       }
 
-      if (!groqData) throw new Error("Todos os modelos do Groq falharam.");
-
-      let responseMessage = groqData.choices?.[0]?.message;
-      let toolCalls = responseMessage?.tool_calls || [];
-
-      if (toolCalls.length > 0) {
-        groqMessages.push(responseMessage);
-
-        for (const toolCall of toolCalls) {
-          const functionName = toolCall.function.name;
-          const args = typeof toolCall.function.arguments === 'string'
-            ? JSON.parse(toolCall.function.arguments)
-            : toolCall.function.arguments;
-
-          let functionResult;
-          if (functionName === 'get_available_times') {
-            functionResult = await checkCalAvailability(args.dateFrom, args.dateTo);
-          } else if (functionName === 'book_appointment') {
-            functionResult = await bookCalAppointment(args.name, args.email, args.startTime);
-          }
-
-          groqMessages.push({
-            tool_call_id: toolCall.id,
-            role: "tool",
-            name: functionName,
-            content: JSON.stringify(functionResult || { error: "unknown error" })
-          });
-        }
-
-        const groqResponse2 = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${groqApiKey}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            model: selectedModel,
-            messages: groqMessages,
-            temperature: 0.7
-          })
-        });
-
-        if (!groqResponse2.ok) throw new Error(`Groq 2nd API Error: ${groqResponse2.status}`);
-        const groqData2 = await groqResponse2.json();
-        aiReply = groqData2.choices?.[0]?.message?.content || "Desculpe, não consegui processar.";
+      if (groqData) {
+        aiReply = groqData.choices?.[0]?.message?.content || aiReply;
       } else {
-        aiReply = responseMessage?.content || "Desculpe, não consegui processar.";
+        throw new Error("Groq falhou");
       }
 
     } catch (groqError) {
-      console.error("Falha no Groq, ativando fallback Gemini:", groqError.message);
-
-      // TENTATIVA 2: GOOGLE GEMINI (FALLBACK)
+      console.error("Fallback Gemini ativado.");
       try {
         if (!geminiApiKey) throw new Error("GEMINI_API_KEY não configurada.");
-        const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${geminiApiKey}`;
-        const geminiPayload = {
-          system_instruction: { parts: [{ text: dynamicSystemInstruction }] },
-          contents: contents,
-          tools: [{
-            function_declarations: [
-              {
-                name: "get_available_times",
-                description: "Retorna os horários disponíveis na agenda do especialista. Use antes de sugerir horários.",
-                parameters: {
-                  type: "OBJECT",
-                  properties: {
-                    dateFrom: { type: "STRING", description: "Data inicial (YYYY-MM-DD)" },
-                    dateTo: { type: "STRING", description: "Data final (YYYY-MM-DD)" }
-                  },
-                  required: ["dateFrom", "dateTo"]
-                }
-              },
-              {
-                name: "book_appointment",
-                description: "Agenda o horário na agenda. Solicite nome e email antes de chamar.",
-                parameters: {
-                  type: "OBJECT",
-                  properties: {
-                    name: { type: "STRING", description: "Nome do paciente/psicólogo" },
-                    email: { type: "STRING", description: "Email do paciente/psicólogo" },
-                    startTime: { type: "STRING", description: "Horário (ISO 8601 UTC, ex: 2024-05-15T14:30:00.000Z)" }
-                  },
-                  required: ["name", "email", "startTime"]
-                }
-              }
-            ]
-          }],
-          generationConfig: { temperature: 0.7 }
-        };
-
+        const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
         const response = await fetch(geminiEndpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(geminiPayload)
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: dynamicSystemInstruction }] },
+            contents: contents,
+            generationConfig: { temperature: 0.7 }
+          })
         });
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Gemini API Error: ${response.status} - ${errorText}`);
-        }
-
+        if (!response.ok) throw new Error(`Gemini Error: ${response.status}`);
         const data = await response.json();
-        let candidate = data.candidates?.[0];
-        let parts = candidate?.content?.parts || [];
-        aiReply = parts.find(p => p.text)?.text;
-        const functionCall = parts.find(p => p.functionCall)?.functionCall;
-
-        if (functionCall) {
-          let functionResult;
-          if (functionCall.name === 'get_available_times') {
-            functionResult = await checkCalAvailability(functionCall.args.dateFrom, functionCall.args.dateTo);
-          } else if (functionCall.name === 'book_appointment') {
-            functionResult = await bookCalAppointment(functionCall.args.name, functionCall.args.email, functionCall.args.startTime);
-          }
-
-          contents.push({ role: "model", parts: [{ functionCall: functionCall }] });
-          contents.push({ role: "function", parts: [{ functionResponse: { name: functionCall.name, response: functionResult || { error: "unknown error" } } }] });
-
-          const response2 = await fetch(geminiEndpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ system_instruction: { parts: [{ text: dynamicSystemInstruction }] }, contents: contents, generationConfig: { temperature: 0.7 } })
-          });
-
-          const data2 = await response2.json();
-          const parts2 = data2.candidates?.[0]?.content?.parts || [];
-          aiReply = parts2.find(p => p.text)?.text;
-        }
-
-        if (!aiReply) throw new Error("Gemini returned empty response");
-
-      } catch (geminiError) {
-        console.error("Falha fatal em todos os modelos:", geminiError.message);
-        aiReply = "Desculpe, nosso sistema está passando por uma instabilidade momentânea. Por favor, aguarde o atendimento humano.";
+        aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text || aiReply;
+      } catch (e) {
+        aiReply = "Estou com uma instabilidade momentânea. Por favor, tente novamente em instantes.";
       }
     }
 
-    // Limpa possíveis alucinações de tags de função no texto final
     if (aiReply) {
       aiReply = aiReply.replace(/<function=.*?>.*?<\/function>/gi, '').trim();
       aiReply = aiReply.replace(/<function>.*?<\/function>/gi, '').trim();
     }
 
-    console.log(`[Final] Resposta enviada: "${aiReply}"`);
-
-    // Salva a resposta no histórico (usamos o formato do Gemini como padrão universal do nosso app)
-    contents.push({
-      role: "model",
-      parts: [{ text: aiReply }]
+    contents.push({ role: "model", parts: [{ text: aiReply }] });
+    const formattedReply = formatToWhatsApp(aiReply);
+    const historyBase64 = Buffer.from(JSON.stringify(contents)).toString('base64');
+    
+    return NextResponse.json({
+      resposta: formattedReply,
+      historico: historyBase64
     });
 
-    // Formata a resposta para o WhatsApp antes de enviar
-    const formattedReply = formatToWhatsApp(aiReply);
-
-    const historyBase64 = Buffer.from(JSON.stringify(contents)).toString('base64');
-    return generateManyChatResponse(formattedReply, historyBase64);
-
   } catch (error) {
-    console.error("Erro geral no Webhook:", error.message, error.stack);
-    return generateManyChatResponse("Erro interno.", "");
+    console.error("Erro geral no Webhook:", error.message);
+    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
   }
 }
 
-// Converte a formatação Markdown da IA para o formato do WhatsApp
 function formatToWhatsApp(text) {
   if (!text) return text;
-
-  // 1. Substitui negrito Markdown (**texto**) por negrito WhatsApp (*texto*)
   let formatted = text.replace(/\*\*(.*?)\*\*/g, '*$1*');
-
-  // 2. Converte cabeçalhos Markdown (### Título) para negrito do WhatsApp (*Título*)
   formatted = formatted.replace(/^### (.*?)$/gm, '*$1*');
   formatted = formatted.replace(/^## (.*?)$/gm, '*$1*');
   formatted = formatted.replace(/^# (.*?)$/gm, '*$1*');
-
   return formatted;
 }
 
-function generateManyChatResponse(textMessage, historyBase64) {
-  return NextResponse.json({
-    resposta: textMessage,
-    historico: historyBase64
-  });
-}
-
-// Faz o scraping do site para extrair informações do psicólogo
 async function scrapeWebsite(url) {
   try {
     const response = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
-      },
-      signal: AbortSignal.timeout(8000), // Timeout de 8 segundos
-      cache: 'no-store' // Evita cache do Next.js
-    });
-
-    if (!response.ok) {
-      console.warn(`Scraping falhou para ${url}: Status ${response.status}`);
-      return null;
-    }
-
-    const html = await response.text();
-    const $ = cheerio.load(html);
-
-    const title = $('title').text().trim();
-    const description = $('meta[name="description"]').attr('content') || '';
-
-    // Remove elementos irrelevantes para focar apenas no texto útil
-    $('script, style, noscript, iframe, svg, img, video, header, footer, nav').remove();
-
-    // Extrai o texto visível
-    const text = $('body').text().replace(/\s+/g, ' ').trim();
-
-    let finalContent = `Título da página: ${title}\n`;
-    if (description) finalContent += `Descrição: ${description}\n`;
-    finalContent += `Conteúdo principal: ${text.substring(0, 3000)}`;
-
-    return finalContent;
-  } catch (err) {
-    console.error(`Erro ao fazer scraping do site ${url}:`, err.message);
-    return null;
-  }
-}
-
-// INTEGRAÇÃO CAL.COM
-async function checkCalAvailability(dateFrom, dateTo) {
-  const apiKey = process.env.CAL_API_KEY;
-  if (!apiKey) return { error: "CAL_API_KEY não configurada" };
-  try {
-    // Respeita o minimumBookingNotice de 3 dias (4320 min)
-    let minDate = new Date();
-    minDate.setDate(minDate.getDate() + 3);
-    const minDateISO = minDate.toISOString();
-
-    // Se dateFrom/startTime for antes de 3 dias a partir de hoje, ajusta
-    const startSearch = new Date(dateFrom) < minDate ? minDateISO : new Date(dateFrom).toISOString();
-    const endSearch = new Date(dateTo).toISOString();
-
-    const url = `https://api.cal.com/v2/slots?eventTypeId=4565935&start=${startSearch}&end=${endSearch}`;
-    console.log(`[Cal.com] Buscando slots: ${url}`);
-
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'cal-api-version': '2024-09-04'
-      },
+      headers: { 'User-Agent': 'Mozilla/5.0' },
+      signal: AbortSignal.timeout(8000),
       cache: 'no-store'
     });
-
-    const data = await response.json();
-    return data;
-  } catch (e) {
-    console.error("[Cal.com] Erro ao buscar slots:", e.message);
-    return { error: e.message };
-  }
-}
-
-async function bookCalAppointment(name, email, startTime) {
-  const apiKey = process.env.CAL_API_KEY;
-  if (!apiKey) {
-    console.error("CAL_API_KEY não configurada no .env");
-    return { error: "CAL_API_KEY não configurada" };
-  }
-
-  const start = new Date(startTime);
-  console.log(`Iniciando agendamento para ${name} (${email}) em ${start.toISOString()}`);
-
-  // Validação de antecedência mínima (3 dias)
-  const now = new Date();
-  const diffDays = (start - now) / (1000 * 60 * 60 * 24);
-  if (diffDays < 2.9) {
-    return { error: "Data inválida: O agendamento deve ser feito com pelo menos 3 dias de antecedência." };
-  }
-
-  try {
-    const response = await fetch('https://api.cal.com/v2/bookings', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'cal-api-version': '2024-08-13'
-      },
-      body: JSON.stringify({
-        start: start.toISOString(),
-        eventTypeId: 4565935,
-        attendee: {
-          name: name,
-          email: email,
-          timeZone: "America/Sao_Paulo"
-        }
-      })
-    });
-
-    const data = await response.json();
-    console.log("Resposta do Cal.com Bookings:", JSON.stringify(data));
-
-    if (!response.ok) {
-      const errorMsg = data.error?.message || data.message || "Erro no agendamento";
-      return { error: errorMsg, details: data };
-    }
-
-    return data;
-  } catch (e) {
-    console.error("Erro fatal ao agendar no Cal.com:", e.message);
-    return { error: e.message };
+    if (!response.ok) return null;
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    $('script, style, noscript, iframe, svg, img, video, header, footer, nav').remove();
+    const text = $('body').text().replace(/\s+/g, ' ').trim();
+    return `Título: ${$('title').text().trim()}\nConteúdo: ${text.substring(0, 2000)}`;
+  } catch (err) {
+    return null;
   }
 }
