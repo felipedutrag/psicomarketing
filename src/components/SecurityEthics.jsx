@@ -12,9 +12,8 @@ export default function SecurityEthics() {
     },
     {
       title: "Ética e LGPD",
-      text: "Todos os dados são tratados com sigilo, respeitando as normas do CRP e as diretrizes da Lei Geral de Proteção de Dados.",
-    },
-    {
+      text: "Todos os dados são tratados com sigilo, respeitando as normas do CRP e a Lei Geral de Proteção de Dados.",
+    },    {
       title: "Controle Total",
       text: "Você tem acesso a todas as conversas em tempo real e pode assumir o atendimento manualmente a qualquer momento."
     }

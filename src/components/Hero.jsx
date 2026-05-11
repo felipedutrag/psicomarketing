@@ -15,7 +15,7 @@ export default function Hero() {
             <span className={styles.highlight}>converte</span> enquanto você atende, dorme ou viaja...
           </h1>
           <p className={styles.subtitle}>
-            Pare de perder pacientes enquanto você está em sessão. Implementamos uma Secretária de IA no seu WhatsApp que acolhe, tira dúvidas e agenda consultas automaticamente.
+            Pare de perder pacientes enquanto você está em sessão. Sua nova Secretária de IA no WhatsApp acolhe, filtra curiosos e agenda consultas no piloto automático.
           </p>
           <div className={styles.actions}>
             <a href="#automacao" className="btn-primary">

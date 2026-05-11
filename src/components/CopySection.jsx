@@ -8,7 +8,7 @@ const PAINS = [
       </svg>
     ),
     title: "Demora na Resposta",
-    text: "Sua atenção está no paciente, mas o celular não para. Sem resposta rápida, o próximo contato já agendou com outro colega.",
+    text: "Sua atenção está na sessão, mas o WhatsApp não para. Sem resposta rápida, o paciente já agendou com o seu concorrente.",
   },
   {
     icon: (
@@ -117,7 +117,7 @@ export default function CopySection() {
               Sua secretária que <span className={styles.highlight}>não dorme e não tira férias</span> ⚡
             </h3>
             <p className={styles.subtitle}>
-              Sua IA tira dúvidas e filtra pacientes reais 24h por dia, inserindo os agendamentos diretamente na sua agenda.
+              A IA tira dúvidas e qualifica pacientes reais 24h por dia, inserindo os agendamentos diretamente na sua agenda.
             </p>
 
             <div className={styles.stats}>

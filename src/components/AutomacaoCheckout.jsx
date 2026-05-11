@@ -7,7 +7,7 @@ export default function AutomacaoCheckout() {
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState(1); // 1: Form, 2: Payment
   const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
-  const [status, setStatus] = useState("idle"); 
+  const [status, setStatus] = useState("idle");
   const [submitError, setSubmitError] = useState(null);
 
   // Scheduling (now comes from Landing Page)
@@ -16,7 +16,7 @@ export default function AutomacaoCheckout() {
   // PIX
   const [pixData, setPixData] = useState(null);
   const [pixLoading, setPixLoading] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState("pending"); 
+  const [paymentStatus, setPaymentStatus] = useState("pending");
   const [copied, setCopied] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutos em segundos
 
@@ -91,7 +91,7 @@ export default function AutomacaoCheckout() {
   async function handleFinalSubmit(e) {
     if (e) e.preventDefault();
     if (!form.nome || !form.email || !form.telefone || !selectedSlot) return;
-    
+
     setStatus("submitting");
     setPixLoading(true);
     setSubmitError(null);
@@ -100,14 +100,14 @@ export default function AutomacaoCheckout() {
       const res = await fetch("/api/cal/slots", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           name: form.nome,
           email: form.email,
           phone: form.telefone,
           start: selectedSlot
         }),
       });
-      
+
       const data = await res.json();
       if (data.status !== "success") throw new Error(data.error || "Erro ao processar");
 
@@ -127,11 +127,11 @@ export default function AutomacaoCheckout() {
   function formatSelectedDate(dateStr) {
     if (!dateStr) return "";
     const d = new Date(dateStr);
-    return d.toLocaleDateString("pt-BR", { 
-      day: "numeric", 
-      month: "long", 
-      hour: "2-digit", 
-      minute: "2-digit" 
+    return d.toLocaleDateString("pt-BR", {
+      day: "numeric",
+      month: "long",
+      hour: "2-digit",
+      minute: "2-digit"
     });
   }
 
@@ -152,7 +152,7 @@ export default function AutomacaoCheckout() {
 
         <div className={styles.checkoutWrapper}>
           <div className={styles.mainCard}>
-            
+
             {/* INDICADOR DE PASSOS (AGORA SÓ 2) */}
             <div className={styles.stepIndicator}>
               {[1, 2].map((s) => (
@@ -162,7 +162,7 @@ export default function AutomacaoCheckout() {
                 </div>
               ))}
             </div>
-            
+
             {/* PASSO 1: DADOS */}
             {step === 1 && (
               <div className={styles.formContent}>
@@ -172,7 +172,7 @@ export default function AutomacaoCheckout() {
                   <a href="/#preco" className={styles.changeTime}>Alterar horário</a>
                 </div>
 
-                <h3 className={styles.formTitle}>Dados para a Ativação</h3>
+                <h3 className={styles.formTitle}>Finalizar Pedido</h3>
                 <form onSubmit={handleFinalSubmit} className={styles.form}>
                   <div className={styles.field}>
                     <label className={styles.label}>Seu Nome</label>
@@ -184,11 +184,11 @@ export default function AutomacaoCheckout() {
                   </div>
                   <div className={styles.field}>
                     <label className={styles.label}>WhatsApp / Telefone</label>
-                    <input 
-                      type="tel" 
-                      placeholder="(11) 99999-9999" 
-                      className={styles.input} 
-                      value={form.telefone} 
+                    <input
+                      type="tel"
+                      placeholder="(11) 99999-9999"
+                      className={styles.input}
+                      value={form.telefone}
                       onChange={(e) => {
                         let value = e.target.value.replace(/\D/g, "");
                         if (value.length > 11) value = value.slice(0, 11);
@@ -202,8 +202,8 @@ export default function AutomacaoCheckout() {
                           value = value.replace(/^(\d{0,2}).*/, "($1");
                         }
                         setForm({ ...form, telefone: value });
-                      }} 
-                      required 
+                      }}
+                      required
                     />
                   </div>
                   <button type="submit" className={styles.submitBtn} disabled={pixLoading}>
@@ -220,7 +220,7 @@ export default function AutomacaoCheckout() {
               <div className={styles.pixContent}>
                 <div className={styles.pixHeader}>
                   <h3 className={styles.pixTitle}>Aguardando Pagamento</h3>
-                  <p className={styles.subtitle}>Não feche essa tela enquanto realiza o pagamento para garantir a detecção instantânea.</p>
+                  <p className={styles.subtitle}>Não feche essa tela enquanto realiza o pagamento para garantir seu agendamento.</p>
                   <div className={styles.timerBadge}>Expira em {formatTime(timeLeft)}</div>
                   <p className={styles.timerNotice}>Sua reserva é válida por 15 minutos</p>
                 </div>
@@ -298,8 +298,8 @@ export default function AutomacaoCheckout() {
             </div>
             <div className={styles.summaryTotal}><span>Total</span><span className={styles.totalAmount}>R$ 99,00</span></div>
             <div className={styles.activationPlan}>
-              <h4>Personalização Completa</h4>
-              <p className={styles.subtitle}>Sua IA personalizada do jeito que você desejar, com sua abordagem clínica e integração total com sua agenda. <strong>Cancele quando quiser.</strong></p>
+              <h4>Assessoria Estratégica</h4>
+              <p className={styles.subtitle}>Ao assinar nossa ferramenta, você ganha uma sessão estratégica de 1 hora focada em mapear e implementar estratégias de captação e automação para a sua clínica.</p>
             </div>
             <ul className={styles.summaryBenefits}>
               <li>✦ IA de Atendimento 24/7</li>
@@ -312,3 +312,4 @@ export default function AutomacaoCheckout() {
     </section>
   );
 }
+

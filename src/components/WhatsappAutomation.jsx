@@ -11,7 +11,7 @@ export default function WhatsappAutomation() {
             Sua IA atende, <span className={styles.highlight}>tria e agenda</span> por você
           </h2>
           <p className={styles.description}>
-            Psicólogos perdem até 40% dos contatos porque demoram a responder enquanto estão em sessão. Implementamos uma secretária digital inteligente no seu WhatsApp.
+            Psicólogos perdem até 40% dos contatos porque demoram a responder durante as sessões. Ative uma secretária digital implacável no seu próprio WhatsApp.
           </p>
           
           <ul className={styles.features}>
@@ -53,7 +53,7 @@ export default function WhatsappAutomation() {
               </div>
               <div>
                 <strong>Triagem de Leads Qualificados</strong>
-                <p>A IA identifica pacientes reais e separa curiosos, poupando seu tempo precioso.</p>
+                <p>A IA qualifica pacientes reais e ignora curiosos, blindando o seu tempo clínico.</p>
               </div>
             </li>
           </ul>
@@ -106,3 +106,4 @@ export default function WhatsappAutomation() {
     </section>
   );
 }
+
