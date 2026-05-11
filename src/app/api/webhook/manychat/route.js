@@ -7,6 +7,10 @@ export async function POST(request) {
     const userMessage = body.message;
     const historyString = body.history;
 
+    console.log(`[ManyChat] Nova requisição recebida.`);
+    console.log(`[ManyChat] Mensagem do usuário: "${userMessage}"`);
+    console.log(`[ManyChat] Histórico: ${historyString ? 'Sim' : 'Não'}`);
+
     if (!userMessage) {
       return NextResponse.json({ error: 'Message field is required' }, { status: 400 });
     }
@@ -127,6 +131,8 @@ export async function POST(request) {
       }
 
       const data = await response.json();
+      console.log(`[Gemini] Resposta recebida. Status: ${response.status}`);
+      
       let candidate = data.candidates?.[0];
       let parts = candidate?.content?.parts || [];
       
@@ -134,6 +140,7 @@ export async function POST(request) {
       const functionCall = parts.find(p => p.functionCall)?.functionCall;
 
       if (functionCall) {
+        console.log(`[Gemini] Chamando função: ${functionCall.name} com args:`, JSON.stringify(functionCall.args));
         let functionResult;
         if (functionCall.name === 'get_available_times') {
           functionResult = await checkCalAvailability(functionCall.args.dateFrom, functionCall.args.dateTo);
@@ -163,6 +170,7 @@ export async function POST(request) {
         });
         
         const data2 = await response2.json();
+        console.log(`[Gemini] Resposta pós-função recebida.`);
         const parts2 = data2.candidates?.[0]?.content?.parts || [];
         aiReply = parts2.find(p => p.text)?.text;
       }
@@ -282,6 +290,7 @@ export async function POST(request) {
             });
           }
 
+          console.log(`[Groq] Executando segunda chamada para o modelo ${selectedModel}`);
           const groqResponse2 = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -315,6 +324,8 @@ export async function POST(request) {
       aiReply = aiReply.replace(/<function=.*?>.*?<\/function>/gi, '').trim();
       aiReply = aiReply.replace(/<function>.*?<\/function>/gi, '').trim();
     }
+
+    console.log(`[Final] Resposta enviada: "${aiReply}"`);
 
     // Salva a resposta no histórico (usamos o formato do Gemini como padrão universal do nosso app)
     contents.push({
