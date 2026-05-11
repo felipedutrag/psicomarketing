@@ -167,7 +167,7 @@ export default function AutomacaoCheckout() {
             {step === 1 && (
               <div className={styles.formContent}>
                 <div className={styles.selectedTimeInfo}>
-                  <p>Horário reservado:</p>
+                  <p className={styles.subtitle}>Horário reservado:</p>
                   <strong>{formatSelectedDate(selectedSlot)}</strong>
                   <a href="/#preco" className={styles.changeTime}>Alterar horário</a>
                 </div>
@@ -220,7 +220,7 @@ export default function AutomacaoCheckout() {
               <div className={styles.pixContent}>
                 <div className={styles.pixHeader}>
                   <h3 className={styles.pixTitle}>Aguardando Pagamento</h3>
-                  <p className={styles.timerSub}>Não feche essa tela enquanto realiza o pagamento para garantir a detecção instantânea.</p>
+                  <p className={styles.subtitle}>Não feche essa tela enquanto realiza o pagamento para garantir a detecção instantânea.</p>
                   <div className={styles.timerBadge}>Expira em {formatTime(timeLeft)}</div>
                   <p className={styles.timerNotice}>Sua reserva é válida por 15 minutos</p>
                 </div>
@@ -283,7 +283,7 @@ export default function AutomacaoCheckout() {
               <div className={styles.approvedContent}>
                 <div className={styles.successIcon}>✓</div>
                 <h3 className={styles.approvedTitle}>Pacto Confirmado!</h3>
-                <p className={styles.approvedText}>Recebemos seu pagamento. A <strong>Dra. Lilith</strong> já está preparando sua automação.</p>
+                <p className={styles.subtitle}>Recebemos seu pagamento. A <strong>Dra. Lilith</strong> já está preparando sua automação.</p>
                 <button className={styles.submitBtn} onClick={() => window.location.href = "/"}>Voltar ao Início</button>
               </div>
             )}
@@ -299,7 +299,7 @@ export default function AutomacaoCheckout() {
             <div className={styles.summaryTotal}><span>Total</span><span className={styles.totalAmount}>R$ 99,00</span></div>
             <div className={styles.activationPlan}>
               <h4>Plano de Ativação</h4>
-              <p>Sua primeira sessão de ajuste e ativação está inclusa no valor mensal. <strong>Cancele quando quiser.</strong></p>
+              <p className={styles.subtitle}>Sua primeira sessão de ajuste e ativação está inclusa no valor mensal. <strong>Cancele quando quiser.</strong></p>
             </div>
             <ul className={styles.summaryBenefits}>
               <li>✦ IA de Atendimento 24/7</li>

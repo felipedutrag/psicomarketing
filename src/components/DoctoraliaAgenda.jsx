@@ -74,7 +74,7 @@ export default function DoctoraliaAgenda() {
     <div className={styles.agendaContainer}>
       <div className={styles.agendaHeader}>
         <h3>Agendar sessão estratégica</h3>
-        <p>Escolha um horário para sua consultoria</p>
+        <p className={styles.subtitle}>Escolha um horário para sua consultoria</p>
       </div>
 
       <div className={styles.datesContainer}>

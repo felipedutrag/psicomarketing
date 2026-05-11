@@ -117,7 +117,7 @@ export default function CopySection() {
               IA Humanizada,{" "}
               <span className={styles.highlight}>trabalhando 24h por você</span>
             </h3>
-            <p className={styles.solutionText}>
+            <p className={styles.subtitle}>
               Transformamos seu WhatsApp numa máquina de triagem e agendamento. A IA tem a sua personalidade: acolhe, responde dúvidas, filtra "curiosos" e insere o paciente diretamente na sua agenda.
             </p>
 

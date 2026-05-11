@@ -42,7 +42,7 @@
   text-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
 }
 
-.description {
+.subtitle {
   font-size: 1.05rem;
   color: var(--text-secondary);
   line-height: 1.6;
@@ -544,7 +544,7 @@
     text-align: center;
   }
   
-  .description {
+  .subtitle {
     font-size: 1rem;
     text-align: center;
   }

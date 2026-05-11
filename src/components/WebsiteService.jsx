@@ -10,7 +10,7 @@ export default function WebsiteService() {
           <h2 className={styles.title}>
             O seu <span className={styles.highlight}>Consultório Digital</span>
           </h2>
-          <p className={styles.description}>
+          <p className={styles.subtitle}>
             Seu site é a primeira impressão do paciente. Criamos plataformas luxuosas, focadas na experiência do usuário e otimizadas para conversão imediata.
           </p>
           
