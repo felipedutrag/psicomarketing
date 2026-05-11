@@ -83,260 +83,226 @@ export async function POST(request) {
 
     let aiReply = "Desculpe, não consegui processar sua mensagem.";
 
-    // TENTATIVA 1: GOOGLE GEMINI
+    // TENTATIVA 1: GROQ (PRINCIPAL)
     try {
-      const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${geminiApiKey}`;
-      const geminiPayload = {
-        system_instruction: { parts: [{ text: dynamicSystemInstruction }] },
-        contents: contents,
-        tools: [{
-          function_declarations: [
-            {
-              name: "get_available_times",
-              description: "Retorna os horários disponíveis na agenda do especialista. Use antes de sugerir horários.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  dateFrom: { type: "STRING", description: "Data inicial (YYYY-MM-DD)" },
-                  dateTo: { type: "STRING", description: "Data final (YYYY-MM-DD)" }
-                },
-                required: ["dateFrom", "dateTo"]
-              }
-            },
-            {
-              name: "book_appointment",
-              description: "Agenda o horário na agenda. Solicite nome e email antes de chamar.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  name: { type: "STRING", description: "Nome do paciente/psicólogo" },
-                  email: { type: "STRING", description: "Email do paciente/psicólogo" },
-                  startTime: { type: "STRING", description: "Horário (ISO 8601 UTC, ex: 2024-05-15T14:30:00.000Z)" }
-                },
-                required: ["name", "email", "startTime"]
-              }
-            }
-          ]
-        }],
-        generationConfig: { temperature: 0.7 }
-      };
+      if (!groqApiKey) throw new Error("GROQ_API_KEY não configurada.");
 
-      const response = await fetch(geminiEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(geminiPayload)
+      const groqTools = [
+        {
+          type: "function",
+          function: {
+            name: "get_available_times",
+            description: "Retorna os horários disponíveis na agenda do especialista. Use antes de sugerir horários.",
+            parameters: {
+              type: "object",
+              properties: {
+                dateFrom: { type: "string", description: "Data inicial (YYYY-MM-DD)" },
+                dateTo: { type: "string", description: "Data final (YYYY-MM-DD)" }
+              },
+              required: ["dateFrom", "dateTo"]
+            }
+          }
+        },
+        {
+          type: "function",
+          function: {
+            name: "book_appointment",
+            description: "Agenda o horário na agenda. Solicite nome e email antes de chamar.",
+            parameters: {
+              type: "object",
+              properties: {
+                name: { type: "string", description: "Nome do paciente/psicólogo" },
+                email: { type: "string", description: "Email do paciente/psicólogo" },
+                startTime: { type: "string", description: "Horário (ISO 8601 UTC)" }
+              },
+              required: ["name", "email", "startTime"]
+            }
+          }
+        }
+      ];
+
+      const groqMessages = [
+        { role: "system", content: dynamicSystemInstruction }
+      ];
+
+      contents.forEach(msg => {
+        const textContent = msg.parts?.filter(p => p.text).map(p => p.text).join('\n') || "";
+        if (textContent) {
+          groqMessages.push({
+            role: msg.role === "model" ? "assistant" : "user",
+            content: textContent
+          });
+        }
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Gemini API Error: ${response.status} - ${errorText}`);
-      }
+      // Prioridade máxima para o 70b
+      const models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"];
+      let groqData = null;
+      let selectedModel = null;
 
-      const data = await response.json();
-      console.log(`[Gemini] Resposta recebida. Status: ${response.status}`);
-      
-      let candidate = data.candidates?.[0];
-      let parts = candidate?.content?.parts || [];
-      
-      aiReply = parts.find(p => p.text)?.text;
-      const functionCall = parts.find(p => p.functionCall)?.functionCall;
-
-      if (functionCall) {
-        console.log(`[Gemini] Chamando função: ${functionCall.name} com args:`, JSON.stringify(functionCall.args));
-        let functionResult;
-        if (functionCall.name === 'get_available_times') {
-          functionResult = await checkCalAvailability(functionCall.args.dateFrom, functionCall.args.dateTo);
-        } else if (functionCall.name === 'book_appointment') {
-          functionResult = await bookCalAppointment(functionCall.args.name, functionCall.args.email, functionCall.args.startTime);
-        }
-
-        contents.push({
-          role: "model",
-          parts: [{ functionCall: functionCall }]
-        });
-        contents.push({
-          role: "function",
-          parts: [{ functionResponse: { name: functionCall.name, response: functionResult || { error: "unknown error" } } }]
-        });
-
-        const secondPayload = {
-          system_instruction: { parts: [{ text: dynamicSystemInstruction }] },
-          contents: contents,
-          generationConfig: { temperature: 0.7 }
-        };
-
-        const response2 = await fetch(geminiEndpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(secondPayload)
-        });
-        
-        const data2 = await response2.json();
-        console.log(`[Gemini] Resposta pós-função recebida.`);
-        const parts2 = data2.candidates?.[0]?.content?.parts || [];
-        aiReply = parts2.find(p => p.text)?.text;
-      }
-
-      if (!aiReply) throw new Error("Gemini returned empty response");
-
-    } catch (geminiError) {
-      console.error("Falha no Gemini, ativando fallback Groq:", geminiError.message);
-
-      // TENTATIVA 2: GROQ (FALLBACK)
-      try {
-        if (!groqApiKey) throw new Error("GROQ_API_KEY não configurada.");
-
-        const groqTools = [
-          {
-            type: "function",
-            function: {
-              name: "get_available_times",
-              description: "Retorna os horários disponíveis na agenda do especialista. Use antes de sugerir horários.",
-              parameters: {
-                type: "object",
-                properties: {
-                  dateFrom: { type: "string", description: "Data inicial (YYYY-MM-DD)" },
-                  dateTo: { type: "string", description: "Data final (YYYY-MM-DD)" }
-                },
-                required: ["dateFrom", "dateTo"]
-              }
-            }
-          },
-          {
-            type: "function",
-            function: {
-              name: "book_appointment",
-              description: "Agenda o horário na agenda. Solicite nome e email antes de chamar.",
-              parameters: {
-                type: "object",
-                properties: {
-                  name: { type: "string", description: "Nome do paciente/psicólogo" },
-                  email: { type: "string", description: "Email do paciente/psicólogo" },
-                  startTime: { type: "string", description: "Horário (ISO 8601 UTC)" }
-                },
-                required: ["name", "email", "startTime"]
-              }
-            }
-          }
-        ];
-
-        const groqMessages = [
-          { role: "system", content: dynamicSystemInstruction }
-        ];
-
-        contents.forEach(msg => {
-          const textContent = msg.parts?.filter(p => p.text).map(p => p.text).join('\n') || "";
-          if (textContent) {
-            groqMessages.push({
-              role: msg.role === "model" ? "assistant" : "user",
-              content: textContent
-            });
-          }
-        });
-
-        const models = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"];
-        let groqData = null;
-        let selectedModel = null;
-
-        for (const model of models) {
-          try {
-            const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-              method: "POST",
-              headers: {
-                "Authorization": `Bearer ${groqApiKey}`,
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                model: model,
-                messages: groqMessages,
-                temperature: 0.7,
-                tools: groqTools,
-                tool_choice: "auto"
-              })
-            });
-
-            if (groqResponse.ok) {
-              groqData = await groqResponse.json();
-              selectedModel = model;
-              break;
-            } else {
-              console.warn(`Groq erro no modelo ${model}: ${groqResponse.status}`);
-            }
-          } catch (e) {
-            console.error(`Erro ao chamar Groq ${model}:`, e.message);
-          }
-        }
-
-        if (!groqData) throw new Error("Todos os modelos do Groq falharam.");
-
-        let responseMessage = groqData.choices?.[0]?.message;
-        let toolCalls = responseMessage?.tool_calls || [];
-        
-        // Tenta extrair ferramenta de tags de texto (fallback para alucinação de modelos menores)
-        if (toolCalls.length === 0 && responseMessage?.content?.includes('<function')) {
-          const match = responseMessage.content.match(/<function=(.*?)>(.*?)<\/function>/);
-          if (match) {
-            toolCalls.push({
-              id: "call_hallucinated_" + Date.now(),
-              type: "function",
-              function: {
-                name: match[1],
-                arguments: match[2]
-              }
-            });
-            console.log(`[Groq] Capturada função alucinada no texto: ${match[1]}`);
-          }
-        }
-
-        if (toolCalls.length > 0) {
-          groqMessages.push(responseMessage);
-          
-          for (const toolCall of toolCalls) {
-            const functionName = toolCall.function.name;
-            const args = typeof toolCall.function.arguments === 'string' 
-              ? JSON.parse(toolCall.function.arguments) 
-              : toolCall.function.arguments;
-            
-            let functionResult;
-            if (functionName === 'get_available_times') {
-              functionResult = await checkCalAvailability(args.dateFrom, args.dateTo);
-            } else if (functionName === 'book_appointment') {
-              functionResult = await bookCalAppointment(args.name, args.email, args.startTime);
-            }
-            
-            groqMessages.push({
-              tool_call_id: toolCall.id,
-              role: "tool",
-              name: functionName,
-              content: JSON.stringify(functionResult || { error: "unknown error" })
-            });
-          }
-
-          console.log(`[Groq] Executando segunda chamada para o modelo ${selectedModel}`);
-          const groqResponse2 = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      for (const model of models) {
+        try {
+          const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
               "Authorization": `Bearer ${groqApiKey}`,
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
-              model: selectedModel,
+              model: model,
               messages: groqMessages,
-              temperature: 0.7
+              temperature: 0.7,
+              tools: groqTools,
+              tool_choice: "auto"
             })
           });
-          
-          if (!groqResponse2.ok) {
-            throw new Error(`Groq 2nd API Error: ${groqResponse2.status}`);
+
+          if (groqResponse.ok) {
+            groqData = await groqResponse.json();
+            selectedModel = model;
+            break;
+          } else {
+            console.warn(`Groq erro no modelo ${model}: ${groqResponse.status}`);
           }
-          const groqData2 = await groqResponse2.json();
-          aiReply = groqData2.choices?.[0]?.message?.content || "Desculpe, não consegui processar.";
-        } else {
-          aiReply = responseMessage?.content || "Desculpe, não consegui processar.";
+        } catch (e) {
+          console.error(`Erro ao chamar Groq ${model}:`, e.message);
+        }
+      }
+
+      if (!groqData) throw new Error("Todos os modelos do Groq falharam.");
+
+      let responseMessage = groqData.choices?.[0]?.message;
+      let toolCalls = responseMessage?.tool_calls || [];
+      
+      if (toolCalls.length > 0) {
+        groqMessages.push(responseMessage);
+        
+        for (const toolCall of toolCalls) {
+          const functionName = toolCall.function.name;
+          const args = typeof toolCall.function.arguments === 'string' 
+            ? JSON.parse(toolCall.function.arguments) 
+            : toolCall.function.arguments;
+          
+          let functionResult;
+          if (functionName === 'get_available_times') {
+            functionResult = await checkCalAvailability(args.dateFrom, args.dateTo);
+          } else if (functionName === 'book_appointment') {
+            functionResult = await bookCalAppointment(args.name, args.email, args.startTime);
+          }
+          
+          groqMessages.push({
+            tool_call_id: toolCall.id,
+            role: "tool",
+            name: functionName,
+            content: JSON.stringify(functionResult || { error: "unknown error" })
+          });
         }
 
-      } catch (groqError) {
-        console.error("Falha fatal em todos os fallbacks do Groq:", groqError.message);
+        const groqResponse2 = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${groqApiKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: selectedModel,
+            messages: groqMessages,
+            temperature: 0.7
+          })
+        });
+        
+        if (!groqResponse2.ok) throw new Error(`Groq 2nd API Error: ${groqResponse2.status}`);
+        const groqData2 = await groqResponse2.json();
+        aiReply = groqData2.choices?.[0]?.message?.content || "Desculpe, não consegui processar.";
+      } else {
+        aiReply = responseMessage?.content || "Desculpe, não consegui processar.";
+      }
+
+    } catch (groqError) {
+      console.error("Falha no Groq, ativando fallback Gemini:", groqError.message);
+
+      // TENTATIVA 2: GOOGLE GEMINI (FALLBACK)
+      try {
+        if (!geminiApiKey) throw new Error("GEMINI_API_KEY não configurada.");
+        const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${geminiApiKey}`;
+        const geminiPayload = {
+          system_instruction: { parts: [{ text: dynamicSystemInstruction }] },
+          contents: contents,
+          tools: [{
+            function_declarations: [
+              {
+                name: "get_available_times",
+                description: "Retorna os horários disponíveis na agenda do especialista. Use antes de sugerir horários.",
+                parameters: {
+                  type: "OBJECT",
+                  properties: {
+                    dateFrom: { type: "STRING", description: "Data inicial (YYYY-MM-DD)" },
+                    dateTo: { type: "STRING", description: "Data final (YYYY-MM-DD)" }
+                  },
+                  required: ["dateFrom", "dateTo"]
+                }
+              },
+              {
+                name: "book_appointment",
+                description: "Agenda o horário na agenda. Solicite nome e email antes de chamar.",
+                parameters: {
+                  type: "OBJECT",
+                  properties: {
+                    name: { type: "STRING", description: "Nome do paciente/psicólogo" },
+                    email: { type: "STRING", description: "Email do paciente/psicólogo" },
+                    startTime: { type: "STRING", description: "Horário (ISO 8601 UTC, ex: 2024-05-15T14:30:00.000Z)" }
+                  },
+                  required: ["name", "email", "startTime"]
+                }
+              }
+            ]
+          }],
+          generationConfig: { temperature: 0.7 }
+        };
+
+        const response = await fetch(geminiEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(geminiPayload)
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Gemini API Error: ${response.status} - ${errorText}`);
+        }
+
+        const data = await response.json();
+        let candidate = data.candidates?.[0];
+        let parts = candidate?.content?.parts || [];
+        aiReply = parts.find(p => p.text)?.text;
+        const functionCall = parts.find(p => p.functionCall)?.functionCall;
+
+        if (functionCall) {
+          let functionResult;
+          if (functionCall.name === 'get_available_times') {
+            functionResult = await checkCalAvailability(functionCall.args.dateFrom, functionCall.args.dateTo);
+          } else if (functionCall.name === 'book_appointment') {
+            functionResult = await bookCalAppointment(functionCall.args.name, functionCall.args.email, functionCall.args.startTime);
+          }
+
+          contents.push({ role: "model", parts: [{ functionCall: functionCall }] });
+          contents.push({ role: "function", parts: [{ functionResponse: { name: functionCall.name, response: functionResult || { error: "unknown error" } } }] });
+
+          const response2 = await fetch(geminiEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ system_instruction: { parts: [{ text: dynamicSystemInstruction }] }, contents: contents, generationConfig: { temperature: 0.7 } })
+          });
+          
+          const data2 = await response2.json();
+          const parts2 = data2.candidates?.[0]?.content?.parts || [];
+          aiReply = parts2.find(p => p.text)?.text;
+        }
+
+        if (!aiReply) throw new Error("Gemini returned empty response");
+
+      } catch (geminiError) {
+        console.error("Falha fatal em todos os modelos:", geminiError.message);
         aiReply = "Desculpe, nosso sistema está passando por uma instabilidade momentânea. Por favor, aguarde o atendimento humano.";
       }
     }
