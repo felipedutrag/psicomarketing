@@ -103,16 +103,22 @@ export async function POST(request) {
       aiReply = `Eu estava refletindo sobre como a eficiência é rara hoje em dia, ${userName}. Mas diga-me, o que exatamente você busca mudar no seu atendimento agora? 🌑`;
     }
 
-    // Limpeza e Formatação
-    // Convertemos de volta para o formato que o código original esperava para o histórico (Gemini style)
-    const finalHistory = groqMessages.slice(1).map(m => ({
-      role: m.role === "assistant" ? "model" : "user",
-      parts: [{ text: m.content }]
-    }));
-    finalHistory.push({ role: "model", parts: [{ text: aiReply }] });
+    // Limpeza e Formatação do Histórico Final
+    const finalHistory = groqMessages
+      .slice(1) // Remove a system instruction
+      .filter(m => m.content && m.content.trim() !== "")
+      .map(m => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: m.content }]
+      }));
+    
+    if (aiReply && aiReply.trim() !== "") {
+      finalHistory.push({ role: "model", parts: [{ text: aiReply }] });
+    }
 
     const formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*');
-    const historyBase64 = Buffer.from(JSON.stringify(finalHistory)).toString('base64');
+    // Slicing final para garantir que o base64 não exploda o limite do ManyChat (máx 10 mensagens)
+    const historyBase64 = Buffer.from(JSON.stringify(finalHistory.slice(-10))).toString('base64');
     
     console.log(`[Vesper] Resposta Final enviada: "${formattedReply.substring(0, 50)}..."`);
     
