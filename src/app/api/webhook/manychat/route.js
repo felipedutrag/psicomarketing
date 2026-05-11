@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import * as cheerio from 'cheerio';
 
 export async function POST(request) {
   try {
@@ -18,6 +19,24 @@ export async function POST(request) {
       Quando o usuário demonstrar interesse, forneça sempre este link direto para ele escolher o horário: https://cal.com/fdgoncalves/viabilidade-patente
       Responda sempre de forma curta e amigável, ideal para mensagens de WhatsApp (máximo 2 parágrafos). Nunca seja robótica.
     `;
+
+    let dynamicSystemInstruction = systemInstruction;
+
+    // Detecta URL na mensagem para scraping
+    const urlRegex = /(https?:\/\/[^\s]+|(?:www\.)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[^\s]*)/g;
+    const urlMatch = userMessage.match(urlRegex);
+    
+    if (urlMatch) {
+      let url = urlMatch[0];
+      if (!url.startsWith('http')) {
+        url = 'https://' + url;
+      }
+      
+      const siteContent = await scrapeWebsite(url);
+      if (siteContent) {
+        dynamicSystemInstruction += `\n\nO usuário compartilhou o link do seu site/perfil (${url}). Aqui está o conteúdo extraído:\n"${siteContent}"\n\nUse essas informações sobre a especialidade, nome ou abordagem do psicólogo para personalizar a sua resposta, elogiar o trabalho de forma sutil e mostrar como a PsicoMarketing pode potencializar a captação de pacientes dele. Não diga explicitamente 'eu li no seu site', apenas demonstre que você já o conhece e sabe o que ele faz.`;
+      }
+    }
 
     const geminiApiKey = process.env.GEMINI_API_KEY;
     const groqApiKey = process.env.GROQ_API_KEY;
@@ -44,7 +63,7 @@ export async function POST(request) {
     try {
       const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${geminiApiKey}`;
       const geminiPayload = {
-        system_instruction: { parts: [{ text: systemInstruction }] },
+        system_instruction: { parts: [{ text: dynamicSystemInstruction }] },
         contents: contents,
         generationConfig: { temperature: 0.7 }
       };
@@ -73,7 +92,7 @@ export async function POST(request) {
 
         // Traduz o formato de histórico do Gemini para o formato da OpenAI/Groq
         const groqMessages = [
-          { role: "system", content: systemInstruction }
+          { role: "system", content: dynamicSystemInstruction }
         ];
 
         contents.forEach(msg => {
@@ -148,4 +167,33 @@ function generateManyChatResponse(textMessage, historyBase64) {
     resposta: textMessage,
     historico: historyBase64
   });
+}
+
+// Faz o scraping do site para extrair informações do psicólogo
+async function scrapeWebsite(url) {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      },
+      signal: AbortSignal.timeout(5000) // Timeout de 5 segundos para não atrasar o webhook
+    });
+    
+    if (!response.ok) return null;
+    
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    
+    // Remove elementos irrelevantes
+    $('script, style, noscript, iframe, svg, img, video, header, footer').remove();
+    
+    // Extrai o texto visível
+    const text = $('body').text().replace(/\s+/g, ' ').trim();
+    
+    // Limita o tamanho para economizar tokens
+    return text.substring(0, 4000);
+  } catch (err) {
+    console.error("Erro ao fazer scraping do site:", err.message);
+    return null;
+  }
 }
