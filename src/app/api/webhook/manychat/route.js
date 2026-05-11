@@ -66,7 +66,7 @@ export async function POST(request) {
           contents: contents,
           generationConfig: {
             temperature: 0.8,
-            maxOutputTokens: 1024,
+            maxOutputTokens: 2048,
           }
         })
       });
@@ -97,7 +97,7 @@ export async function POST(request) {
     const formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*');
     const historyBase64 = Buffer.from(JSON.stringify(contents.slice(-10))).toString('base64');
 
-    console.log(`[Vesper] Resposta Final enviada: "${formattedReply.substring(0, 50)}..."`);
+    console.log(`[Vesper] Resposta Final (Tamanho: ${formattedReply.length} chars): "${formattedReply.substring(0, 50)}..."`);
 
     return NextResponse.json({
       resposta: formattedReply,
