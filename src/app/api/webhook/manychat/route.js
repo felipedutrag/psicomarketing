@@ -37,7 +37,7 @@ export async function POST(request) {
       try {
         const decoded = Buffer.from(historyString, 'base64').toString('utf-8');
         contents = JSON.parse(decoded);
-        if (contents.length > 8) contents = contents.slice(-8);
+        if (contents.length > 6) contents = contents.slice(-6);
       } catch (e) {
         contents = [];
       }
@@ -98,16 +98,14 @@ export async function POST(request) {
     // Limpeza e Formatação
     contents.push({ role: "model", parts: [{ text: aiReply }] });
     
-    // Mantém apenas as 4 últimas mensagens (excluindo a system instruction que não está aqui)
-    const limitedHistory = contents.slice(-4);
-
     // 1. Converte negrito markdown para itálico (estilo Vesper)
     // 2. Remove links em formato markdown [texto](link) e deixa apenas o link
     let formattedReply = aiReply
       .replace(/\*\*(.*?)\*\*/g, '*$1*')
       .replace(/\[.*?\]\((https?:\/\/.*?)\)/g, '$1');
 
-    const historyBase64 = Buffer.from(JSON.stringify(limitedHistory)).toString('base64');
+    // Mantém as últimas 6 mensagens no histórico final para o próximo turno
+    const historyBase64 = Buffer.from(JSON.stringify(contents.slice(-6))).toString('base64');
 
     console.log(`[Vesper] Resposta Final (Tamanho: ${formattedReply.length} chars): "${formattedReply.substring(0, 50)}..."`);
 
