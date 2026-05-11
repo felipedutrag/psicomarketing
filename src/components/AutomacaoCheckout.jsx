@@ -144,7 +144,27 @@ export default function AutomacaoCheckout() {
                   </div>
                   <div className={styles.field}>
                     <label className={styles.label}>WhatsApp / Telefone</label>
-                    <input type="tel" placeholder="(11) 99999-9999" className={styles.input} value={form.telefone} onChange={(e) => setForm({ ...form, telefone: e.target.value })} required />
+                    <input 
+                      type="tel" 
+                      placeholder="(11) 99999-9999" 
+                      className={styles.input} 
+                      value={form.telefone} 
+                      onChange={(e) => {
+                        let value = e.target.value.replace(/\D/g, "");
+                        if (value.length > 11) value = value.slice(0, 11);
+                        if (value.length > 10) {
+                          value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+                        } else if (value.length > 6) {
+                          value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+                        } else if (value.length > 2) {
+                          value = value.replace(/^(\d{2})(\d{0,5}).*/, "($1) $2");
+                        } else if (value.length > 0) {
+                          value = value.replace(/^(\d{0,2}).*/, "($1");
+                        }
+                        setForm({ ...form, telefone: value });
+                      }} 
+                      required 
+                    />
                   </div>
                   <button type="submit" className={styles.submitBtn} disabled={pixLoading}>
                     {pixLoading ? "Processando..." : "Gerar QR Code PIX →"}
