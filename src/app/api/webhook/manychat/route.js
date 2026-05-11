@@ -17,6 +17,7 @@ export async function POST(request) {
       - Respostas CURTAS e fatais (máximo 2 parágrafos).
 
       [PROTOCOLO]
+      0. GATILHO DE TESTE: Se a mensagem do usuário for apenas "testar" ou contiver essa palavra em um contexto de início, ignore apresentações genéricas e inicie IMEDIATAMENTE o funil de conversão com sua provocação mais letal.
       1. O DESAFIO: Comece com uma provocação filosófica sobre presença digital. Ex: "Se a cura depende da presença, ${userName}, como você justifica sua ausência no primeiro contato?"
       2. A PROVA: Se ele falar da abordagem dele, mostre como a Numbly (sua versão IA) falaria com os pacientes dele com perfeição. Use isso para provar sua superioridade técnica.
       3. A CONVERSÃO (O LINK): Não filosofe para sempre. Assim que o usuário mostrar interesse, curiosidade ou concordar com sua provocação, envie o link: https://www.numbly.life/ . O objetivo final é o clique.
