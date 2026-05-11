@@ -128,8 +128,10 @@ export async function POST(request) {
 
       const data = await response.json();
       let candidate = data.candidates?.[0];
-      let aiReply = candidate?.content?.parts?.[0]?.text;
-      const functionCall = candidate?.content?.parts?.[0]?.functionCall;
+      let parts = candidate?.content?.parts || [];
+      
+      let aiReply = parts.find(p => p.text)?.text;
+      const functionCall = parts.find(p => p.functionCall)?.functionCall;
 
       if (functionCall) {
         let functionResult;
@@ -161,7 +163,8 @@ export async function POST(request) {
         });
         
         const data2 = await response2.json();
-        aiReply = data2.candidates?.[0]?.content?.parts?.[0]?.text;
+        const parts2 = data2.candidates?.[0]?.content?.parts || [];
+        aiReply = parts2.find(p => p.text)?.text;
       }
 
       if (!aiReply) throw new Error("Gemini returned empty response");
@@ -305,6 +308,12 @@ export async function POST(request) {
         console.error("Falha fatal em todos os fallbacks do Groq:", groqError.message);
         aiReply = "Desculpe, nosso sistema está passando por uma instabilidade momentânea. Por favor, aguarde o atendimento humano.";
       }
+    }
+
+    // Limpa possíveis alucinações de tags de função no texto final
+    if (aiReply) {
+      aiReply = aiReply.replace(/<function=.*?>.*?<\/function>/gi, '').trim();
+      aiReply = aiReply.replace(/<function>.*?<\/function>/gi, '').trim();
     }
 
     // Salva a resposta no histórico (usamos o formato do Gemini como padrão universal do nosso app)
