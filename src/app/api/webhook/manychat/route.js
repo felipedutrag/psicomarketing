@@ -56,26 +56,26 @@ export async function POST(request) {
 
     let aiReply = "";
 
-    // MOTOR PRINCIPAL: Gemini 2.5 Flash (Thinking Model)
+    // MOTOR PRINCIPAL: Gemini 1.5 Flash (Foco em velocidade e estabilidade)
     try {
       if (!geminiApiKey) throw new Error("Chave GEMINI_API_KEY não encontrada");
 
       const startTime = Date.now();
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           system_instruction: { parts: [{ text: systemInstruction }] },
           contents: contents,
           generationConfig: {
-            temperature: 0.8,
-            maxOutputTokens: 2048,
+            temperature: 0.7,
+            maxOutputTokens: 400, // Limita a verbosidade da IA na raiz
           }
         })
       });
 
       const endTime = Date.now();
-      console.log(`[Vesper] Gemini 2.5 Status: ${response.status} (${endTime - startTime}ms)`);
+      console.log(`[Vesper] Gemini 1.5 Status: ${response.status} (${endTime - startTime}ms)`);
 
       const data = await response.json();
 
@@ -84,28 +84,30 @@ export async function POST(request) {
       } else {
         const errorDetail = data.error?.message || JSON.stringify(data);
         console.error("[Vesper] Erro na resposta do Gemini:", errorDetail);
-        if (response.status === 429) {
-          console.error("[Vesper] ALERTA: Limite de cota atingido na Gemini API!");
-        }
         throw new Error(`Gemini ${response.status}: ${errorDetail}`);
       }
 
     } catch (err) {
       console.error("[Vesper] Erro na IA (Gemini):", err.message);
-      aiReply = `Eu estava refletindo sobre como a eficiência é rara hoje em dia, ${userName}. Mas diga-me, o que exatamente você busca mudar no seu atendimento agora? 🌑`;
+      aiReply = `Eu estava refletindo sobre como o tempo é precioso, ${userName}. O que exatamente impede sua clínica de avançar agora? 🌑`;
     }
 
-    // Limpeza e Formatação para WhatsApp
+    // Limpeza e Formatação Extrema para WhatsApp/ManyChat
     contents.push({ role: "model", parts: [{ text: aiReply }] });
     
     let formattedReply = aiReply
-      .replace(/\*\*(.*?)\*\*/g, '*$1*') // Garante negrito padrão WhatsApp
-      .replace(/\[.*?\]\((https?:\/\/.*?)\)/g, '$1') // Remove links markdown
-      .replace(/\r?\n|\r/g, ' ') // Transforma quebras de linha em espaços para evitar erros de parse no ManyChat/WhatsApp
-      .replace(/\s{2,}/g, ' ') // Remove espaços múltiplos
+      .replace(/\*\*(.*?)\*\*/g, '*$1*') // Negrito WhatsApp
+      .replace(/\[.*?\]\((https?:\/\/.*?)\)/g, '$1') // URL pura
+      .replace(/\r?\n|\r/g, ' ') // Remove TODA quebra de linha (ManyChat safe)
+      .replace(/\s{2,}/g, ' ') // Remove espaços duplos
       .trim();
 
-    // Mantém as últimas 6 mensagens no histórico final para o próximo turno
+    // TRUNCAMENTO DE SEGURANÇA: ManyChat Dynamic Content tem limites de caracteres
+    if (formattedReply.length > 600) {
+      formattedReply = formattedReply.substring(0, 597) + "...";
+    }
+
+    // Mantém as últimas 6 mensagens no histórico
     const historyBase64 = Buffer.from(JSON.stringify(contents.slice(-6))).toString('base64');
 
     console.log(`[Vesper] Resposta Sanitizada (Tamanho: ${formattedReply.length}): "${formattedReply.substring(0, 100)}..."`);
