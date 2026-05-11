@@ -42,6 +42,31 @@ export default function AutomacaoCheckout() {
   const [bookingResult, setBookingResult] = useState(null);
   const [submitError, setSubmitError] = useState(null);
 
+  // PIX
+  const [pixData, setPixData] = useState(null);
+  const [pixLoading, setPixLoading] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState("pending"); // pending | approved | cancelled
+
+  // ——— Polling de Status de Pagamento ———
+  useEffect(() => {
+    let interval;
+    if (pixData && paymentStatus === "pending" && status === "success") {
+      interval = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/ggpix/payment-status?order_id=${pixData.order_id}`);
+          const data = await res.json();
+          if (data.success && data.status === "approved") {
+            setPaymentStatus("approved");
+            clearInterval(interval);
+          }
+        } catch (e) {
+          console.error("Erro ao verificar status:", e);
+        }
+      }, 5000); // Verifica a cada 5 segundos
+    }
+    return () => clearInterval(interval);
+  }, [pixData, paymentStatus, status]);
+
   // ——— Busca slots na nossa API proxy ———
   const fetchSlots = useCallback(async () => {
     setLoading(true);
@@ -94,6 +119,29 @@ export default function AutomacaoCheckout() {
     setLoading(false);
   }
 
+  // ——— Gera PIX ———
+  async function generatePix(name) {
+    setPixLoading(true);
+    try {
+      const res = await fetch("/api/ggpix/pix", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          total: 29.00,
+          name: name
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPixData(data);
+      }
+    } catch (e) {
+      console.error("Erro ao gerar PIX:", e);
+    } finally {
+      setPixLoading(false);
+    }
+  }
+
   // ——— Submete agendamento ———
   async function handleSubmit(e) {
     e.preventDefault();
@@ -108,8 +156,26 @@ export default function AutomacaoCheckout() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Erro no agendamento");
+      
       setBookingResult(data);
       setStatus("success");
+      
+      // Se a API de agendamento já retornou o PIX, usamos ele
+      if (data.pix) {
+        // Precisamos do base64 do QR code
+        const qrRes = await fetch("/api/ggpix/pix", {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ total: 29.00, name: form.nome })
+        });
+        const qrData = await qrRes.json();
+        if (qrData.success) {
+           setPixData(qrData);
+        }
+      } else {
+        // Fallback para gerar manualmente se o agendamento não trouxe
+        generatePix(form.nome);
+      }
     } catch (e) {
       setSubmitError(e.message);
       setStatus("error");
@@ -130,6 +196,62 @@ export default function AutomacaoCheckout() {
               Agendamento confirmado para <strong>{form.nome}</strong>.<br />
               Um convite foi enviado para <strong>{form.email}</strong>.
             </p>
+            
+            {/* Seção PIX */}
+            <div className={styles.pixSection}>
+              {paymentStatus === "approved" ? (
+                <div className={styles.paymentApproved}>
+                  <div className={styles.approvedBadge}>✓ PAGAMENTO CONFIRMADO</div>
+                  <h3 className={styles.pixTitle}>Tudo pronto!</h3>
+                  <p className={styles.pixSubtitle}>Seu pagamento foi processado. Nossa equipe entrará em contato em breve para a instalação.</p>
+                </div>
+              ) : (
+                <>
+                  <h3 className={styles.pixTitle}>Taxa de Ativação</h3>
+                  <p className={styles.pixSubtitle}>Pague o PIX de <strong>R$ 29,00</strong> para confirmar a configuração da sua IA.</p>
+                  
+                  {pixLoading ? (
+                    <div className={styles.pixLoading}>Gerando código PIX...</div>
+                  ) : pixData ? (
+                    <>
+                      <div className={styles.qrCodeContainer}>
+                        {pixData.qr_code_base64 ? (
+                          <img 
+                            src={`data:image/png;base64,${pixData.qr_code_base64}`} 
+                            alt="QR Code PIX" 
+                            className={styles.qrCode}
+                          />
+                        ) : (
+                          <div className={styles.pixLoading}>Carregando QR Code...</div>
+                        )}
+                      </div>
+                      <div className={styles.pixCopyPaste}>
+                        <span className={styles.copyLabel}>Copia e Cola</span>
+                        <div className={styles.copyInputGroup}>
+                          <input 
+                            readOnly 
+                            value={pixData.pix_code} 
+                            className={styles.copyInput} 
+                          />
+                          <button 
+                            onClick={() => {
+                              navigator.clipboard.writeText(pixData.pix_code);
+                              alert("Código copiado!");
+                            }}
+                            className={styles.copyBtn}
+                          >
+                            Copiar
+                          </button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className={styles.pixError}>Não foi possível gerar o PIX automaticamente. Entre em contato com o suporte.</div>
+                  )}
+                </>
+              )}
+            </div>
+
             {bookingResult.meetingUrl && (
               <a href={bookingResult.meetingUrl} target="_blank" rel="noopener noreferrer" className={`btn-primary ${styles.meetBtn}`}>
                 Abrir link do Google Meet →
@@ -285,9 +407,9 @@ export default function AutomacaoCheckout() {
 
                 {/* Paginação de pontos */}
                 <div className={styles.dots}>
-                  {days.map((_, i) => (
+                  {days.map((day, i) => (
                     <button
-                      key={i}
+                      key={day.dateStr || i}
                       className={`${styles.dot} ${i === currentDay ? styles.dotActive : ""}`}
                       onClick={() => { setCurrentDay(i); setSelectedSlot(null); }}
                       aria-label={`Dia ${i + 1}`}
@@ -298,9 +420,9 @@ export default function AutomacaoCheckout() {
                 {/* Slots de horário */}
                 {activeDay?.slots?.length ? (
                   <div className={styles.slots}>
-                    {activeDay.slots.map((slot) => (
+                    {activeDay.slots.map((slot, idx) => (
                       <button
-                        key={slot.start}
+                        key={slot.start || idx}
                         id={`slot-${slot.start}`}
                         className={`${styles.slot} ${selectedSlot === slot.start ? styles.slotSelected : ""}`}
                         onClick={() => setSelectedSlot(slot.start)}

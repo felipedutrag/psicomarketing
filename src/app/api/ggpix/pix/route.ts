@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import QRCode from 'qrcode';
+import crypto from 'crypto';
 
 const GGPIX_API_KEY = process.env.GGPIX_API_KEY;
 const GGPIX_API_URL = 'https://ggpixapi.com/api/v1'; // Based on system reminder and search snippet
@@ -51,12 +52,12 @@ export async function POST(req: Request) {
       return `${n1}${n2}${n3}${n4}${n5}${n6}${n7}${n8}${n9}${d1}${d2}`;
     };
 
-    const randomName = `Cliente ${Math.floor(Math.random() * 9000) + 1000}`;
+    const randomName = body.name || `Cliente ${Math.floor(Math.random() * 9000) + 1000}`;
     const randomCPF = generateCPF();
     
         const requestBody = {
         amountCents: amountCents, // Use calculated amount
-        description: `Notificação Extrajudicial - ${externalId.slice(0, 8)}`,
+        description: `Agendamento Psicomarketing - ${externalId.slice(0, 8)}`,
         externalId: externalId,
         payerName: randomName,
         payerDocument: randomCPF,

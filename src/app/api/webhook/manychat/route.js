@@ -30,7 +30,8 @@ export async function POST(request) {
       - Não entregue tudo de cara. Faça perguntas curtas investigativas, como: "Como você faz o controle dos seus agendamentos hoje? É você mesmo quem responde todo mundo no WhatsApp?"
       - Agite a dor: concorde que é exaustivo ter que parar a vida para responder pacientes e que isso limita o crescimento dele.
       - Apresente a solução (nossa IA de agendamento automático).
-      - [AGENDAMENTO PELA IA]: Você possui integração direta com o Cal.com. Quando o psicólogo demonstrar interesse e quiser agendar a Sessão Estratégica com nossos especialistas, USE A FERRAMENTA para consultar horários disponíveis nos próximos 5 a 7 dias e dê as opções para ele. Se ele escolher, peça o nome completo e e-mail, e USE A FERRAMENTA para realizar o agendamento no sistema. 
+      - [AGENDAMENTO PELA IA]: Você possui integração direta com o Cal.com. Quando o psicólogo demonstrar interesse e quiser agendar a Sessão Estratégica com nossos especialistas, USE A FERRAMENTA para consultar horários disponíveis nos próximos 5 a 7 dias e dê as opções para ele. Mostre os horários de forma legível (ex: "Segunda, 14:00"). Se ele escolher, peça o nome completo e e-mail, e USE A FERRAMENTA para realizar o agendamento no sistema usando EXATAMENTE o horário retornado pela consulta.
+      - IMPORTANTE: Nunca sugira horários da sua cabeça, use sempre o que a ferramenta retornar. A agenda só permite agendamentos com no mínimo 3 dias de antecedência, e a ferramenta já filtra isso automaticamente.
 
       A DATA DE HOJE É: ${new Date().toISOString().split('T')[0]}.
 
@@ -84,7 +85,7 @@ export async function POST(request) {
 
     // TENTATIVA 1: GOOGLE GEMINI
     try {
-      const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${geminiApiKey}`;
+      const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${geminiApiKey}`;
       const geminiPayload = {
         system_instruction: { parts: [{ text: dynamicSystemInstruction }] },
         contents: contents,
@@ -433,12 +434,30 @@ async function checkCalAvailability(dateFrom, dateTo) {
   const apiKey = process.env.CAL_API_KEY;
   if (!apiKey) return { error: "CAL_API_KEY não configurada" };
   try {
-    const response = await fetch(`https://api.cal.com/v2/slots/available?eventTypeId=4565935&startTime=${dateFrom}&endTime=${dateTo}`, {
-      headers: { 'Authorization': `Bearer ${apiKey}` },
+    // Respeita o minimumBookingNotice de 3 dias (4320 min)
+    let minDate = new Date();
+    minDate.setDate(minDate.getDate() + 3);
+    const minDateISO = minDate.toISOString();
+
+    // Se dateFrom/startTime for antes de 3 dias a partir de hoje, ajusta
+    const startSearch = new Date(dateFrom) < minDate ? minDateISO : new Date(dateFrom).toISOString();
+    const endSearch = new Date(dateTo).toISOString();
+
+    const url = `https://api.cal.com/v2/slots?eventTypeId=4565935&start=${startSearch}&end=${endSearch}`;
+    console.log(`[Cal.com] Buscando slots: ${url}`);
+
+    const response = await fetch(url, {
+      headers: { 
+        'Authorization': `Bearer ${apiKey}`,
+        'cal-api-version': '2024-09-04'
+      },
       cache: 'no-store'
     });
-    return await response.json();
+    
+    const data = await response.json();
+    return data;
   } catch (e) {
+    console.error("[Cal.com] Erro ao buscar slots:", e.message);
     return { error: e.message };
   }
 }
@@ -450,25 +469,32 @@ async function bookCalAppointment(name, email, startTime) {
     return { error: "CAL_API_KEY não configurada" };
   }
   
-  console.log(`Iniciando agendamento para ${name} (${email}) em ${startTime}`);
+  const start = new Date(startTime);
+  console.log(`Iniciando agendamento para ${name} (${email}) em ${start.toISOString()}`);
+
+  // Validação de antecedência mínima (3 dias)
+  const now = new Date();
+  const diffDays = (start - now) / (1000 * 60 * 60 * 24);
+  if (diffDays < 2.9) {
+    return { error: "Data inválida: O agendamento deve ser feito com pelo menos 3 dias de antecedência." };
+  }
   
   try {
     const response = await fetch('https://api.cal.com/v2/bookings', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'cal-api-version': '2024-08-13'
       },
       body: JSON.stringify({
-        start: startTime,
+        start: start.toISOString(),
         eventTypeId: 4565935,
-        responses: {
+        attendee: {
           name: name,
-          email: email
-        },
-        timeZone: "America/Sao_Paulo",
-        language: "pt",
-        metadata: {}
+          email: email,
+          timeZone: "America/Sao_Paulo"
+        }
       })
     });
     
@@ -476,7 +502,8 @@ async function bookCalAppointment(name, email, startTime) {
     console.log("Resposta do Cal.com Bookings:", JSON.stringify(data));
     
     if (!response.ok) {
-      return { error: data.message || "Erro no agendamento", details: data };
+      const errorMsg = data.error?.message || data.message || "Erro no agendamento";
+      return { error: errorMsg, details: data };
     }
     
     return data;

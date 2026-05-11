@@ -18,6 +18,137 @@
   overflow: hidden;
 }
 
+/* ===== PIX SUCCESS BOX ===== */
+.pixSuccessBox {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.successIcon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+  box-shadow: 0 0 40px rgba(34, 197, 94, 0.3);
+}
+
+.pixTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.pixSubtitle {
+  font-size: 1rem;
+  color: #9ca3af;
+  margin-bottom: 32px;
+  max-width: 400px;
+}
+
+.pixContent {
+  width: 100%;
+  max-width: 400px;
+}
+
+.qrCodeContainer {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 24px;
+}
+
+.qrCode {
+  display: block;
+  max-width: 180px;
+  height: auto;
+}
+
+.pixCopyPaste {
+  width: 100%;
+}
+
+.copyLabel {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.copyInputGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.copyInput {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.85rem;
+  color: #e5e7eb;
+  font-family: monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copyBtn {
+  background: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 0 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pixLoading {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.pixError {
+  padding: 20px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 12px;
+  color: #fca5a5;
+}
+
+.paymentApproved {
+  padding: 20px 0;
+}
+
+.approvedBadge {
+  display: inline-block;
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.5);
+  color: #4ade80;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 99px;
+  margin-bottom: 20px;
+  letter-spacing: 0.05em;
+}
+
 @media (max-width: 768px) {
   .scheduleSection {
     padding: 100px 0;
