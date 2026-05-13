@@ -139,13 +139,18 @@ export async function POST(request) {
       .replace(/\s{2,}/g, ' ') // Remove espaços duplos
       .trim();
 
-    // TRUNCAMENTO DE SEGURANÇA: ManyChat Dynamic Content tem limites de caracteres
-    if (formattedReply.length > 600) {
-      formattedReply = formattedReply.substring(0, 597) + "...";
+    // TRUNCAMENTO DE SEGURANÇA: WhatsApp suporta 4096, ManyChat ~2000. Limite elevado para 1800.
+    if (formattedReply.length > 1800) {
+      formattedReply = formattedReply.substring(0, 1797) + "...";
     }
 
-    // Mantém as últimas 6 mensagens no histórico
-    const historyBase64 = Buffer.from(JSON.stringify(contents.slice(-6))).toString('base64');
+    // COMPRESSÃO BRUTAL DO HISTÓRICO: Evita o estouro do limite de Custom Fields no ManyChat
+    // Mantemos as últimas 4 mensagens e esmagamos o texto para no máximo 250 caracteres por balão.
+    const optimizedHistory = contents.slice(-4).map(msg => ({
+      role: msg.role,
+      parts: [{ text: msg.parts && msg.parts[0] ? msg.parts[0].text.substring(0, 250) : "" }]
+    }));
+    const historyBase64 = Buffer.from(JSON.stringify(optimizedHistory)).toString('base64');
 
     console.log(`[Vesper] Resposta Sanitizada (Tamanho: ${formattedReply.length}): "${formattedReply.substring(0, 100)}..."`);
 
