@@ -10,6 +10,7 @@
     "commit": "node scripts/auto-commit-gemini.js"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "cheerio": "^1.2.0",
     "next": "16.2.6",
     "qrcode": "^1.5.4",
