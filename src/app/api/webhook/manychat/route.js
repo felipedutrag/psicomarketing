@@ -3,51 +3,50 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export async function POST(request) {
   try {
-    const contentType = request.headers.get('content-type') || '';
-    let body;
+    const bodyText = await request.text();
+    let body = {};
 
-    if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
-      console.log("[Vesper] Recebendo via Form Data (URL Encoded)");
-      const formData = await request.formData();
-      body = Object.fromEntries(formData.entries());
-    } else {
-      const bodyText = await request.text();
-      try {
-        body = JSON.parse(bodyText);
-      } catch (parseError) {
-        console.warn("[Vesper] JSON corrompido do ManyChat (quebra de linha detectada). Iniciando protocolo de recuperação brutal.");
+    try {
+      // Tenta o parse civilizado primeiro
+      body = JSON.parse(bodyText);
+    } catch (e) {
+      console.warn("[Vesper] JSON estilhaçado detectado. Iniciando extração cirúrgica de campos na força bruta.");
+      
+      const extractField = (key) => {
+        const search = `"${key}":`;
+        const idx = bodyText.indexOf(search);
+        if (idx === -1) return null;
+        const start = bodyText.indexOf('"', idx + search.length) + 1;
         
-        // Isola as quebras de linha estruturais do JSON
-        let sanitized = bodyText
-          .replace(/\{\s*\n/g, '{%%NL%%')
-          .replace(/,\s*\n/g, ',%%NL%%')
-          .replace(/\n\s*\}/g, '%%NL%%}');
-          
-        // Escapa as quebras de linha malditas que estão DENTRO das strings da mensagem
-        sanitized = sanitized.replace(/\n/g, '\\n').replace(/\r/g, '');
-        
-        // Restaura a estrutura
-        sanitized = sanitized.replace(/%%NL%%/g, '\n');
-        
-        try {
-          body = JSON.parse(sanitized);
-        } catch (fatalError) {
-          console.error("[Vesper] Recuperação primária falhou. Partindo pra extração de tecido puro (Regex).");
-          const nameMatch = bodyText.match(/"name"\s*:\s*"([^"]*)"/);
-          const histMatch = bodyText.match(/"history"\s*:\s*"([^"]*)"/);
-          const msgMatch = bodyText.match(/"message"\s*:\s*"(.*?)"\s*(?:,\s*"name"|,\s*"history"|})/s);
-          
-          body = {
-            name: nameMatch ? nameMatch[1] : "Colega",
-            history: histMatch ? histMatch[1] : "",
-            message: msgMatch ? msgMatch[1] : bodyText
-          };
+        // Marcadores de fim de campo que o ManyChat costuma usar
+        const endMarkers = ['","name"', '", "name"', '","history"', '", "history"', '"}', '"}'];
+        let end = -1;
+        for (let marker of endMarkers) {
+          let mIdx = bodyText.indexOf(marker, start);
+          if (mIdx !== -1) {
+            end = mIdx;
+            break;
+          }
         }
-      }
+        if (end === -1) {
+          // Se não achou marcador, procura a última aspa antes do bracelete de fechamento ou o fim
+          const lastBrace = bodyText.lastIndexOf('}');
+          end = bodyText.lastIndexOf('"', lastBrace !== -1 ? lastBrace : bodyText.length);
+        }
+        
+        if (end <= start) return null;
+        return bodyText.substring(start, end);
+      };
+
+      body = {
+        message: extractField('message'),
+        name: extractField('name'),
+        history: extractField('history')
+      };
     }
 
-    const userMessage = body.message;
-    const historyString = body.history;
+    const userMessage = body.message || bodyText;
+    const historyString = body.history || "";
     const rawName = body.name || "Colega";
     const userName = rawName.split(' ')[0];
 
