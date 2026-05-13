@@ -2,7 +2,44 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   try {
-    const body = await request.json();
+    const bodyText = await request.text();
+    let body;
+    
+    try {
+      body = JSON.parse(bodyText);
+    } catch (parseError) {
+      console.warn("[Vesper] JSON corrompido do ManyChat (quebra de linha detectada). Iniciando protocolo de recuperação brutal.");
+      
+      // Isola as quebras de linha estruturais do JSON
+      let sanitized = bodyText
+        .replace(/\{\s*\n/g, '{%%NL%%')
+        .replace(/,\s*\n/g, ',%%NL%%')
+        .replace(/\n\s*\}/g, '%%NL%%}');
+        
+      // Escapa as quebras de linha malditas que estão DENTRO das strings da mensagem
+      sanitized = sanitized.replace(/\n/g, '\\n').replace(/\r/g, '');
+      
+      // Restaura a estrutura
+      sanitized = sanitized.replace(/%%NL%%/g, '\n');
+      
+      try {
+        body = JSON.parse(sanitized);
+      } catch (fatalError) {
+        console.error("[Vesper] Recuperação primária falhou. Partindo pra extração de tecido puro (Regex).");
+        const nameMatch = bodyText.match(/"name"\s*:\s*"([^"]*)"/);
+        const histMatch = bodyText.match(/"history"\s*:\s*"([^"]*)"/);
+        
+        // Pega tudo o que sobrou entre a chave da mensagem e o próximo campo
+        const msgMatch = bodyText.match(/"message"\s*:\s*"(.*?)"\s*(?:,\s*"name"|,\s*"history"|})/s);
+        
+        body = {
+          name: nameMatch ? nameMatch[1] : "Colega",
+          history: histMatch ? histMatch[1] : "",
+          message: msgMatch ? msgMatch[1] : bodyText
+        };
+      }
+    }
+
     const userMessage = body.message;
     const historyString = body.history;
     const rawName = body.name || "Colega";
