@@ -93,12 +93,12 @@ export async function POST(request) {
 
     let aiReply = "";
 
-    // MOTOR PRINCIPAL: Gemini 3 Flash Preview (V1 - Ultra Performance)
+    // MOTOR PRINCIPAL: Gemini 1.5 Flash (Performance Extrema e Estável)
     try {
       if (!geminiApiKey) throw new Error("Chave GEMINI_API_KEY não encontrada");
 
       const startTime = Date.now();
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -112,11 +112,11 @@ export async function POST(request) {
       });
 
       const endTime = Date.now();
-      console.log(`[Vesper] Gemini 3 Status: ${response.status} (${endTime - startTime}ms)`);
+      console.log(`[Vesper] Gemini 1.5 Status: ${response.status} (${endTime - startTime}ms)`);
 
       const data = await response.json();
 
-      if (data.candidates && data.candidates[0]) {
+      if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
         aiReply = data.candidates[0].content.parts[0].text;
       } else {
         const errorDetail = data.error?.message || JSON.stringify(data);
@@ -130,9 +130,9 @@ export async function POST(request) {
     }
 
     // Limpeza e Formatação Extrema para WhatsApp/ManyChat
-    contents.push({ role: "model", parts: [{ text: aiReply }] });
+    contents.push({ role: "model", parts: [{ text: aiReply || "" }] });
     
-    let formattedReply = aiReply
+    let formattedReply = (aiReply || "")
       .replace(/\*\*(.*?)\*\*/g, '*$1*') // Negrito WhatsApp
       .replace(/\[.*?\]\((https?:\/\/.*?)\)/g, '$1') // URL pura
       .replace(/\r?\n|\r/g, ' ') // Remove TODA quebra de linha (ManyChat safe)
@@ -148,7 +148,7 @@ export async function POST(request) {
     // Mantemos as últimas 4 mensagens e esmagamos o texto para no máximo 250 caracteres por balão.
     const optimizedHistory = contents.slice(-4).map(msg => ({
       role: msg.role,
-      parts: [{ text: msg.parts && msg.parts[0] ? msg.parts[0].text.substring(0, 250) : "" }]
+      parts: [{ text: msg.parts && msg.parts[0] && msg.parts[0].text ? msg.parts[0].text.substring(0, 250) : "" }]
     }));
     const historyBase64 = Buffer.from(JSON.stringify(optimizedHistory)).toString('base64');
 
@@ -161,6 +161,11 @@ export async function POST(request) {
 
   } catch (error) {
     console.error("[Vesper] Erro Fatal no Webhook:", error);
-    return NextResponse.json({ error: "Erro interno", details: error.message }, { status: 500 });
+    // IMPORTANTE: Retorna 200 com mensagem padrão para forçar o ManyChat a atualizar a variável.
+    // Se retornar 500, o ManyChat ignora a resposta e repete a última mensagem salva no Custom Field.
+    return NextResponse.json({ 
+      resposta: "Estou processando muita informação ao mesmo tempo. Pode repetir de forma mais direta? 🌑",
+      historico: ""
+    }, { status: 200 });
   }
 }
