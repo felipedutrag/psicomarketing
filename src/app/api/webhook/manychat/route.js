@@ -5,34 +5,34 @@ export async function POST(request) {
   try {
     const bodyText = await request.text();
     let body;
-    
+
     try {
       body = JSON.parse(bodyText);
     } catch (parseError) {
       console.warn("[Vesper] JSON corrompido do ManyChat (quebra de linha detectada). Iniciando protocolo de recuperação brutal.");
-      
+
       // Isola as quebras de linha estruturais do JSON
       let sanitized = bodyText
         .replace(/\{\s*\n/g, '{%%NL%%')
         .replace(/,\s*\n/g, ',%%NL%%')
         .replace(/\n\s*\}/g, '%%NL%%}');
-        
+
       // Escapa as quebras de linha malditas que estão DENTRO das strings da mensagem
       sanitized = sanitized.replace(/\n/g, '\\n').replace(/\r/g, '');
-      
+
       // Restaura a estrutura
       sanitized = sanitized.replace(/%%NL%%/g, '\n');
-      
+
       try {
         body = JSON.parse(sanitized);
       } catch (fatalError) {
         console.error("[Vesper] Recuperação primária falhou. Partindo pra extração de tecido puro (Regex).");
         const nameMatch = bodyText.match(/"name"\s*:\s*"([^"]*)"/);
         const histMatch = bodyText.match(/"history"\s*:\s*"([^"]*)"/);
-        
+
         // Pega tudo o que sobrou entre a chave da mensagem e o próximo campo
         const msgMatch = bodyText.match(/"message"\s*:\s*"(.*?)"\s*(?:,\s*"name"|,\s*"history"|})/s);
-        
+
         body = {
           name: nameMatch ? nameMatch[1] : "Colega",
           history: histMatch ? histMatch[1] : "",
@@ -99,10 +99,10 @@ export async function POST(request) {
       if (!geminiApiKey) throw new Error("Chave GEMINI_API_KEY não encontrada");
 
       const startTime = Date.now();
-      
+
       const genAI = new GoogleGenerativeAI(geminiApiKey);
       const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash-preview",
+        model: "gemini-3.1-flash-lite",
         systemInstruction: systemInstruction,
         generationConfig: {
           temperature: 0.7,
@@ -112,9 +112,9 @@ export async function POST(request) {
 
       const response = await model.generateContent({ contents: contents });
       const endTime = Date.now();
-      
+
       console.log(`[Vesper] Gemini 2.5 SDK Status: OK (${endTime - startTime}ms)`);
-      
+
       if (response && response.response) {
         aiReply = response.response.text();
       } else {
@@ -128,7 +128,7 @@ export async function POST(request) {
 
     // Limpeza e Formatação Extrema para WhatsApp/ManyChat
     contents.push({ role: "model", parts: [{ text: aiReply || "" }] });
-    
+
     let formattedReply = (aiReply || "")
       .replace(/\*\*(.*?)\*\*/g, '*$1*') // Negrito WhatsApp
       .replace(/\[.*?\]\((https?:\/\/.*?)\)/g, '$1') // URL pura
@@ -160,7 +160,7 @@ export async function POST(request) {
     console.error("[Vesper] Erro Fatal no Webhook:", error);
     // IMPORTANTE: Retorna 200 com mensagem padrão para forçar o ManyChat a atualizar a variável.
     // Se retornar 500, o ManyChat ignora a resposta e repete a última mensagem salva no Custom Field.
-    return NextResponse.json({ 
+    return NextResponse.json({
       resposta: "Estou processando muita informação ao mesmo tempo. Pode repetir de forma mais direta? 🌑",
       historico: ""
     }, { status: 200 });
