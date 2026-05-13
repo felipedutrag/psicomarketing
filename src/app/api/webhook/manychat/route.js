@@ -98,7 +98,7 @@ export async function POST(request) {
       if (!geminiApiKey) throw new Error("Chave GEMINI_API_KEY não encontrada");
 
       const startTime = Date.now();
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiApiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-preview:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -112,7 +112,7 @@ export async function POST(request) {
       });
 
       const endTime = Date.now();
-      console.log(`[Vesper] Gemini 1.5 Status: ${response.status} (${endTime - startTime}ms)`);
+      console.log(`[Vesper] Gemini 2.5 Status: ${response.status} (${endTime - startTime}ms)`);
 
       const data = await response.json();
 
