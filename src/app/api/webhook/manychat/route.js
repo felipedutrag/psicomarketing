@@ -7,8 +7,31 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
  */
 export async function POST(request) {
   try {
-    // 1. RECEBIMENTO DE DADOS (JSON PURO)
-    const body = await request.json();
+    // 1. RECEBIMENTO E HIGIENIZAÇÃO (Morte às quebras de linha que quebram o JSON)
+    const rawBody = await request.text();
+    let body;
+
+    try {
+      body = JSON.parse(rawBody);
+    } catch (parseError) {
+      console.warn("[Vesper] JSON malformado detectado. Tentando higienização de quebras de linha.");
+      // Limpa quebras de linha REAIS dentro de strings que o ManyChat às vezes envia sem escapar
+      const sanitizedBody = rawBody
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r");
+      
+      try {
+        body = JSON.parse(sanitizedBody);
+      } catch (secondError) {
+        console.error("[Vesper] Falha total no parse do JSON. Usando extração bruta de emergência.");
+        // Fallback para quando o JSON está realmente estilhaçado
+        body = {
+          message: rawBody.match(/"message"\s*:\s*"(.*?)"/s)?.[1] || rawBody,
+          name: rawBody.match(/"name"\s*:\s*"(.*?)"/)?.[1] || "Colega",
+          history: rawBody.match(/"history"\s*:\s*"(.*?)"/)?.[1] || ""
+        };
+      }
+    }
     
     const userMessage = body.message || "";
     const historyString = body.history || "";
