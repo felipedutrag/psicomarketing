@@ -61,7 +61,7 @@ export async function POST(request) {
       if (!geminiApiKey) throw new Error("Chave GEMINI_API_KEY não encontrada");
 
       const startTime = Date.now();
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
