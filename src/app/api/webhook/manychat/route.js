@@ -3,64 +3,25 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
  * Webhook para integração ManyChat -> Vesper IA
- * Focado em resiliência máxima contra payloads malformados do ManyChat.
+ * Otimizado para o uso de "Encode to JSON" no ManyChat.
  */
 export async function POST(request) {
-  let rawBody = "";
   try {
-    // 1. CAPTURA BRUTA E LOGGING DE DIAGNÓSTICO
-    rawBody = await request.text();
-    console.log(`[Vesper] RAW BODY RECEBIDO (Primeiros 500 chars): ${rawBody.substring(0, 500)}`);
-    
-    let body;
-
-    try {
-      // Tenta o parse padrão primeiro
-      body = JSON.parse(rawBody);
-    } catch (parseError) {
-      console.warn(`[Vesper] Falha no parse inicial: ${parseError.message}`);
-      
-      // TENTATIVA 2: Higienização agressiva de quebras de linha
-      // Substituímos quebras de linha reais por \n escapado
-      const sanitizedBody = rawBody
-        .replace(/\n/g, "\\n")
-        .replace(/\r/g, "\\r")
-        .replace(/\t/g, "\\t");
-
-      try {
-        body = JSON.parse(sanitizedBody);
-        console.log("[Vesper] JSON recuperado via higienização de escape.");
-      } catch (secondError) {
-        console.error(`[Vesper] Falha na higienização: ${secondError.message}`);
-        
-        // TENTATIVA 3: Extração Cirúrgica via Regex (Última linha de defesa)
-        // Buscamos o conteúdo entre as aspas dos campos conhecidos, ignorando quebras de linha
-        const extract = (field) => {
-          const regex = new RegExp(`"${field}"\\s*:\\s*"(.*?)"`, "s");
-          const match = rawBody.match(regex);
-          return match ? match[1] : null;
-        };
-
-        body = {
-          message: extract("message"),
-          name: extract("name") || "Colega",
-          history: extract("history") || ""
-        };
-        
-        console.log(`[Vesper] Dados extraídos via Regex. Message found: ${!!body.message}`);
-      }
-    }
+    // 1. RECEBIMENTO DE DADOS
+    // Com "Encode to JSON" ativo no ManyChat, o JSON chega perfeitamente formatado.
+    const body = await request.json();
     
     const userMessage = body.message || "";
     const historyString = body.history || "";
     const rawName = body.name || "Colega";
     const userName = rawName.split(' ')[0];
 
-    console.log(`[Vesper] Processando mensagem de ${userName}. Tamanho: ${userMessage.length}`);
+    console.log(`[Vesper] Mensagem recebida de ${userName}. Tamanho: ${userMessage.length}`);
 
     if (!userMessage) {
+      console.warn("[Vesper] Mensagem vazia ou malformada.");
       return NextResponse.json({ 
-        resposta: "Recebi sua chamada, mas o sinal parece ter falhado. Pode repetir o que você precisa? 🌑",
+        resposta: "O silêncio é elegante, mas para avançarmos na sua clínica, preciso que você me diga algo. 🌑",
         historico: historyString
       });
     }
@@ -90,15 +51,17 @@ export async function POST(request) {
         contents = JSON.parse(decoded);
         if (contents.length > 8) contents = contents.slice(-8);
       } catch (e) {
-        console.error("[Vesper] Erro no histórico:", e.message);
+        console.error("[Vesper] Erro ao decodificar histórico:", e.message);
         contents = [];
       }
     }
 
     contents.push({ role: "user", parts: [{ text: userMessage }] });
 
-    // 4. MOTOR IA
+    // 4. MOTOR IA (GEMINI 3.1 FLASH LITE PREVIEW)
     const geminiApiKey = process.env.GEMINI_API_KEY;
+    if (!geminiApiKey) throw new Error("GEMINI_API_KEY ausente.");
+
     const genAI = new GoogleGenerativeAI(geminiApiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-3.1-flash-lite-preview",
@@ -109,9 +72,10 @@ export async function POST(request) {
     const result = await model.generateContent({ contents });
     const aiReply = result.response.text();
 
-    // 5. FORMATAÇÃO E RESPOSTA
+    // 5. SANITIZAÇÃO E FORMATAÇÃO
     let formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*').trim();
 
+    // 6. OTIMIZAÇÃO DO HISTÓRICO
     contents.push({ role: "model", parts: [{ text: aiReply }] });
     const optimizedHistory = contents.slice(-6).map(msg => ({
       role: msg.role,
@@ -126,7 +90,7 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error("[Vesper] Erro Crítico:", error.message);
+    console.error("[Vesper] Erro no Webhook:", error.message);
     return NextResponse.json({
       resposta: "Tive um leve insight agora que me distraiu do nosso assunto. Poderia repetir? 🌑",
       historico: ""
