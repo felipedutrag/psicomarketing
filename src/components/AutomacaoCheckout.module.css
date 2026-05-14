@@ -216,7 +216,7 @@
 @media (max-width: 768px) {
   .section::before {
     display: block;
-    opacity: 0.06; /* Versão ultra leve para mobile */
+    opacity: 0.15; /* Mais visível no mobile */
     animation: stardust 200s linear infinite;
   }
 

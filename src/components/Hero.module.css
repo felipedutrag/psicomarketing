@@ -224,7 +224,7 @@
 
   .hero::before {
     display: block;
-    opacity: 0.1; /* Versão mais leve para não pesar */
+    opacity: 0.2; /* Aumentado para ser mais visível conforme solicitado */
     animation: starsFloat 120s linear infinite;
   }
 
@@ -233,7 +233,7 @@
   }
 
   .scrollIndicator {
-    bottom: 180px; /* Subindo o botão mais um pouco conforme solicitado */
+    bottom: 220px; /* Subindo ainda mais para garantir visibilidade total */
   }
 
   .badge {
