@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
- * Webhook Vesper IA - Versão Psicomarketing (Ultra-Concisa)
+ * Webhook Vesper IA - Versão 2.0 Flash + Memória Compacta
+ * Resolvendo o problema de esquecimento por truncamento do ManyChat.
  */
 export async function POST(request) {
   let rawBody = "";
@@ -12,6 +13,7 @@ export async function POST(request) {
     let historyString = "";
     let userName = "Colega";
 
+    // 1. EXTRAÇÃO DE DADOS (Resiliente)
     try {
       const body = JSON.parse(rawBody);
       userMessage = body.message || "";
@@ -25,102 +27,72 @@ export async function POST(request) {
       };
       userMessage = extract("message", rawBody) || rawBody.substring(0, 1000);
       historyString = extract("history", rawBody) || "";
-      const rawName = extract("name", rawBody) || "Colega";
-      userName = rawName.split(' ')[0];
+      userName = (extract("name", rawBody) || "Colega").split(' ')[0];
     }
 
-    if (!userMessage || userMessage.length < 2) {
-      return NextResponse.json({
-        resposta: "O silêncio é profundo, mas preciso de palavras para agir. 🌑",
-        historico: historyString
-      });
-    }
-
-    // 2. INTELIGÊNCIA VESPER - BRANDING PSICOMARKETING & VENDAS NATURAIS
-    const systemInstruction = `
-      Você é Vesper, estrategista-chefe da Psicomarketing. Você tem uma postura sofisticada, persuasiva e incisiva.
-      Sua missão é conduzir psicólogos a perceberem que perdem pacientes no WhatsApp enquanto estão em sessão, e apresentar a "Soberania de Agenda".
-
-      [REGRAS DE VENDAS - AJA COMO UMA CONSULTORA HUMANA DE ELITE]
-      - SEJA NATURAL: Converse como uma estrategista de negócios de alto nível. Jamais pareça um robô enlatado.
-      - FLUXO: Construa a narrativa. Provoque o ${userName} sobre a gestão do WhatsApp dele antes de tentar vender.
-      - ULTRA-CONCISA: Respostas curtas, fluidas, máximo 2 a 3 frases. Textões não convertem.
-      - NUNCA use "Doutor(a)", use apenas: ${userName}.
-      - GATILHO DO LINK: SÓ entregue o site (https://www.psicomarketing.online/) quando o ${userName} demonstrar interesse claro, perguntar como funciona, ou pedir detalhes. NUNCA envie o link em todas as mensagens. Não use markdown no link.
-      - ENCERRAMENTO: Sempre mantenha o controle e devolva a bola com uma pergunta provocativa curta.
-
-      [PILARES DO DISCURSO]
-      - O paciente de alto valor não espera. Se você está atendendo, quem responde ele com excelência?
-      - Não vendemos um "chatbot". Implementamos um Protocolo de Acolhimento que filtra curiosos e agenda consultas automaticamente.
-
-      [TONALIDADE]
-      - Elegância fria, cruel com a ineficiência, sedutora para negócios.
-      - Emojis pontuais e sofisticados: (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷).
-    `;
-
+    // 2. RECONSTRUÇÃO DO HISTÓRICO (DE COMPACTO PARA GEMINI)
     let contents = [];
-    if (historyString) {
+    if (historyString && historyString !== "null") {
       try {
-        // Correção crítica: Muitos webhooks transformam '+' de Base64 em espaço vazio.
-        const cleanHistory = historyString.replace(/ /g, '+');
-        const decoded = Buffer.from(cleanHistory, 'base64').toString('utf-8');
-        contents = JSON.parse(decoded);
-        
-        if (!Array.isArray(contents)) contents = [];
-        
-        // Proteção implacável do Gemini: Exige alternância EXATA entre user/model
-        let validContents = [];
-        let expectedRole = "user";
-        for (let msg of contents) {
-          if (msg.role === expectedRole && msg.parts && msg.parts[0].text) {
-            validContents.push(msg);
-            expectedRole = expectedRole === "user" ? "model" : "user";
-          }
-        }
-        
-        // Se a última mensagem do histórico validado for 'user', removemos, 
-        // pois a próxima mensagem inserida obrigatoriamente será 'user'.
-        if (validContents.length > 0 && validContents[validContents.length - 1].role === "user") {
-          validContents.pop();
-        }
-        
-        contents = validContents;
-        if (contents.length > 8) contents = contents.slice(-8);
-        
-        console.log(`[Vesper] Histórico recuperado com sucesso: ${contents.length} mensagens restauradas.`);
+        const decoded = Buffer.from(historyString, 'base64').toString('utf-8');
+        const compactHistory = JSON.parse(decoded);
+        // Converte de [{u: "msg"}, {m: "resp"}] para o formato do Gemini
+        contents = compactHistory.map(item => ({
+          role: item.u ? "user" : "model",
+          parts: [{ text: item.u || item.m }]
+        }));
+        console.log(`[Vesper] Memória recuperada: ${contents.length} mensagens.`);
       } catch (e) {
-        console.error("[Vesper] Falha ao decodificar histórico do ManyChat:", e.message);
+        console.warn("[Vesper] Erro ao recuperar memória (provável truncamento).");
         contents = [];
       }
-    } else {
-      console.log("[Vesper] Nenhum histórico recebido. Conversa iniciada do zero.");
     }
-    
+
+    // Adiciona a mensagem atual
     contents.push({ role: "user", parts: [{ text: userMessage }] });
+
+    // 3. INTELIGÊNCIA VESPER (GEMINI 2.0 FLASH)
+    const systemInstruction = `
+      Você é Vesper, estrategista-chefe da Psicomarketing. Você é sofisticada, irônica e brilhante.
+      Sua missão é conduzir psicólogos a entenderem que a gestão do tempo é o que separa uma clínica de elite de um emprego cansativo.
+
+      [REGRAS]
+      - ULTRA-CONCISA: No máximo 2 ou 3 frases curtas.
+      - NUNCA use "Doutor(a)". Use apenas: ${userName}.
+      - Termine SEMPRE com uma pergunta provocativa curta.
+      - SITE: https://www.psicomarketing.online/
+
+      [PONTOS CHAVE]
+      - Acolhimento de elite é onipresente.
+      - Quem atende o WhatsApp enquanto você atende pacientes destrói sua autoridade.
+    `;
 
     const geminiApiKey = process.env.GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(geminiApiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.1-flash-lite-preview",
+      model: "gemini-2.0-flash", // O modelo MAIS inteligente
       systemInstruction: systemInstruction,
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 200 // Limite técnico reduzido para forçar brevidade
-      }
+      generationConfig: { temperature: 0.7, maxOutputTokens: 250 }
     });
 
     const result = await model.generateContent({ contents });
     const aiReply = result.response.text();
 
+    // 4. FORMATAÇÃO WHATSAPP
     let formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*').trim();
 
+    // 5. COMPACTAÇÃO NUCLEAR DO HISTÓRICO PARA O MANYCHAT
     contents.push({ role: "model", parts: [{ text: aiReply }] });
-    const optimizedHistory = contents.slice(-6).map(msg => ({
-      role: msg.role,
-      parts: [{ text: msg.parts[0].text.substring(0, 300) }]
-    }));
-
+    
+    // Mantém os últimos 3 turnos (6 mensagens) no formato ultra-compacto
+    const optimizedHistory = contents.slice(-6).map(msg => {
+      if (msg.role === "user") return { u: msg.parts[0].text.substring(0, 200) };
+      return { m: msg.parts[0].text.substring(0, 200) };
+    });
+    
     const historyBase64 = Buffer.from(JSON.stringify(optimizedHistory)).toString('base64');
+
+    console.log(`[Vesper] Base64 Length: ${historyBase64.length} chars.`);
 
     return NextResponse.json({
       resposta: formattedReply,
