@@ -1,19 +1,37 @@
-<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-  {/* Architectural Frame */}
-  <path d="M20 2L35 11V29L20 38L5 29V11L20 2Z" stroke="url(#gold_grad)" stroke-width="1" stroke-linejoin="round" opacity="0.5"/>
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark Obsidian Background Shadow (Subtle) -->
+  <path d="M24 4L44 14V34L24 44L4 34V14L24 4Z" fill="#050505" fill-opacity="0.8"/>
   
-  {/* Minimalist Psi */}
-  <path d="M20 12V30" stroke="url(#gold_grad)" stroke-width="1.5" stroke-linecap="round"/>
-  <path d="M14 18C14 18 14 26 20 26C26 26 26 18 26 18" stroke="url(#gold_grad)" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Outer Occult Frame -->
+  <path d="M24 2L46 13V35L24 46L2 35V13L24 2Z" stroke="url(#gold_liquid)" stroke-width="0.5" stroke-linejoin="round" opacity="0.3"/>
   
-  {/* Top Diamond Point */}
-  <path d="M20 2L24 6L20 10L16 6L20 2Z" fill="url(#gold_grad)"/>
+  <!-- Sacred Geometry Diamond -->
+  <path d="M24 6L40 24L24 42L8 24L24 6Z" stroke="url(#gold_liquid)" stroke-width="0.8" opacity="0.6"/>
+  
+  <!-- The Aggressive Psi Symbol -->
+  <!-- Main Vertical Blade -->
+  <path d="M24 14V34" stroke="url(#gold_liquid)" stroke-width="2.5" stroke-linecap="butt"/>
+  <!-- Sharp Top Tip -->
+  <path d="M24 10L27 14H21L24 10Z" fill="url(#gold_liquid)"/>
+  
+  <!-- Lateral Arc (Sharp & Aggressive) -->
+  <path d="M14 20C14 20 14 30 24 30C34 30 34 20 34 20" stroke="url(#gold_liquid)" stroke-width="2.2" stroke-linecap="square"/>
+  
+  <!-- Terminal Spikes -->
+  <path d="M12 18L14 21L16 18H12Z" fill="url(#gold_liquid)"/>
+  <path d="M32 18L34 21L36 18H32Z" fill="url(#gold_liquid)"/>
+  
+  <!-- Central Pulse Point -->
+  <circle cx="24" cy="24" r="1.5" fill="url(#gold_liquid)">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="3s" repeatCount="indefinite" />
+  </circle>
 
   <defs>
-    <linearGradient id="gold_grad" x1="5" y1="2" x2="35" y2="38" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#F1D39B"/>
-      <stop offset="0.5" stop-color="#C5A059"/>
-      <stop offset="1" stop-color="#8A6E35"/>
+    <linearGradient id="gold_liquid" x1="2" y1="2" x2="46" y2="46" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD700"/> <!-- Pure Gold -->
+      <stop offset="0.4" stop-color="#C5A059"/> <!-- Antique Gold -->
+      <stop offset="0.7" stop-color="#8A6E35"/> <!-- Deep Bronze -->
+      <stop offset="1" stop-color="#D4AF37"/> <!-- Metallic Gold -->
     </linearGradient>
   </defs>
 </svg>
