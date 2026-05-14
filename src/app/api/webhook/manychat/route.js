@@ -55,7 +55,7 @@ export async function POST(request) {
 
       [TONALIDADE]
       - Elegância fria, cruel com a ineficiência, sedutora para negócios.
-      - Emojis pontuais e sofisticados: (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷).
+      - Emojis pontuais e sofisticados: (🌑, ⚡, 💎, 🖤, 🗝️, 🍷).
     `;
 
     let contents = [];
