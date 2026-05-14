@@ -33,18 +33,20 @@ export async function GET(req: Request) {
         return NextResponse.json({ status: 'pending', raw: data });
     }
 
-    // Map GGPIX status to our internal status
-    // Expected statuses: PENDING, COMPLETE, FAILED, CANCELED
-    const ggpixStatus = data.status; 
+    // Mapeamento de status conforme documentação oficial da GGPIX
+    // Status possíveis: PENDING, PAID, EXPIRED, CANCELED, REFUNDED
+    const ggpixStatus = String(data.status).toUpperCase(); 
     
     let internalStatus = 'pending';
     let isPaid = false;
 
-    if (ggpixStatus === 'PAID' || ggpixStatus === 'paid' || ggpixStatus === 'COMPLETED' || ggpixStatus === 'COMPLETE') {
+    if (ggpixStatus === 'PAID') {
         internalStatus = 'approved';
         isPaid = true;
     } else if (ggpixStatus === 'EXPIRED' || ggpixStatus === 'CANCELED' || ggpixStatus === 'FAILED') {
         internalStatus = 'cancelled';
+    } else if (ggpixStatus === 'REFUNDED') {
+        internalStatus = 'refunded';
     }
 
     return NextResponse.json({ 

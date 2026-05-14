@@ -5,6 +5,17 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 require('dotenv').config();
 
 async function scrapeAndClean() {
+    // Lista de bairros/regiões de SP para aleatoriedade
+    const bairrosSP = [
+        'Centro', 'Pinheiros', 'Vila Mariana', 'Itaim Bibi', 'Moema', 
+        'Tatuapé', 'Santana', 'Santo Amaro', 'Perdizes', 'Lapa', 
+        'Belém', 'Mooca', 'Butantã', 'Jabaquara', 'Vila Olimpia', 
+        'Bela Vista', 'Consolação', 'Liberdade', 'Saúde', 'Vila Guilherme'
+    ];
+    
+    // Escolhe um bairro aleatório ou usa o passado por argumento
+    const bairroEscolhido = process.argv[2] || bairrosSP[Math.floor(Math.random() * bairrosSP.length)];
+
     const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
@@ -12,15 +23,36 @@ async function scrapeAndClean() {
     });
     const page = await browser.newPage();
 
-    console.log('--- INICIANDO SCRAPER DE TESTE (5 LEADS RAW + WA LINK) ---');
-    const url = 'https://www.google.com/maps/search/psicologos+cidade+rio+de+janeiro';
+    console.log(`--- INICIANDO SCRAPER (SÃO PAULO - BAIRRO: ${bairroEscolhido.toUpperCase()}) ---`);
+    const url = `https://www.google.com/maps/search/psicologos+bairro+${encodeURIComponent(bairroEscolhido)}+sao+paulo`;
     await page.goto(url, { waitUntil: 'networkidle2' });
 
     const sidePanelSelector = 'div[role="feed"]';
     await page.waitForSelector(sidePanelSelector);
 
     const rawLeads = [];
-    const limit = 5;
+    const limit = 20;
+
+    console.log(`--- ROLANDO PARA CARREGAR LEADS (ALVO: ${limit}) ---`);
+    let leadsLoaded = 0;
+    let scrollAttempts = 0;
+    
+    while (leadsLoaded < limit && scrollAttempts < 15) {
+        leadsLoaded = await page.$$eval('.hfpxzc', el => el.length);
+        console.log(`Leads detectados no DOM: ${leadsLoaded}`);
+        
+        if (leadsLoaded >= limit) break;
+
+        await page.evaluate(() => {
+            const sidePanel = document.querySelector('div[role="feed"]');
+            if (sidePanel) {
+                sidePanel.scrollBy(0, 1500);
+            }
+        });
+        
+        await new Promise(r => setTimeout(r, 2000));
+        scrollAttempts++;
+    }
 
     // Mensagem genérica de fallback
     const mensagemPadrao = `Olá! Sou da Psicomarketing.
@@ -28,13 +60,25 @@ Notei sua presença clínica e gostaria de mostrar como nossa IA pode assumir se
 Conheça: https://www.psicomarketing.online/
 Responda para testar!`;
 
+    console.log(`🚀 Iniciando extração de ${limit} leads...`);
+
     for (let i = 0; i < limit; i++) {
         try {
+            // Re-busca a lista em cada iteração para evitar elementos estáticos/quebrados
             const listItems = await page.$$('.hfpxzc');
-            if (i >= listItems.length) break;
+            if (i >= listItems.length) {
+                console.log(`⚠️ Fim da lista alcançado prematuramente (${listItems.length} encontrados).`);
+                break;
+            }
 
-            await listItems[i].click();
-            await new Promise(r => setTimeout(r, 2500));
+            const item = listItems[i];
+            
+            // Rola o item específico para a visão antes de clicar (Garante o carregamento dos detalhes)
+            await page.evaluate(el => el.scrollIntoView(), item);
+            await new Promise(r => setTimeout(r, 500));
+            
+            await item.click();
+            await new Promise(r => setTimeout(r, 3000)); // Tempo para carregar o painel de detalhes
 
             const details = await page.evaluate((msg) => {
                 const name = document.querySelector('h1.DUwDvf')?.innerText || 'Desconhecido';
@@ -73,7 +117,7 @@ Responda para testar!`;
     } else {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({
-            model: "gemini-3-flash-preview",
+            model: "gemini-3.1-flash-lite",
             generationConfig: {
                 temperature: 1.0,
                 topP: 0.95,
@@ -91,21 +135,19 @@ Responda para testar!`;
                     nomeParaIA = nomeParaIA.split(' ')[0];
                 }
 
-                const prompt = `Você é um especialista em copy profissional e elegante para psicólogos. Use como base este estilo de mensagem, mas varie COMPLETAMENTE o vocabulário e a estrutura das frases em cada geração para evitar detecção de spam.
-                Analise o nome do lead e faça uma limpeza da cidade ou informações que não são relevantes para a mensagem. Pegue apenas o primeiro nome ou o nome da clinica, se pertinente. Não fale que você acompanhou a trajetória, apenas que identificou a pesença online.
+                const prompt = `Você é um redator especialista em copy simpático, profissional e extremamente OBJETIVO. 
+                Escreva uma mensagem curta para WhatsApp para apresentar a Psicomarketing para um psicólogo.
 
-IMPORTANTE: O nome do lead é "${nomeParaIA}". Você DEVE usar este nome na saudação. NUNCA escreva a palavra "[Nome]" ou "[Clínica]", use the nome real que eu te passei.
+                REGRAS OBRIGATÓRIAS:
+                1. NÃO use o nome do lead ou da clínica. Comece com uma saudação cordial e genérica (ex: Olá, tudo bem?).
+                2. Apresente a marca de forma fluida e convidativa (ex: "Conheça a Psicomarketing", "Já ouviu falar da Psicomarketing?" ou similar). Evite o clássico "Sou da...".
+                3. Explique que somos uma Inteligência Artificial exclusiva para psicólogos que automatiza o acolhimento e agendamento no WhatsApp enquanto eles atendem.
+                4. O link deve estar em uma linha PRÓPRIA e ISOLADA: https://www.psicomarketing.online/
+                5. O CTA final deve ser um convite para a pessoa RESPONDER a esta mensagem para testar a IA agora mesmo.
+                6. Varie COMPLETAMENTE o vocabulário e a estrutura das frases em cada geração para evitar detecção de spam.
+                7. Tom: Amigável, moderno e sem enrolação.
 
-ESTILO BASE PARA INSPIRAÇÃO (NÃO COPIE IGUAL):
-"Olá ${nomeParaIA}! Sou da Psicomarketing. Notei sua presença online e gostaria de mostrar como nossa inteligência assume seu acolhimento e agendamento no WhatsApp enquanto você atende. Garantimos resposta imediata para todo paciente, preservando sua autoridade. Conheça: https://www.psicomarketing.online/ Responda agora para testar!"
-
-REGRAS DE VARIAÇÃO (OBRIGATÓRIO):
-1. Use sinônimos para termos chave (equipe, sistema, perfil profissional, gerenciar contato, etc.).
-2. Comece sempre com a saudação personalizada usando o nome "${nomeParaIA}".
-3. O link deve estar em uma linha PRÓPRIA e ISOLADA: https://www.psicomarketing.online/
-4. O CTA deve ser a ÚLTIMA LINHA: Uma ordem direta para responder e testar a IA, terminando com "!".
-
-Responda APENAS com a mensagem personalizada, sem aspas e sem explicações.`;
+                Responda APENAS com a mensagem personalizada, sem aspas e sem explicações.`;
 
                 const result = await model.generateContent(prompt);
                 const response = await result.response;
@@ -133,6 +175,21 @@ Responda APENAS com a mensagem personalizada, sem aspas e sem explicações.`;
 
     console.log(`\n--- PROCESSO FINALIZADO ---`);
     console.log(`Leads processados: ${rawLeads.length}`);
+
+    // Chamada automática para o integrador do Notion
+    console.log('\n--- SINCRONIZANDO COM NOTION ---');
+    const { exec } = require('child_process');
+    exec('node scrapers/sync_to_notion.js', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`❌ Erro ao sincronizar com Notion: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.error(`⚠️ Erro no processo de sync: ${stderr}`);
+            return;
+        }
+        console.log(stdout);
+    });
 }
 
 scrapeAndClean().catch(err => {
