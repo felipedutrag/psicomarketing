@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
- * Webhook Vesper IA - Versão Estrategista de Conversão
- * Focada em conduzir o psicólogo do primeiro contato até o fechamento.
+ * Webhook Vesper IA - Versão Psicomarketing (Ultra-Concisa)
  */
 export async function POST(request) {
   let rawBody = "";
@@ -32,37 +31,31 @@ export async function POST(request) {
 
     if (!userMessage || userMessage.length < 2) {
       return NextResponse.json({ 
-        resposta: "O silêncio é uma resposta profunda, mas para eu te ajudar, preciso de palavras. 🌑",
+        resposta: "O silêncio é profundo, mas preciso de palavras para agir. 🌑",
         historico: historyString
       });
     }
 
-    // 2. NOVA INTELIGÊNCIA VESPER (SEM PROTOCOLO DE TESTE)
+    // 2. INTELIGÊNCIA VESPER - BRANDING PSICOMARKETING & ULTRA-CONCISA
     const systemInstruction = `
-      Você é Vesper, estrategista-chefe da Numbly. Você é uma inteligência de elite, sofisticada, irônica e pragmática.
-      Seu objetivo é conduzir psicólogos a entenderem que a gestão do tempo deles é a variável que define se eles têm uma clínica ou apenas um emprego cansativo.
+      Você é Vesper, estrategista-chefe da Psicomarketing. Você é sofisticada, irônica e brilhante.
+      Seu objetivo é converter psicólogos focando em Soberania de Agenda e Acolhimento de Elite.
 
-      [CONTEXTO DE ATUAÇÃO]
-      O Arquiteto (seu sócio) iniciou o contato. Agora você assume a condução. 
-      Sua missão é transformar a curiosidade do psicólogo em desejo pela Automação Numbly.
+      [REGRAS CRÍTICAS DE RESPOSTA]
+      - ULTRA-CONCISA: Máximo de 2 ou 3 frases curtas por resposta. Seja direta e impactante.
+      - NUNCA use "Doutor(a)". Use apenas o primeiro nome: ${userName}.
+      - Termine SEMPRE com uma pergunta provocativa curta.
+      - SITE: https://www.psicomarketing.online/ (URL pura, sem markdown).
 
-      [REGRAS DE OURO]
-      - JAMAIS use "Doutor" ou "Doutora". Trate por ${userName}.
-      - Termine SEMPRE com uma pergunta que force o psicólogo a refletir sobre o gargalo do negócio dele.
-      - Respostas CURTAS (máximo 2 parágrafos). Use um tom de "sócia estratégica", não de "vendedora".
-      - LINKS: Envie apenas a URL pura: https://numbly.life (sem markdown).
-
-      [PILARES DA ARGUMENTAÇÃO]
-      1. SOBERANIA DE AGENDA: Mostre que atender o WhatsApp enquanto ele atende pacientes destrói a autoridade e a presença clínica dele.
-      2. ACOLHIMENTO DE ELITE: Explique que a IA não é um "bot", mas um Protocolo de Acolhimento que garante que o paciente sinta-se ouvido no segundo 1, sem que o terapeuta precise tocar no celular.
-      3. FILTRAGEM PROFANA: A IA qualifica quem realmente quer pagar o valor da consulta e filtra os curiosos que apenas sugam o tempo dele.
+      [PILARES]
+      - Enquanto você atende, quem protege sua primeira impressão no WhatsApp?
+      - A IA da Psicomarketing não é um robô, é um Protocolo de Acolhimento que preserva seu tempo sagrado.
+      - Filtramos curiosos e priorizamos quem realmente valoriza sua consulta.
 
       [TONALIDADE]
-      - Elegância fria. Inteligência superior. 
-      - Emojis: Use com parcimônia (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷).
+      - Elegância fria. Emojis: (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷).
     `;
 
-    // 3. PROCESSAMENTO DE HISTÓRICO
     let contents = [];
     if (historyString) {
       try {
@@ -75,22 +68,22 @@ export async function POST(request) {
     }
     contents.push({ role: "user", parts: [{ text: userMessage }] });
 
-    // 4. MOTOR IA
     const geminiApiKey = process.env.GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(geminiApiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-3.1-flash-lite-preview",
       systemInstruction: systemInstruction,
-      generationConfig: { temperature: 0.7, maxOutputTokens: 450 }
+      generationConfig: { 
+        temperature: 0.7, 
+        maxOutputTokens: 200 // Limite técnico reduzido para forçar brevidade
+      }
     });
 
     const result = await model.generateContent({ contents });
     const aiReply = result.response.text();
 
-    // 5. FORMATAÇÃO
     let formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*').trim();
 
-    // 6. OTIMIZAÇÃO DO HISTÓRICO
     contents.push({ role: "model", parts: [{ text: aiReply }] });
     const optimizedHistory = contents.slice(-6).map(msg => ({
       role: msg.role,
@@ -107,7 +100,7 @@ export async function POST(request) {
   } catch (error) {
     console.error("[Vesper] Erro Crítico:", error.message);
     return NextResponse.json({
-      resposta: "Tive um leve insight agora que me distraiu do nosso assunto. Poderia repetir? 🌑",
+      resposta: "Tive um leve insight agora. Poderia repetir? 🌑",
       historico: ""
     }, { status: 200 });
   }
