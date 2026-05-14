@@ -2,26 +2,54 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
- * Webhook para integração ManyChat -> Vesper IA
- * Otimizado para o uso de "Encode to JSON" no ManyChat.
+ * Webhook Vesper IA - Versão Nuclear
+ * Designado para ser imune a JSONs malformados e quebras de linha brutas do ManyChat.
  */
 export async function POST(request) {
+  let rawBody = "";
   try {
-    // 1. RECEBIMENTO DE DADOS
-    // Com "Encode to JSON" ativo no ManyChat, o JSON chega perfeitamente formatado.
-    const body = await request.json();
+    rawBody = await request.text();
     
-    const userMessage = body.message || "";
-    const historyString = body.history || "";
-    const rawName = body.name || "Colega";
-    const userName = rawName.split(' ')[0];
+    // LOG DE DIAGNÓSTICO (Para sabermos exatamente o que o ManyChat está aprontando)
+    console.log(`[Vesper] RAW PAYLOAD: ${rawBody.substring(0, 300)}...`);
 
-    console.log(`[Vesper] Mensagem recebida de ${userName}. Tamanho: ${userMessage.length}`);
+    let userMessage = "";
+    let historyString = "";
+    let userName = "Colega";
+
+    // TENTATIVA 1: Parse Civilizado
+    try {
+      const body = JSON.parse(rawBody);
+      userMessage = body.message || "";
+      historyString = body.history || "";
+      userName = (body.name || "Colega").split(' ')[0];
+    } catch (e) {
+      // TENTATIVA 2: Extração Nuclear via Regex (Ignora a sintaxe do JSON e busca o conteúdo)
+      console.warn("[Vesper] JSON Inválido. Iniciando extração nuclear via Regex.");
+      
+      const extractField = (field, text) => {
+        // Busca o campo, pula as aspas e captura tudo até a aspa final que precede um , ou }
+        // O flag 's' permite que o '.' capture quebras de linha (o culpado do erro)
+        const regex = new RegExp(`"${field}"\\s*:\\s*"(.*?)"(?=\\s*,\\s*"|\\s*})`, "s");
+        const match = text.match(regex);
+        return match ? match[1] : null;
+      };
+
+      userMessage = extractField("message", rawBody) || "";
+      historyString = extractField("history", rawBody) || "";
+      const rawName = extractField("name", rawBody) || "Colega";
+      userName = rawName.split(' ')[0];
+      
+      // Se a regex falhou em pegar a mensagem, tenta pegar tudo que estiver no campo message até o fim
+      if (!userMessage) {
+        userMessage = rawBody.match(/"message"\s*:\s*"(.*)"/s)?.[1] || "";
+      }
+    }
 
     if (!userMessage) {
-      console.warn("[Vesper] Mensagem vazia ou malformada.");
+      console.error("[Vesper] Falha total na captura da mensagem.");
       return NextResponse.json({ 
-        resposta: "O silêncio é elegante, mas para avançarmos na sua clínica, preciso que você me diga algo. 🌑",
+        resposta: "Minha conexão com seus pensamentos oscilou. Poderia repetir a última frase? 🌑",
         historico: historyString
       });
     }
@@ -37,10 +65,7 @@ export async function POST(request) {
       - Respostas CURTAS, densas e elegantes (máximo 2 parágrafos).
       - LINKS: Envie links apenas como URL pura (ex: https://numbly.life), JAMAIS use formato markdown [texto](link).
       - IDENTIDADE: Você é Vesper. Não se apresente a menos que perguntem.
-
-      [TONALIDADE]
-      - Sofisticação. Postura de sócia estratégica.
-      - Use emojis com classe (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷).
+      - TONALIDADE: Sofisticação. Emojis (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷).
     `;
 
     // 3. PROCESSAMENTO DE HISTÓRICO
@@ -51,17 +76,14 @@ export async function POST(request) {
         contents = JSON.parse(decoded);
         if (contents.length > 8) contents = contents.slice(-8);
       } catch (e) {
-        console.error("[Vesper] Erro ao decodificar histórico:", e.message);
         contents = [];
       }
     }
 
     contents.push({ role: "user", parts: [{ text: userMessage }] });
 
-    // 4. MOTOR IA (GEMINI 3.1 FLASH LITE PREVIEW)
+    // 4. MOTOR IA
     const geminiApiKey = process.env.GEMINI_API_KEY;
-    if (!geminiApiKey) throw new Error("GEMINI_API_KEY ausente.");
-
     const genAI = new GoogleGenerativeAI(geminiApiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-3.1-flash-lite-preview",
@@ -72,7 +94,7 @@ export async function POST(request) {
     const result = await model.generateContent({ contents });
     const aiReply = result.response.text();
 
-    // 5. SANITIZAÇÃO E FORMATAÇÃO
+    // 5. FORMATAÇÃO
     let formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*').trim();
 
     // 6. OTIMIZAÇÃO DO HISTÓRICO
@@ -90,7 +112,7 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error("[Vesper] Erro no Webhook:", error.message);
+    console.error("[Vesper] Erro Crítico:", error.message);
     return NextResponse.json({
       resposta: "Tive um leve insight agora que me distraiu do nosso assunto. Poderia repetir? 🌑",
       historico: ""
