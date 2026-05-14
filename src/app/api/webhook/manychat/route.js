@@ -3,33 +3,51 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
  * Webhook para integração ManyChat -> Vesper IA
- * Focado em JSON puro (sem form-data) para máxima estabilidade.
+ * Focado em resiliência máxima contra payloads malformados do ManyChat.
  */
 export async function POST(request) {
+  let rawBody = "";
   try {
-    // 1. RECEBIMENTO E HIGIENIZAÇÃO (Morte às quebras de linha que quebram o JSON)
-    const rawBody = await request.text();
+    // 1. CAPTURA BRUTA E LOGGING DE DIAGNÓSTICO
+    rawBody = await request.text();
+    console.log(`[Vesper] RAW BODY RECEBIDO (Primeiros 500 chars): ${rawBody.substring(0, 500)}`);
+    
     let body;
 
     try {
+      // Tenta o parse padrão primeiro
       body = JSON.parse(rawBody);
     } catch (parseError) {
-      console.warn("[Vesper] JSON malformado detectado. Tentando higienização de quebras de linha.");
-      // Limpa quebras de linha REAIS dentro de strings que o ManyChat às vezes envia sem escapar
+      console.warn(`[Vesper] Falha no parse inicial: ${parseError.message}`);
+      
+      // TENTATIVA 2: Higienização agressiva de quebras de linha
+      // Substituímos quebras de linha reais por \n escapado
       const sanitizedBody = rawBody
         .replace(/\n/g, "\\n")
-        .replace(/\r/g, "\\r");
-      
+        .replace(/\r/g, "\\r")
+        .replace(/\t/g, "\\t");
+
       try {
         body = JSON.parse(sanitizedBody);
+        console.log("[Vesper] JSON recuperado via higienização de escape.");
       } catch (secondError) {
-        console.error("[Vesper] Falha total no parse do JSON. Usando extração bruta de emergência.");
-        // Fallback para quando o JSON está realmente estilhaçado
-        body = {
-          message: rawBody.match(/"message"\s*:\s*"(.*?)"/s)?.[1] || rawBody,
-          name: rawBody.match(/"name"\s*:\s*"(.*?)"/)?.[1] || "Colega",
-          history: rawBody.match(/"history"\s*:\s*"(.*?)"/)?.[1] || ""
+        console.error(`[Vesper] Falha na higienização: ${secondError.message}`);
+        
+        // TENTATIVA 3: Extração Cirúrgica via Regex (Última linha de defesa)
+        // Buscamos o conteúdo entre as aspas dos campos conhecidos, ignorando quebras de linha
+        const extract = (field) => {
+          const regex = new RegExp(`"${field}"\\s*:\\s*"(.*?)"`, "s");
+          const match = rawBody.match(regex);
+          return match ? match[1] : null;
         };
+
+        body = {
+          message: extract("message"),
+          name: extract("name") || "Colega",
+          history: extract("history") || ""
+        };
+        
+        console.log(`[Vesper] Dados extraídos via Regex. Message found: ${!!body.message}`);
       }
     }
     
@@ -38,10 +56,11 @@ export async function POST(request) {
     const rawName = body.name || "Colega";
     const userName = rawName.split(' ')[0];
 
+    console.log(`[Vesper] Processando mensagem de ${userName}. Tamanho: ${userMessage.length}`);
+
     if (!userMessage) {
-      console.warn("[Vesper] Mensagem vazia recebida do ManyChat.");
       return NextResponse.json({ 
-        resposta: "Eu adoraria ouvir o que você tem a dizer, mas o silêncio não constrói clínicas de sucesso. O que houve? 🌑",
+        resposta: "Recebi sua chamada, mas o sinal parece ter falhado. Pode repetir o que você precisa? 🌑",
         historico: historyString
       });
     }
@@ -58,63 +77,42 @@ export async function POST(request) {
       - LINKS: Envie links apenas como URL pura (ex: https://numbly.life), JAMAIS use formato markdown [texto](link).
       - IDENTIDADE: Você é Vesper. Não se apresente a menos que perguntem.
 
-      [PROTOCOLO ESTRATÉGICO]
-      - Foque na dor da 'Escravidão da Agenda': Enquanto o psicólogo atende, quem acolhe o novo paciente? 
-      - Mostre que o 'vácuo' no primeiro contato é a maior causa de perda de faturamento em clínicas de SP.
-      - Posicione a IA não como um robô, mas como uma extensão da excelência dele(a).
-
       [TONALIDADE]
       - Sofisticação. Postura de sócia estratégica.
       - Use emojis com classe (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷).
     `;
 
-    // 3. PROCESSAMENTO DE HISTÓRICO (BASE64)
+    // 3. PROCESSAMENTO DE HISTÓRICO
     let contents = [];
     if (historyString) {
       try {
         const decoded = Buffer.from(historyString, 'base64').toString('utf-8');
         contents = JSON.parse(decoded);
-        // Limita a memória recente para não estourar o contexto ou o ManyChat
         if (contents.length > 8) contents = contents.slice(-8);
       } catch (e) {
-        console.error("[Vesper] Erro ao decodificar histórico:", e.message);
+        console.error("[Vesper] Erro no histórico:", e.message);
         contents = [];
       }
     }
 
-    // Adiciona a nova mensagem do usuário
     contents.push({ role: "user", parts: [{ text: userMessage }] });
 
-    // 4. MOTOR IA (GEMINI 3.1 FLASH LITE PREVIEW)
+    // 4. MOTOR IA
     const geminiApiKey = process.env.GEMINI_API_KEY;
-    if (!geminiApiKey) {
-      throw new Error("GEMINI_API_KEY não configurada no ambiente.");
-    }
-
     const genAI = new GoogleGenerativeAI(geminiApiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-3.1-flash-lite-preview",
       systemInstruction: systemInstruction,
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 450,
-      }
+      generationConfig: { temperature: 0.7, maxOutputTokens: 450 }
     });
 
     const result = await model.generateContent({ contents });
     const aiReply = result.response.text();
 
-    // 5. SANITIZAÇÃO E FORMATAÇÃO (WHATSAPP SAFE)
-    // Converte negritos markdown para negritos WhatsApp
-    let formattedReply = aiReply
-      .replace(/\*\*(.*?)\*\*/g, '*$1*') 
-      .trim();
+    // 5. FORMATAÇÃO E RESPOSTA
+    let formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*').trim();
 
-    // 6. OTIMIZAÇÃO DO HISTÓRICO PARA O MANYCHAT (LIMITE DE 2KB)
-    // Adiciona a resposta da IA ao histórico
     contents.push({ role: "model", parts: [{ text: aiReply }] });
-    
-    // Mantém apenas os últimos 4 turnos (8 mensagens) e encurta textos longos
     const optimizedHistory = contents.slice(-6).map(msg => ({
       role: msg.role,
       parts: [{ text: msg.parts[0].text.substring(0, 300) }]
@@ -122,20 +120,16 @@ export async function POST(request) {
     
     const historyBase64 = Buffer.from(JSON.stringify(optimizedHistory)).toString('base64');
 
-    console.log(`[Vesper] Sucesso. Resposta enviada para ${userName}.`);
-
     return NextResponse.json({
       resposta: formattedReply,
       historico: historyBase64
     });
 
   } catch (error) {
-    console.error("[Vesper] Erro Crítico no Webhook:", error.message);
-    
-    // Fallback elegante para não quebrar o fluxo do usuário no WhatsApp
+    console.error("[Vesper] Erro Crítico:", error.message);
     return NextResponse.json({
-      resposta: "Tive um leve insight agora que me distraiu do nosso assunto. Poderia repetir o que você disse? 🌑",
+      resposta: "Tive um leve insight agora que me distraiu do nosso assunto. Poderia repetir? 🌑",
       historico: ""
-    }, { status: 200 }); // Retornamos 200 para o ManyChat não dar erro de requisição
+    }, { status: 200 });
   }
 }
