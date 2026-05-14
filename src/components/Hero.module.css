@@ -222,9 +222,18 @@
     padding-bottom: 40px;
   }
 
-  .hero::before,
+  .hero::before {
+    display: block;
+    opacity: 0.1; /* Versão mais leve para não pesar */
+    animation: starsFloat 120s linear infinite;
+  }
+
   .hero::after {
-    display: none;
+    display: none; /* Mantemos apenas uma camada no mobile */
+  }
+
+  .scrollIndicator {
+    bottom: 180px; /* Subindo o botão mais um pouco conforme solicitado */
   }
 
   .badge {
