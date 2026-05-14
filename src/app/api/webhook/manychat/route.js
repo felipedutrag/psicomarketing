@@ -1,49 +1,39 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-/**
- * Webhook Vesper IA - Versão 2.0 Flash + Memória Compacta
- * Resolvendo o problema de esquecimento por truncamento do ManyChat.
- */
 export async function POST(request) {
-  let rawBody = "";
   try {
-    rawBody = await request.text();
-    let userMessage = "";
-    let historyString = "";
-    let userName = "Colega";
+    const rawBody = await request.text();
+    let body;
 
-    // 1. EXTRAÇÃO DE DADOS (Resiliente)
+    // Tenta parsear o JSON. Se falhar, usa Regex.
     try {
-      const body = JSON.parse(rawBody);
-      userMessage = body.message || "";
-      historyString = body.history || "";
-      userName = (body.name || "Colega").split(' ')[0];
+      body = JSON.parse(rawBody);
     } catch (e) {
-      const extract = (field, text) => {
-        const regex = new RegExp(`"${field}"\\s*:\\s*"(.*?)"(?=\\s*,|\\s*})`, "s");
-        const match = text.match(regex);
+      const extract = (field) => {
+        const regex = new RegExp(`"${field}"\\s*:\\s*"(.*?)"`, "s");
+        const match = rawBody.match(regex);
         return match ? match[1] : null;
       };
-      userMessage = extract("message", rawBody) || rawBody.substring(0, 1000);
-      historyString = extract("history", rawBody) || "";
-      userName = (extract("name", rawBody) || "Colega").split(' ')[0];
+      body = {
+        message: extract("message") || rawBody,
+        name: extract("name") || "Colega",
+        history: extract("history") || ""
+      };
     }
 
-    // 2. RECONSTRUÇÃO DO HISTÓRICO (DE COMPACTO PARA GEMINI)
+    const userMessage = body.message || "";
+    const historyString = body.history || "";
+    const userName = (body.name || "Colega").split(' ')[0];
+
+    // Reconstrução do histórico
     let contents = [];
     if (historyString && historyString !== "null") {
       try {
         const decoded = Buffer.from(historyString, 'base64').toString('utf-8');
-        const compactHistory = JSON.parse(decoded);
-        // Converte de [{u: "msg"}, {m: "resp"}] para o formato do Gemini
-        contents = compactHistory.map(item => ({
-          role: item.u ? "user" : "model",
-          parts: [{ text: item.u || item.m }]
-        }));
-        console.log(`[Vesper] Memória recuperada: ${contents.length} mensagens.`);
+        contents = JSON.parse(decoded);
       } catch (e) {
-        console.warn("[Vesper] Erro ao recuperar memória (provável truncamento).");
+        console.warn("[Vesper] Erro ao decodificar histórico.");
         contents = [];
       }
     }
@@ -51,48 +41,41 @@ export async function POST(request) {
     // Adiciona a mensagem atual
     contents.push({ role: "user", parts: [{ text: userMessage }] });
 
-    // 3. INTELIGÊNCIA VESPER (GEMINI 2.0 FLASH)
     const systemInstruction = `
       Você é Vesper, estrategista-chefe da Psicomarketing. Você é sofisticada, irônica e brilhante.
-      Sua missão é conduzir psicólogos a entenderem que a gestão do tempo é o que separa uma clínica de elite de um emprego cansativo.
+      Sua missão é converter psicólogos focando em Soberania de Agenda e Acolhimento de Elite.
 
       [REGRAS]
-      - ULTRA-CONCISA: No máximo 2 ou 3 frases curtas.
-      - NUNCA use "Doutor(a)". Use apenas: ${userName}.
-      - Termine SEMPRE com uma pergunta provocativa curta.
-      - SITE: https://www.psicomarketing.online/
+      - Respostas curtas e impactantes (máximo 3 frases).
+      - JAMAIS use "Doutor(a)". Use apenas: ${userName}.
+      - Termine sempre com uma pergunta provocativa.
+      - Site: https://www.psicomarketing.online/
 
-      [PONTOS CHAVE]
-      - Acolhimento de elite é onipresente.
-      - Quem atende o WhatsApp enquanto você atende pacientes destrói sua autoridade.
+      [PILARES]
+      - O tempo é o ativo mais caro de um terapeuta.
+      - A IA da Psicomarketing preserva sua autoridade enquanto você atende.
     `;
 
-    const geminiApiKey = process.env.GEMINI_API_KEY;
-    const genAI = new GoogleGenerativeAI(geminiApiKey);
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash", // O modelo MAIS inteligente
+      model: "gemini-2.0-flash", 
       systemInstruction: systemInstruction,
-      generationConfig: { temperature: 0.7, maxOutputTokens: 250 }
+      generationConfig: { 
+        temperature: 0.7,
+        maxOutputTokens: 500 // Aumentado para evitar cortes
+      }
     });
 
     const result = await model.generateContent({ contents });
     const aiReply = result.response.text();
 
-    // 4. FORMATAÇÃO WHATSAPP
-    let formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*').trim();
+    // Formatação para WhatsApp
+    const formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*').trim();
 
-    // 5. COMPACTAÇÃO NUCLEAR DO HISTÓRICO PARA O MANYCHAT
+    // Salva o histórico (mantém os últimos 4 turnos para não estourar o limite do ManyChat)
     contents.push({ role: "model", parts: [{ text: aiReply }] });
-
-    // Mantém os últimos 3 turnos (6 mensagens) no formato ultra-compacto
-    const optimizedHistory = contents.slice(-6).map(msg => {
-      if (msg.role === "user") return { u: msg.parts[0].text.substring(0, 200) };
-      return { m: msg.parts[0].text.substring(0, 200) };
-    });
-
-    const historyBase64 = Buffer.from(JSON.stringify(optimizedHistory)).toString('base64');
-
-    console.log(`[Vesper] Base64 Length: ${historyBase64.length} chars.`);
+    const finalHistory = contents.slice(-8); // 4 turnos = 8 mensagens
+    const historyBase64 = Buffer.from(JSON.stringify(finalHistory)).toString('base64');
 
     return NextResponse.json({
       resposta: formattedReply,
@@ -100,7 +83,7 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error("[Vesper] Erro Crítico:", error.message);
+    console.error("[Vesper] Erro:", error.message);
     return NextResponse.json({
       resposta: "Tive um leve insight agora. Poderia repetir? 🌑",
       historico: ""
