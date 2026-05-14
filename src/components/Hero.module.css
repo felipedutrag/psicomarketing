@@ -33,7 +33,7 @@
   100% { background-position: 0% 0%; }
 }
 
-/* Floating Stardust */
+/* Subtle Star Field */
 .hero::before,
 .hero::after {
   content: '';
@@ -42,32 +42,42 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    radial-gradient(1px 1px at 10% 10%, #fff 100%, transparent 0),
-    radial-gradient(1px 1px at 50% 50%, #fff 100%, transparent 0),
-    radial-gradient(1.5px 1.5px at 80% 80%, #c5a059 100%, transparent 0);
-  background-size: 400px 400px;
   z-index: 1;
+  pointer-events: none;
 }
 
 .hero::before {
-  opacity: 0.15;
-  animation: stardust 150s linear infinite;
+  background-image: 
+    radial-gradient(1.5px 1.5px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, var(--accent-primary), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 130px 80px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0));
+  background-size: 150px 150px;
+  opacity: 0.3;
+  animation: starsFloat 100s linear infinite, twinkle 4s ease-in-out infinite;
 }
 
 .hero::after {
-  display: none;
+  background-image: 
+    radial-gradient(2px 2px at 100px 100px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 200px 150px, var(--accent-primary), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 300px 50px, #fff, rgba(0,0,0,0));
+  background-size: 250px 250px;
+  opacity: 0.4;
+  animation: starsFloat 140s linear infinite reverse, twinkle 6s ease-in-out infinite;
+  display: block;
 }
 
-@keyframes stardust {
-  0% { transform: scale(1); background-position: 0% 0%; }
-  50% { transform: scale(1.05); background-position: 50% 50%; }
-  100% { transform: scale(1); background-position: 100% 100%; }
+@keyframes starsFloat {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 1000px; }
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 0.4; }
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.6; }
 }
 
 @keyframes float {
@@ -239,19 +249,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   z-index: 3;
-  opacity: 0.6;
+  opacity: 0;
+  animation: fadeInScroll 1s ease-out 2s forwards;
+}
+
+@keyframes fadeInScroll {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 0.6; transform: translate(-50%, 0); }
 }
 
 .mouse {
-  width: 26px;
-  height: 42px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  width: 28px;
+  height: 46px;
+  border: 2px solid rgba(197, 160, 89, 0.3);
   border-radius: 20px;
   display: flex;
   justify-content: center;
   padding-top: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .wheel {
@@ -260,9 +279,20 @@
   background: var(--accent-primary);
   border-radius: 2px;
   animation: scrollWheel 2s infinite ease-in-out;
+  box-shadow: 0 0 8px var(--accent-primary);
+}
+
+.scrollText {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-primary);
+  font-weight: 600;
+  opacity: 0.8;
 }
 
 @keyframes scrollWheel {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(15px); opacity: 0; }
+  0% { transform: translateY(0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(18px); opacity: 0; }
 }

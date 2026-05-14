@@ -17,15 +17,15 @@ export default function Hero() {
           <p className={styles.subtitle}>
             Pare de perder pacientes enquanto você está em sessão. Sua nova Secretária de IA no WhatsApp acolhe, filtra curiosos e agenda consultas no piloto automático.
           </p>
-          <div className={styles.actions}>
-            <a href="#automacao" className="btn-primary">
-              Conhecer a Automação
-            </a>
-          </div>
         </div>
       </div>
       
-      {/* Scroll Indicator removido conforme solicitado */}
+      <div className={styles.scrollIndicator}>
+        <div className={styles.mouse}>
+          <div className={styles.wheel}></div>
+        </div>
+        <span className={styles.scrollText}>Role para descobrir</span>
+      </div>
     </section>
   );
 }
