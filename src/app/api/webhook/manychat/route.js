@@ -70,7 +70,7 @@ export async function POST(request) {
     const geminiApiKey = process.env.GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(geminiApiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash", // O modelo MAIS inteligente
+      model: "gemini-2.5-flash", // O modelo MAIS inteligente
       systemInstruction: systemInstruction,
       generationConfig: { temperature: 0.7, maxOutputTokens: 250 }
     });
@@ -83,13 +83,13 @@ export async function POST(request) {
 
     // 5. COMPACTAÇÃO NUCLEAR DO HISTÓRICO PARA O MANYCHAT
     contents.push({ role: "model", parts: [{ text: aiReply }] });
-    
+
     // Mantém os últimos 3 turnos (6 mensagens) no formato ultra-compacto
     const optimizedHistory = contents.slice(-6).map(msg => {
       if (msg.role === "user") return { u: msg.parts[0].text.substring(0, 200) };
       return { m: msg.parts[0].text.substring(0, 200) };
     });
-    
+
     const historyBase64 = Buffer.from(JSON.stringify(optimizedHistory)).toString('base64');
 
     console.log(`[Vesper] Base64 Length: ${historyBase64.length} chars.`);
