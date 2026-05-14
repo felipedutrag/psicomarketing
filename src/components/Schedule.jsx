@@ -12,25 +12,70 @@ export default function Schedule() {
   // ——— Polling de Status de Pagamento ———
   useEffect(() => {
     let interval;
-    if (pixData && paymentStatus === "pending" && booked) {
+    
+    // Só inicia se tivermos um order_id válido, o pagamento estiver pendente e o agendamento concluído
+    const orderId = pixData?.order_id || pixData?.id;
+    
+    if (orderId && paymentStatus === "pending" && booked) {
+      console.log(`[Schedule] Iniciando monitoramento do pagamento para ID: ${orderId}`);
+      
       interval = setInterval(async () => {
         try {
-          const res = await fetch(`/api/ggpix/payment-status?order_id=${pixData.order_id}`);
+          const res = await fetch(`/api/ggpix/payment-status?order_id=${orderId}`);
           const data = await res.json();
+          
           if (data.success && data.status === "approved") {
+            console.log("[Schedule] Pagamento aprovado!");
             setPaymentStatus("approved");
+            
+            // ——— Atualiza Status no Notion para 'Won' (Pago) ———
+            try {
+              // Pegamos o e-mail que o Cal.com salvou ou que veio do checkout
+              // Se não estiver no pixData, o fallback é buscar do estado global se existir
+              const leadEmail = pixData?.full_response?.payerEmail || pixData?.payerEmail;
+              const leadName = pixData?.full_response?.payerName || pixData?.name;
+
+              if (leadEmail) {
+                await fetch('/api/notion/update-status', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    email: leadEmail,
+                    name: leadName,
+                    status: 'Won',
+                    notes: `Pagamento de R$ 29,00 CONFIRMADO via Polling em ${new Date().toLocaleString('pt-BR')}`
+                  })
+                });
+                console.log(`[Schedule] Status do lead ${leadEmail} atualizado para 'Won' no Notion.`);
+              }
+            } catch (notionErr) {
+              console.error("[Schedule] Erro ao atualizar Notion pós-pagamento:", notionErr);
+            }
+
+            clearInterval(interval);
+          } else if (data.status === "cancelled") {
+            console.log("[Schedule] Pagamento cancelado ou expirado.");
+            setPaymentStatus("failed");
             clearInterval(interval);
           }
         } catch (e) {
-          console.error("Erro ao verificar status:", e);
+          console.error("[Schedule] Erro ao verificar status:", e);
         }
-      }, 5000);
+      }, 7000); // Aumentado para 7s para evitar overload
     }
-    return () => clearInterval(interval);
-  }, [pixData, paymentStatus, booked]);
+    
+    return () => {
+      if (interval) {
+        console.log("[Schedule] Limpando intervalo de polling.");
+        clearInterval(interval);
+      }
+    };
+  }, [pixData?.order_id, pixData?.id, paymentStatus, booked]);
 
   // ——— Gera PIX ———
   async function generatePix(name) {
+    if (pixLoading) return; // Evita cliques duplos
+    
     setPixLoading(true);
     try {
       const res = await fetch("/api/ggpix/pix", {
@@ -43,10 +88,13 @@ export default function Schedule() {
       });
       const data = await res.json();
       if (data.success) {
+        console.log("[Schedule] PIX gerado com sucesso:", data.order_id);
         setPixData(data);
+      } else {
+        console.error("[Schedule] Erro retornado pela API de PIX:", data);
       }
     } catch (e) {
-      console.error("Erro ao gerar PIX:", e);
+      console.error("[Schedule] Erro ao gerar PIX:", e);
     } finally {
       setPixLoading(false);
     }

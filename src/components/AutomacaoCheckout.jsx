@@ -74,7 +74,8 @@ export default function AutomacaoCheckout() {
     if (pixData && paymentStatus === "pending" && step === 2) {
       interval = setInterval(async () => {
         try {
-          const res = await fetch(`/api/ggpix/payment-status?order_id=${pixData.order_id || pixData.id}`);
+          const orderId = pixData.pix?.id || pixData.order_id || pixData.id;
+          const res = await fetch(`/api/ggpix/payment-status?order_id=${orderId}`);
           const data = await res.json();
           if (data.success && data.status === "approved") {
             setPaymentStatus("approved");

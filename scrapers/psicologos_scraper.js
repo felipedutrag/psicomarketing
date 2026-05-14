@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+require('dotenv').config();
 
 async function scrapeAndClean() {
     const browser = await puppeteer.launch({
@@ -11,7 +13,7 @@ async function scrapeAndClean() {
     const page = await browser.newPage();
 
     console.log('--- INICIANDO SCRAPER DE TESTE (5 LEADS RAW + WA LINK) ---');
-    const url = 'https://www.google.com/maps/search/psicologos+cidade+sao+paulo+carrao';
+    const url = 'https://www.google.com/maps/search/psicologos+cidade+rio+de+janeiro';
     await page.goto(url, { waitUntil: 'networkidle2' });
 
     const sidePanelSelector = 'div[role="feed"]';
@@ -20,16 +22,11 @@ async function scrapeAndClean() {
     const rawLeads = [];
     const limit = 5;
 
-    // Mensagem genérica e profissional da Psicomarketing
+    // Mensagem genérica de fallback
     const mensagemPadrao = `Olá! Sou da Psicomarketing.
-
-Notei sua presença clínica e gostaria de apresentar como nossa inteligência especializada pode assumir seu acolhimento e agendamento no WhatsApp enquanto você está em sessão.
-
-Garantimos que nenhum paciente em potencial fique sem resposta imediata, preservando sua autoridade e seu tempo.
-
-Conheça nossa tecnologia: https://www.psicomarketing.online/
-
-Responda essa mensagem para testar nossa IA agora mesmo!`;
+Notei sua presença clínica e gostaria de mostrar como nossa IA pode assumir seu WhatsApp enquanto você atende.
+Conheça: https://www.psicomarketing.online/
+Responda para testar!`;
 
     for (let i = 0; i < limit; i++) {
         try {
@@ -68,6 +65,64 @@ Responda essa mensagem para testar nossa IA agora mesmo!`;
         }
     }
 
+    await browser.close();
+
+    console.log('\n--- PERSONALIZANDO MENSAGENS COM GEMINI ---');
+    if (!process.env.GEMINI_API_KEY) {
+        console.error('ERRO: GEMINI_API_KEY não encontrada no .env');
+    } else {
+        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        const model = genAI.getGenerativeModel({
+            model: "gemini-3-flash-preview",
+            generationConfig: {
+                temperature: 1.0,
+                topP: 0.95,
+            }
+        });
+
+        for (let lead of rawLeads) {
+            try {
+                // Limpeza básica do nome para extrair primeiro nome ou identificar clínica
+                let nomeParaIA = lead.nome.replace(/\b(Psic[^\s]*|Neuro[^\s]*|Psican[^\s]*|Dra?\.?)\b/gi, '').trim();
+                const isClinica = /Clínica|Centro|Instituto/i.test(nomeParaIA);
+
+                // Se for pessoa, pega apenas o primeiro nome
+                if (!isClinica) {
+                    nomeParaIA = nomeParaIA.split(' ')[0];
+                }
+
+                const prompt = `Você é um especialista em copy profissional e elegante para psicólogos. Use como base este estilo de mensagem, mas varie COMPLETAMENTE o vocabulário e a estrutura das frases em cada geração para evitar detecção de spam.
+                Analise o nome do lead e faça uma limpeza da cidade ou informações que não são relevantes para a mensagem. Pegue apenas o primeiro nome ou o nome da clinica, se pertinente. Não fale que você acompanhou a trajetória, apenas que identificou a pesença online.
+
+IMPORTANTE: O nome do lead é "${nomeParaIA}". Você DEVE usar este nome na saudação. NUNCA escreva a palavra "[Nome]" ou "[Clínica]", use the nome real que eu te passei.
+
+ESTILO BASE PARA INSPIRAÇÃO (NÃO COPIE IGUAL):
+"Olá ${nomeParaIA}! Sou da Psicomarketing. Notei sua presença online e gostaria de mostrar como nossa inteligência assume seu acolhimento e agendamento no WhatsApp enquanto você atende. Garantimos resposta imediata para todo paciente, preservando sua autoridade. Conheça: https://www.psicomarketing.online/ Responda agora para testar!"
+
+REGRAS DE VARIAÇÃO (OBRIGATÓRIO):
+1. Use sinônimos para termos chave (equipe, sistema, perfil profissional, gerenciar contato, etc.).
+2. Comece sempre com a saudação personalizada usando o nome "${nomeParaIA}".
+3. O link deve estar em uma linha PRÓPRIA e ISOLADA: https://www.psicomarketing.online/
+4. O CTA deve ser a ÚLTIMA LINHA: Uma ordem direta para responder e testar a IA, terminando com "!".
+
+Responda APENAS com a mensagem personalizada, sem aspas e sem explicações.`;
+
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                const personalizedMsg = response.text().trim();
+
+                lead.mensagem_personalizada = personalizedMsg;
+                if (lead.whatsapp && lead.whatsapp !== 'Não encontrado') {
+                    lead.wa_link = `https://wa.me/${lead.whatsapp}?text=${encodeURIComponent(personalizedMsg)}`;
+                }
+                console.log(`✅ Mensagem personalizada gerada para: ${lead.nome} (${nomeParaIA})`);
+            } catch (error) {
+                console.error(`❌ Erro ao personalizar para ${lead.nome}:`, error.message);
+                lead.mensagem_personalizada = mensagemPadrao;
+            }
+        }
+    }
+
     const localPath = path.join(__dirname, '../data/psicologos_leads.json');
     const rootPath = path.join(__dirname, '../../data/psicologos_leads.json');
 
@@ -76,11 +131,8 @@ Responda essa mensagem para testar nossa IA agora mesmo!`;
         fs.writeFileSync(dest, JSON.stringify(rawLeads, null, 2), 'utf8');
     });
 
-    console.log(`\n--- TESTE FINALIZADO ---`);
-    console.log(`Leads extraídos: ${rawLeads.length}`);
-    console.log(`Mensagem padrão aplicada nos links de WhatsApp.`);
-
-    await browser.close();
+    console.log(`\n--- PROCESSO FINALIZADO ---`);
+    console.log(`Leads processados: ${rawLeads.length}`);
 }
 
 scrapeAndClean().catch(err => {

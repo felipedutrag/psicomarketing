@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { upsertLead } from '@/services/notion';
 
 const CAL_API_KEY = process.env.CAL_API_KEY;
 const EVENT_TYPE_ID = 5650035; // evento com disponibilidade completa
@@ -38,9 +39,6 @@ export async function GET(request) {
 
     // Log para debugar a estrutura real do Cal.com
     const rawSlots = data.data?.slots || data.data || {};
-    console.log('[cal/slots] Tipo de rawSlots:', Array.isArray(rawSlots) ? 'ARRAY' : 'OBJETO');
-    console.log('[cal/slots] Raw data (primeiras chaves):', JSON.stringify(rawSlots).slice(0, 500));
-
     const processedSlots = {};
 
     if (Array.isArray(rawSlots)) {
@@ -49,7 +47,6 @@ export async function GET(request) {
       rawSlots.forEach(s => {
         const time = typeof s === 'string' ? s : (s.time || s.start);
         if (!time) return;
-        // Usa fuso BRT para calcular o dateKey correto
         const dateKey = new Date(time).toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' }); // formato YYYY-MM-DD
         if (!grouped[dateKey]) grouped[dateKey] = [];
         grouped[dateKey].push(s);
@@ -98,9 +95,6 @@ export async function GET(request) {
       });
     }
 
-    console.log('[cal/slots] Dias processados:', Object.keys(processedSlots).length);
-    console.log('[cal/slots] Horários por dia:', JSON.stringify(Object.fromEntries(Object.entries(processedSlots).map(([k, v]) => [k, v.length]))));
-
     return NextResponse.json({ 
       slots: processedSlots, 
       status: 'success'
@@ -123,7 +117,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Campos obrigatórios: name, email, phone, start' }, { status: 400 });
     }
 
-    // Verificação de segurança: Janela de 1 dia
+    // Verificação de segurança: Janela de 48h
     const startTime = new Date(start);
     const now = new Date();
     const diffHours = (startTime - now) / (1000 * 60 * 60);
@@ -137,7 +131,6 @@ export async function POST(request) {
 
     // 1. --- GERAÇÃO DE PIX ANTES DO AGENDAMENTO ---
     let pixInfo = null;
-    let descriptionText = "Sessão de Consultoria Estratégica.";
     
     try {
       const externalId = crypto.randomUUID();
@@ -164,7 +157,6 @@ export async function POST(request) {
       const ggData = await ggRes.json();
       if (ggRes.ok) {
         pixInfo = ggData;
-        descriptionText = `⚠️ PAGAMENTO PENDENTE (R$ 99,00)\n\nPara confirmar sua sessão, realize o pagamento via PIX abaixo:\n\n${pixInfo.pixCopyPaste}\n\nApós o pagamento, sua reserva será validada automaticamente em nosso sistema.`;
       }
     } catch (pixErr) {
       console.error('[pix/booking] Erro ao gerar PIX:', pixErr.message);
@@ -191,11 +183,26 @@ export async function POST(request) {
     });
 
     const data = await res.json();
-    console.log('[cal/booking] Resposta Cal.com:', JSON.stringify(data));
 
     if (!res.ok) {
       const errorMsg = data.error?.message || data.message || 'Erro ao agendar';
       return NextResponse.json({ error: errorMsg, details: data }, { status: res.status });
+    }
+
+    // 3. --- SINCRONIZAÇÃO COM NOTION (LILITH SYSTEM) ---
+    try {
+      await upsertLead({
+        leadName: name,
+        externalId: email, // Usando email como chave única para evitar duplicidade
+        email: email,
+        phone: phone,
+        status: 'Contacted',
+        source: 'Inbound',
+        notes: `Agendado via Internal API em: ${startTime.toLocaleString('pt-BR')}. PIX gerado: ${pixInfo ? 'Sim' : 'Não'}`
+      });
+      console.log(`[Notion] Lead '${name}' sincronizado após agendamento.`);
+    } catch (notionErr) {
+      console.error('[Notion] Erro ao sincronizar lead:', notionErr.message);
     }
 
     return NextResponse.json({
