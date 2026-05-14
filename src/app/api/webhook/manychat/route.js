@@ -2,55 +2,53 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
- * Webhook Vesper IA - Versão "Invisível"
- * Projetada para aceitar payloads de texto bruto (text/plain) e burlar validadores de JSON.
+ * Webhook Vesper IA - Versão Híbrida (JSON + Form-Encoded)
+ * Criada para ser resiliente a mensagens gigantes e quebras de linha.
  */
 export async function POST(request) {
-  let rawBody = "";
   try {
-    // 1. CAPTURA TOTAL
-    // Lemos como texto para evitar que o Next.js tente validar o JSON antes da hora
-    rawBody = await request.text();
-    
-    // Log IMEDIATO para garantir que a requisição chegou
-    console.log(`[Vesper] Requisicao recebida. Tamanho bruto: ${rawBody.length} bytes.`);
-
+    const contentType = request.headers.get('content-type') || '';
     let userMessage = "";
     let historyString = "";
     let userName = "Colega";
 
-    // EXTRAÇÃO CIRÚRGICA (Regex)
-    // Buscamos os valores mesmo que o JSON esteja sem aspas, com quebras de linha ou caracteres ilegais.
-    const extract = (field, text) => {
-      // Procura pelo nome do campo e pega tudo entre as próximas aspas, permitindo quebras de linha (. com flag s)
-      const regex = new RegExp(`"${field}"\\s*:\\s*"(.*?)"(?=\\s*,\\s*"|\\s*})`, "s");
-      const match = text.match(regex);
-      return match ? match[1] : null;
-    };
-
-    userMessage = extract("message", rawBody);
-    historyString = extract("history", rawBody) || "";
-    const rawName = extract("name", rawBody) || "Colega";
-    userName = rawName.split(' ')[0];
-
-    // Se a Regex falhar (ex: ManyChat enviou sem aspas em algum campo), tenta o parse tradicional como backup
-    if (!userMessage) {
+    // 1. PARSE INTELIGENTE BASEADO NO CONTENT-TYPE
+    if (contentType.includes('application/x-www-form-urlencoded')) {
+      // Caso o ManyChat envie como Formulário (Mais estável para textos longos)
+      const formData = await request.formData();
+      userMessage = formData.get('message') || "";
+      historyString = formData.get('history') || "";
+      userName = (formData.get('name') || "Colega").split(' ')[0];
+      console.log("[Vesper] Dados recebidos via Form-Encoded.");
+    } else {
+      // Caso o ManyChat envie como JSON (ou texto que parece JSON)
+      const rawBody = await request.text();
       try {
         const body = JSON.parse(rawBody);
-        userMessage = body.message;
+        userMessage = body.message || "";
         historyString = body.history || "";
         userName = (body.name || "Colega").split(' ')[0];
+        console.log("[Vesper] Dados recebidos via JSON.");
       } catch (e) {
-        // Se tudo falhar, assume que o corpo todo é a mensagem (fallback extremo)
-        userMessage = userMessage || rawBody.substring(0, 1000);
+        // Fallback Nuclear: Regex se o JSON vier quebrado pelo ManyChat
+        console.warn("[Vesper] JSON malformado. Usando extração via Regex.");
+        const extract = (field, text) => {
+          const regex = new RegExp(`"${field}"\\s*:\\s*"(.*?)"(?=\\s*,|\\s*})`, "s");
+          const match = text.match(regex);
+          return match ? match[1] : null;
+        };
+        userMessage = extract("message", rawBody) || rawBody.substring(0, 1000);
+        historyString = extract("history", rawBody) || "";
+        const rawName = extract("name", rawBody) || "Colega";
+        userName = rawName.split(' ')[0];
       }
     }
 
-    console.log(`[Vesper] Dados extraídos. Nome: ${userName}, Msg: ${userMessage.substring(0, 50)}...`);
+    console.log(`[Vesper] Payload capturado. Origem: ${userName}. Tamanho: ${userMessage.length}`);
 
     if (!userMessage || userMessage.length < 2) {
       return NextResponse.json({ 
-        resposta: "O silêncio é uma resposta profunda, mas para eu te ajudar, preciso de palavras. 🌑",
+        resposta: "Estou pronta para ouvir, mas suas palavras não chegaram até aqui. O que você gostaria de dizer? 🌑",
         historico: historyString
       });
     }
@@ -63,7 +61,7 @@ export async function POST(request) {
       [REGRAS DE OURO]
       - Termine SEMPRE com uma pergunta provocativa sobre o negócio ou a rotina de atendimento dele.
       - NUNCA use "Doutor" ou "Doutora". Chame EXCLUSIVAMENTE pelo primeiro nome: ${userName}.
-      - Respostas CURTAS, densas e elegantes.
+      - Respostas CURTAS e elegantes.
       - LINKS: Envie links apenas como URL pura (ex: https://numbly.life).
       - TONALIDADE: Sofisticação. Emojis (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷).
     `;
