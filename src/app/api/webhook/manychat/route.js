@@ -61,13 +61,41 @@ export async function POST(request) {
     let contents = [];
     if (historyString) {
       try {
-        const decoded = Buffer.from(historyString, 'base64').toString('utf-8');
+        // Correção crítica: Muitos webhooks transformam '+' de Base64 em espaço vazio.
+        const cleanHistory = historyString.replace(/ /g, '+');
+        const decoded = Buffer.from(cleanHistory, 'base64').toString('utf-8');
         contents = JSON.parse(decoded);
+        
+        if (!Array.isArray(contents)) contents = [];
+        
+        // Proteção implacável do Gemini: Exige alternância EXATA entre user/model
+        let validContents = [];
+        let expectedRole = "user";
+        for (let msg of contents) {
+          if (msg.role === expectedRole && msg.parts && msg.parts[0].text) {
+            validContents.push(msg);
+            expectedRole = expectedRole === "user" ? "model" : "user";
+          }
+        }
+        
+        // Se a última mensagem do histórico validado for 'user', removemos, 
+        // pois a próxima mensagem inserida obrigatoriamente será 'user'.
+        if (validContents.length > 0 && validContents[validContents.length - 1].role === "user") {
+          validContents.pop();
+        }
+        
+        contents = validContents;
         if (contents.length > 8) contents = contents.slice(-8);
+        
+        console.log(`[Vesper] Histórico recuperado com sucesso: ${contents.length} mensagens restauradas.`);
       } catch (e) {
+        console.error("[Vesper] Falha ao decodificar histórico do ManyChat:", e.message);
         contents = [];
       }
+    } else {
+      console.log("[Vesper] Nenhum histórico recebido. Conversa iniciada do zero.");
     }
+    
     contents.push({ role: "user", parts: [{ text: userMessage }] });
 
     const geminiApiKey = process.env.GEMINI_API_KEY;
