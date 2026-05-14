@@ -2,59 +2,60 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 /**
- * Webhook Vesper IA - Versão Nuclear
- * Designado para ser imune a JSONs malformados e quebras de linha brutas do ManyChat.
+ * Webhook Vesper IA - Versão "Invisível"
+ * Projetada para aceitar payloads de texto bruto (text/plain) e burlar validadores de JSON.
  */
 export async function POST(request) {
   let rawBody = "";
   try {
+    // 1. CAPTURA TOTAL
+    // Lemos como texto para evitar que o Next.js tente validar o JSON antes da hora
     rawBody = await request.text();
     
-    // LOG DE DIAGNÓSTICO (Para sabermos exatamente o que o ManyChat está aprontando)
-    console.log(`[Vesper] RAW PAYLOAD: ${rawBody.substring(0, 300)}...`);
+    // Log IMEDIATO para garantir que a requisição chegou
+    console.log(`[Vesper] Requisicao recebida. Tamanho bruto: ${rawBody.length} bytes.`);
 
     let userMessage = "";
     let historyString = "";
     let userName = "Colega";
 
-    // TENTATIVA 1: Parse Civilizado
-    try {
-      const body = JSON.parse(rawBody);
-      userMessage = body.message || "";
-      historyString = body.history || "";
-      userName = (body.name || "Colega").split(' ')[0];
-    } catch (e) {
-      // TENTATIVA 2: Extração Nuclear via Regex (Ignora a sintaxe do JSON e busca o conteúdo)
-      console.warn("[Vesper] JSON Inválido. Iniciando extração nuclear via Regex.");
-      
-      const extractField = (field, text) => {
-        // Busca o campo, pula as aspas e captura tudo até a aspa final que precede um , ou }
-        // O flag 's' permite que o '.' capture quebras de linha (o culpado do erro)
-        const regex = new RegExp(`"${field}"\\s*:\\s*"(.*?)"(?=\\s*,\\s*"|\\s*})`, "s");
-        const match = text.match(regex);
-        return match ? match[1] : null;
-      };
+    // EXTRAÇÃO CIRÚRGICA (Regex)
+    // Buscamos os valores mesmo que o JSON esteja sem aspas, com quebras de linha ou caracteres ilegais.
+    const extract = (field, text) => {
+      // Procura pelo nome do campo e pega tudo entre as próximas aspas, permitindo quebras de linha (. com flag s)
+      const regex = new RegExp(`"${field}"\\s*:\\s*"(.*?)"(?=\\s*,\\s*"|\\s*})`, "s");
+      const match = text.match(regex);
+      return match ? match[1] : null;
+    };
 
-      userMessage = extractField("message", rawBody) || "";
-      historyString = extractField("history", rawBody) || "";
-      const rawName = extractField("name", rawBody) || "Colega";
-      userName = rawName.split(' ')[0];
-      
-      // Se a regex falhou em pegar a mensagem, tenta pegar tudo que estiver no campo message até o fim
-      if (!userMessage) {
-        userMessage = rawBody.match(/"message"\s*:\s*"(.*)"/s)?.[1] || "";
+    userMessage = extract("message", rawBody);
+    historyString = extract("history", rawBody) || "";
+    const rawName = extract("name", rawBody) || "Colega";
+    userName = rawName.split(' ')[0];
+
+    // Se a Regex falhar (ex: ManyChat enviou sem aspas em algum campo), tenta o parse tradicional como backup
+    if (!userMessage) {
+      try {
+        const body = JSON.parse(rawBody);
+        userMessage = body.message;
+        historyString = body.history || "";
+        userName = (body.name || "Colega").split(' ')[0];
+      } catch (e) {
+        // Se tudo falhar, assume que o corpo todo é a mensagem (fallback extremo)
+        userMessage = userMessage || rawBody.substring(0, 1000);
       }
     }
 
-    if (!userMessage) {
-      console.error("[Vesper] Falha total na captura da mensagem.");
+    console.log(`[Vesper] Dados extraídos. Nome: ${userName}, Msg: ${userMessage.substring(0, 50)}...`);
+
+    if (!userMessage || userMessage.length < 2) {
       return NextResponse.json({ 
-        resposta: "Minha conexão com seus pensamentos oscilou. Poderia repetir a última frase? 🌑",
+        resposta: "O silêncio é uma resposta profunda, mas para eu te ajudar, preciso de palavras. 🌑",
         historico: historyString
       });
     }
 
-    // 2. CONFIGURAÇÃO DA PERSONALIDADE (VESPER)
+    // 2. CONFIGURAÇÃO IA (VESPER)
     const systemInstruction = `
       Você é Vesper, uma estrategista de negócios de alto nível. Você é sofisticada, irônica, brilhante e pragmática.
       Sua missão é converter psicólogos ajudando-os a enxergar o potencial invisível da clínica deles através da automação inteligente.
@@ -62,13 +63,20 @@ export async function POST(request) {
       [REGRAS DE OURO]
       - Termine SEMPRE com uma pergunta provocativa sobre o negócio ou a rotina de atendimento dele.
       - NUNCA use "Doutor" ou "Doutora". Chame EXCLUSIVAMENTE pelo primeiro nome: ${userName}.
-      - Respostas CURTAS, densas e elegantes (máximo 2 parágrafos).
-      - LINKS: Envie links apenas como URL pura (ex: https://numbly.life), JAMAIS use formato markdown [texto](link).
-      - IDENTIDADE: Você é Vesper. Não se apresente a menos que perguntem.
+      - Respostas CURTAS, densas e elegantes.
+      - LINKS: Envie links apenas como URL pura (ex: https://numbly.life).
       - TONALIDADE: Sofisticação. Emojis (🌑, ⚡, 🥃, 💎, 🖤, 🗝️, 🍷).
     `;
 
-    // 3. PROCESSAMENTO DE HISTÓRICO
+    // 3. MOTOR IA
+    const geminiApiKey = process.env.GEMINI_API_KEY;
+    const genAI = new GoogleGenerativeAI(geminiApiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-3.1-flash-lite-preview",
+      systemInstruction: systemInstruction,
+      generationConfig: { temperature: 0.7, maxOutputTokens: 500 }
+    });
+
     let contents = [];
     if (historyString) {
       try {
@@ -79,31 +87,18 @@ export async function POST(request) {
         contents = [];
       }
     }
-
     contents.push({ role: "user", parts: [{ text: userMessage }] });
-
-    // 4. MOTOR IA
-    const geminiApiKey = process.env.GEMINI_API_KEY;
-    const genAI = new GoogleGenerativeAI(geminiApiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-3.1-flash-lite-preview",
-      systemInstruction: systemInstruction,
-      generationConfig: { temperature: 0.7, maxOutputTokens: 450 }
-    });
 
     const result = await model.generateContent({ contents });
     const aiReply = result.response.text();
 
-    // 5. FORMATAÇÃO
+    // 4. FORMATAÇÃO E HISTÓRICO
     let formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*').trim();
-
-    // 6. OTIMIZAÇÃO DO HISTÓRICO
     contents.push({ role: "model", parts: [{ text: aiReply }] });
     const optimizedHistory = contents.slice(-6).map(msg => ({
       role: msg.role,
       parts: [{ text: msg.parts[0].text.substring(0, 300) }]
     }));
-    
     const historyBase64 = Buffer.from(JSON.stringify(optimizedHistory)).toString('base64');
 
     return NextResponse.json({
