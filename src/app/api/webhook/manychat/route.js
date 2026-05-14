@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+/**
+ * Webhook Vesper IA - Versão 2.5 FLASH (A Pedido do Arquiteto)
+ */
 export async function POST(request) {
   try {
     const rawBody = await request.text();
     let body;
 
-    // Tenta parsear o JSON. Se falhar, usa Regex.
     try {
       body = JSON.parse(rawBody);
     } catch (e) {
@@ -26,56 +28,63 @@ export async function POST(request) {
     const historyString = body.history || "";
     const userName = (body.name || "Colega").split(' ')[0];
 
-    // Reconstrução do histórico
+    // 1. RECONSTRUÇÃO DO HISTÓRICO
     let contents = [];
-    if (historyString && historyString !== "null") {
+    if (historyString && historyString !== "null" && historyString.length > 10) {
       try {
         const decoded = Buffer.from(historyString, 'base64').toString('utf-8');
         contents = JSON.parse(decoded);
+        console.log(`[Vesper] Histórico carregado: ${contents.length} mensagens.`);
       } catch (e) {
-        console.warn("[Vesper] Erro ao decodificar histórico.");
+        console.warn("[Vesper] Falha ao decodificar histórico.");
         contents = [];
       }
     }
 
-    // Adiciona a mensagem atual
+    // Adiciona a nova mensagem
     contents.push({ role: "user", parts: [{ text: userMessage }] });
 
+    // 2. CONFIGURAÇÃO DA VESPER
     const systemInstruction = `
       Você é Vesper, estrategista-chefe da Psicomarketing. Você é sofisticada, irônica e brilhante.
-      Sua missão é converter psicólogos focando em Soberania de Agenda e Acolhimento de Elite.
+      Seu objetivo é converter psicólogos focando em Soberania de Agenda e Acolhimento de Elite.
 
       [REGRAS]
-      - Respostas curtas e impactantes (máximo 3 frases).
+      - ULTRA-CONCISA: No máximo 2 ou 3 frases curtas.
       - JAMAIS use "Doutor(a)". Use apenas: ${userName}.
-      - Termine sempre com uma pergunta provocativa.
+      - Termine sempre com uma pergunta provocativa curta.
       - Site: https://www.psicomarketing.online/
 
-      [PILARES]
-      - O tempo é o ativo mais caro de um terapeuta.
-      - A IA da Psicomarketing preserva sua autoridade enquanto você atende.
+      [PONTOS]
+      - O tempo é o seu ativo mais caro.
+      - A IA preserva sua autoridade enquanto você atende.
     `;
 
+    // 3. MOTOR IA: GEMINI 2.5 FLASH
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash", 
+      model: "gemini-2.5-flash", 
       systemInstruction: systemInstruction,
       generationConfig: { 
         temperature: 0.7,
-        maxOutputTokens: 500 // Aumentado para evitar cortes
+        maxOutputTokens: 300 
       }
     });
 
     const result = await model.generateContent({ contents });
     const aiReply = result.response.text();
 
-    // Formatação para WhatsApp
+    // 4. FORMATAÇÃO WHATSAPP
     const formattedReply = aiReply.replace(/\*\*(.*?)\*\*/g, '*$1*').trim();
 
-    // Salva o histórico (mantém os últimos 4 turnos para não estourar o limite do ManyChat)
+    // 5. SALVAMENTO DO HISTÓRICO (LIMITADO PARA NÃO QUEBRAR O MANYCHAT)
     contents.push({ role: "model", parts: [{ text: aiReply }] });
-    const finalHistory = contents.slice(-8); // 4 turnos = 8 mensagens
+    
+    // Mantém as últimas 6 mensagens (3 turnos) para segurança de payload
+    const finalHistory = contents.slice(-6); 
     const historyBase64 = Buffer.from(JSON.stringify(finalHistory)).toString('base64');
+
+    console.log(`[Vesper] Resposta enviada. Base64 Size: ${historyBase64.length}`);
 
     return NextResponse.json({
       resposta: formattedReply,
@@ -83,7 +92,7 @@ export async function POST(request) {
     });
 
   } catch (error) {
-    console.error("[Vesper] Erro:", error.message);
+    console.error("[Vesper] Erro Fatal:", error.message);
     return NextResponse.json({
       resposta: "Tive um leve insight agora. Poderia repetir? 🌑",
       historico: ""
