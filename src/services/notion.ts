@@ -9,8 +9,11 @@ import { Client } from '@notionhq/client';
 const NOTION_TOKEN = process.env.NOTION_TOKEN || process.env.NOTION_API_KEY;
 const DATABASE_ID = process.env.NOTION_BOOKING_DATABASE_ID || process.env.NOTION_DATABASE_ID;
 
-// Inicializa o client oficial
-const notion = new Client({ auth: NOTION_TOKEN });
+// Inicializa o client oficial forçando a API de 2022 para evitar a frescura da V2025
+const notion = new Client({ 
+  auth: NOTION_TOKEN,
+  notionVersion: '2022-06-28'
+});
 
 export interface LeadData {
   leadName: string;
@@ -27,29 +30,27 @@ export interface LeadData {
 
 async function findLeadByExternalId(externalId: string): Promise<string | null> {
   try {
-    const response = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${NOTION_TOKEN}`,
-        'Notion-Version': '2022-06-28',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    // LILITH: Usando request direto pro endpoint clássico porque a V2025 tá bugando permissões
+    const response: any = await notion.request({
+      path: `databases/${DATABASE_ID}/query`,
+      method: 'post',
+      body: {
         filter: {
           property: 'External ID',
           rich_text: {
             equals: String(externalId),
           },
         }
-      })
+      }
     });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.message || 'Erro na API do Notion');
-    if (data.results && data.results.length > 0) return data.results[0].id;
+
+    if (response.results && response.results.length > 0) {
+      return response.results[0].id;
+    }
     return null;
   } catch (error: any) {
-    console.error('[Notion/Booking] Erro ao buscar lead:', error.message);
-    return null; 
+    console.error('[Notion] Erro ao buscar lead por External ID:', error.message);
+    return null;
   }
 }
 
