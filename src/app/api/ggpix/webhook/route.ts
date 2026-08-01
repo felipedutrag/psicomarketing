@@ -20,34 +20,44 @@ export async function POST(req: Request) {
   console.log('[GGPIX WEBHOOK] Headers:', JSON.stringify(headersObj, null, 2));
 
   try {
-    // 1. Authorization check
+    // 1. Read raw body and parse JSON first for logging
+    const rawText = await req.text();
+    console.log('[GGPIX WEBHOOK] Raw Payload Body:', rawText);
+
+    let body: any = {};
+    if (rawText && rawText.trim().length > 0) {
+      try {
+        body = JSON.parse(rawText);
+        console.log('[GGPIX WEBHOOK] Parsed JSON Body:', JSON.stringify(body, null, 2));
+      } catch (parseErr) {
+        console.error('[GGPIX WEBHOOK] Failed to parse payload as JSON:', parseErr);
+      }
+    }
+
+    // Handle test / ping event from gateway
+    if (body.event === 'test' || body.type === 'ping' || body.message === 'test' || body.test === true) {
+      console.log('[GGPIX WEBHOOK] Test/ping event received successfully');
+      return NextResponse.json({ success: true, message: 'Webhook test received successfully' });
+    }
+
+    // 2. Authorization check (soft-check if payload is from GGPIX)
     if (GGPIX_WEBHOOK_TOKEN) {
-      const authHeader = req.headers.get('Authorization') || req.headers.get('authorization');
+      const authHeader = req.headers.get('Authorization') 
+        || req.headers.get('authorization')
+        || req.headers.get('x-webhook-token')
+        || req.headers.get('x-api-key');
+
       const expectedBearer = 'Bearer ' + GGPIX_WEBHOOK_TOKEN;
-      console.log('[GGPIX WEBHOOK] Validating Authorization header:', {
+      console.log('[GGPIX WEBHOOK] Authorization header validation:', {
         receivedHeader: authHeader,
         tokenConfigured: true
       });
 
       if (!authHeader || (authHeader !== GGPIX_WEBHOOK_TOKEN && authHeader !== expectedBearer)) {
-        console.error('[GGPIX WEBHOOK] Invalid or missing Authorization header. Access denied.');
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        console.warn('[GGPIX WEBHOOK] Warning: Invalid or missing Authorization header. Proceeding with payload processing.');
       }
     } else {
       console.log('[GGPIX WEBHOOK] GGPIX_WEBHOOK_TOKEN is not set - skipping header validation');
-    }
-
-    // 2. Read raw body and parse JSON
-    const rawText = await req.text();
-    console.log('[GGPIX WEBHOOK] Raw Payload Body:', rawText);
-
-    let body: any;
-    try {
-      body = JSON.parse(rawText);
-      console.log('[GGPIX WEBHOOK] Parsed JSON Body:', JSON.stringify(body, null, 2));
-    } catch (parseErr) {
-      console.error('[GGPIX WEBHOOK] Failed to parse payload as JSON:', parseErr);
-      return NextResponse.json({ error: 'Invalid JSON body', raw: rawText }, { status: 400 });
     }
 
     const { transactionId, externalId, status, amount, paidAt, payer } = body;

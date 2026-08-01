@@ -43,17 +43,50 @@ export default function AutomacaoCheckout() {
   useEffect(() => {
     setMounted(true);
 
-    // Autofill from URL params (name, email, date, mc_subscriber_id)
-    const urlName = searchParams.get("name");
+    // Autofill from URL params (name, email, phone/telefone, date, mc_subscriber_id)
+    const urlName = searchParams.get("name") || searchParams.get("nome");
     const urlEmail = searchParams.get("email");
-    const urlDate = searchParams.get("date");
+    const urlPhone = searchParams.get("phone") || searchParams.get("telefone") || searchParams.get("whatsapp");
+    let urlDate = searchParams.get("date") || searchParams.get("data");
+    const urlMcSubscriberId = searchParams.get("mc_subscriber_id") || searchParams.get("subscriber_id");
 
-    if (urlName || urlEmail) {
-      setForm(prev => ({
-        ...prev,
-        nome: urlName || prev.nome,
-        email: urlEmail || prev.email,
-      }));
+    // Limpa caracteres de markdown ou sujeira na data se vier do chat (ex: "2026-08-03T14:00:00.000Z](https://...")
+    if (urlDate) {
+      urlDate = urlDate.split("]")[0].split(")")[0].trim();
+    }
+
+    if (urlMcSubscriberId) {
+      setMcSubscriberId(urlMcSubscriberId);
+    }
+
+    if (urlName || urlEmail || urlPhone) {
+      setForm(prev => {
+        let phoneFormatted = urlPhone || prev.telefone;
+        if (urlPhone) {
+          let value = String(urlPhone).replace(/\D/g, "");
+          // Se vier com o DDI do Brasil (ex: 5513988658518), remove o 55 inicial se tiver 12 ou 13 dígitos
+          if ((value.length === 12 || value.length === 13) && value.startsWith("55")) {
+            value = value.slice(2);
+          }
+          if (value.length > 11) value = value.slice(0, 11);
+          if (value.length > 10) {
+            phoneFormatted = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+          } else if (value.length > 6) {
+            phoneFormatted = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+          } else if (value.length > 2) {
+            phoneFormatted = value.replace(/^(\d{2})(\d{0,5}).*/, "($1) $2");
+          } else if (value.length > 0) {
+            phoneFormatted = value.replace(/^(\d{0,2}).*/, "($1");
+          }
+        }
+
+        return {
+          ...prev,
+          nome: urlName || prev.nome,
+          email: urlEmail || prev.email,
+          telefone: phoneFormatted,
+        };
+      });
     }
 
     if (urlDate) {
@@ -131,13 +164,18 @@ export default function AutomacaoCheckout() {
 
   function formatSelectedDate(dateStr) {
     if (!dateStr) return "";
-    const d = new Date(dateStr);
-    return d.toLocaleDateString("pt-BR", {
-      day: "numeric",
-      month: "long",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString("pt-BR", {
+        day: "numeric",
+        month: "long",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    } catch (e) {
+      return dateStr;
+    }
   }
 
   if (!mounted) return null;
