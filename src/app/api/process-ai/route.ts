@@ -10,10 +10,11 @@ const redis = Redis.fromEnv()
 
 export const maxDuration = 180
 
-const GEMINI_MODELS = ['gemini-3.5-flash-lite', 'gemini-2.5-flash']
+const GEMINI_MODELS = ['gemini-3-flash-preview', 'gemini-3.5-flash']
 const GEMINI_TIMEOUT_MS = 25000
-const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
-const NVIDIA_MODEL = process.env.NVIDIA_MODEL || 'z-ai/glm-5.2'
+const PRIMARY_MODEL = process.env.PRIMARY_MODEL || 'z-ai/glm-5.2'
+const SECONDARY_NVIDIA_MODEL = 'nvidia/nemotron-3-ultra-550b-a55b'
+const GROQ_FALLBACK_MODEL = 'llama-3.3-70b-versatile'
 
 const MC_API = 'https://api.manychat.com/fb'
 const auth = () => `4893318:6124c375829053829537d02892ea7ce8`
@@ -360,13 +361,14 @@ async function executeTool(
     return { response: { success: false, error: `Tool desconhecida: ${name}` } }
 }
 
-// --- Execução via NVIDIA NIM (GLM-5.2, OpenAI-compatible) ---
+// --- Execução via NVIDIA NIM (GLM-5.2 / Nemotron, OpenAI-compatible) ---
 async function runNvidia(
     apiKey: string,
     system: string,
     history: Array<[string, string]>,
     userText: string,
-    userId: string
+    userId: string,
+    modelName: string = SECONDARY_NVIDIA_MODEL
 ): Promise<{ reply: string }> {
     const messages: Array<Record<string, unknown>> = [
         { role: 'system', content: system },
@@ -375,7 +377,7 @@ async function runNvidia(
     ]
 
     for (let round = 0; round < 5; round++) {
-        console.log(`[NVIDIA] Rodada ${round + 1} - chamada à API (${NVIDIA_MODEL})`)
+        console.log(`[NVIDIA] Rodada ${round + 1} - chamada à API (${modelName})`)
         const res = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -383,7 +385,7 @@ async function runNvidia(
                 Authorization: `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: NVIDIA_MODEL,
+                model: modelName,
                 messages,
                 tools: OPENAI_TOOLS,
                 tool_choice: 'auto',
@@ -392,11 +394,11 @@ async function runNvidia(
         })
         const json = await res.json()
         if (!res.ok) {
-            throw new Error(`NVIDIA ${res.status}: ${JSON.stringify(json)}`)
+            throw new Error(`NVIDIA (${modelName}) ${res.status}: ${JSON.stringify(json)}`)
         }
 
         const msg = json.choices?.[0]?.message
-        if (!msg) throw new Error(`NVIDIA sem resposta: ${JSON.stringify(json)}`)
+        if (!msg) throw new Error(`NVIDIA (${modelName}) sem resposta: ${JSON.stringify(json)}`)
 
         const toolCalls = msg.tool_calls
         if (toolCalls && toolCalls.length > 0) {
@@ -416,20 +418,21 @@ async function runNvidia(
         }
 
         const reply = msg.content || ''
-        console.log('[NVIDIA] Resposta recebida:', reply.substring(0, 100))
+        console.log(`[NVIDIA - ${modelName}] Resposta recebida:`, reply.substring(0, 100))
         return { reply }
     }
 
-    throw new Error('NVIDIA: número máximo de rodadas de tools atingido')
+    throw new Error(`NVIDIA (${modelName}): número máximo de rodadas de tools atingido`)
 }
 
-// --- Execução via Groq (fallback) ---
+// --- Execução via Groq ---
 async function runGroq(
     apiKey: string,
     system: string,
     history: Array<[string, string]>,
     userText: string,
-    userId: string
+    userId: string,
+    modelName: string = GROQ_FALLBACK_MODEL
 ): Promise<{ reply: string }> {
     const messages: Array<Record<string, unknown>> = [
         { role: 'system', content: system },
@@ -438,7 +441,7 @@ async function runGroq(
     ]
 
     for (let round = 0; round < 5; round++) {
-        console.log(`[GROQ] Rodada ${round + 1} - chamada à API (${GROQ_MODEL})`)
+        console.log(`[GROQ] Rodada ${round + 1} - chamada à API (${modelName})`)
         const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -446,7 +449,7 @@ async function runGroq(
                 Authorization: `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: GROQ_MODEL,
+                model: modelName,
                 messages,
                 tools: OPENAI_TOOLS,
                 tool_choice: 'auto',
@@ -455,11 +458,11 @@ async function runGroq(
         })
         const json = await res.json()
         if (!res.ok) {
-            throw new Error(`Groq ${res.status}: ${JSON.stringify(json)}`)
+            throw new Error(`Groq (${modelName}) ${res.status}: ${JSON.stringify(json)}`)
         }
 
         const msg = json.choices?.[0]?.message
-        if (!msg) throw new Error(`Groq sem resposta: ${JSON.stringify(json)}`)
+        if (!msg) throw new Error(`Groq (${modelName}) sem resposta: ${JSON.stringify(json)}`)
 
         const toolCalls = msg.tool_calls
         if (toolCalls && toolCalls.length > 0) {
@@ -479,11 +482,11 @@ async function runGroq(
         }
 
         const reply = msg.content || ''
-        console.log('[GROQ] Resposta recebida:', reply.substring(0, 100))
+        console.log(`[GROQ - ${modelName}] Resposta recebida:`, reply.substring(0, 100))
         return { reply }
     }
 
-    throw new Error('Groq: número máximo de rodadas de tools atingido')
+    throw new Error(`Groq (${modelName}): número máximo de rodadas de tools atingido`)
 }
 
 // --- Execução via Gemini (último recurso) ---
@@ -561,6 +564,7 @@ export async function POST(req: NextRequest) {
 
         const GROQ_KEY = process.env.GROQ_API_KEY
         const GEMINI_KEY = process.env.GEMINI_API_KEY
+        const NVIDIA_KEY = process.env.NVIDIA_API_KEY
         if (!GROQ_KEY && !GEMINI_KEY) {
             console.error('[PROCESS-AI] GROQ_API_KEY e GEMINI_API_KEY missing')
             return NextResponse.json({ error: 'Nenhuma API key configurada' }, { status: 500 })
@@ -653,45 +657,71 @@ export async function POST(req: NextRequest) {
 
         const system = systemPrompt(firstName || 'Lead', stage, bookingInfo)
 
-        // --- EXECUÇÃO: NVIDIA (GLM-5.2) PRINCIPAL, GROQ FALLBACK, GEMINI ÚLTIMO RECURSO ---
+        // --- EXECUÇÃO DO AGENTE DE IA EM CASCATA COM FALLBACKS ---
         let reply = ''
         let lastError: unknown = null
 
-        const NVIDIA_KEY = process.env.NVIDIA_API_KEY
-
+        // 1. Modelo Principal: z-ai/glm-5.2 (via NVIDIA NIM ou Groq/OpenAI compatible)
         if (NVIDIA_KEY) {
             try {
-                console.log('[PROCESS-AI] Executando via NVIDIA (GLM-5.2)...')
-                const result = await runNvidia(NVIDIA_KEY, system, thread, fullUserText, userId)
+                console.log(`[PROCESS-AI] [1/5] Executando modelo principal: ${PRIMARY_MODEL}...`)
+                const result = await runNvidia(NVIDIA_KEY, system, thread, fullUserText, userId, PRIMARY_MODEL)
                 reply = result.reply
-                console.log('[PROCESS-AI] Resposta via NVIDIA:', reply)
+                console.log('[PROCESS-AI] Resposta recebida via principal (NVIDIA):', reply)
             } catch (err) {
                 lastError = err
-                console.error('[PROCESS-AI] NVIDIA falhou, tentando fallback Groq:', err instanceof Error ? err.message : err)
+                console.error(`[PROCESS-AI] Modelo principal (${PRIMARY_MODEL}) falhou no NVIDIA NIM:`, err instanceof Error ? err.message : err)
             }
         }
 
         if (!reply && GROQ_KEY) {
             try {
-                console.log('[PROCESS-AI] Executando via GROQ (fallback)...')
-                const result = await runGroq(GROQ_KEY, system, thread, fullUserText, userId)
+                console.log(`[PROCESS-AI] [1/5 - tentativa Groq] Executando modelo principal: ${PRIMARY_MODEL}...`)
+                const result = await runGroq(GROQ_KEY, system, thread, fullUserText, userId, PRIMARY_MODEL)
                 reply = result.reply
-                console.log('[PROCESS-AI] Resposta via GROQ:', reply)
+                console.log('[PROCESS-AI] Resposta recebida via principal (Groq):', reply)
             } catch (err) {
                 lastError = err
-                console.error('[PROCESS-AI] Groq falhou, tentando fallback Gemini:', err instanceof Error ? err.message : err)
+                console.error(`[PROCESS-AI] Modelo principal (${PRIMARY_MODEL}) falhou no Groq:`, err instanceof Error ? err.message : err)
             }
         }
 
-        if (!reply && GEMINI_KEY) {
+        // 2. Segundo Modelo: nvidia/nemotron-3-ultra-550b-a55b (via NVIDIA NIM)
+        if (!reply && NVIDIA_KEY) {
             try {
-                console.log('[PROCESS-AI] Executando via GEMINI (último recurso)...')
-                const result = await runGemini(GEMINI_KEY, system, thread, fullUserText, userId)
+                console.log(`[PROCESS-AI] [2/5] Executando segundo modelo: ${SECONDARY_NVIDIA_MODEL}...`)
+                const result = await runNvidia(NVIDIA_KEY, system, thread, fullUserText, userId, SECONDARY_NVIDIA_MODEL)
                 reply = result.reply
-                console.log('[PROCESS-AI] Resposta via Gemini:', reply)
+                console.log('[PROCESS-AI] Resposta recebida via segundo modelo (NVIDIA):', reply)
             } catch (err) {
                 lastError = err
-                console.error('[PROCESS-AI] Gemini também falhou:', err instanceof Error ? err.message : err)
+                console.error(`[PROCESS-AI] Segundo modelo (${SECONDARY_NVIDIA_MODEL}) falhou:`, err instanceof Error ? err.message : err)
+            }
+        }
+
+        // 3. Fallbacks Gemini: gemini-3-flash-preview -> gemini-3.5-flash
+        if (!reply && GEMINI_KEY) {
+            try {
+                console.log('[PROCESS-AI] [3/5 & 4/5] Tentando fallbacks Gemini (gemini-3-flash-preview -> gemini-3.5-flash)...')
+                const result = await runGemini(GEMINI_KEY, system, thread, fullUserText, userId)
+                reply = result.reply
+                console.log('[PROCESS-AI] Resposta recebida via Gemini:', reply)
+            } catch (err) {
+                lastError = err
+                console.error('[PROCESS-AI] Fallback Gemini falhou:', err instanceof Error ? err.message : err)
+            }
+        }
+
+        // 5. Fallback Groq: llama-3.3-70b-versatile
+        if (!reply && GROQ_KEY) {
+            try {
+                console.log(`[PROCESS-AI] [5/5] Executando fallback Groq: ${GROQ_FALLBACK_MODEL}...`)
+                const result = await runGroq(GROQ_KEY, system, thread, fullUserText, userId, GROQ_FALLBACK_MODEL)
+                reply = result.reply
+                console.log('[PROCESS-AI] Resposta recebida via Groq fallback:', reply)
+            } catch (err) {
+                lastError = err
+                console.error(`[PROCESS-AI] Fallback Groq (${GROQ_FALLBACK_MODEL}) falhou:`, err instanceof Error ? err.message : err)
             }
         }
 
