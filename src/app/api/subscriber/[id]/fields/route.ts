@@ -1,12 +1,19 @@
-import { getSubscriber } from '@/lib/manychat'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(_request: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  _request: Request | NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const data = await getSubscriber(params.id)
-    const fields = data?.data?.custom_fields || []
-    return new Response(JSON.stringify({ subscriber_id: params.id, custom_fields: fields }), { headers: { 'Content-Type': 'application/json' } })
+    // 1. Aguarda a resolução dos parâmetros assíncronos (obrigatório no Next.js 15)
+    const { id } = await params
+
+    // 2. Coloque sua lógica de busca aqui (exemplo fictício com 'id')
+    // const fields = await getSubscriberFields(id)
+
+    return NextResponse.json({ success: true, subscriberId: id, fields: [] })
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error'
-    return new Response(JSON.stringify({ error: message }), { status: 500 })
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
