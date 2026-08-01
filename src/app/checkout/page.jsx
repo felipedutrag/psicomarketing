@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import AutomacaoCheckout from "@/components/AutomacaoCheckout";
 import styles from "./checkout.module.css";
@@ -12,7 +13,9 @@ export default function CheckoutPage() {
     <div className={styles.pageWrapper}>
       <Header />
       <main className={styles.main}>
-        <AutomacaoCheckout />
+        <Suspense fallback={<div style={{ padding: "50px", textAlign: "center", color: "#fff" }}>Carregando checkout...</div>}>
+          <AutomacaoCheckout />
+        </Suspense>
       </main>
       <footer style={{ textAlign: "center", padding: "30px", color: "#333", fontSize: "0.8rem" }}>
         © {new Date().getFullYear()} Numbly. Todos os direitos reservados.
