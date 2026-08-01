@@ -12,6 +12,8 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@notionhq/client": "^5.21.0",
+    "@upstash/redis": "^1.38.1",
+    "@vercel/functions": "^3.7.6",
     "cheerio": "^1.2.0",
     "next": "16.2.6",
     "puppeteer": "^24.43.1",
