@@ -73,9 +73,9 @@ async function scrapeAndClean() {
     });
 
     const page = await browser.newPage();
-    const searchQuery = 'psicologos cidade sao paulo';
+    const searchQuery = 'psicologos minas gerais';
     const url = `https://www.google.com/maps/search/${encodeURIComponent(searchQuery)}`;
-    
+
     await page.goto(url, { waitUntil: 'networkidle2' });
 
     const sidePanelSelector = 'div[role="feed"]';
@@ -103,7 +103,7 @@ Responda essa mensagem para testar nossa IA agora mesmo!`;
 
     while (newLeads.length < TARGET_LIMIT && noNewItemsCount < 5) {
         const listItems = await page.$$('.hfpxzc');
-        
+
         if (processedIndex >= listItems.length) {
             // Rola o feed para carregar mais itens
             console.log(`Rolando página para carregar mais resultados... (${listItems.length} carregados na tela)`);
@@ -139,15 +139,15 @@ Responda essa mensagem para testar nossa IA agora mesmo!`;
             const details = await page.evaluate((itemEl) => {
                 const nameEl = document.querySelector('h1.DUwDvf');
                 let name = nameEl ? nameEl.innerText.trim() : '';
-                
+
                 // Fallback para o aria-label do próprio cartão da lista se o h1 falhar
                 if (!name && itemEl) {
                     name = itemEl.getAttribute('aria-label') || '';
                 }
-                
+
                 const phoneBtn = document.querySelector('button[data-tooltip="Copiar número de telefone"]');
                 const phone = phoneBtn ? phoneBtn.getAttribute('aria-label') : '';
-                
+
                 const websiteBtn = document.querySelector('a[data-tooltip="Abrir website"]');
                 const website = websiteBtn ? websiteBtn.getAttribute('href') : 'N/A';
 

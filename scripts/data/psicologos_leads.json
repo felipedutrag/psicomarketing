@@ -150,5 +150,733 @@
     "mensagem_inicial": "Olá, Psitto. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
     "wa_link": "https://wa.me/551140630022?text=Ol%C3%A1%2C%20equipe%20da%20Psitto%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20de%20acordo%20com%20o%20que%20voc%C3%AA%20sugerir%3F%20Nossa%20secret%C3%A1ria%20virtual%20%C3%A9%20uma%20automa%C3%A7%C3%A3o%20desenhada%20exclusivamente%20para%20consult%C3%B3rios%20de%20psicologia%2C%20atuando%2024h%20por%20dia%2C%20cobrando%20pagamentos%2C%20consultando%20sua%20agenda%20e%20acolhendo%20novos%20pacientes%2C%20al%C3%A9m%20de%20oferecer%20conselhos%20pr%C3%A1ticos%20sobre%20gest%C3%A3o%20de%20leads%20e%20marketing%20digital.%20Responda%20com%20a%20palavra%20teste%20para%20simular%20e%20ver%20a%20IA%20funcionando%20ao%20vivo%20em%2015%20segundos.",
     "mensagem_personalizada": "Olá, equipe da Psitto, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir? Nossa secretária virtual é uma automação desenhada exclusivamente para consultórios de psicologia, atuando 24h por dia, cobrando pagamentos, consultando sua agenda e acolhendo novos pacientes, além de oferecer conselhos práticos sobre gestão de leads e marketing digital. Responda com a palavra teste para simular e ver a IA funcionando ao vivo em 15 segundos."
+  },
+  {
+    "nome": "Rio",
+    "whatsapp": "552122457505",
+    "website": "http://www.psicologiario.com.br/",
+    "mensagem_inicial": "Olá, Rio. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/552122457505?text=Ol%C3%A1%2C%20Rio%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20conforme%20sua%20sugest%C3%A3o%3F%20%F0%9F%93%B2%0A%0AApresento%20a%20Secret%C3%A1ria%20IA%2024h%2C%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, Rio, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda conforme sua sugestão? 📲\n\nApresento a Secretária IA 24h,\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "Alice Joaquim",
+    "whatsapp": "5521997042783",
+    "website": "https://www.instagram.com/alicejoaquim.psi/profilecard/?igsh=N3pjbnNld25zZWpm",
+    "mensagem_inicial": "Olá, Alice. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521997042783?text=Ol%C3%A1%2C%20Alice.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4",
+    "mensagem_personalizada": "Olá, Alice. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤"
+  },
+  {
+    "nome": "SoPsicologia",
+    "whatsapp": "5521976478080",
+    "website": "https://www.sopsicologia.com.br/",
+    "mensagem_inicial": "Olá, SoPsicologia. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521976478080?text=Ol%C3%A1%2C%20SoPsicologia.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4",
+    "mensagem_personalizada": "Olá, SoPsicologia. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤"
+  },
+  {
+    "nome": "na Tijuca",
+    "whatsapp": "5521986834805",
+    "website": "https://www.carolynnepsicologia.com/",
+    "mensagem_inicial": "Olá, na. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521986834805?text=Ol%C3%A1%2C%20na.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4",
+    "mensagem_personalizada": "Olá, na. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤"
+  },
+  {
+    "nome": "Consultório de",
+    "whatsapp": "5521971512194",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Consultório. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521971512194?text=Ol%C3%A1%2C%20equipe%20da%20Consult%C3%B3rio%20de%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20conforme%20sua%20sugest%C3%A3o%3F%20%F0%9F%93%B1%0A%0AApresentamos%20a%20Secret%C3%A1ria%20Virtual%20IA%2024%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, equipe da Consultório de, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda conforme sua sugestão? 📱\n\nApresentamos a Secretária Virtual IA 24\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "Aline Cataldi",
+    "whatsapp": "5521994879498",
+    "website": "http://www.alinecataldi.com.br/",
+    "mensagem_inicial": "Olá, Aline. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521994879498?text=Ol%C3%A1%2C%20Aline.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4",
+    "mensagem_personalizada": "Olá, Aline. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤"
+  },
+  {
+    "nome": "Vinicius Gama",
+    "whatsapp": "5521982680554",
+    "website": "https://clinicariad.my.canva.site/psicologoviniciusgama",
+    "mensagem_inicial": "Olá, Vinicius. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521982680554?text=Ol%C3%A1%2C%20Vinicius%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20conforme%20sua%20sugest%C3%A3o%3F%0A%0AApresento%20a%20Secret%C3%A1ria%20Virtual%20IA%2024h%2C%20feita%20exclusivamente%20para%20consult%C3%B3rios%20de%20psicologia%3A%20cobra%20pagamentos%20via%20PIX%2C%20consulta%20sua%20agenda%2C%20acolhe%20novos%20pacientes%20e%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, Vinicius, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda conforme sua sugestão?\n\nApresento a Secretária Virtual IA 24h, feita exclusivamente para consultórios de psicologia: cobra pagamentos via PIX, consulta sua agenda, acolhe novos pacientes e\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "PhD Tiago Marot",
+    "whatsapp": "5521976852433",
+    "website": "https://www.instagram.com/psi.tiagomarot/",
+    "mensagem_inicial": "Olá, PhD. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521976852433?text=Ol%C3%A1%2C%20PhD.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4",
+    "mensagem_personalizada": "Olá, PhD. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤"
+  },
+  {
+    "nome": "Tiago Brito",
+    "whatsapp": "5521969657196",
+    "website": "https://www.doctoralia.com.br/z/JGrjuV",
+    "mensagem_inicial": "Olá, Tiago. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521969657196?text=Ol%C3%A1%2C%20Tiago%2C%20j%C3%A1%20pensou%20estar%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, Tiago, já pensou estar\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": ". Arthur Figer",
+    "whatsapp": "5521987230404",
+    "website": "http://www.arthurfigerpsicanalista.com.br/",
+    "mensagem_inicial": "Olá, .. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521987230404?text=Ol%C3%A1%2C%20..%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4",
+    "mensagem_personalizada": "Olá, .. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤"
+  },
+  {
+    "nome": "UNIPSICO",
+    "whatsapp": "5521994865774",
+    "website": "http://www.unipsico-rio.com.br/",
+    "mensagem_inicial": "Olá, UNIPSICO. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521994865774?text=Ol%C3%A1%2C%20equipe%20da%20UNIPSICO%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20conforme%20sua%20sugest%C3%A3o%3F%0A%0AApresentamos%20a%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, equipe da UNIPSICO, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda conforme sua sugestão?\n\nApresentamos a\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "Clinpap",
+    "whatsapp": "5521994382006",
+    "website": "https://jhonatanmiranda.com.br/",
+    "mensagem_inicial": "Olá, Clinpap. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521994382006?text=Ol%C3%A1%2C%20equipe%20da%20Clinpap%2C%20j%C3%A1%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, equipe da Clinpap, já\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "Alexandre Monçores Salvador",
+    "whatsapp": "5521982808922",
+    "website": "https://www.alexandresalvador.com/",
+    "mensagem_inicial": "Olá, Alexandre. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521982808922?text=Ol%C3%A1%2C%20Alexandre%0A%0AJ%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20de%20acordo%20com%20o%20que%20voc%C3%AA%20sugerir%3F%20%F0%9F%93%B2%0A%0AApresento%20a%20Secret%C3%A1ria%20Virtual%20IA%2024h%2C%20feita%20exclusivamente%20para%20consult%C3%B3rios%20de%20psicologia%3A%20cobra%20pagamentos%20via%20PIX%2C%20consulta%20sua%20agenda%2C%20acolhe%20novos%20pacientes%20e%20ainda%20oferece%20conselhos%20pr%C3%A1ticos%20de%20gest%C3%A3o%20de%20leads%20e%20marketing%20digital%20para%20o%20seu%20nicho.%0A%0AResponda%20com%20a%20palavra%20teste%20e%20veja%20a%20IA%20funcionando%20ao%20vivo%20em%2015%20segundos.",
+    "mensagem_personalizada": "Olá, Alexandre\n\nJá pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir? 📲\n\nApresento a Secretária Virtual IA 24h, feita exclusivamente para consultórios de psicologia: cobra pagamentos via PIX, consulta sua agenda, acolhe novos pacientes e ainda oferece conselhos práticos de gestão de leads e marketing digital para o seu nicho.\n\nResponda com a palavra teste e veja a IA funcionando ao vivo em 15 segundos."
+  },
+  {
+    "nome": "Psiquê",
+    "whatsapp": "5521982814934",
+    "website": "https://psiquerj.com.br/",
+    "mensagem_inicial": "Olá, Psiquê. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521982814934?text=Ol%C3%A1%2C%20equipe%20da%20Psiqu%C3%AA%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20de%20acordo%20com%20o%20que%20voc%C3%AA%20sugerir%3F%0A%0AApresentamos%20a%20Secret%C3%A1ria%20Virtual%20IA%2024h%2C%20automa%C3%A7%C3%A3o%20feita%20exclusivamente%20para%20consult%C3%B3rios%20de%20psicologia%3A%20cobra%20pagamentos%20via%20PIX%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, equipe da Psiquê, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir?\n\nApresentamos a Secretária Virtual IA 24h, automação feita exclusivamente para consultórios de psicologia: cobra pagamentos via PIX\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "Rosane Pereira",
+    "whatsapp": "5521997338483",
+    "website": "http://psicologarosanepereira.com/",
+    "mensagem_inicial": "Olá, Rosane. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521997338483?text=Ol%C3%A1%2C%20Rosane.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4",
+    "mensagem_personalizada": "Olá, Rosane. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤"
+  },
+  {
+    "nome": "Fátima Silva",
+    "whatsapp": "5521970781152",
+    "website": "https://fatimasilvapsicologa.lovable.app/",
+    "mensagem_inicial": "Olá, Fátima. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521970781152?text=Ol%C3%A1%2C%20F%C3%A1tima%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20conforme%20sua%20sugest%C3%A3o%3F%20%F0%9F%93%B1%0A%0AApresento%20a%20Secret%C3%A1ria%20Virtual%20IA%2024h%2C%20feita%20exclusivamente%20para%20consult%C3%B3rios%20de%20psicologia%3A%20cobra%20pagamentos%20via%20PIX%2C%20consulta%20sua%20agenda%2C%20acolhe%20novos%20pacientes%20e%20ainda%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, Fátima, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda conforme sua sugestão? 📱\n\nApresento a Secretária Virtual IA 24h, feita exclusivamente para consultórios de psicologia: cobra pagamentos via PIX, consulta sua agenda, acolhe novos pacientes e ainda\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "Samantha Lemos",
+    "whatsapp": "5521992364956",
+    "website": "http://www.samanthalemos.com.br/",
+    "mensagem_inicial": "Olá, Samantha. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521992364956?text=Ol%C3%A1%2C%20Samantha%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20remarcar%20uma%20sess%C3%A3o%20e%2C%20com%20um%20simples%20%C3%A1udio%2C%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%2C%20evitando%20que%20o%20investimento%20em%20divulga%C3%A7%C3%A3o%20se%20perca%20por%20falta%20de%20retorno%20r%C3%A1pido%3F%20%20%0A%0AApresento%20a%20Secret%C3%A1ria%20Virtual%20IA%2024h%2C%20feita%20exclusivamente%20para%20consult%C3%B3rios%20de%20psicologia%3A%20cobra%20pagamentos%20via%20PIX%2C%20consulta%20sua%20agenda%2C%20acolhe%20novos%20pacientes%20e%20ainda%20oferece%20insights%20pr%C3%A1ticos%20de%20gest%C3%A3o%20de%20leads%20e%20marketing%20digital%20para%20o%20seu%20nicho.%20%F0%9F%93%B2%20%20%0A%0AResponda%20com%20a%20palavra%20%E2%80%9Cteste%E2%80%9D%20e%20veja%20em%2015%E2%80%AFsegundos%20como%20a%20IA%20j%C3%A1%20come%C3%A7a%20a%20otimizar%20seu%20tempo%20e%20seu%20atendimento.",
+    "mensagem_personalizada": "Olá, Samantha, já pensou estar na rua, precisar remarcar uma sessão e, com um simples áudio, nossa IA reorganizar toda a sua agenda, evitando que o investimento em divulgação se perca por falta de retorno rápido?  \n\nApresento a Secretária Virtual IA 24h, feita exclusivamente para consultórios de psicologia: cobra pagamentos via PIX, consulta sua agenda, acolhe novos pacientes e ainda oferece insights práticos de gestão de leads e marketing digital para o seu nicho. 📲  \n\nResponda com a palavra “teste” e veja em 15 segundos como a IA já começa a otimizar seu tempo e seu atendimento."
+  },
+  {
+    "nome": "Thiago Sepulveda",
+    "whatsapp": "5521982845301",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Thiago. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521982845301?text=Ol%C3%A1%2C%20Thiago%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20sua%20agenda%2C%20enquanto%20mant%C3%A9m%20seu%20consult%C3%B3rio%20sempre%20atualizado%20no%20Google%20Maps%20e%20garante%20resposta%20imediata%20aos%20pacientes%3F%20%20%0A%0AApresento%20a%20Secret%C3%A1ria%20Virtual%20IA%2024h%2C%20feita%20exclusivamente%20para%20psic%C3%B3logos%3A%20automatiza%20cobran%C3%A7a%20via%20PIX%2C%20consulta%20sua%20agenda%2C%20acolhe%20novos%20pacientes%20e%20ainda%20oferece%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, Thiago, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar sua agenda, enquanto mantém seu consultório sempre atualizado no Google Maps e garante resposta imediata aos pacientes?  \n\nApresento a Secretária Virtual IA 24h, feita exclusivamente para psicólogos: automatiza cobrança via PIX, consulta sua agenda, acolhe novos pacientes e ainda oferece\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "HumanaMente",
+    "whatsapp": "5521986670264",
+    "website": "http://www.normasuely.com/",
+    "mensagem_inicial": "Olá, HumanaMente. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521986670264?text=Ol%C3%A1%2C%20equipe%20da%20HumanaMente%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20de%20acordo%20com%20o%20que%20voc%C3%AA%20sugerir%3F%20Nossa%20secret%C3%A1ria%20virtual%20%C3%A9%20especializada%20em%20consult%C3%B3rios%20de%20psicologia%2C%20automatizando%20tarefas%20como%20cobran%C3%A7a%20de%20pagamentos%2C%20consulta%20de%20agenda%20e%20acolhimento%20de%20novos%20pacientes%2C%20al%C3%A9m%20de%20oferecer%20insights%20pr%C3%A1ticos%20sobre%20gest%C3%A3o%20de%20leads%20e%20marketing%20digital.%20Responda%20com%20a%20palavra%20teste%20para%20simular%20e%20ver%20a%20IA%20funcionando%20ao%20vivo%20em%2015%20segundos.",
+    "mensagem_personalizada": "Olá, equipe da HumanaMente, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir? Nossa secretária virtual é especializada em consultórios de psicologia, automatizando tarefas como cobrança de pagamentos, consulta de agenda e acolhimento de novos pacientes, além de oferecer insights práticos sobre gestão de leads e marketing digital. Responda com a palavra teste para simular e ver a IA funcionando ao vivo em 15 segundos."
+  },
+  {
+    "nome": "Espaço Psique e Saúde",
+    "whatsapp": "5521966786161",
+    "website": "https://www.espacopsiqueesaude.com/",
+    "mensagem_inicial": "Olá, Espaço. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521966786161?text=Ol%C3%A1%2C%20equipe%20do%20Espa%C3%A7o%20Psique%20e%20Sa%C3%BAde%0A%0AJ%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20exatamente%20como%20voc%C3%AA%20sugerir%3F%20Essa%20liberdade%20de%20mobilidade%20transforma%20a%20gest%C3%A3o%20do%20seu%20consult%C3%B3rio.%0A%0AApresentamos%20a%20Secret%C3%A1ria%20Virtual%20IA%2024h%2C%20desenvolvida%20exclusivamente%20para%20psic%C3%B3logos%3A%20cobra%20pagamentos%2FPIX%2C%20consulta%20sua%20agenda%2C%20acolhe%20novos%20pacientes%20e%20ainda%20oferece%20conselhos%20pr%C3%A1ticos%20de%20gest%C3%A3o%20de%20leads%20e%20marketing%20digital%20para%20o%20seu%20nicho%20cl%C3%ADnico.%20%F0%9F%93%B1%0A%0AResponda%20com%20a%20palavra%20**teste**%20e%20veja%20a%20IA%20em%20a%C3%A7%C3%A3o%20em%20apenas%2015%20segundos.",
+    "mensagem_personalizada": "Olá, equipe do Espaço Psique e Saúde\n\nJá pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda exatamente como você sugerir? Essa liberdade de mobilidade transforma a gestão do seu consultório.\n\nApresentamos a Secretária Virtual IA 24h, desenvolvida exclusivamente para psicólogos: cobra pagamentos/PIX, consulta sua agenda, acolhe novos pacientes e ainda oferece conselhos práticos de gestão de leads e marketing digital para o seu nicho clínico. 📱\n\nResponda com a palavra **teste** e veja a IA em ação em apenas 15 segundos."
+  },
+  {
+    "nome": "Barra da Tijuca",
+    "whatsapp": "5521981664283",
+    "website": "https://yasmimcarvalho.com/",
+    "mensagem_inicial": "Olá, Barra. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521981664283?text=Ol%C3%A1%2C%20Dr(a).%20J%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, Dr(a). Já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "Bernardo Dias",
+    "whatsapp": "5521996133223",
+    "website": "https://consultorio.me/pro/bernardo-dias",
+    "mensagem_inicial": "Olá, Bernardo. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521996133223?text=Ol%C3%A1%2C%20Bernardo%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20de%20acordo%20com%20o%20que%20voc%C3%AA%20sugerir%3F%20Nossa%20secret%C3%A1ria%20virtual%20especializada%20em%20psicologia%20pode%20ajudar%20com%20isso%2C%20automatizando%20tarefas%20como%20cobran%C3%A7a%20de%20pagamentos%2C%20consulta%20de%20agenda%20e%20acolhimento%20de%20novos%20pacientes%2C%20al%C3%A9m%20de%20oferecer%20conselhos%20pr%C3%A1ticos%20sobre%20gest%C3%A3o%20de%20leads%20e%20marketing%20digital.%20Se%20quiser%20ver%20como%20funciona%2C%20basta%20responder%20com%20a%20palavra%20teste%20para%20simular%20ao%20vivo%20em%2015%20segundos.",
+    "mensagem_personalizada": "Olá, Bernardo, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir? Nossa secretária virtual especializada em psicologia pode ajudar com isso, automatizando tarefas como cobrança de pagamentos, consulta de agenda e acolhimento de novos pacientes, além de oferecer conselhos práticos sobre gestão de leads e marketing digital. Se quiser ver como funciona, basta responder com a palavra teste para simular ao vivo em 15 segundos."
+  },
+  {
+    "nome": "Márcia Cristina Gil",
+    "whatsapp": "5521988793192",
+    "website": "http://psicologamarciagil.com/",
+    "mensagem_inicial": "Olá, Márcia. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521988793192?text=Ol%C3%A1%2C%20M%C3%A1rcia.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4",
+    "mensagem_personalizada": "Olá, Márcia. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤"
+  },
+  {
+    "nome": "no Rio de Janeiro",
+    "whatsapp": "5521971596003",
+    "website": "https://psicologovagnerlacerda.carrd.co/",
+    "mensagem_inicial": "Olá, no. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521971596003?text=Ol%C3%A1%2C%20no.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4",
+    "mensagem_personalizada": "Olá, no. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤"
+  },
+  {
+    "nome": "Clínica de Kairós",
+    "whatsapp": "5521974638118",
+    "website": "https://www.instagram.com/psicologa_kelly_cristinaa?igsh=OTh6ZDc1eGZic2Vk&utm_source=qr",
+    "mensagem_inicial": "Olá, Clínica. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521974638118?text=Ol%C3%A1%2C%20equipe%20da%20Cl%C3%ADnica%20de%20Kair%C3%B3s%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20de%20acordo%20com%20o%20que%20voc%C3%AA%20sugerir%3F%20Nossa%20secret%C3%A1ria%20virtual%20%C3%A9%20especializada%20em%20consult%C3%B3rios%20de%20psicologia%2C%20automatizando%20tarefas%20como%20cobran%C3%A7a%20de%20pagamentos%2C%20consulta%20de%20agenda%20e%20acolhimento%20de%20novos%20pacientes%2C%20al%C3%A9m%20de%20oferecer%20conselhos%20pr%C3%A1ticos%20sobre%20gest%C3%A3o%20de%20leads%20e%20marketing%20digital.%20Responda%20com%20a%20palavra%20teste%20para%20simular%20e%20ver%20a%20IA%20funcionando%20ao%20vivo%20em%2015%20segundos.",
+    "mensagem_personalizada": "Olá, equipe da Clínica de Kairós, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir? Nossa secretária virtual é especializada em consultórios de psicologia, automatizando tarefas como cobrança de pagamentos, consulta de agenda e acolhimento de novos pacientes, além de oferecer conselhos práticos sobre gestão de leads e marketing digital. Responda com a palavra teste para simular e ver a IA funcionando ao vivo em 15 segundos."
+  },
+  {
+    "nome": "Fabiane Varoli",
+    "whatsapp": "5521975581147",
+    "website": "https://www.instagram.com/polopsiespacoterapeutico/",
+    "mensagem_inicial": "Olá, Fabiane. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521975581147?text=Ol%C3%A1%2C%20Fabiane%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20de%20acordo%20com%20o%20que%20voc%C3%AA%20sugerir%3F%20Enquanto%20investe%20em%20divulga%C3%A7%C3%A3o%2C%20n%C3%A3o%20deixe%20que%20a%20falta%20de%20retorno%20r%C3%A1pido%20fa%C3%A7a%20voc%C3%AA%20perder%20pacientes%20valiosos.%20%20%0A%0AApresento%20a%20Secret%C3%A1ria%20Virtual%20IA%2024%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, Fabiane, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir? Enquanto investe em divulgação, não deixe que a falta de retorno rápido faça você perder pacientes valiosos.  \n\nApresento a Secretária Virtual IA 24\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "Única da Gente",
+    "whatsapp": "5521965686940",
+    "website": "https://unicapsicologia.com.br/",
+    "mensagem_inicial": "Olá, Única. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521965686940?text=Ol%C3%A1%2C%20equipe%20da%20%C3%9Anica%20da%20Gente%2C%20j%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20de%20acordo%20com%20o%20que%20voc%C3%AA%20sugerir%3F%20%20%0A%0AApresento%20a%20Secret%C3%A1ria%20Virtual%20IA%2024h%2C%20criada%20exclusivamente%20para%20consult%C3%B3rios%20de%20psicologia%3A%20automatiza%20cobran%C3%A7as%20via%20PIX%2C%20consulta%20sua%20agenda%2C%20acolhe%20novos%20pacientes%20e%0A%0AResponda%20*teste*%20aqui%20para%20ver%20na%20pr%C3%A1tica.",
+    "mensagem_personalizada": "Olá, equipe da Única da Gente, já pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir?  \n\nApresento a Secretária Virtual IA 24h, criada exclusivamente para consultórios de psicologia: automatiza cobranças via PIX, consulta sua agenda, acolhe novos pacientes e\n\nResponda *teste* aqui para ver na prática."
+  },
+  {
+    "nome": "Hoffman & Melo Espaço Integrado de e",
+    "whatsapp": "5521968190564",
+    "website": "https://hoffmanemelo.com.br/",
+    "mensagem_inicial": "Olá, Hoffman. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521968190564?text=Ol%C3%A1%2C%20equipe%20da%20Hoffman%20%26%20Melo%20Espa%C3%A7o%20Integrado%20de%20e%0A%0AJ%C3%A1%20pensou%20estar%20na%20rua%2C%20precisar%20cancelar%20ou%20remarcar%20uma%20sess%C3%A3o%2C%20enviar%20um%20simples%20%C3%A1udio%20e%20nossa%20IA%20reorganizar%20toda%20a%20sua%20agenda%20de%20acordo%20com%20o%20que%20voc%C3%AA%20sugerir%3F%20Essa%20liberdade%20e%20mobilidade%20agora%20s%C3%A3o%20poss%C3%ADveis.%0A%0AApresentamos%20a%20Secret%C3%A1ria%20Virtual%20IA%2024h%2C%20feita%20exclusivamente%20para%20consult%C3%B3rios%20de%20psicologia%3A%20cobra%20pagamentos%2FPIX%2C%20consulta%20sua%20agenda%2C%20acolhe%20novos%20pacientes%20e%20ainda%20oferece%20conselhos%20pr%C3%A1ticos%20de%20gest%C3%A3o%20de%20leads%20e%20marketing%20digital%20para%20o%20seu%20nicho.%20%F0%9F%93%B2%0A%0AResponda%20com%20a%20palavra%20%E2%80%9Cteste%E2%80%9D%20e%20veja%20a%20IA%20funcionando%20ao%20vivo%20em%2015%20segundos.",
+    "mensagem_personalizada": "Olá, equipe da Hoffman & Melo Espaço Integrado de e\n\nJá pensou estar na rua, precisar cancelar ou remarcar uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir? Essa liberdade e mobilidade agora são possíveis.\n\nApresentamos a Secretária Virtual IA 24h, feita exclusivamente para consultórios de psicologia: cobra pagamentos/PIX, consulta sua agenda, acolhe novos pacientes e ainda oferece conselhos práticos de gestão de leads e marketing digital para o seu nicho. 📲\n\nResponda com a palavra “teste” e veja a IA funcionando ao vivo em 15 segundos."
+  },
+  {
+    "nome": "Aline Sirodio Clínica",
+    "whatsapp": "5521974724385",
+    "website": "https://instagram.com/alinesirodio.psi",
+    "mensagem_inicial": "Olá, Aline. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521974724385?text=Ol%C3%A1%2C%20Aline.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Luisa Patricio Garrido",
+    "whatsapp": "5521998112507",
+    "website": "https://www.instagram.com/psi.luisagarrido?igsh=cXpiaHVoc3JtdHQ3",
+    "mensagem_inicial": "Olá, Luisa. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521998112507?text=Ol%C3%A1%2C%20Luisa.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Julia Vallier Vasques",
+    "whatsapp": "5521996245224",
+    "website": "https://www.psicologajuvasques.com/",
+    "mensagem_inicial": "Olá, Julia. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521996245224?text=Ol%C3%A1%2C%20Julia.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Patricia Schaeffer",
+    "whatsapp": "5521986203152",
+    "website": "https://patricianeuropsicologa.com.br/",
+    "mensagem_inicial": "Olá, Patricia. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521986203152?text=Ol%C3%A1%2C%20Patricia.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Psychologist in Rio de Janeiro",
+    "whatsapp": "5521992494464",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Psychologist. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521992494464?text=Ol%C3%A1%2C%20Psychologist.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Betila Lima",
+    "whatsapp": "5521996331109",
+    "website": "https://www.betilalima.com.br/",
+    "mensagem_inicial": "Olá, Betila. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521996331109?text=Ol%C3%A1%2C%20Betila.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Iany Campos / TCC/ Online e Presencial/ Adultos e Crianças",
+    "whatsapp": "5521983652756",
+    "website": "https://psicologaiany.com.br/",
+    "mensagem_inicial": "Olá, Iany. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521983652756?text=Ol%C3%A1%2C%20Iany.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Michele Silveira",
+    "whatsapp": "5521982443743",
+    "website": "https://links.ivaldojunior.com.br/michele000",
+    "mensagem_inicial": "Olá, Michele. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521982443743?text=Ol%C3%A1%2C%20Michele.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Jansen Sarmento",
+    "whatsapp": "5521983372725",
+    "website": "http://www.jansensarmento.com/",
+    "mensagem_inicial": "Olá, Jansen. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521983372725?text=Ol%C3%A1%2C%20Jansen.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Dandara Mota da Silva",
+    "whatsapp": "5521965472013",
+    "website": "https://www.instagram.com/dandaramota.psi?igsh=cHp5Y3VjOGs2cnIz",
+    "mensagem_inicial": "Olá, Dandara. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521965472013?text=Ol%C3%A1%2C%20Dandara.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Paula Malaquias",
+    "whatsapp": "5521971671977",
+    "website": "https://psicologapaulamalaquias.com/",
+    "mensagem_inicial": "Olá, Paula. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521971671977?text=Ol%C3%A1%2C%20Paula.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Verônica Pedrosa",
+    "whatsapp": "5521971950718",
+    "website": "https://www.instagram.com/psicologaveronicapedrosa",
+    "mensagem_inicial": "Olá, Verônica. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521971950718?text=Ol%C3%A1%2C%20Ver%C3%B4nica.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Thaís Pontes",
+    "whatsapp": "5521998417030",
+    "website": "https://thaispontes.com/",
+    "mensagem_inicial": "Olá, Thaís. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521998417030?text=Ol%C3%A1%2C%20Tha%C3%ADs.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Thaís Felix",
+    "whatsapp": "5521986389790",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Thaís. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521986389790?text=Ol%C3%A1%2C%20Tha%C3%ADs.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Amanda Carvalho",
+    "whatsapp": "5521983677888",
+    "website": "https://amandacarvalhopsi.com.br/",
+    "mensagem_inicial": "Olá, Amanda. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521983677888?text=Ol%C3%A1%2C%20Amanda.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Luana Lopes / Psi S",
+    "whatsapp": "5521981006764",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Luana. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521981006764?text=Ol%C3%A1%2C%20Luana.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Consultório de Taquara",
+    "whatsapp": "552124352508",
+    "website": "http://www.psicotaquara.com.br/",
+    "mensagem_inicial": "Olá, Consultório. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/552124352508?text=Ol%C3%A1%2C%20Consult%C3%B3rio.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Patricia Moreira",
+    "whatsapp": "5521967232214",
+    "website": "https://patriciamoreirapsi.com.br/",
+    "mensagem_inicial": "Olá, Patricia. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521967232214?text=Ol%C3%A1%2C%20Patricia.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Clínica e Gestalt",
+    "whatsapp": "5521986904135",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Clínica. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521986904135?text=Ol%C3%A1%2C%20Cl%C3%ADnica.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Suellen Souza",
+    "whatsapp": "5521979392791",
+    "website": "https://psisuellensouza.info/",
+    "mensagem_inicial": "Olá, Suellen. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521979392791?text=Ol%C3%A1%2C%20Suellen.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Clínica de Laços",
+    "whatsapp": "552122883316",
+    "website": "https://clinicalacos.com.br/link",
+    "mensagem_inicial": "Olá, Clínica. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/552122883316?text=Ol%C3%A1%2C%20Cl%C3%ADnica.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Viviane de Lima: Clínica, Perinatal e Sexóloga.",
+    "whatsapp": "5521983209202",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Viviane. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5521983209202?text=Ol%C3%A1%2C%20Viviane.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Fernanda Ribeiro Pazetto",
+    "whatsapp": "5516992245678",
+    "website": "https://www.instagram.com/ferpazetto/",
+    "mensagem_inicial": "Olá, Fernanda. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516992245678?text=Ol%C3%A1%2C%20Fernanda.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Mariana Franco",
+    "whatsapp": "5516994083451",
+    "website": "https://www.instagram.com/psicologa_marianafranco/?hl=en",
+    "mensagem_inicial": "Olá, Mariana. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516994083451?text=Ol%C3%A1%2C%20Mariana.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Amanda Quintino",
+    "whatsapp": "5535998586288",
+    "website": "https://www.instagram.com/psi.cortesnodiva/",
+    "mensagem_inicial": "Olá, Amanda. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5535998586288?text=Ol%C3%A1%2C%20Amanda.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Paula Gomes",
+    "whatsapp": "5535998317000",
+    "website": "https://psicopaulagomes.com.br/",
+    "mensagem_inicial": "Olá, Paula. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5535998317000?text=Ol%C3%A1%2C%20Paula.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Marília Corrêa",
+    "whatsapp": "5537998318020",
+    "website": "https://www.instagram.com/psi.mariliacorrea?igsh=MXBia2hramJzMTdvYw%3D%3D&utm_source=qr",
+    "mensagem_inicial": "Olá, Marília. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537998318020?text=Ol%C3%A1%2C%20Mar%C3%ADlia.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Lorena Gonçalves",
+    "whatsapp": "5531995039405",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Lorena. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531995039405?text=Ol%C3%A1%2C%20Lorena.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "AgoraVocê",
+    "whatsapp": "5516993089386",
+    "website": "https://instagram.com/agoravoce.psicologia?igshid=1lsq06o84wxk0",
+    "mensagem_inicial": "Olá, AgoraVocê. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516993089386?text=Ol%C3%A1%2C%20AgoraVoc%C3%AA.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Ana Luísa de Almeida Melo",
+    "whatsapp": "5535991949357",
+    "website": "https://www.psianaluisaalmeida.com/",
+    "mensagem_inicial": "Olá, Ana. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5535991949357?text=Ol%C3%A1%2C%20Ana.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Dayana Fernandes",
+    "whatsapp": "5535999789927",
+    "website": "https://wa.me/553599789927?text=Ol%C3%A1%20vi%20seu%20perfil%20no%20google%20meu%20neg%C3%B3cio",
+    "mensagem_inicial": "Olá, Dayana. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5535999789927?text=Ol%C3%A1%2C%20Dayana.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "e Thais Gonçalves",
+    "whatsapp": "5534991530942",
+    "website": "https://www.instagram.com/neuropsicologathaisgoncalves/",
+    "mensagem_inicial": "Olá, e. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5534991530942?text=Ol%C3%A1%2C%20e.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Miriam Reis",
+    "whatsapp": "5516993943309",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Miriam. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516993943309?text=Ol%C3%A1%2C%20Miriam.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Luciane Aparecida Duarte",
+    "whatsapp": "5535984023892",
+    "website": "https://www.instagram.com/psicoluduarte?igsh=b3ZmazgzaHZmYmk1",
+    "mensagem_inicial": "Olá, Luciane. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5535984023892?text=Ol%C3%A1%2C%20Luciane.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Danielle Rezende",
+    "whatsapp": "553830826260",
+    "website": "https://daniellerezende.com.br/",
+    "mensagem_inicial": "Olá, Danielle. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/553830826260?text=Ol%C3%A1%2C%20Danielle.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "/ Fabiana Gomes",
+    "whatsapp": "5537999198170",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, /. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537999198170?text=Ol%C3%A1%2C%20%2F.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Fernanda M. Fontes",
+    "whatsapp": "5531997089099",
+    "website": "https://fontespsicoterapia.com.br/",
+    "mensagem_inicial": "Olá, Fernanda. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531997089099?text=Ol%C3%A1%2C%20Fernanda.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Giovana Vansolini Soldado",
+    "whatsapp": "5516993630221",
+    "website": "https://www.instagram.com/psigiovanavs/",
+    "mensagem_inicial": "Olá, Giovana. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516993630221?text=Ol%C3%A1%2C%20Giovana.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Larissa Moura – Clínica e Perinatal",
+    "whatsapp": "5517999743435",
+    "website": "https://www.instagram.com/psicolarissamoura?igsh=MWJiejUxeWFzOHpnMA==",
+    "mensagem_inicial": "Olá, Larissa. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5517999743435?text=Ol%C3%A1%2C%20Larissa.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Larissa Nithielle",
+    "whatsapp": "5534999410149",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Larissa. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5534999410149?text=Ol%C3%A1%2C%20Larissa.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Conselho Regional de da 4ª Região",
+    "whatsapp": "553121386767",
+    "website": "http://www.crp04.org.br/",
+    "mensagem_inicial": "Olá, Conselho. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/553121386767?text=Ol%C3%A1%2C%20Conselho.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Sandra Martins",
+    "whatsapp": "5537999115645",
+    "website": "https://sandraleoduda7.wixsite.com/psic",
+    "mensagem_inicial": "Olá, Sandra. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537999115645?text=Ol%C3%A1%2C%20Sandra.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Paula Curi CRP 04/51318",
+    "whatsapp": "5531994155572",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Paula. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531994155572?text=Ol%C3%A1%2C%20Paula.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Alice Nogueira",
+    "whatsapp": "5531998716152",
+    "website": "https://alicenogueirapsi.com.br/",
+    "mensagem_inicial": "Olá, Alice. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531998716152?text=Ol%C3%A1%2C%20Alice.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "e Bianca Gonçalves",
+    "whatsapp": "5531996597487",
+    "website": "https://www.instagram.com/psicologabiancagoncalves?igsh=MTk3bWpoZmtyNW1udA==",
+    "mensagem_inicial": "Olá, e. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531996597487?text=Ol%C3%A1%2C%20e.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Bruna de Souza Cunha",
+    "whatsapp": "5531983516103",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Bruna. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531983516103?text=Ol%C3%A1%2C%20Bruna.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Clínica",
+    "whatsapp": "5531971639514",
+    "website": "https://www.instagram.com/psi.victoriakubitschek?igsh=MTl5eG8zcWtsNWgzbg==&utm_source=qr",
+    "mensagem_inicial": "Olá, Clínica. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531971639514?text=Ol%C3%A1%2C%20Cl%C3%ADnica.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Solanda Braga",
+    "whatsapp": "5531991909625",
+    "website": "https://www.instagram.com/solanda.psicologia",
+    "mensagem_inicial": "Olá, Solanda. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531991909625?text=Ol%C3%A1%2C%20Solanda.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Clínico",
+    "whatsapp": "5537998468612",
+    "website": "http://www.tiagohenriquepsicologia.com.br/",
+    "mensagem_inicial": "Olá, Clínico. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537998468612?text=Ol%C3%A1%2C%20Cl%C3%ADnico.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Natália Domingos Bernardino",
+    "whatsapp": "5516991048397",
+    "website": "http://www.psinataliadomingos.com/",
+    "mensagem_inicial": "Olá, Natália. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516991048397?text=Ol%C3%A1%2C%20Nat%C3%A1lia.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Maria da Consolação Mariano",
+    "whatsapp": "5531997360019",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Maria. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531997360019?text=Ol%C3%A1%2C%20Maria.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Maria Clara Batista",
+    "whatsapp": "5537988383716",
+    "website": "https://www.psicologamariaclarabatista.com.br/",
+    "mensagem_inicial": "Olá, Maria. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537988383716?text=Ol%C3%A1%2C%20Maria.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Isabela Faleiro",
+    "whatsapp": "5537988154962",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Isabela. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537988154962?text=Ol%C3%A1%2C%20Isabela.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Regina Aline",
+    "whatsapp": "5533988145153",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Regina. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5533988145153?text=Ol%C3%A1%2C%20Regina.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Juliana Penha",
+    "whatsapp": "5516988377846",
+    "website": "http://desperteieagora.com/",
+    "mensagem_inicial": "Olá, Juliana. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516988377846?text=Ol%C3%A1%2C%20Juliana.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Pâmela Demartine",
+    "whatsapp": "5516994099285",
+    "website": "https://psicopamelademartine.com.br/",
+    "mensagem_inicial": "Olá, Pâmela. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516994099285?text=Ol%C3%A1%2C%20P%C3%A2mela.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Raquel Filgueiras",
+    "whatsapp": "5531973266927",
+    "website": "https://www.instagram.com/psi.raquelfilgueiras/",
+    "mensagem_inicial": "Olá, Raquel. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531973266927?text=Ol%C3%A1%2C%20Raquel.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Amanda Aparecida Lemes de Lima",
+    "whatsapp": "5516993361623",
+    "website": "https://amandalemespsicologa.com.br/",
+    "mensagem_inicial": "Olá, Amanda. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516993361623?text=Ol%C3%A1%2C%20Amanda.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Mara Lamounier",
+    "whatsapp": "5535992106310",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Mara. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5535992106310?text=Ol%C3%A1%2C%20Mara.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Amanda Ventura",
+    "whatsapp": "5537999131114",
+    "website": "https://amandaventurapsi.com/",
+    "mensagem_inicial": "Olá, Amanda. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537999131114?text=Ol%C3%A1%2C%20Amanda.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Sávio Silva/ Clínico",
+    "whatsapp": "5537999387337",
+    "website": "https://savio2838.wixsite.com/s-vio-j--silva-i-psi",
+    "mensagem_inicial": "Olá, Sávio. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537999387337?text=Ol%C3%A1%2C%20S%C3%A1vio.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Talita Amorim",
+    "whatsapp": "5535984224182",
+    "website": "https://www.instagram.com/psico_talitaamorim/",
+    "mensagem_inicial": "Olá, Talita. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5535984224182?text=Ol%C3%A1%2C%20Talita.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Aline Regina",
+    "whatsapp": "5516992486089",
+    "website": "https://psialineregina.com/",
+    "mensagem_inicial": "Olá, Aline. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516992486089?text=Ol%C3%A1%2C%20Aline.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Dayane Oliveira",
+    "whatsapp": "5516993762323",
+    "website": "https://www.instagram.com/psicodayoliveira/",
+    "mensagem_inicial": "Olá, Dayane. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516993762323?text=Ol%C3%A1%2C%20Dayane.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Lorena Silva Faria",
+    "whatsapp": "5537991212017",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Lorena. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537991212017?text=Ol%C3%A1%2C%20Lorena.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "e Jéssica S. Procópio",
+    "whatsapp": "5516994265263",
+    "website": "https://www.instagram.com/psic.jessicaprocopio/",
+    "mensagem_inicial": "Olá, e. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5516994265263?text=Ol%C3%A1%2C%20e.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Laís Campos",
+    "whatsapp": "5537991819125",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Laís. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5537991819125?text=Ol%C3%A1%2C%20La%C3%ADs.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Lediane Fonseca On",
+    "whatsapp": "5538999589059",
+    "website": "https://psiledianefonseca.com.br/",
+    "mensagem_inicial": "Olá, Lediane. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5538999589059?text=Ol%C3%A1%2C%20Lediane.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Integrar Clínica Sistemica.",
+    "whatsapp": "5531993030033",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Integrar. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531993030033?text=Ol%C3%A1%2C%20Integrar.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Fernanda Marquezini",
+    "whatsapp": "553535581030",
+    "website": "https://instagram.com/psifernandamarquezini?igshid=MzMyNGUyNmU2YQ==",
+    "mensagem_inicial": "Olá, Fernanda. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/553535581030?text=Ol%C3%A1%2C%20Fernanda.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Rhana Clara",
+    "whatsapp": "5531983878713",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Rhana. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5531983878713?text=Ol%C3%A1%2C%20Rhana.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
+  },
+  {
+    "nome": "Maísa Freire",
+    "whatsapp": "5535998427221",
+    "website": "N/A",
+    "mensagem_inicial": "Olá, Maísa. Enquanto você entrega o seu melhor em sessão, quem acolhe a urgência de quem acaba de chegar no seu WhatsApp? O silêncio no primeiro contato é o maior ponto de perda de pacientes particulares hoje.\n\nResponda *teste* aqui mesmo e veja em tempo real como minha IA acolhe, tria e agenda seus pacientes no piloto automático. 🌑🖤",
+    "wa_link": "https://wa.me/5535998427221?text=Ol%C3%A1%2C%20Ma%C3%ADsa.%20Enquanto%20voc%C3%AA%20entrega%20o%20seu%20melhor%20em%20sess%C3%A3o%2C%20quem%20acolhe%20a%20urg%C3%AAncia%20de%20quem%20acaba%20de%20chegar%20no%20seu%20WhatsApp%3F%20O%20sil%C3%AAncio%20no%20primeiro%20contato%20%C3%A9%20o%20maior%20ponto%20de%20perda%20de%20pacientes%20particulares%20hoje.%0A%0AResponda%20*teste*%20aqui%20mesmo%20e%20veja%20em%20tempo%20real%20como%20minha%20IA%20acolhe%2C%20tria%20e%20agenda%20seus%20pacientes%20no%20piloto%20autom%C3%A1tico.%20%F0%9F%8C%91%F0%9F%96%A4"
   }
 ]
