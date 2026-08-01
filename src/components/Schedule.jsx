@@ -9,69 +9,6 @@ export default function Schedule() {
   const [booked, setBooked] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("pending");
 
-  // ——— Polling de Status de Pagamento ———
-  useEffect(() => {
-    let interval;
-    
-    // Só inicia se tivermos um order_id válido, o pagamento estiver pendente e o agendamento concluído
-    const orderId = pixData?.order_id || pixData?.id;
-    
-    if (orderId && paymentStatus === "pending" && booked) {
-      console.log(`[Schedule] Iniciando monitoramento do pagamento para ID: ${orderId}`);
-      
-      interval = setInterval(async () => {
-        try {
-          const res = await fetch(`/api/ggpix/payment-status?order_id=${orderId}`);
-          const data = await res.json();
-          
-          if (data.success && data.status === "approved") {
-            console.log("[Schedule] Pagamento aprovado!");
-            setPaymentStatus("approved");
-            
-            // ——— Atualiza Status no Notion para 'Won' (Pago) ———
-            try {
-              // Pegamos o e-mail que o Cal.com salvou ou que veio do checkout
-              // Se não estiver no pixData, o fallback é buscar do estado global se existir
-              const leadEmail = pixData?.full_response?.payerEmail || pixData?.payerEmail;
-              const leadName = pixData?.full_response?.payerName || pixData?.name;
-
-              if (leadEmail) {
-                await fetch('/api/notion/update-status', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    email: leadEmail,
-                    name: leadName,
-                    status: 'Won',
-                    notes: `Pagamento de R$ 29,00 CONFIRMADO via Polling em ${new Date().toLocaleString('pt-BR')}`
-                  })
-                });
-                console.log(`[Schedule] Status do lead ${leadEmail} atualizado para 'Won' no Notion.`);
-              }
-            } catch (notionErr) {
-              console.error("[Schedule] Erro ao atualizar Notion pós-pagamento:", notionErr);
-            }
-
-            clearInterval(interval);
-          } else if (data.status === "cancelled") {
-            console.log("[Schedule] Pagamento cancelado ou expirado.");
-            setPaymentStatus("failed");
-            clearInterval(interval);
-          }
-        } catch (e) {
-          console.error("[Schedule] Erro ao verificar status:", e);
-        }
-      }, 7000); // Aumentado para 7s para evitar overload
-    }
-    
-    return () => {
-      if (interval) {
-        console.log("[Schedule] Limpando intervalo de polling.");
-        clearInterval(interval);
-      }
-    };
-  }, [pixData?.order_id, pixData?.id, paymentStatus, booked]);
-
   // ——— Gera PIX ———
   async function generatePix(name) {
     if (pixLoading) return; // Evita cliques duplos

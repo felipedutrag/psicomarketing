@@ -1,17 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import styles from "./AutomacaoCheckout.module.css";
 
 export default function AutomacaoCheckout() {
+  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState(1); // 1: Form, 2: Payment
   const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
   const [status, setStatus] = useState("idle");
   const [submitError, setSubmitError] = useState(null);
 
-  // Scheduling (now comes from Landing Page)
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  // Scheduling (now comes from Landing Page or URL params)
+  const [selectedSlot, setSelectedSlot] = useState(searchParams.get("date") || null);
+
+  // ManyChat subscriber ID from URL (used by webhook to send message)
+  const [mcSubscriberId, setMcSubscriberId] = useState(searchParams.get("mc_subscriber_id") || null);
 
   // PIX
   const [pixData, setPixData] = useState(null);
@@ -37,10 +42,29 @@ export default function AutomacaoCheckout() {
 
   useEffect(() => {
     setMounted(true);
+
+    // Autofill from URL params (name, email, date, mc_subscriber_id)
+    const urlName = searchParams.get("name");
+    const urlEmail = searchParams.get("email");
+    const urlDate = searchParams.get("date");
+
+    if (urlName || urlEmail) {
+      setForm(prev => ({
+        ...prev,
+        nome: urlName || prev.nome,
+        email: urlEmail || prev.email,
+      }));
+    }
+
+    if (urlDate) {
+      setSelectedSlot(urlDate);
+      localStorage.setItem('selectedSlot', urlDate);
+    }
+
     const savedSlot = localStorage.getItem('selectedSlot');
-    if (savedSlot) {
+    if (savedSlot && !urlDate) {
       setSelectedSlot(savedSlot);
-    } else {
+    } else if (!savedSlot && !urlDate && !urlName) {
       window.location.href = "/#preco";
     }
 
@@ -68,31 +92,6 @@ export default function AutomacaoCheckout() {
     setTimeLeft(15 * 60);
   };
 
-  // Polling de Status de Pagamento
-  useEffect(() => {
-    let interval;
-    if (pixData && paymentStatus === "pending" && step === 2) {
-      interval = setInterval(async () => {
-        try {
-          const orderId = pixData?.pix?.id || pixData?.order_id || pixData?.id;
-          if (!orderId || orderId === 'undefined') {
-            console.error("Order ID inválido:", orderId);
-            return;
-          }
-          const res = await fetch(`/api/ggpix/payment-status?order_id=${orderId}`);
-          const data = await res.json();
-          if (data.success && data.status === "approved") {
-            setPaymentStatus("approved");
-            clearInterval(interval);
-          }
-        } catch (e) {
-          console.error("Erro ao verificar status:", e);
-        }
-      }, 5000);
-    }
-    return () => clearInterval(interval);
-  }, [pixData, paymentStatus, step]);
-
   async function handleFinalSubmit(e) {
     if (e) e.preventDefault();
     if (!form.nome || !form.email || !form.telefone || !selectedSlot) return;
@@ -109,7 +108,8 @@ export default function AutomacaoCheckout() {
           name: form.nome,
           email: form.email,
           phone: form.telefone,
-          start: selectedSlot
+          start: selectedSlot,
+          subscriber_id: mcSubscriberId
         }),
       });
 
@@ -284,7 +284,6 @@ export default function AutomacaoCheckout() {
                     </div>
                   </div>
                 )}
-                <div className={styles.paymentStatus}><div className={styles.statusSpinner}></div>Monitorando pagamento em tempo real...</div>
               </div>
             )}
 

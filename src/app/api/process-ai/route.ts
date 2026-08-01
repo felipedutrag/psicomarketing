@@ -73,7 +73,7 @@ ${stageBlock}
 - Use a função **get_availability** para buscar os horários disponíveis e, com base nela, **sugira exatamente 2 opções de dia e horário** ao lead (formate como datas/horas legíveis em português, ex: "Segunda-feira, 03/08 às 14h" ou "Terça-feira, 04/08 às 10h").
 - Peça ao lead para escolher uma das duas opções.
 - Quando o lead escolher, use a função **book_appointment** informando o horário exato escolhido, o nome do lead e o e-mail dele. Se o e-mail não for conhecido, pergunte educadamente antes de agendar.
-- Após o agendamento ser confirmado, informe o dia/hora e que o link da reunião será enviado por e-mail.
+- Após o agendamento ser confirmado, informe o dia/hora e envie o link de checkout retornado pela função para que o lead possa realizar o pagamento.
 
 ### SALVAR INFORMAÇÕES DO LEAD:
 - Sempre que o lead informar dados úteis (nome completo, e-mail, se atende em clínica ou consultório, volume aproximado de pacientes, principal dificuldade/queixa), use a função **save_lead_data** para registrar.
@@ -149,7 +149,7 @@ const TOOL_DEFS: ToolDef[] = [
     },
     {
         name: 'book_appointment',
-        description: 'Agenda a reunião do lead em um horário específico obtido do get_availability. Confirma o agendamento no Cal.com.',
+        description: 'Agenda a reunião do lead em um horário específico obtido do get_availability. Confirma o agendamento no Cal.com e retorna um link de checkout para o lead.',
         parameters: {
             type: 'object',
             properties: {
@@ -293,7 +293,12 @@ async function executeTool(
             // Move o lead para a etapa "reunião agendada"
             await setLeadStage(userId, 'f_reuniao_agendada')
             return {
-                response: { success: true, start: booking.start, meetingUrl: booking.meetingUrl }
+                response: { 
+                    success: true, 
+                    start: booking.start, 
+                    meetingUrl: booking.meetingUrl, 
+                    checkout_url: `https://psicomarketing.online/checkout?name=${encodeURIComponent(attendeeName || '')}&email=${encodeURIComponent(attendeeEmail || '')}&date=${encodeURIComponent(start || '')}&mc_subscriber_id=${userId}`
+                }
             }
         } catch (err) {
             console.error('[PROCESS-AI] book_appointment falhou:', err)
