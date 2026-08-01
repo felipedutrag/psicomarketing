@@ -83,24 +83,31 @@ export async function findSubscriberByPhone(phone: string) {
       if (info?.status === 'success' && info?.data?.id) {
         return info.data.id
       }
-    } catch {
-      // Ignore error and try search
-    }
+    } catch { }
   }
 
   const candidates: string[] = []
-  if (cleanDigits.startsWith('55') && cleanDigits.length >= 12) {
-    candidates.push(`+${cleanDigits}`)
-    candidates.push(cleanDigits)
-  } else if (cleanDigits.length === 10 || cleanDigits.length === 11) {
-    candidates.push(`+55${cleanDigits}`)
-    candidates.push(`55${cleanDigits}`)
+  
+  // Try various formats
+  if (cleanDigits.length >= 10) {
+      // 5513988658518
+      candidates.push(cleanDigits)
+      candidates.push(`+${cleanDigits}`)
+      // 13988658518 (remove 55)
+      if (cleanDigits.startsWith('55')) {
+          const without55 = cleanDigits.substring(2)
+          candidates.push(without55)
+          candidates.push(`+${without55}`)
+      }
   } else {
-    candidates.push(`+${cleanDigits}`)
-    candidates.push(cleanDigits)
+      candidates.push(cleanDigits)
+      candidates.push(`+${cleanDigits}`)
   }
 
-  for (const p of candidates) {
+  // Remove duplicates
+  const uniqueCandidates = [...new Set(candidates)]
+
+  for (const p of uniqueCandidates) {
     try {
       const url = `${MC_API}/subscriber/findBySystemField?phone=${encodeURIComponent(p)}`
       const res = await fetch(url, {

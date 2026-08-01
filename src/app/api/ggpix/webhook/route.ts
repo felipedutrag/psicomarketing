@@ -3,17 +3,20 @@ import { upsertLead } from '@/services/notion';
 import { sendMessage, addTagByName, findSubscriberByPhone, findSubscriberByEmail } from '@/lib/manychat';
 import { Redis } from '@upstash/redis';
 
-const redis = Redis.fromEnv();
-const GGPIX_WEBHOOK_SECRET = process.env.GGPIX_WEBHOOK_SECRET;
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+});
+const GGPIX_WEBHOOK_TOKEN = process.env.GGPIX_WEBHOOK_TOKEN;
 
 export async function POST(req: Request) {
   try {
-    // Verificar se o webhook tem secret configurado (opcional para segurança)
-    if (GGPIX_WEBHOOK_SECRET) {
-      const signature = req.headers.get('x-webhook-secret');
-      if (signature !== GGPIX_WEBHOOK_SECRET) {
-        console.error('[GGPIX WEBHOOK] Invalid signature');
-        return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+    // Verificar se o webhook tem token configurado para validação
+    if (GGPIX_WEBHOOK_TOKEN) {
+      const authHeader = req.headers.get('Authorization');
+      if (!authHeader || authHeader !== `Bearer ${GGPIX_WEBHOOK_TOKEN}`) {
+        console.error('[GGPIX WEBHOOK] Invalid or missing Authorization header');
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
     }
 
@@ -62,13 +65,14 @@ export async function POST(req: Request) {
         || (payer?.phone ? await findSubscriberByPhone(payer.phone) : null)
         || (payer?.email ? await findSubscriberByEmail(payer.email) : null);
 
+    let sendResult = null;
     if (subscriberId) {
       const customerMessage = `🎉 Parabéns! Seu pagamento de R$ ${amountBRL} foi confirmado com sucesso!
 
 Obrigado por confiar na Psicomarketing. Em breve você receberá mais informações sobre seu agendamento.
 
 Transação: ${transactionId}`;
-      await sendMessage(subscriberId, customerMessage);
+      sendResult = await sendMessage(subscriberId, customerMessage);
       await addTagByName(subscriberId, 'Pagamento Concluído');
     } else {
       console.log('[WEBHOOK] Subscriber não encontrado para notificação do cliente');
@@ -76,7 +80,10 @@ Transação: ${transactionId}`;
 
     // 3. Enviar notificação para admin
     const adminPhone = '5513988658518';
-    const adminSubscriberId = await findSubscriberByPhone(adminPhone);
+    // ID fornecido manualmente pelo usuário para garantir a entrega
+    const adminSubscriberId = '388378993'; 
+
+    let adminResult = null;
 
     if (adminSubscriberId) {
       const adminMessage = `💰 Novo pagamento confirmado!
@@ -88,17 +95,24 @@ Transação: ${transactionId}
 External ID: ${externalId}
 Pago em: ${paidAt}`;
 
-      await sendMessage(adminSubscriberId, adminMessage);
+      adminResult = await sendMessage(adminSubscriberId, adminMessage);
     } else {
       console.log('[WEBHOOK] Admin subscriber não encontrado');
     }
 
     console.log('[GGPIX WEBHOOK] Payment processed successfully');
-    return NextResponse.json({ success: true, processed: true });
+    return NextResponse.json({ 
+        success: true, 
+        processed: true, 
+        subscriberId, 
+        sendResult,
+        adminSubscriberId,
+        adminResult
+    });
 
   } catch (error) {
     console.error('[GGPIX WEBHOOK] Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
 

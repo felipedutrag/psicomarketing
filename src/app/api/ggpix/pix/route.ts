@@ -3,7 +3,10 @@ import QRCode from 'qrcode';
 import crypto from 'crypto';
 import { Redis } from '@upstash/redis';
 
-const redis = Redis.fromEnv();
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+});
 const GGPIX_API_KEY = process.env.GGPIX_API_KEY;
 const GGPIX_API_URL = 'https://ggpixapi.com/api/v1';
 

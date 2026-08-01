@@ -1,0 +1,1 @@
+﻿{"transactionId":"test-trans-123","externalId":"test-ext-123","status":"COMPLETE","amount":2900,"paidAt":"2026-08-01T13:00:00Z","payer":{"name":"Teste Cliente","document":"12345678909","email":"test@psicomarketing.com","phone":"5513988658518"}}
