@@ -56,6 +56,18 @@ export async function addTagByName(userId: string | number, tagName: string) {
   return json
 }
 
+export async function addTagById(userId: string | number, tagId: number | string) {
+  console.log('[MANYCHAT] addTagById:', userId, tagId)
+  const res = await fetch(`${MC_API}/subscriber/addTag`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${MANYCHAT_AUTH}` },
+    body: JSON.stringify({ subscriber_id: userId, tag_id: Number(tagId) }),
+  })
+  const json = await res.json()
+  console.log('[MANYCHAT] addTagById response:', res.status, json)
+  return json
+}
+
 export async function removeTagByName(userId: string | number, tagName: string) {
   console.log('[MANYCHAT] removeTagByName:', userId, tagName)
   const res = await fetch(`${MC_API}/subscriber/removeTagByName`, {

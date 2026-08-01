@@ -73,7 +73,7 @@ ${stageBlock}
 - Use a função **get_availability** para buscar os horários disponíveis e, com base nela, **sugira exatamente 2 opções de dia e horário** ao lead (formate como datas/horas legíveis em português, ex: "Segunda-feira, 03/08 às 14h" ou "Terça-feira, 04/08 às 10h").
 - Peça ao lead para escolher uma das duas opções.
 - Quando o lead escolher, use a função **book_appointment** informando o horário exato escolhido, o nome do lead e o e-mail dele. Se o e-mail não for conhecido, pergunte educadamente antes de agendar.
-- Após o agendamento ser confirmado, informe o dia/hora e envie o link de checkout retornado pela função para que o lead possa realizar o pagamento.
+- Após o agendamento ser confirmado, informe o dia/hora e envie o link de checkout retornado pela função para que o lead possa realizar o pagamento. Certifique-se de formatar a URL do checkout para incluir todos os parâmetros com os dados do lead, por exemplo: https://psicomarketing.online/checkout?mc_subscriber_id=123456&name=Nome&email=email@exemplo.com&phone=5511999999999&date=2026-08-03T14:00:00.000Z
 
 ### SALVAR INFORMAÇÕES DO LEAD:
 - Sempre que o lead informar dados úteis (nome completo, e-mail, se atende em clínica ou consultório, volume aproximado de pacientes, principal dificuldade/queixa), use a função **save_lead_data** para registrar.
@@ -292,12 +292,31 @@ async function executeTool(
             }))
             // Move o lead para a etapa "reunião agendada"
             await setLeadStage(userId, 'f_reuniao_agendada')
+
+            // Resgata o lead do Redis para capturar o telefone, se disponível
+            let phone = ''
+            const leadRaw = await redis.get<unknown>(`lead:${userId}`)
+            if (leadRaw) {
+                try {
+                    const leadObj = typeof leadRaw === 'string' ? JSON.parse(leadRaw) : leadRaw as { phone?: string; telefone?: string }
+                    phone = leadObj.phone || leadObj.telefone || ''
+                } catch { }
+            }
+
+            const checkoutParams = new URLSearchParams({
+                mc_subscriber_id: userId,
+                name: attendeeName || '',
+                email: attendeeEmail || '',
+                ...(phone ? { phone } : {}),
+                date: start || ''
+            })
+
             return {
                 response: { 
                     success: true, 
                     start: booking.start, 
                     meetingUrl: booking.meetingUrl, 
-                    checkout_url: `https://psicomarketing.online/checkout?name=${encodeURIComponent(attendeeName || '')}&email=${encodeURIComponent(attendeeEmail || '')}&date=${encodeURIComponent(start || '')}&mc_subscriber_id=${userId}`
+                    checkout_url: `https://psicomarketing.online/checkout?${checkoutParams.toString()}`
                 }
             }
         } catch (err) {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { upsertLead } from '@/services/notion';
-import { sendMessage, addTagByName, findSubscriberByPhone, findSubscriberByEmail } from '@/lib/manychat';
+import { sendMessage, addTagById, findSubscriberByPhone, findSubscriberByEmail } from '@/lib/manychat';
 import { Redis } from '@upstash/redis';
 
 const redis = new Redis({
@@ -130,7 +130,7 @@ export async function POST(req: Request) {
       console.log('[GGPIX WEBHOOK] Sending ManyChat message to customer:', subscriberId);
       sendResult = await sendMessage(subscriberId, customerMessage);
       console.log('[GGPIX WEBHOOK] Customer ManyChat send result:', sendResult);
-      await addTagByName(subscriberId, 'Pagamento Concluído');
+      await addTagById(subscriberId, 93237350);
     } else {
       console.warn('[GGPIX WEBHOOK] No subscriber ID found for customer notification');
     }
