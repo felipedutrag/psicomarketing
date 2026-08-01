@@ -226,6 +226,10 @@
     padding-bottom: 40px;
   }
 
+  .heroWrapper {
+    padding: 1rem 12px;
+  }
+
   .hero::before {
     display: block;
     opacity: 0.2; /* Aumentado para ser mais visível conforme solicitado */
