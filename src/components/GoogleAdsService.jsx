@@ -65,10 +65,10 @@ export default function GoogleAdsService() {
         <div className={styles.content}>
           <div className={styles.badge}>Serviço 02</div>
           <h2 className={styles.title}>
-            Pacientes qualificados buscando por você <span className={styles.highlight}>agora</span>
+            Pacientes qualificados procurando por você <span className={styles.highlight}>agora mesmo</span>
           </h2>
           <p className={styles.description}>
-            O Google Ads é a máquina de aquisição mais poderosa para psicólogos. Colocamos o seu nome no topo das buscas exatamente quando o paciente pesquisa por ajuda profissional.
+            O Google Ads é a máquina de aquisição mais poderosa para psicólogos. Colocamos o seu nome no topo das buscas exatamente no momento em que o paciente procura ajuda profissional.
           </p>
           
           <ul className={styles.features}>
@@ -84,7 +84,7 @@ export default function GoogleAdsService() {
               </div>
               <div>
                 <strong>Segmentação Cirúrgica</strong>
-                <p>Anúncios apenas para sua cidade, bairro ou para o Brasil todo (online).</p>
+                <p>Anúncios direcionados para sua cidade, bairro ou para o Brasil inteiro, se você atende online.</p>
               </div>
             </li>
             <li>
@@ -99,7 +99,7 @@ export default function GoogleAdsService() {
               </div>
               <div>
                 <strong>Marketing Ético (CRP)</strong>
-                <p>Sem promessas de cura, sem sensacionalismo. Apenas posicionamento estratégico e informativo.</p>
+                <p>Zero promessas de cura, zero sensacionalismo. Apenas posicionamento estratégico e informativo, dentro do código de ética.</p>
               </div>
             </li>
           </ul>

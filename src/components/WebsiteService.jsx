@@ -11,7 +11,7 @@ export default function WebsiteService() {
             O seu <span className={styles.highlight}>Consultório Digital</span>
           </h2>
           <p className={styles.subtitle}>
-            Seu site é a primeira impressão do paciente. Criamos plataformas luxuosas, focadas na experiência do usuário e otimizadas para conversão imediata.
+            Seu site é a primeira impressão que o paciente tem de você. Criamos plataformas premium, focadas na experiência do usuário e otimizadas para converter visitantes em agendamentos.
           </p>
           
           <ul className={styles.features}>
@@ -29,7 +29,7 @@ export default function WebsiteService() {
                   <polyline points="20 6 9 17 4 12"/>
                 </svg>
               </div>
-              <span><strong>Alta Velocidade:</strong> Carregamento em menos de 2 segundos.</span>
+              <span><strong>Alta Velocidade:</strong> Carregamento em menos de 2 segundos — ninguém espera por um site lento.</span>
             </li>
             <li>
               <div className={styles.featureIcon}>
@@ -37,7 +37,7 @@ export default function WebsiteService() {
                   <polyline points="20 6 9 17 4 12"/>
                 </svg>
               </div>
-              <span><strong>SEO Otimizado:</strong> Estruturado para ser encontrado organicamente no Google.</span>
+              <span><strong>SEO Otimizado:</strong> Estrutura pensada para ser encontrado organicamente no Google, sem depender só de anúncios.</span>
             </li>
           </ul>
 

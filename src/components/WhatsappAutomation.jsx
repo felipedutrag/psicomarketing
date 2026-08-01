@@ -8,10 +8,10 @@ export default function WhatsappAutomation() {
         <div className={styles.content}>
           <div className={styles.badge}>Nosso Carro-Chefe</div>
           <h2 className={styles.title}>
-            Sua IA atende, <span className={styles.highlight}>tria e agenda</span> por você
+            Sua IA atende, <span className={styles.highlight}>qualifica e agenda</span> no seu lugar
           </h2>
           <p className={styles.description}>
-            Psicólogos perdem até 40% dos contatos porque demoram a responder durante as sessões. Ative uma secretária digital implacável no seu próprio WhatsApp.
+            Psicólogos perdem até 40% dos contatos por demorarem a responder durante as sessões. Ative agora uma secretária digital implacável, direto no seu próprio número de WhatsApp.
           </p>
           
           <ul className={styles.features}>
@@ -27,8 +27,8 @@ export default function WhatsappAutomation() {
                 </svg>
               </div>
               <div>
-                <strong>Respostas Imediatas</strong>
-                <p>Saudação acolhedora, explicação de valores e triagem automática.</p>
+                <strong>Respostas Instantâneas</strong>
+                <p>Saudação acolhedora, esclarecimento de valores e triagem automática em segundos.</p>
               </div>
             </li>
             <li>
@@ -41,8 +41,8 @@ export default function WhatsappAutomation() {
                 </svg>
               </div>
               <div>
-                <strong>Agendamento Facilitado</strong>
-                <p>Integração com sua agenda, reduzindo a fricção e confirmando horários automaticamente.</p>
+                <strong>Agendamento Sem Fricção</strong>
+                <p>Integrada à sua agenda, confirma horários automaticamente e elimina o vai-e-vem de mensagens.</p>
               </div>
             </li>
             <li>
@@ -52,8 +52,8 @@ export default function WhatsappAutomation() {
                 </svg>
               </div>
               <div>
-                <strong>Triagem de Leads Qualificados</strong>
-                <p>A IA qualifica pacientes reais e ignora curiosos, blindando o seu tempo clínico.</p>
+                <strong>Filtro de Leads Qualificados</strong>
+                <p>A IA identifica pacientes reais e descarta curiosos, blindando o seu tempo clínico.</p>
               </div>
             </li>
           </ul>

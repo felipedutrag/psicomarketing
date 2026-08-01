@@ -103,12 +103,12 @@ export default function Schedule() {
     <section className={styles.scheduleSection} id="agenda">
       <div className="container">
         <h2 className="section-title">
-          {booked ? "Prase em te ver em breve!" : "Pronto para transformar seu consultório?"}
+          {booked ? "Prazer em te ver em breve!" : "Pronto para transformar seu consultório?"}
         </h2>
         <p className="section-subtitle">
           {booked 
-            ? "Seu agendamento foi realizado com sucesso. Agora, realize o pagamento da taxa para confirmar." 
-            : "Agende uma sessão estratégica sem compromisso. Nossa equipe criará um plano de captação sob medida para a sua especialidade com vagas limitadas para garantir a máxima qualidade do nosso serviço."
+            ? "Seu agendamento foi realizado com sucesso. Agora, confirme o pagamento da taxa para garantir sua vaga." 
+            : "Agende uma sessão estratégica sem compromisso. Nossa equipe vai desenhar um plano de captação sob medida para a sua especialidade — vagas limitadas para garantir a qualidade do atendimento."
           }
         </p>
         
@@ -131,7 +131,7 @@ export default function Schedule() {
               ) : (
                 <>
                   <h3 className={styles.pixTitle}>Taxa de Ativação</h3>
-                  <p className={styles.pixSubtitle}>Pague o PIX de <strong>R$ 29,00</strong> para confirmar sua sessão estratégica.</p>
+                  <p className={styles.pixSubtitle}>Pague o PIX de <strong>R$ 29,00</strong> para garantir sua sessão estratégica.</p>
                   
                   {pixLoading ? (
                     <div className={styles.pixLoading}>Gerando código PIX...</div>

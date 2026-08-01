@@ -73,8 +73,8 @@ export default function DoctoraliaAgenda() {
   return (
     <div className={styles.agendaContainer}>
       <div className={styles.agendaHeader}>
-        <h3>Agendar sessão estratégica</h3>
-        <p className={styles.subtitle}>Escolha um horário para sua consultoria</p>
+        <h3>Agende sua sessão estratégica</h3>
+        <p className={styles.subtitle}>Escolha o melhor horário para conversarmos sobre a sua clínica</p>
       </div>
 
       <div className={styles.datesContainer}>
@@ -123,7 +123,7 @@ export default function DoctoraliaAgenda() {
             {bookingStatus === "success" ? (
               <div className={styles.success}>
                 <h4>Agendamento Confirmado!</h4>
-                <p>Você receberá um e-mail com o link da sala em instantes.</p>
+                <p>Você vai receber um e-mail com o link da sala em instantes.</p>
                 <button className="btn-primary" onClick={() => setShowModal(false)}>Fechar</button>
               </div>
             ) : (

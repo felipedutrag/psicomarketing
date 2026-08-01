@@ -7,7 +7,7 @@ export default function Portfolio() {
         <div className={styles.header}>
           <h2 className="section-title">Portfólio de Alta Conversão</h2>
           <p className="section-subtitle">
-            Veja alguns padrões de design minimalistas e sofisticados que aplicamos para blindar a autoridade dos nossos clientes. Role os sites abaixo.
+            Padrões de design minimalistas e sofisticados que aplicamos para blindar a autoridade dos nossos clientes. Role os sites abaixo.
           </p>
         </div>
 

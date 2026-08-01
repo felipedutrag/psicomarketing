@@ -44,7 +44,7 @@ export default function BookingCalendar({ onSelect }) {
   return (
     <div className={styles.calendarContainer}>
       <h3 className={styles.title}>Agende sua instalação</h3>
-      <p className={styles.subtitle}>Selecione uma data para sua instalação</p>
+      <p className={styles.subtitle}>Escolha o melhor dia e horário para colocarmos sua IA no ar</p>
 
       {loadingSlots ? (
         <div className={styles.loadingContainer}>
@@ -108,7 +108,7 @@ export default function BookingCalendar({ onSelect }) {
                 window.location.href = '/checkout';
               }}
             >
-              {selectedSlot ? "Confirmar Horário e Continuar →" : "Selecione um horário"}
+              {selectedSlot ? "Confirmar Horário e Continuar →" : "Escolha um horário acima"}
             </button>
           </div>
         </div>

@@ -11,8 +11,8 @@ export default function Hero() {
             Inteligência Artificial para Psicólogos
           </div>
           <h1 className={styles.title}>
-            Atendimento que <br />
-            <span className={styles.highlight}>converte</span> enquanto você atende, dorme ou viaja...
+            Atendimento que <span className={styles.highlight}>converte</span> <br />
+            enquanto você atende, dorme ou viaja...
           </h1>
           <p className={styles.subtitle}>
             Pare de perder pacientes enquanto você está em sessão. Sua nova Secretária de IA no WhatsApp acolhe, filtra curiosos e agenda consultas no piloto automático.
@@ -24,7 +24,7 @@ export default function Hero() {
         <div className={styles.mouse}>
           <div className={styles.wheel}></div>
         </div>
-        <span className={styles.scrollText}>Role para descobrir</span>
+        <span className={styles.scrollText}>Veja como funciona</span>
       </div>
     </section>
   );

@@ -189,7 +189,7 @@ export default function AutomacaoCheckout() {
             Finalização de Reserva
           </div>
           <h2 className={styles.title}>
-            {paymentStatus === "approved" ? "Pacto Confirmado!" : "Quase lá..."}
+            {paymentStatus === "approved" ? "Pacto Confirmado!" : "Falta pouco para sua IA entrar no ar"}
           </h2>
         </div>
 
@@ -252,7 +252,7 @@ export default function AutomacaoCheckout() {
                   <button type="submit" className={styles.submitBtn} disabled={pixLoading}>
                     {pixLoading ? "Processando..." : "Gerar QR Code PIX →"}
                   </button>
-                  <div className={styles.secureBadge}>Sua vaga está garantida por 15 minutos</div>
+                  <div className={styles.secureBadge}>Sua vaga fica garantida por 15 minutos</div>
                 </form>
                 {submitError && <div className={styles.submitError}>{submitError}</div>}
               </div>
@@ -263,7 +263,7 @@ export default function AutomacaoCheckout() {
               <div className={styles.pixContent}>
                 <div className={styles.pixHeader}>
                   <h3 className={styles.pixTitle}>Aguardando Pagamento</h3>
-                  <p className={styles.subtitle}>Não feche essa tela enquanto realiza o pagamento para garantir seu agendamento.</p>
+                  <p className={styles.subtitle}>Não feche essa tela enquanto o pagamento é processado, para não perder sua reserva.</p>
                   <div className={styles.timerBadge}>Expira em {formatTime(timeLeft)}</div>
                   <p className={styles.timerNotice}>Sua reserva é válida por 15 minutos</p>
                   {process.env.NODE_ENV === 'development' && (
@@ -330,7 +330,7 @@ export default function AutomacaoCheckout() {
               <div className={styles.approvedContent}>
                 <div className={styles.successIcon}>✓</div>
                 <h3 className={styles.approvedTitle}>Pacto Confirmado!</h3>
-                <p className={styles.subtitle}>Recebemos seu pagamento. A <strong>Dra. Lilith</strong> já está preparando sua automação.</p>
+                <p className={styles.subtitle}>Recebemos seu pagamento. Nossa equipe já está preparando a sua automação.</p>
                 <button className={styles.submitBtn} onClick={() => window.location.href = "/"}>Voltar ao Início</button>
               </div>
             )}
@@ -346,7 +346,7 @@ export default function AutomacaoCheckout() {
             <div className={styles.summaryTotal}><span>Total</span><span className={styles.totalAmount}>R$ 99,00</span></div>
             <div className={styles.activationPlan}>
               <h4>Assessoria Estratégica</h4>
-              <p className={styles.subtitle}>Ao assinar nossa ferramenta, você ganha uma sessão estratégica de 1 hora focada em mapear e implementar estratégias de captação e automação para a sua clínica.</p>
+              <p className={styles.subtitle}>Ao assinar nossa ferramenta, você ganha uma sessão estratégica de 1 hora para mapear e implementar a captação e a automação da sua clínica.</p>
             </div>
             <ul className={styles.summaryBenefits}>
               <li>✦ IA de Atendimento 24/7</li>

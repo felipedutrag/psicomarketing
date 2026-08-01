@@ -7,8 +7,8 @@ const PAINS = [
         <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
       </svg>
     ),
-    title: "Demora na Resposta",
-    text: "Sua atenção está na sessão, mas o WhatsApp não para. Sem resposta rápida, o paciente já agendou com o seu concorrente.",
+    title: "A Resposta Que Demora Demais",
+    text: "Você está em sessão e o WhatsApp não para. Enquanto você não responde, o paciente já marcou horário com quem atendeu primeiro.",
   },
   {
     icon: (
@@ -16,8 +16,8 @@ const PAINS = [
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /><path d="M9 10h.01" /><path d="M15 10h.01" /><path d="M12 18s-2-1.5-2-3" />
       </svg>
     ),
-    title: "Triagem de Curiosos",
-    text: "Horas preciosas desperdiçadas respondendo as mesmas dúvidas para contatos curiosos que somem no momento de fechar o valor.",
+    title: "Horas Jogadas Fora com Curiosos",
+    text: "Você repete as mesmas explicações dezenas de vezes por dia para contatos que somem na hora de falar em valor — e nunca viram paciente.",
   },
   {
     icon: (
@@ -25,8 +25,8 @@ const PAINS = [
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /><path d="m9 16 2 2 4-4" />
       </svg>
     ),
-    title: "Agenda Desorganizada",
-    text: "Gerenciar reagendamentos, lidar com mensagens perdidas e desperdiçar sua energia vital com processos manuais e ineficientes.",
+    title: "Agenda em Caos",
+    text: "Reagendamentos por mensagem, horários confundidos, energia gasta em tarefas que deveriam ser automáticas — e não clínicas.",
   },
 ];
 
@@ -79,7 +79,7 @@ export default function CopySection() {
             para esperar.
           </h2>
           <p className={styles.subtitle}>
-            Enquanto você entrega o seu melhor em sessão, pacientes em potencial estão sendo perdidos no vácuo — e agendando com quem respondeu primeiro.
+            Enquanto você entrega o seu melhor em sessão, pacientes em potencial somem no vácuo — e agendam com quem respondeu primeiro. Não é falta de demanda. É falta de velocidade.
           </p>
         </div>
 
@@ -99,7 +99,7 @@ export default function CopySection() {
         <div className={styles.roiWarning}>
           <span className={styles.warningIcon}>⚠️</span>
           <p>
-            <strong>A verdade brutal:</strong> Pagar por tráfego e não atender na hora é, literalmente, <span>jogar dinheiro fora.</span> Você paga o clique, mas quem atende mais rápido fica com o paciente.
+            <strong>A verdade brutal:</strong> Investir em anúncios e demorar para responder é <span>jogar dinheiro fora.</span> Você paga pelo clique, mas quem atende primeiro leva o paciente.
           </p>
         </div>
 
@@ -114,10 +114,10 @@ export default function CopySection() {
         <div className={styles.solutionCard}>
           <div className={styles.solutionLeft}>
             <h3 className={styles.solutionTitle}>
-              Sua secretária que <span className={styles.highlight}>não dorme e não tira férias</span> ⚡
+              Sua secretária que <span className={styles.highlight}>nunca dorme, nunca falta</span> ⚡
             </h3>
             <p className={styles.subtitle}>
-              A IA tira dúvidas e qualifica pacientes reais 24h por dia, inserindo os agendamentos diretamente na sua agenda.
+              A IA acolhe, esclarece dúvidas e qualifica pacientes reais 24h por dia, agendando direto na sua agenda — sem intervalo, sem folga, sem erro.
             </p>
 
             <div className={styles.stats}>

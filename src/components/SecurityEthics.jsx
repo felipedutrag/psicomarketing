@@ -7,15 +7,15 @@ export default function SecurityEthics() {
       text: "A IA é uma ferramenta. Ela não realiza sessões, não oferece aconselhamento e não interfere no processo clínico."
     },
     {
-      title: "Sem Diagnósticos",
-      text: "Nossa tecnologia é programada para não emitir diagnósticos ou opiniões médicas. O foco é estritamente triagem e agendamento."
+      title: "Sem Diagnósticos, Nunca",
+      text: "Nossa tecnologia é programada para não emitir diagnósticos ou opiniões clínicas. O foco é estritamente triagem e agendamento."
     },
     {
-      title: "Ética e LGPD",
-      text: "Todos os dados são tratados com sigilo, respeitando as normas do CRP e a Lei Geral de Proteção de Dados.",
+      title: "Ética e LGPD em Primeiro Lugar",
+      text: "Todos os dados são tratados com sigilo absoluto, respeitando as normas do CRP e a Lei Geral de Proteção de Dados.",
     },    {
-      title: "Controle Total",
-      text: "Você tem acesso a todas as conversas em tempo real e pode assumir o atendimento manualmente a qualquer momento."
+      title: "Você no Controle, Sempre",
+      text: "Acompanhe todas as conversas em tempo real e assuma o atendimento manualmente a qualquer momento."
     }
   ];
 
@@ -25,10 +25,10 @@ export default function SecurityEthics() {
         <div className={styles.header}>
           <div className={styles.badge}>Segurança e Ética</div>
           <h2 className={styles.title}>
-            Onde a tecnologia <span className={styles.highlight}>respeita os limites</span>
+            Tecnologia que <span className={styles.highlight}>respeita os seus limites</span>
           </h2>
           <p className={styles.description}>
-            Desenvolvemos uma solução que entende a sensibilidade da sua profissão. A IA atua como sua secretária, nunca como sua substituta.
+            Construímos uma solução ciente da sensibilidade da sua profissão. A IA atua como sua secretária — nunca como sua substituta.
           </p>
         </div>
 

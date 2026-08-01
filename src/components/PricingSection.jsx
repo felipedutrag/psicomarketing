@@ -13,7 +13,7 @@ export default function PricingSection() {
               Quanto vale o seu <span className={`${styles.highlight} ${styles.mobileBreak}`}>tempo hoje?</span>
             </h2>
             <p className={styles.description}>
-              A automação não é um gasto, é sua secretária de alta performance que trabalha 24h por dia, sem férias e sem encargos.
+              A automação não é gasto, é sua secretária de alta performance trabalhando 24h por dia, sem folga, sem encargos e sem reclamar.
             </p>
             
             <div className={styles.valuePoints}>
@@ -32,7 +32,7 @@ export default function PricingSection() {
                 </div>
                 <div>
                   <strong>Alto Retorno (ROI)</strong>
-                  <p>Aqui, um único paciente novo agendado já paga meses do sistema, garantindo um retorno absurdo do seu capital.</p>
+                  <p>Um único paciente novo agendado já paga meses de assinatura — o retorno sobre o seu investimento é imediato.</p>
                 </div>
               </div>
               <div className={styles.point}>
@@ -41,7 +41,7 @@ export default function PricingSection() {
                 </div>
                 <div>
                   <strong>Personalização Completa</strong>
-                  <p>Sua IA personalizada do jeito que você desejar, com sua abordagem clínica e integração total com sua agenda.</p>
+                  <p>Sua IA moldada à sua abordagem clínica, com o tom de voz e a integração de agenda que você precisar.</p>
                 </div>
               </div>
             </div>
