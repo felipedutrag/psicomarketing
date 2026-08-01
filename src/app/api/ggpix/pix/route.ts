@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import QRCode from 'qrcode';
 import crypto from 'crypto';
+import { Redis } from '@upstash/redis';
 
+const redis = Redis.fromEnv();
 const GGPIX_API_KEY = process.env.GGPIX_API_KEY;
-const GGPIX_API_URL = 'https://ggpixapi.com/api/v1'; // Based on system reminder and search snippet
+const GGPIX_API_URL = 'https://ggpixapi.com/api/v1';
 
 export async function POST(req: Request) {
   try {
@@ -55,11 +57,23 @@ export async function POST(req: Request) {
     const randomName = body.name || `Cliente ${Math.floor(Math.random() * 9000) + 1000}`;
     const randomCPF = generateCPF();
     
-        const requestBody = {
+    // Save order metadata to Redis
+    const orderMeta = {
+        externalId,
+        phone: body.phone || body.telefone || body.payerPhone,
+        email: body.email || body.payerEmail,
+        subscriber_id: body.subscriber_id || body.subscriberId,
+        name: randomName
+    };
+    await redis.set(`pix:${externalId}`, JSON.stringify(orderMeta), { ex: 86400 });
+
+    const requestBody = {
         amountCents: amountCents, // Use calculated amount
         description: `Agendamento Psicomarketing - ${externalId.slice(0, 8)}`,
         externalId: externalId,
         payerName: randomName,
+        payerEmail: orderMeta.email,
+        payerPhone: orderMeta.phone,
         payerDocument: randomCPF,
         expiresIn: 7200 // 2 hours expiration
     };
@@ -79,6 +93,10 @@ export async function POST(req: Request) {
     let data;
     try {
         data = JSON.parse(responseText);
+        // Save order metadata with GGPIX ID as well
+        if (data.id) {
+             await redis.set(`pix:${data.id}`, JSON.stringify(orderMeta), { ex: 86400 });
+        }
     } catch (e) {
         data = { error: 'Failed to parse response as JSON', raw: responseText };
     }
