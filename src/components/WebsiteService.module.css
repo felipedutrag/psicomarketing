@@ -547,6 +547,10 @@
     text-align: center;
   }
   
+  .title {
+    font-size: 2rem;
+  }
+
   .subtitle {
     font-size: 1rem;
     text-align: center;

@@ -12,6 +12,6 @@
 
 @media (max-width: 768px) {
   .main {
-    padding-top: 50px; /* Reduced space on mobile */
+    padding-top: 70px; /* Espaço para não colar no logo do header */
   }
 }
