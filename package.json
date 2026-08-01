@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "commit": "node scripts/auto-commit-gemini.js"
+    "commit": "node scripts/auto-commit-gemini.js",
+    "scrape": "node scripts/whatsapp/psicologos_scraper.js",
+    "personalize": "node scripts/scrapers/groq_personalizer.js",
+    "whatsapp": "node scripts/whatsapp/index.js",
+    "pipeline": "node scripts/whatsapp/psicologos_scraper.js --limit=50 && node scripts/scrapers/groq_personalizer.js && node scripts/whatsapp/index.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
