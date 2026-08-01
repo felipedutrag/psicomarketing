@@ -44,8 +44,18 @@ export async function getNextAvailableSlots(days = 7, count = 8): Promise<string
 
 export async function createBooking(start: string, attendeeName: string, attendeeEmail: string) {
   console.log('[CALCOM] createBooking:', start, attendeeName, attendeeEmail)
+
+  // Garante que o start esteja formatado em ISO 8601 válido (ex: 2026-08-03T14:00:00.000Z ou com offset ISO)
+  let isoStart = start
+  try {
+    const d = new Date(start)
+    if (!isNaN(d.getTime())) {
+      isoStart = d.toISOString()
+    }
+  } catch {}
+
   const body = {
-    start,
+    start: isoStart,
     eventTypeId: CALCOM_EVENT_TYPE_ID,
     attendee: {
       name: attendeeName,
@@ -60,7 +70,10 @@ export async function createBooking(start: string, attendeeName: string, attende
     body: JSON.stringify(body),
   })
   const json = await res.json()
-  if (!res.ok) throw new Error(`Cal.com booking ${res.status}: ${JSON.stringify(json)}`)
+  if (!res.ok) {
+    console.error('[CALCOM_BOOKING_ERROR_DETAILS]', JSON.stringify(json, null, 2))
+    throw new Error(`Cal.com booking ${res.status}: ${JSON.stringify(json)}`)
+  }
   console.log('[CALCOM] Booking criado:', json.data?.uid, json.data?.meetingUrl)
   return json.data as { uid: string; meetingUrl: string; start: string; end: string; title: string }
 }
