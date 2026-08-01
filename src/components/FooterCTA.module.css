@@ -2,12 +2,13 @@
   background-color: var(--bg-secondary);
   position: relative;
   overflow: hidden;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 60px 0 30px;
+  border-top: 1px solid rgba(197, 160, 89, 0.2);
+  padding: 80px 0 40px;
   background-image:
-    radial-gradient(circle at 15% 0%, rgba(197, 160, 89, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 85% 100%, rgba(197, 160, 89, 0.06) 0%, transparent 45%),
-    linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+    radial-gradient(circle at 50% 0%, rgba(197, 160, 89, 0.18) 0%, transparent 60%),
+    radial-gradient(circle at 15% 50%, rgba(197, 160, 89, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 90%, rgba(197, 160, 89, 0.08) 0%, transparent 40%),
+    linear-gradient(180deg, #09090b 0%, #020202 100%);
 }
 
 .footerCTA::before {

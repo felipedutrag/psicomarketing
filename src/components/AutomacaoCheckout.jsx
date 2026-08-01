@@ -183,16 +183,6 @@ export default function AutomacaoCheckout() {
   return (
     <section className={styles.section}>
       <div className={`container ${styles.container}`}>
-        <div className={styles.header}>
-          <div className={styles.badge}>
-            <span className={styles.badgeDot}></span>
-            Finalização de Reserva
-          </div>
-          <h2 className={styles.title}>
-            {paymentStatus === "approved" ? "Pacto Confirmado!" : "Falta pouco para sua IA entrar no ar"}
-          </h2>
-        </div>
-
         <div className={styles.checkoutWrapper}>
           <div className={styles.mainCard}>
 

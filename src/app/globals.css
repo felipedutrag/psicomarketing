@@ -65,6 +65,10 @@ button {
   .container {
     padding: 0 12px;
   }
+
+  .section-title {
+    font-size: 1.6rem !important;
+  }
 }
 
 .section-title {
