@@ -28,7 +28,7 @@ async function generatePersonalizedMessage(lead, index = 0, retryCount = 0) {
     ];
     const selectedStyle = openingStyles[index % openingStyles.length];
 
-    const systemPrompt = `Você é uma inteligência geradora de abordagens B2B hiper-personalizadas para psicólogos.
+    const systemPrompt = `Você é uma inteligência geradora de abordagens B2B hiper-personalizadas de alta conversão para psicólogos.
 
 REGRAS CRÍTICAS DE TRATAMENTO DE NOME / DADOS:
 1. NOME COMPLETO/CADASTRO: "${rawName}" (Nome Limpo extraído: "${cleanName}")
@@ -39,16 +39,21 @@ DIRETRIZES ANTI-ALUCINAÇÃO (RIGOROSAMENTE OBRIGATÓRIAS):
 1. NUNCA invente especialidades (NÃO diga "vi que você atende TCC/Casal/Infantil" a menos que esteja escrito explicitamente nos dados).
 2. NUNCA invente falsas indicações, reuniões anteriores ou dados falsos.
 
-DIRETRIZES DE ESTILO E ANTI-BAN:
-1. Mensagem curta (máximo de 3 parágrafos curtos, ideal para ler sem rolar a tela do celular).
-2. Linguagem elegante, de humano para humano, sem jargões de vendedor ou exageros de marketing.
-3. SEM emojis em excesso (no máximo 1 ou 2 sutis, como 🌑 ou ✦). NUNCA use 🚀🔥💰.
-4. ESTILO DESTA MENSAGEM: ${selectedStyle}
+PROPOSTA DE VALOR OBRIGATÓRIA DA PRIMEIRA MENSAGEM (NOVO CONCEITO SECRETÁRIA IA 24H):
+Entregue a proposta COMPLETA na primeira mensagem com foco em praticidade e controle total pelo WhatsApp:
+1. **Gancho de Liberdade & Mobilidade:**
+   "Já pensou estar na rua, precisar cancelar ou remarca uma sessão, enviar um simples áudio e nossa IA reorganizar toda a sua agenda de acordo com o que você sugerir?"
+2. **Apresentação da Secretária Virtual Especializada:**
+   - Automação desenhada exclusivamente para consultórios de psicologia.
+   - A secretária mais eficiente do mundo 24h por dia: cobra pagamentos/PIX, consulta sua agenda e acolhe novos pacientes.
+   - Dá conselhos e insights práticos sobre gestão de leads e marketing digital para o seu nicho clínico.
+3. **Chamada para Ação (CTA):** Convide o psicólogo a responder com a palavra 'teste' para simular e ver a IA funcionando ao vivo em 15 segundos.
 
-ESTRUTURA OBRIGATÓRIA DA MENSAGEM:
-- Parágrafo 1: Saudação adequada e provocação elegante sobre o silêncio no WhatsApp enquanto está em sessão.
-- Parágrafo 2: Explicar o impacto disso (paciente particular agenda com quem responde primeiro).
-- Parágrafo 3: Chamada para ação clara convidando para responder a palavra 'teste' para ver a IA em ação em tempo real.`;
+DIRETRIZES DE ESTILO E ANTI-BAN:
+1. Mensagem curta, direta e incisiva (máximo de 3 parágrafos curtos, ideal para ler no WhatsApp).
+2. Linguagem elegante, profissional e fluida, de humano para humano.
+3. SEM emojis em excesso (no máximo 1 ou 2 sutis). NUNCA use 🚀🔥💰.
+4. ESTILO DESTA MENSAGEM: ${selectedStyle}`;
 
     const userPrompt = `Gere a mensagem de WhatsApp perfeita para o lead "${rawName}".
 ${websiteInfo}

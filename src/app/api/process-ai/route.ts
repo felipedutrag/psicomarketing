@@ -100,18 +100,18 @@ type ToolDef = {
 const TOOL_DEFS: ToolDef[] = [
     {
         name: 'get_lead_stage',
-        description: 'Obtém a etapa atual do funil de vendas do lead (ex: f_novo_contato, f_interessado, f_reuniao_agendada, f_fechamento, f_cliente, f_nutricao). Use para saber onde o lead está no funil.',
+        description: 'Obtém a etapa atual do funil de vendas do lead (ex: f_interessado, f_reuniao_agendada, f_quebra_objecao, f_fechamento). Use para saber onde o lead está no funil.',
         parameters: { type: 'object', properties: {} }
     },
     {
         name: 'update_funnel_stage',
-        description: 'Move o lead para uma nova etapa do funil. Etapas válidas: f_novo_contato, f_interessado, f_reuniao_agendada, f_fechamento, f_cliente, f_nutricao. Use ao avançar o lead no funil.',
+        description: 'Move o lead para uma nova etapa do funil. Etapas válidas: f_interessado, f_reuniao_agendada, f_quebra_objecao, f_fechamento. Use ao avançar ou desviar o lead no funil.',
         parameters: {
             type: 'object',
             properties: {
                 stage: {
                     type: 'string',
-                    description: 'Nova etapa do funil (f_novo_contato, f_interessado, f_reuniao_agendada, f_fechamento, f_cliente ou f_nutricao).'
+                    description: 'Nova etapa do funil (f_interessado, f_reuniao_agendada, f_quebra_objecao ou f_fechamento).'
                 }
             },
             required: ['stage']
