@@ -224,15 +224,30 @@
     display: none;
   }
 
+  .section {
+    padding: 20px 0 60px;
+  }
+
   .mainCard {
-    padding: 30px;
+    padding: 20px 16px;
     min-height: auto;
+    border-radius: 24px;
+  }
+
+  .summaryCard {
+    padding: 20px 16px;
+    border-radius: 24px;
   }
 
   .badge {
     font-size: 0.55rem;
     padding: 6px 14px;
     letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+
+  .header {
+    margin-bottom: 25px;
   }
 }
 
@@ -943,6 +958,6 @@
   }
   
   .section {
-    padding: 80px 0 100px;
+    padding: 10px 0 40px;
   }
 }

@@ -9,3 +9,9 @@
   flex: 1;
   padding-top: 80px; /* Space for absolute header */
 }
+
+@media (max-width: 768px) {
+  .main {
+    padding-top: 50px; /* Reduced space on mobile */
+  }
+}
