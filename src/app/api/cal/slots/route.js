@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { upsertLead } from '@/services/notion';
 
-const CAL_API_KEY = process.env.CAL_API_KEY;
+const CAL_API_KEY = process.env.CALCOM_API_KEY;
 const EVENT_TYPE_ID = 5650035; // evento com disponibilidade completa
 
 // GET /api/cal/slots?days=14
@@ -95,8 +95,8 @@ export async function GET(request) {
       });
     }
 
-    return NextResponse.json({ 
-      slots: processedSlots, 
+    return NextResponse.json({
+      slots: processedSlots,
       status: 'success'
     });
   } catch (e) {
@@ -122,8 +122,8 @@ export async function POST(request) {
     const now = new Date();
     const diffHours = (startTime - now) / (1000 * 60 * 60);
 
-    if (diffHours < 48) { 
-      return NextResponse.json({ 
+    if (diffHours < 48) {
+      return NextResponse.json({
         error: 'Data inválida: O agendamento deve ser feito com pelo menos 48h de antecedência.',
         details: { requested: start, now: now.toISOString() }
       }, { status: 400 });
@@ -131,16 +131,17 @@ export async function POST(request) {
 
     // 1. --- GERAÇÃO DE PIX ANTES DO AGENDAMENTO ---
     let pixInfo = null;
-    
+
     try {
       const externalId = crypto.randomUUID();
       const amountCents = 9900; // R$ 99,00
-      
+
       const ggRes = await fetch('https://ggpixapi.com/api/v1/pix/in', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'X-API-Key': process.env.GGPIX_API_KEY || '',
+          'Content-Type': 'application/json',
+          'X-API-Key': process.env.GGPIX_API_KEY || '',
+          'Referer': process.env.NODE_ENV === 'production' ? 'https://www.psicomarketing.online' : 'http://localhost:3000'
         },
         body: JSON.stringify({
           amountCents: amountCents,
@@ -149,11 +150,11 @@ export async function POST(request) {
           payerName: name,
           payerEmail: email,
           payerPhone: phone,
-          payerDocument: "12345678909", 
+          payerDocument: "12345678909",
           expiresIn: 7200
         })
       });
-      
+
       const ggData = await ggRes.json();
       if (ggRes.ok) {
         pixInfo = ggData;
@@ -167,7 +168,7 @@ export async function POST(request) {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${CAL_API_KEY}`,
-        'cal-api-version': '2024-08-13', 
+        'cal-api-version': '2024-08-13',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -212,7 +213,7 @@ export async function POST(request) {
       start: data.data?.start || data.start,
       pix: pixInfo ? {
         code: pixInfo.pixCopyPaste,
-        qrCode: pixInfo.pixCode, 
+        qrCode: pixInfo.pixCode,
         id: pixInfo.id
       } : null
     });

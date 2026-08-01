@@ -64,32 +64,17 @@ export async function POST(req: Request) {
         expiresIn: 7200 // 2 hours expiration
     };
 
-    console.log("--- GGPIX DEBUG START ---");
-    console.log("URL:", `${GGPIX_API_URL}/pix/in`);
-    console.log("Method: POST");
-    console.log("Headers:", JSON.stringify({
-        'Content-Type': 'application/json',
-        'X-API-Key': GGPIX_API_KEY ? `${GGPIX_API_KEY.slice(0, 5)}...${GGPIX_API_KEY.slice(-5)}` : 'MISSING',
-    }, null, 2));
-    console.log("Payload:", JSON.stringify(requestBody, null, 2));
-
-    const startTime = Date.now();
     const res = await fetch(`${GGPIX_API_URL}/pix/in`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-API-Key': GGPIX_API_KEY || '',
+            'Referer': process.env.NODE_ENV === 'production' ? 'https://www.psicomarketing.online' : 'http://localhost:3000'
         },
         body: JSON.stringify(requestBody)
     });
 
-    const endTime = Date.now();
     const responseText = await res.text();
-    
-    console.log(`Response Time: ${endTime - startTime}ms`);
-    console.log(`Status: ${res.status} ${res.statusText}`);
-    console.log("Raw Response:", responseText);
-    console.log("--- GGPIX DEBUG END ---");
 
     let data;
     try {

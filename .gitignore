@@ -9,6 +9,7 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+/scripts/whatsapp/node_modules
 
 # testing
 /coverage

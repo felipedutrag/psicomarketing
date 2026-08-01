@@ -8,8 +8,9 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const orderId = searchParams.get('order_id');
 
-    if (!orderId || orderId === 'undefined') {
-      return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
+    if (!orderId || orderId === 'undefined' || orderId === 'null') {
+      console.error('[GGPIX Status] Order ID inválido:', orderId);
+      return NextResponse.json({ error: 'Order ID is required', received: orderId }, { status: 400 });
     }
 
     console.log(`Checking status for Order ID (GGPIX): ${orderId}`);

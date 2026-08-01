@@ -74,7 +74,11 @@ export default function AutomacaoCheckout() {
     if (pixData && paymentStatus === "pending" && step === 2) {
       interval = setInterval(async () => {
         try {
-          const orderId = pixData.pix?.id || pixData.order_id || pixData.id;
+          const orderId = pixData?.pix?.id || pixData?.order_id || pixData?.id;
+          if (!orderId || orderId === 'undefined') {
+            console.error("Order ID inválido:", orderId);
+            return;
+          }
           const res = await fetch(`/api/ggpix/payment-status?order_id=${orderId}`);
           const data = await res.json();
           if (data.success && data.status === "approved") {
@@ -224,6 +228,11 @@ export default function AutomacaoCheckout() {
                   <p className={styles.subtitle}>Não feche essa tela enquanto realiza o pagamento para garantir seu agendamento.</p>
                   <div className={styles.timerBadge}>Expira em {formatTime(timeLeft)}</div>
                   <p className={styles.timerNotice}>Sua reserva é válida por 15 minutos</p>
+                  {process.env.NODE_ENV === 'development' && (
+                    <button onClick={handleReset} className={styles.devBtn} style={{ marginTop: '10px', padding: '8px 16px', fontSize: '12px', background: '#ff9800', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+                      [DEV] Gerar Novo PIX
+                    </button>
+                  )}
                 </div>
 
                 {timeLeft === 0 ? (
