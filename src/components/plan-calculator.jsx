@@ -8,7 +8,7 @@ import { useLilithVoice } from "@/hooks/use-lilith-voice";
 
 const BASE_PLAN = {
   name: "IA Core + WhatsApp Conector",
-  price: 297,
+  price: 147,
   description: "Atendimento 24/7 por texto no WhatsApp, qualificação de leads e gestão da agenda.",
 };
 
@@ -16,37 +16,30 @@ const AVAILABLE_PLUGINS = [
   {
     id: "landing-page-ai",
     title: "Landing Page Conector",
-    price: 149,
+    price: 99,
     category: "Conversão",
     description: "Edite textos e imagens do seu site direto no painel com IA generativa.",
   },
   {
     id: "google-ads",
     title: "Google Ads Conector",
-    price: 197,
+    price: 99,
     category: "Aquisição",
     description: "Gestão de campanhas no Google com relatórios e edição com IA.",
   },
   {
     id: "facebook-ads",
     title: "Meta Ads Conector",
-    price: 197,
+    price: 99,
     category: "Tráfego Pago",
     description: "Gerencia campanhas no Instagram e Facebook com IA.",
   },
   {
     id: "smart-booking",
     title: "Google Meet Conector",
-    price: 97,
+    price: 99,
     category: "Automação",
     description: "Agende e gerencie reuniões no Google Meet direto pelo WhatsApp com IA.",
-  },
-  {
-    id: "custom-plugin",
-    title: "API Custom Conector",
-    price: 249,
-    category: "API Customizada",
-    description: "Integração com sistemas clínicos ou APIs desenvolvida sob demanda.",
   },
 ];
 
@@ -242,7 +235,7 @@ export function PlanCalculator() {
                     {plugin.category}
                   </Badge>
                   <span className="font-mono text-xs font-bold text-indigo-700 dark:text-indigo-300">
-                    +R$ {plugin.price}/mês
+                                    {plugin.price ? `+R$ ${plugin.price}/mês` : "Solicitar Cotação"}
                   </span>
                 </div>
               </button>
@@ -296,29 +289,31 @@ export function PlanCalculator() {
             {/* Included Items List */}
             <div className="space-y-2.5 text-xs sm:text-sm">
               <div className="flex items-center justify-between font-semibold text-zinc-800 dark:text-zinc-200 text-sm sm:text-base">
-                <span className="flex items-center gap-2">
-                  <Check className="size-4 text-indigo-600 dark:text-indigo-400" />
-                  Plano Base ({BASE_PLAN.name})
-                </span>
-                <span className="font-mono font-bold text-primary">R$ {BASE_PLAN.price}</span>
+                              <span>Plano Starter</span>
+                              <span className="font-mono font-bold text-primary">R$ {BASE_PLAN.price}</span>
               </div>
 
-              {selectedPluginObjects.length > 0 ? (
-                selectedPluginObjects.map((plugin) => (
-                  <div
-                    key={plugin.id}
-                    className="flex items-center justify-between text-zinc-700 dark:text-zinc-400 pl-6 text-xs sm:text-sm"
-                  >
-                    <span>+ {plugin.title}</span>
-                    <span className="font-mono font-medium">R$ {plugin.price}</span>
-                  </div>
-                ))
-              ) : (
-                <p className="pl-6 text-xs sm:text-sm italic text-zinc-400">
-                  Nenhum plugin selecionado ainda
-                </p>
-              )}
-            </div>
+                            <div className="pl-6 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
+                              <p className="font-medium text-zinc-900 dark:text-zinc-100">+ WhatsApp Conector (incluso)</p>
+                              <p className="text-zinc-500 dark:text-zinc-400 mt-0.5">Atendimento 24/7 por texto, qualificação de leads e agendamentos automáticos.</p>
+                            </div>
+
+                            {selectedPluginObjects.length > 0 ? (
+                              selectedPluginObjects.map((plugin) => (
+                                <div
+                                  key={plugin.id}
+                                  className="flex items-center justify-between text-zinc-700 dark:text-zinc-400 pl-6 text-xs sm:text-sm"
+                                >
+                                  <span>+ {plugin.title}</span>
+                                  <span className="font-mono font-medium">R$ {plugin.price}</span>
+                                </div>
+                              ))
+                            ) : (
+                              <p className="pl-6 text-xs sm:text-sm italic text-zinc-400">
+                                Nenhum conector adicional selecionado
+                              </p>
+                            )}
+                        </div>
 
             {/* Total Display */}
             <div className="border-t border-zinc-200/80 pt-5 dark:border-zinc-800">
