@@ -32,26 +32,26 @@ export default function Home() {
       {/* Bottom Ambient Glow */}
       <div className="absolute bottom-20 -left-40 w-[600px] h-[600px] bg-purple-500/10 dark:bg-purple-600/15 blur-3xl rounded-full pointer-events-none" />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-14 px-4 pt-4 pb-4 md:px-8 md:pt-6 md:pb-8 lg:gap-20">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-8 sm:gap-14 px-3 sm:px-4 pt-4 pb-4 md:px-8 md:pt-6 md:pb-8 lg:gap-20">
         <MinimalHeader />
 
         {/* Hero & Calendar Section */}
-        <section className="flex flex-col gap-10 pt-2">
-          <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 py-6 md:py-8">
-            <Badge>{content.heroBadge}</Badge>
-            <h1 className="text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center">
-                          Sua secretária de IA com <br /><span className="text-primary font-bold underline underline-offset-4 decoration-primary/30 flex items-center justify-center gap-2">super poderes <Gem className="size-5" /></span>
+        <section className="flex flex-col gap-6 sm:gap-10 pt-2">
+          <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 py-4 sm:py-6 md:py-8">
+            <Badge className="text-[10px] sm:text-xs">{content.heroBadge}</Badge>
+            <h1 className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center">
+                          Sua secretária de IA com <br /><span className="text-primary font-bold underline underline-offset-4 decoration-primary/30 flex items-center justify-center gap-2">super poderes <Gem className="size-4 sm:size-5" /></span>
             </h1>
-            <p className="text-base text-zinc-700 md:text-lg dark:text-zinc-400">
+            <p className="text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
               {content.heroDescription}
             </p>
-            <div className="flex flex-wrap justify-center gap-3 pt-2">
-                          <Button asChild size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-2">
+                          <Button asChild size="default" sm:size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md">
                 <Link href="#investimento">
-                  {content.primaryCtaLabel} <ArrowRight className="size-4" />
+                  {content.primaryCtaLabel} <ArrowRight className="size-3.5 sm:size-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="default" sm:size="lg">
                 <Link href="#live-demo">{content.secondaryCtaLabel}</Link>
               </Button>
             </div>
@@ -71,11 +71,11 @@ export default function Home() {
         {/* Interactive Connectors Ecosystem Workspace */}
         <section id="modulos" className="space-y-4 scroll-mt-24">
           <div className="space-y-1">
-                    <Badge variant="outline">{content.connectorsBadge}</Badge>
-            <h2 className="text-2xl font-semibold md:text-3xl">
+                    <Badge variant="outline" className="text-[10px] sm:text-xs">{content.connectorsBadge}</Badge>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
                       {content.connectorsTitle}
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
                       {content.connectorsDescription}
             </p>
           </div>
@@ -94,11 +94,11 @@ export default function Home() {
         {/* Timeline Pipeline */}
         <section id="fluxo" className="space-y-4 scroll-mt-24">
           <div className="space-y-1">
-            <Badge variant="outline">Fluxo de Automação</Badge>
-            <h2 className="text-2xl font-semibold md:text-3xl">
+            <Badge variant="outline" className="text-[10px] sm:text-xs">Fluxo de Automação</Badge>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               {content.flowTitle}
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
               {content.flowDescription}
             </p>
           </div>
@@ -112,11 +112,11 @@ export default function Home() {
         {/* Notion-Style Comparison Matrix */}
         <section className="space-y-4">
           <div className="space-y-1">
-            <Badge variant="outline">Comparativo Direto</Badge>
-            <h2 className="text-2xl font-semibold md:text-3xl">
+            <Badge variant="outline" className="text-[10px] sm:text-xs">Comparativo Direto</Badge>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               Manual vs. Automação Inteligente
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
               Entenda por que clínicas e psicólogos estão migrando para o modelo modular.
             </p>
           </div>
@@ -128,20 +128,20 @@ export default function Home() {
         </div>
 
         {/* Final Investment Section & Calculator */}
-        <section id="investimento" className="space-y-6 scroll-mt-24 pt-4 md:pt-6">
+        <section id="investimento" className="space-y-4 sm:space-y-6 scroll-mt-24 pt-4 md:pt-6">
           <div className="space-y-1">
-            <Badge variant="outline" className="border-indigo-500/30 text-indigo-700 dark:text-indigo-400">
+            <Badge variant="outline" className="border-indigo-500/30 text-indigo-700 dark:text-indigo-400 text-[10px] sm:text-xs">
               {content.investmentBadge}
             </Badge>
-            <h2 className="text-2xl font-semibold md:text-3xl">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               {content.investmentTitle}
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
               {content.investmentDescription}
             </p>
           </div>
 
-          <Card className="border-indigo-500/30 bg-zinc-100/70 p-6 md:p-10 dark:border-indigo-500/20 dark:bg-zinc-900/50">
+          <Card className="border-indigo-500/30 bg-zinc-100/70 p-4 sm:p-6 md:p-10 dark:border-indigo-500/20 dark:bg-zinc-900/50">
             <CardContent className="p-0">
               <PlanCalculator />
             </CardContent>
