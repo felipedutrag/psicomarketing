@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, X, Sparkles, ShieldCheck } from "lucide-react";
+import { Check, X, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export function ComparisonTable() {
@@ -38,7 +38,7 @@ export function ComparisonTable() {
   ];
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100/70 shadow-xs backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/50">
+    <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100/70 shadow-xs backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/50">
       {/* Mobile Stacked Card View */}
       <div className="block md:hidden p-2.5 space-y-2.5">
         {comparisonItems.map((item, idx) => (
@@ -65,8 +65,8 @@ export function ComparisonTable() {
             <div className="flex items-start gap-1.5 text-[11px] sm:text-xs text-indigo-950 dark:text-indigo-200 bg-indigo-500/10 dark:bg-indigo-950/50 p-2 rounded-lg border border-indigo-500/20 font-medium">
               <Check className="size-3.5 shrink-0 text-indigo-600 dark:text-indigo-400 mt-0.5" />
               <div>
-                <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-0.5 flex items-center gap-1">
-                  <Sparkles className="size-2.5" /> Com Psicomarketing IA
+                <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-0.5">
+                  Com Psicomarketing IA
                 </span>
                 <span>{item.ai}</span>
               </div>
@@ -88,7 +88,6 @@ export function ComparisonTable() {
               </th>
               <th className="p-4 font-semibold text-indigo-900 dark:text-indigo-300 bg-indigo-500/10 dark:bg-indigo-950/50 w-1/3">
                 <span className="inline-flex items-center gap-1.5">
-                  <Sparkles className="size-4 text-indigo-600 dark:text-indigo-400" />
                   Com Psicomarketing IA
                 </span>
               </th>

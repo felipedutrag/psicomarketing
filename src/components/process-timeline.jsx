@@ -6,7 +6,7 @@ export function ProcessTimeline({ steps }) {
   const stepIcons = [Globe, Mic, CalendarCheck, MailCheck];
 
   return (
-    <div className="rounded-2xl border border-zinc-200 bg-zinc-100/70 p-5 sm:p-6 md:p-8 shadow-xs backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/50">
+    <div className="rounded-xl border border-zinc-200 bg-zinc-100/70 p-5 sm:p-6 md:p-8 shadow-xs backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/50">
       {/* Mobile Vertical View */}
       <div className="relative flex md:hidden flex-col gap-5">
         {/* Connecting Vertical Line */}
@@ -17,7 +17,7 @@ export function ProcessTimeline({ steps }) {
           return (
             <div key={idx} className="relative z-10 flex items-start gap-4 group">
               {/* Step Node Circle (Left) */}
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl border-2 border-indigo-500/40 bg-white shadow-xs transition-all duration-300 group-hover:scale-110 group-hover:border-indigo-600 group-hover:bg-indigo-600 group-hover:shadow-md group-hover:shadow-indigo-500/30 dark:bg-zinc-950 dark:border-indigo-500/40">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border-2 border-indigo-500/40 bg-white shadow-xs transition-all duration-300 group-hover:scale-110 group-hover:border-indigo-600 group-hover:bg-indigo-600 group-hover:shadow-md group-hover:shadow-indigo-500/30 dark:bg-zinc-950 dark:border-indigo-500/40">
                 <Icon className="size-4 text-indigo-600 transition-colors group-hover:text-white dark:text-indigo-400 dark:group-hover:text-white" />
               </div>
 
@@ -49,7 +49,7 @@ export function ProcessTimeline({ steps }) {
               className="relative z-10 flex flex-1 flex-col items-center text-center group"
             >
               {/* Step Node Circle */}
-              <div className="flex size-12 items-center justify-center rounded-2xl border-2 border-indigo-500/40 bg-white shadow-xs transition-all duration-300 group-hover:scale-110 group-hover:border-indigo-600 group-hover:bg-indigo-600 group-hover:shadow-md group-hover:shadow-indigo-500/30 dark:bg-zinc-950 dark:border-indigo-500/40">
+              <div className="flex size-12 items-center justify-center rounded-lg border-2 border-indigo-500/40 bg-white shadow-xs transition-all duration-300 group-hover:scale-110 group-hover:border-indigo-600 group-hover:bg-indigo-600 group-hover:shadow-md group-hover:shadow-indigo-500/30 dark:bg-zinc-950 dark:border-indigo-500/40">
                 <Icon className="size-5 text-indigo-600 transition-colors group-hover:text-white dark:text-indigo-400 dark:group-hover:text-white" />
               </div>
 

@@ -141,7 +141,7 @@ export function BotFlowScene() {
                 return (
                   <div
                     key={key}
-                    className={`flex h-16 flex-col justify-center rounded-lg border p-1.5 transition-all duration-300 ${
+                    className={`flex h-24 flex-col justify-center rounded-lg border p-1.5 transition-all duration-300 ${
                       slot
                         ? "animate-in fade-in zoom-in-95 border-blue-500/40 bg-blue-50 dark:border-blue-800/60 dark:bg-blue-950/50"
                         : "border-dashed border-zinc-200 bg-white/50 text-zinc-400 dark:border-zinc-800 dark:bg-zinc-950/30 dark:text-zinc-600"
@@ -197,7 +197,7 @@ export function BotFlowScene() {
                 return (
                   <div
                     key={key}
-                    className={`flex h-16 flex-col justify-center rounded-lg border p-2 transition-all duration-300 ${
+                    className={`flex h-24 flex-col justify-center rounded-lg border p-2 transition-all duration-300 ${
                       slot
                         ? "animate-in fade-in zoom-in-95 border-blue-500/40 bg-blue-50 dark:border-blue-800/60 dark:bg-blue-950/50"
                         : "border-dashed border-zinc-200 bg-white/50 text-zinc-400 dark:border-zinc-800 dark:bg-zinc-950/30 dark:text-zinc-600"

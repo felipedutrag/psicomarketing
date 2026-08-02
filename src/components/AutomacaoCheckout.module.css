@@ -114,8 +114,8 @@
 }
 
 .stepActive .stepDot {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
+  border-color: #c5a059;
+  color: #c5a059;
   box-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
   background: rgba(197, 160, 89, 0.1);
 }
@@ -165,7 +165,7 @@
 }
 
 .totalAmount {
-  color: var(--accent-primary);
+  color: #c5a059;
   font-size: 1.8rem;
 }
 
@@ -391,7 +391,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-primary);
+  color: #c5a059;
   font-size: 0.7rem;
   font-weight: 800;
   flex-shrink: 0;
@@ -429,7 +429,7 @@
 .selectedTimeInfo strong {
   display: block;
   font-size: 1.2rem;
-  color: var(--accent-primary);
+  color: #c5a059;
   margin-bottom: 1rem;
 }
 
@@ -442,7 +442,7 @@
 }
 
 .changeTime:hover {
-  color: var(--accent-primary);
+  color: #c5a059;
 }
 
 
@@ -452,7 +452,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  color: var(--accent-primary);
+  color: #c5a059;
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -461,7 +461,7 @@
   width: 16px;
   height: 16px;
   border: 2px solid rgba(197, 160, 89, 0.1);
-  border-top-color: var(--accent-primary);
+  border-top-color: #c5a059;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -491,13 +491,13 @@
   margin: 25px 0;
   padding: 15px;
   background: rgba(197, 160, 89, 0.05);
-  border-left: 2px solid var(--accent-primary);
+  border-left: 2px solid #c5a059;
   border-radius: 0 12px 12px 0;
 }
 
 .activationPlan h4 {
   font-size: 0.9rem;
-  color: var(--accent-primary);
+  color: #c5a059;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 8px;
@@ -530,7 +530,7 @@
   gap: 10px;
   background: rgba(197, 160, 89, 0.08);
   border: 1px solid rgba(197, 160, 89, 0.2);
-  color: var(--accent-primary);
+  color: #c5a059;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 2px;
@@ -544,8 +544,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--accent-primary);
-  box-shadow: 0 0 10px var(--accent-primary);
+  background: #c5a059;
+  box-shadow: 0 0 10px #c5a059;
 }
 
 .title {
@@ -567,7 +567,7 @@
 
 .subtitle {
   font-size: 1.15rem;
-  color: var(--text-secondary);
+  color: #a0a0a0;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.7;
@@ -631,7 +631,7 @@
 }
 
 .input:focus {
-  border-color: var(--accent-primary);
+  border-color: #c5a059;
   background: rgba(0, 0, 0, 0.5);
   outline: none;
   box-shadow: 0 0 20px rgba(197, 160, 89, 0.1);
@@ -644,7 +644,7 @@
 
 .calDayName {
   font-size: 0.85rem;
-  color: var(--accent-primary);
+  color: #c5a059;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -677,9 +677,9 @@
 }
 
 .navBtn:hover:not(:disabled) {
-  background: var(--accent-primary);
+  background: #c5a059;
   color: #000;
-  border-color: var(--accent-primary);
+  border-color: #c5a059;
 }
 
 .slot {
@@ -705,9 +705,9 @@
 }
 
 .slotSelected {
-  background: var(--accent-primary) !important;
+  background: #c5a059 !important;
   color: #000 !important;
-  border-color: var(--accent-primary) !important;
+  border-color: #c5a059 !important;
   box-shadow: 0 10px 30px rgba(197, 160, 89, 0.3);
 }
 
@@ -739,7 +739,7 @@
 }
 
 .currentDate p {
-  color: var(--accent-primary);
+  color: #c5a059;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -772,9 +772,9 @@
 }
 
 .slotSelected {
-  background: var(--accent-primary) !important;
+  background: #c5a059 !important;
   color: #000 !important;
-  border-color: var(--accent-primary) !important;
+  border-color: #c5a059 !important;
   box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
 }
 
@@ -795,7 +795,7 @@
 }
 
 .backLink:hover {
-  color: var(--accent-primary);
+  color: #c5a059;
 }
 
 .loadingContainer {
@@ -829,7 +829,7 @@
 }
 
 .copyBtn {
-  background: var(--accent-primary);
+  background: #c5a059;
   color: #000;
   font-weight: 800;
   border-radius: 16px;
@@ -844,7 +844,7 @@
 }
 
 .copyBtn:hover {
-  background: var(--accent-primary-hover, #d4aa5c);
+  background: #d4aa5c;
   transform: scale(1.03);
 }
 
@@ -874,7 +874,7 @@
 .successIcon {
   width: 80px;
   height: 80px;
-  background: var(--accent-primary);
+  background: #c5a059;
   color: #000;
   font-size: 2.5rem;
   border-radius: 50%;
@@ -887,7 +887,7 @@
 
 .submitBtn {
   width: 100%;
-  background: var(--accent-primary);
+  background: #c5a059;
   color: #000;
   font-weight: 700;
   border-radius: 999px;
@@ -900,7 +900,7 @@
 }
 
 .submitBtn:hover:not(:disabled) {
-  background: var(--accent-primary-hover);
+  background: #e0bc75;
   transform: translateY(-3px);
   box-shadow: 0 20px 40px rgba(197, 160, 89, 0.3);
 }

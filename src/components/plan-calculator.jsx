@@ -176,7 +176,7 @@ export function PlanCalculator() {
 
       {/* Right Column: Live Plan Summary & Total */}
       <div className="lg:col-span-5">
-        <div className="sticky top-6 flex flex-col justify-between rounded-2xl border border-indigo-500/30 bg-zinc-100/90 p-7 shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
+        <div className="sticky top-6 flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-7 shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
           <div className="space-y-5">
             {/* Header & Cycle Switch */}
             <div className="flex items-center justify-between border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
@@ -190,13 +190,13 @@ export function PlanCalculator() {
               </div>
 
               {/* Monthly vs Yearly Switch */}
-              <div className="flex items-center rounded-lg bg-zinc-200/80 p-1 dark:bg-zinc-800">
+              <div className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100 p-1 dark:border-zinc-800 dark:bg-zinc-900">
                 <button
                   type="button"
                   onClick={() => setBillingCycle("monthly")}
                   className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all ${
                     billingCycle === "monthly"
-                      ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-950 dark:text-zinc-100"
+                      ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
                       : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                   }`}
                 >
@@ -207,7 +207,7 @@ export function PlanCalculator() {
                   onClick={() => setBillingCycle("yearly")}
                   className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all ${
                     billingCycle === "yearly"
-                      ? "bg-indigo-600 text-white shadow-xs dark:bg-indigo-500 dark:text-white"
+                      ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
                       : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                   }`}
                 >

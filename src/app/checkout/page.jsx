@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Header from "@/components/Header";
+import { MinimalHeader } from "@/components/minimal-header";
 import AutomacaoCheckout from "@/components/AutomacaoCheckout";
 import styles from "./checkout.module.css";
 
@@ -11,7 +11,9 @@ export const metadata = {
 export default function CheckoutPage() {
   return (
     <div className={styles.pageWrapper}>
-      <Header />
+      <div className="max-w-7xl mx-auto pt-4 px-4">
+        <MinimalHeader />
+      </div>
       <main className={styles.main}>
         <Suspense fallback={<div style={{ padding: "50px", textAlign: "center", color: "#fff" }}>Carregando checkout...</div>}>
           <AutomacaoCheckout />

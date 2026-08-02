@@ -5,9 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Mic,
   MicOff,
-  Radio,
   CalendarCheck,
   Volume2,
   CheckCircle2,
@@ -52,10 +58,6 @@ export function LiveVoiceAgentDemo() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-zinc-200 dark:border-zinc-800">
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2 mb-1">
-            <Badge className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20 text-xs gap-1">
-              <Radio className="w-3 h-3 animate-pulse" />
-              Gemini 3.1 Flash Live (WebSocket)
-            </Badge>
             <Badge variant="outline" className="text-xs text-zinc-500">
               Voz Bidirecional + Tool Calling
             </Badge>
@@ -195,7 +197,7 @@ export function LiveVoiceAgentDemo() {
         {/* Right Column: Voice Selector & Session Bookings Feed */}
         <div className="lg:col-span-7 flex flex-col justify-between space-y-5">
           {/* Voice Selector Dropdown (Positioned on the Right Side) */}
-          <div className="bg-white/80 dark:bg-zinc-950/60 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 text-left space-y-2">
+          <div className="bg-white/80 dark:bg-zinc-950/60 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 text-left space-y-2 md:py-8 md:px-6">
             <div className="flex items-center justify-between gap-2">
               <label className="text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                 <Volume2 className="w-4 h-4 text-indigo-500" />
@@ -205,21 +207,26 @@ export function LiveVoiceAgentDemo() {
                 7 Opções de Voz
               </Badge>
             </div>
+            <div className="line-ignite h-px w-full" />
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               Escolha o timbre de voz com sintetizador em tempo real (PCM 24kHz):
             </p>
-            <select
+            <Select
               value={selectedVoice}
-              onChange={(e) => setSelectedVoice(e.target.value)}
+              onValueChange={setSelectedVoice}
               disabled={isRecordingVoice}
-              className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 cursor-pointer transition-colors"
             >
-              {GEMINI_LIVE_VOICES.map((v) => (
-                <option key={v.id} value={v.id}>
-                  {v.name} • {v.gender} — {v.style}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full h-9 text-xs sm:text-sm font-semibold">
+                <SelectValue placeholder="Escolha uma voz" />
+              </SelectTrigger>
+              <SelectContent>
+                {GEMINI_LIVE_VOICES.map((v) => (
+                  <SelectItem key={v.id} value={v.id}>
+                    {v.name} • {v.gender} — {v.style}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Session Bookings Feed */}

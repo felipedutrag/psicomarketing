@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { MinimalLogo } from "./minimal-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
-import { Sparkles, ArrowUpRight } from "lucide-react";
 
 export function MinimalHeader() {
   const navLinks = [
@@ -35,20 +33,9 @@ export function MinimalHeader() {
           ))}
         </nav>
 
-        {/* Right: Theme Toggle & CTA */}
+        {/* Right: Theme Toggle */}
         <div className="flex items-center gap-2.5">
           <ThemeToggle />
-
-          <Button
-            asChild
-            size="sm"
-            className="rounded-full bg-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-indigo-500 transition-all dark:bg-indigo-500 dark:hover:bg-indigo-400"
-          >
-            <a href="#investimento" className="flex items-center gap-1.5">
-              <span>Agendar IA</span>
-              <Sparkles className="size-3.5" />
-            </a>
-          </Button>
         </div>
       </div>
     </header>

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import styles from "./AutomacaoCheckout.module.css";
 
 export default function AutomacaoCheckout() {
   const searchParams = useSearchParams();
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(typeof window !== "undefined");
   const [step, setStep] = useState(1); // 1: Form, 2: Payment
   const [form, setForm] = useState({ nome: "", email: "", telefone: "" });
   const [status, setStatus] = useState("idle");
@@ -41,22 +42,15 @@ export default function AutomacaoCheckout() {
   };
 
   useEffect(() => {
-    setMounted(true);
-
     // Autofill from URL params (name, email, phone/telefone, date, mc_subscriber_id)
     const urlName = searchParams.get("name") || searchParams.get("nome");
     const urlEmail = searchParams.get("email");
     const urlPhone = searchParams.get("phone") || searchParams.get("telefone") || searchParams.get("whatsapp");
     let urlDate = searchParams.get("date") || searchParams.get("data");
-    const urlMcSubscriberId = searchParams.get("mc_subscriber_id") || searchParams.get("subscriber_id");
 
     // Limpa caracteres de markdown ou sujeira na data se vier do chat (ex: "2026-08-03T14:00:00.000Z](https://...")
     if (urlDate) {
       urlDate = urlDate.split("]")[0].split(")")[0].trim();
-    }
-
-    if (urlMcSubscriberId) {
-      setMcSubscriberId(urlMcSubscriberId);
     }
 
     if (urlName || urlEmail || urlPhone) {
@@ -98,7 +92,7 @@ export default function AutomacaoCheckout() {
     if (savedSlot && !urlDate) {
       setSelectedSlot(savedSlot);
     } else if (!savedSlot && !urlDate && !urlName) {
-      window.location.href = "/#preco";
+      window.location.href = "/#investimento";
     }
 
     // Persistência do PIX
@@ -115,7 +109,7 @@ export default function AutomacaoCheckout() {
         localStorage.removeItem('pixTimestamp');
       }
     }
-  }, []);
+  }, [searchParams]);
 
   const handleReset = () => {
     localStorage.removeItem('pixData');
@@ -202,7 +196,7 @@ export default function AutomacaoCheckout() {
                 <div className={styles.selectedTimeInfo}>
                   <p className={styles.subtitle}>Horário reservado:</p>
                   <strong>{formatSelectedDate(selectedSlot)}</strong>
-                  <a href="/#preco" className={styles.changeTime}>Alterar horário</a>
+                  <Link href="/#investimento" className={styles.changeTime}>Alterar horário</Link>
                 </div>
 
                 <h3 className={styles.formTitle}>Finalizar Pedido</h3>

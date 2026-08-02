@@ -8,7 +8,7 @@ const ThemeContext = createContext({
   setTheme: () => {},
 });
 
-const STORAGE_KEY = "nova-versao-theme";
+const STORAGE_KEY = "psicomarketing-theme";
 
 const emptySubscribe = () => () => {};
 

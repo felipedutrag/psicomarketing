@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { MinimalLogo } from "@/components/nova-versao/minimal-logo";
+import { MinimalLogo } from "@/components/minimal-logo";
 import { ShieldCheck, Heart } from "lucide-react";
 
 export function MinimalFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-6 border-t border-zinc-200/80 bg-zinc-50/50 pt-6 pb-4 md:pb-6 dark:border-zinc-800/80 dark:bg-zinc-950/50">
+    <footer className="mt-10 border-t border-zinc-200/80 bg-zinc-50/90 pt-6 pb-4 backdrop-blur-sm md:mt-14 md:pb-6 dark:border-zinc-800/80 dark:bg-zinc-950/90">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 md:px-8">
         {/* Top Row: Logo & Quick Links & Status Indicator */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">

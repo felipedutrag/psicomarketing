@@ -1,14 +1,21 @@
-import { Inter, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, IBM_Plex_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 import WhatsappButton from "@/components/WhatsappButton";
 
-const inter = Inter({
-  variable: "--font-inter",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
+const mono = IBM_Plex_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 const playfair = Playfair_Display({
-  variable: "--font-playfair",
+  variable: "--font-serif",
   subsets: ["latin"],
 });
 
@@ -22,10 +29,34 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="pt-BR" className={`${jakarta.variable} ${mono.variable} ${playfair.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function () {
+  try {
+    var storageKey = "psicomarketing-theme";
+    var stored = localStorage.getItem(storageKey);
+    var theme = stored === "dark" || stored === "light" ? stored : "system";
+    var resolved =
+      theme === "system"
+        ? window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light"
+        : theme;
+    var root = document.documentElement;
+    root.classList.toggle("dark", resolved === "dark");
+    root.style.colorScheme = resolved;
+  } catch (e) {}
+})();`,
+          }}
+        />
+      </head>
       <body>
-        {children}
-        <WhatsappButton />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+          <WhatsappButton />
+        </ThemeProvider>
       </body>
     </html>
   );

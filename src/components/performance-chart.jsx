@@ -53,7 +53,7 @@ export function PerformanceChart() {
   const current = metrics[activeTab];
 
   return (
-    <div className="flex flex-col gap-6 rounded-2xl border border-zinc-200 bg-white/90 p-6 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80 md:p-8">
+    <div className="flex flex-col gap-6 rounded-xl border border-zinc-200 bg-white/90 p-6 shadow-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80 md:p-8">
       {/* Chart Top Header & Tabs */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="space-y-1">

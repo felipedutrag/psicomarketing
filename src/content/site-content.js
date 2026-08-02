@@ -1,11 +1,11 @@
-export const novaVersaoContent = {
+export const siteContent = {
   topBadge: "Nova versão experimental",
   heroBadge: "Ecossistema de IA Expansível para Psicólogos",
   heroTitle: "Agente de IA modular: ative os plugins que seu consultório precisa.",
   heroDescription:
     "Conecte módulos inteligentes de tráfego pago, voz humana nativa, agendamento e e-mail marketing ao seu assistente digital. Flexível, ilimitado e feito sob medida.",
   primaryCtaLabel: "Montar meu ecossistema",
-  secondaryCtaLabel: "Ver site atual",
+  secondaryCtaLabel: "Testar Voz Live",
   visualTitle: "Agenda Lotada no Piloto Automático",
   visualDescription:
     "Veja sua semana sendo preenchida automaticamente com consultas qualificadas oriundas dos seus anúncios e plugins.",
