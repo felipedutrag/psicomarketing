@@ -41,21 +41,21 @@ export function ComparisonTable() {
   return (
     <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100/70 shadow-xs backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/50">
       {/* Mobile Stacked Card View */}
-      <div className="block md:hidden p-2.5 space-y-2.5">
+      <div className="block md:hidden p-1.5 sm:p-2.5 space-y-1.5 sm:space-y-2.5">
         {comparisonItems.map((item, idx) => (
           <div
             key={idx}
-            className="rounded-xl border border-zinc-200/90 bg-white/90 p-3 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-950/80 space-y-2"
+            className="rounded-xl border border-zinc-200/90 bg-white/90 p-2 sm:p-3 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-950/80 space-y-1.5 sm:space-y-2"
           >
-            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 block border-b border-zinc-200/80 dark:border-zinc-800/80 pb-1.5">
+            <span className="text-[10px] sm:text-xs font-bold text-zinc-900 dark:text-zinc-100 block border-b border-zinc-200/80 dark:border-zinc-800/80 pb-1 sm:pb-1.5">
               {item.feature}
             </span>
 
             {/* Traditional */}
-            <div className="flex items-start gap-1.5 text-[11px] sm:text-xs text-zinc-700 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/60 p-2 rounded-lg">
-              <X className="size-3.5 shrink-0 text-red-500 mt-0.5 hidden sm:block" />
+            <div className="flex items-start gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] text-zinc-700 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/60 p-1.5 sm:p-2 rounded-lg">
+              <X className="size-3 sm:size-3.5 shrink-0 text-red-500 mt-0.5 hidden sm:block" />
               <div>
-                <span className="text-[9px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mb-0.5">
+                <span className="text-[8px] sm:text-[9px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mb-0.5">
                   Manual / Tradicional
                 </span>
                 <span>{item.traditional}</span>
@@ -63,9 +63,9 @@ export function ComparisonTable() {
             </div>
 
             {/* AI Psicomarketing */}
-            <div className="flex items-start gap-1.5 text-[11px] sm:text-xs text-indigo-950 dark:text-indigo-200 bg-indigo-500/10 dark:bg-indigo-950/50 p-2 rounded-lg border border-indigo-500/20 font-medium">
-              <Check className="size-3.5 shrink-0 text-indigo-600 dark:text-indigo-400 mt-0.5 hidden sm:block" />
-              <div className="flex items-center gap-2">
+            <div className="flex items-start gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] text-indigo-950 dark:text-indigo-200 bg-indigo-500/10 dark:bg-indigo-950/50 p-1.5 sm:p-2 rounded-lg border border-indigo-500/20 font-medium">
+              <Check className="size-3 sm:size-3.5 shrink-0 text-indigo-600 dark:text-indigo-400 mt-0.5 hidden sm:block" />
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <MinimalLogo hideText subtle />
                 <span>{item.ai}</span>
               </div>

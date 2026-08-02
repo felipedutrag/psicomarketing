@@ -46,12 +46,12 @@ export default function Home() {
               {content.heroDescription}
             </p>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-2">
-                          <Button asChild size="default" sm:size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md">
+                          <Button asChild size="default" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md sm:size-lg">
                 <Link href="#investimento">
                   {content.primaryCtaLabel} <ArrowRight className="size-3.5 sm:size-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="default" sm:size="lg">
+              <Button asChild variant="outline" size="default" className="sm:size-lg">
                 <Link href="#live-demo">{content.secondaryCtaLabel}</Link>
               </Button>
             </div>
