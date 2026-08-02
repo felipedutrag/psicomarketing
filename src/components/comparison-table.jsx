@@ -19,7 +19,7 @@ export function ComparisonTable() {
     {
       feature: "Tráfego Pago (Google & Meta)",
       traditional: "Desconectado do atendimento",
-      ai: "Atração e qualificação em tempo real",
+          ai: "Criação e gerenciamento de Ads",
     },
     {
       feature: "Atendimento por Áudio",
@@ -34,7 +34,7 @@ export function ComparisonTable() {
     {
       feature: "Foco do Profissional",
       traditional: "Dividido com burocracia/secretaria",
-      ai: "100% focado na clínica",
+          ai: "100% focado no consultório",
     },
   ];
 
@@ -52,7 +52,7 @@ export function ComparisonTable() {
             </span>
 
             {/* Traditional */}
-            <div className="flex items-start gap-1.5 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/60 p-2 rounded-lg">
+            <div className="flex items-start gap-1.5 text-[11px] sm:text-xs text-zinc-700 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/60 p-2 rounded-lg">
               <X className="size-3.5 shrink-0 text-red-500 mt-0.5" />
               <div>
                 <span className="text-[9px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mb-0.5">
@@ -109,7 +109,7 @@ export function ComparisonTable() {
                   <td className="p-4 font-medium text-zinc-900 dark:text-zinc-100">
                     {item.feature}
                   </td>
-                  <td className="p-4 text-zinc-600 dark:text-zinc-400">
+                  <td className="p-4 text-zinc-700 dark:text-zinc-400">
                     <div className="flex items-start gap-2">
                       <X className="size-4 shrink-0 text-red-500 mt-0.5" />
                       <span>{item.traditional}</span>

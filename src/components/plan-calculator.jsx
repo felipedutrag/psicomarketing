@@ -247,7 +247,7 @@ export function PlanCalculator() {
                     </div>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-400 leading-relaxed">
                     {plugin.description}
                   </p>
                 </div>
@@ -322,7 +322,7 @@ export function PlanCalculator() {
                 selectedPluginObjects.map((plugin) => (
                   <div
                     key={plugin.id}
-                    className="flex items-center justify-between text-zinc-600 dark:text-zinc-400 pl-6 text-xs sm:text-sm"
+                    className="flex items-center justify-between text-zinc-700 dark:text-zinc-400 pl-6 text-xs sm:text-sm"
                   >
                     <span>+ {plugin.title}</span>
                     <span className="font-mono font-medium">R$ {plugin.price}</span>
@@ -338,7 +338,7 @@ export function PlanCalculator() {
             {/* Total Display */}
             <div className="border-t border-zinc-200/80 pt-5 dark:border-zinc-800">
               <div className="flex items-baseline justify-between">
-                <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-400">
+                <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-400">
                   Investimento Total:
                 </span>
                 <div className="text-right">

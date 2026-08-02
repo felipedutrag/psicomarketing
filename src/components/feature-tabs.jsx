@@ -65,7 +65,7 @@ export function FeatureTabs({ plugins }) {
             className={`rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition-all duration-200 ${
               activeCategory === cat.id
                 ? "border border-indigo-500/50 bg-indigo-500/10 text-indigo-700 shadow-xs dark:border-indigo-500/40 dark:bg-indigo-950/50 dark:text-indigo-300"
-                : "border border-zinc-200/80 bg-white/80 text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-400 dark:hover:text-zinc-100"
+                : "border border-zinc-200/80 bg-white/80 text-zinc-700 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-400 dark:hover:text-zinc-100"
             }`}
           >
             {cat.label}
@@ -99,7 +99,7 @@ export function FeatureTabs({ plugins }) {
                   <h3 className="text-base sm:text-lg font-bold text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-100 dark:group-hover:text-indigo-400 transition-colors">
                     {plugin.title}
                   </h3>
-                  <p className="mt-1.5 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  <p className="mt-1.5 text-xs sm:text-sm text-zinc-700 dark:text-zinc-400 leading-relaxed">
                     {plugin.description}
                   </p>
                 </div>
@@ -110,7 +110,7 @@ export function FeatureTabs({ plugins }) {
                 {plugin.id === "google-ads" && (
                   <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-4 text-xs sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/50">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-zinc-600 dark:text-zinc-400">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-400">
                         <Volume2 className="size-3.5 text-indigo-600 dark:text-indigo-400" /> Google Ads por Voz
                       </span>
                       <span className="rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[10px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
@@ -131,7 +131,7 @@ export function FeatureTabs({ plugins }) {
                 {plugin.id === "facebook-ads" && (
                   <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-4 text-xs sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/50">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-zinc-600 dark:text-zinc-400">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-400">
                         <TrendingUp className="size-3.5 text-indigo-600 dark:text-indigo-400" /> Meta Ads por Voz
                       </span>
                       <span className="rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[10px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">

@@ -65,7 +65,7 @@ export function LiveVoiceAgentDemo() {
           <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
             Simule Agendamento por IA e veja como é incrível!
           </h3>
-          <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
             Crie agendamentos personalizados, cancele e remaque, deixamos uma agenda ao lado para você testar.
           </p>
         </div>
@@ -186,7 +186,7 @@ export function LiveVoiceAgentDemo() {
 
           {/* Connect Instruction Text */}
           <div className="w-full space-y-2 mt-2">
-            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+            <p className="text-xs font-medium text-zinc-700 dark:text-zinc-400">
               {isRecordingVoice
                 ? `Sessão live ativa com a voz ${selectedVoice}. Fale no microfone.`
                 : `Clique no botão do orbe para iniciar a chamada por voz em tempo real.`}

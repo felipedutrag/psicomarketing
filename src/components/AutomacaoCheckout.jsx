@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import styles from "./AutomacaoCheckout.module.css";
@@ -13,11 +13,21 @@ export default function AutomacaoCheckout() {
   const [status, setStatus] = useState("idle");
   const [submitError, setSubmitError] = useState(null);
 
-  // Scheduling (now comes from Landing Page or URL params)
-  const [selectedSlot, setSelectedSlot] = useState(searchParams.get("date") || null);
+  // Initialize from searchParams directly to avoid useEffect setState
+  const [selectedSlot, setSelectedSlot] = useState(() => {
+    if (typeof window !== "undefined") {
+      return searchParams.get("date") || null;
+    }
+    return null;
+  });
 
   // ManyChat subscriber ID from URL (used by webhook to send message)
-  const [mcSubscriberId, setMcSubscriberId] = useState(searchParams.get("mc_subscriber_id") || null);
+  const [mcSubscriberId, setMcSubscriberId] = useState(() => {
+    if (typeof window !== "undefined") {
+      return searchParams.get("mc_subscriber_id") || null;
+    }
+    return null;
+  });
 
   // PIX
   const [pixData, setPixData] = useState(null);
@@ -25,6 +35,8 @@ export default function AutomacaoCheckout() {
   const [paymentStatus, setPaymentStatus] = useState("pending");
   const [copied, setCopied] = useState(false);
   const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutos em segundos
+
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
     if (step === 2 && paymentStatus === "pending" && timeLeft > 0) {
@@ -42,15 +54,23 @@ export default function AutomacaoCheckout() {
   };
 
   useEffect(() => {
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
     // Autofill from URL params (name, email, phone/telefone, date, mc_subscriber_id)
     const urlName = searchParams.get("name") || searchParams.get("nome");
     const urlEmail = searchParams.get("email");
     const urlPhone = searchParams.get("phone") || searchParams.get("telefone") || searchParams.get("whatsapp");
     let urlDate = searchParams.get("date") || searchParams.get("data");
+    const urlMcSubscriberId = searchParams.get("mc_subscriber_id") || searchParams.get("subscriber_id");
 
     // Limpa caracteres de markdown ou sujeira na data se vier do chat (ex: "2026-08-03T14:00:00.000Z](https://...")
     if (urlDate) {
       urlDate = urlDate.split("]")[0].split(")")[0].trim();
+    }
+
+    if (urlMcSubscriberId) {
+      setMcSubscriberId(urlMcSubscriberId);
     }
 
     if (urlName || urlEmail || urlPhone) {

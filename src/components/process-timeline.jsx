@@ -27,7 +27,7 @@ export function ProcessTimeline({ steps }) {
                   Etapa 0{idx + 1}
                 </span>
 
-                <p className="text-xs font-semibold text-zinc-800 leading-snug dark:text-zinc-200">
+                <p className="text-xs font-semibold text-zinc-900 leading-snug dark:text-zinc-200">
                   {stepText}
                 </p>
               </div>

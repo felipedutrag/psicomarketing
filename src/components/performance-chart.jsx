@@ -68,7 +68,7 @@ export function PerformanceChart() {
           <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
             {current.title}
           </h3>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">{current.subtitle}</p>
+          <p className="text-xs text-zinc-700 dark:text-zinc-400">{current.subtitle}</p>
         </div>
 
         {/* Tab Selector Buttons */}
@@ -79,7 +79,7 @@ export function PerformanceChart() {
             className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
               activeTab === "conversao"
                 ? "bg-white text-emerald-700 shadow-xs dark:bg-zinc-800 dark:text-emerald-400"
-                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                          : "text-zinc-700 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
             }`}
           >
             <Users className="size-3.5" /> Conversão
@@ -90,7 +90,7 @@ export function PerformanceChart() {
             className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
               activeTab === "tempo"
                 ? "bg-white text-emerald-700 shadow-xs dark:bg-zinc-800 dark:text-emerald-400"
-                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                          : "text-zinc-700 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
             }`}
           >
             <Clock className="size-3.5" /> Velocidade
@@ -101,7 +101,7 @@ export function PerformanceChart() {
             className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
               activeTab === "retorno"
                 ? "bg-white text-emerald-700 shadow-xs dark:bg-zinc-800 dark:text-emerald-400"
-                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                          : "text-zinc-700 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
             }`}
           >
             <Zap className="size-3.5" /> Retorno Ads

@@ -42,7 +42,7 @@ export default function Home() {
             <h1 className="text-3xl leading-tight font-semibold md:text-5xl">
               {content.heroTitle}
             </h1>
-            <p className="text-base text-zinc-600 md:text-lg dark:text-zinc-400">
+            <p className="text-base text-zinc-700 md:text-lg dark:text-zinc-400">
               {content.heroDescription}
             </p>
             <div className="flex flex-wrap justify-center gap-3 pt-2">
@@ -75,7 +75,7 @@ export default function Home() {
             <h2 className="text-2xl font-semibold md:text-3xl">
               {content.pluginsTitle}
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
               {content.pluginsDescription}
             </p>
           </div>
@@ -98,7 +98,7 @@ export default function Home() {
             <h2 className="text-2xl font-semibold md:text-3xl">
               {content.flowTitle}
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
               {content.flowDescription}
             </p>
           </div>
@@ -116,7 +116,7 @@ export default function Home() {
             <h2 className="text-2xl font-semibold md:text-3xl">
               Manual vs. Automação Inteligente
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
               Entenda por que clínicas e psicólogos estão migrando para o modelo modular.
             </p>
           </div>
@@ -136,7 +136,7 @@ export default function Home() {
             <h2 className="text-2xl font-semibold md:text-3xl">
               {content.investmentTitle}
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
               {content.investmentDescription}
             </p>
           </div>
