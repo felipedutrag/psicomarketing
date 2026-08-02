@@ -91,22 +91,6 @@ export const siteContent = {
     "O Plugin de Agendamento valida horários e confirma a consulta direto na agenda.",
     "E-mails automáticos e lembretes garantem taxa mínima de absenteísmo.",
   ],
-  ethicsTitle: "Segurança e ética",
-  ethicsDescription: "A automação opera com limites claros para preservar prática clínica.",
-  ethicsItems: [
-    {
-      title: "Não substitui o terapeuta",
-      text: "A IA não realiza sessões e não interfere em decisões clínicas.",
-    },
-    {
-      title: "Sem diagnósticos",
-      text: "A atuação é restrita a triagem, informações operacionais e agendamento.",
-    },
-    {
-      title: "Ética e LGPD",
-      text: "Dados tratados com sigilo e controles de acesso alinhados à prática profissional.",
-    },
-  ],
   investmentBadge: "Investimento estratégico",
   investmentTitle: "Quanto vale ter um ecossistema completo rodando por você?",
   investmentDescription:

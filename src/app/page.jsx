@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, UserCheck, Stethoscope } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { MinimalHeader } from "@/components/minimal-header";
 import { BotFlowScene } from "@/components/bot-flow-scene";
 import { FeatureTabs } from "@/components/feature-tabs";
@@ -126,41 +126,6 @@ export default function Home() {
         <div className="-my-3 md:-my-4">
           <Separator />
         </div>
-
-        {/* Ethics & Security Section */}
-        <section className="space-y-4">
-          <div className="space-y-1">
-            <Badge variant="outline">Ética & Sigilo</Badge>
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
-              {content.ethicsTitle}
-            </h2>
-            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
-              {content.ethicsDescription}
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {content.ethicsItems.map((item, idx) => {
-              const icons = [UserCheck, Stethoscope, ShieldCheck];
-              const IconComponent = icons[idx] || ShieldCheck;
-              return (
-                <div
-                  key={item.title}
-                  className="rounded-xl border border-zinc-200/90 bg-zinc-100/70 p-6 dark:border-zinc-800/90 dark:bg-zinc-900/50 shadow-xs flex flex-col items-start"
-                >
-                  <div className="mb-3 rounded-lg bg-indigo-500/10 p-3 text-indigo-600 dark:text-indigo-400">
-                    <IconComponent className="size-6" />
-                  </div>
-                  <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-1.5">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                    {item.text}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </section>
 
         {/* Final Investment Section & Calculator */}
         <section id="investimento" className="space-y-6 scroll-mt-24 pt-4 md:pt-6">
