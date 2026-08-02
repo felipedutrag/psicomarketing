@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Check, Plus, Sparkles, ArrowRight, ShieldCheck, Zap } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Check, Plus, ArrowRight, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useLilithVoice } from "@/hooks/use-lilith-voice";
 
 const BASE_PLAN = {
   name: "IA Core Atendimento",
@@ -14,45 +15,45 @@ const BASE_PLAN = {
 const AVAILABLE_PLUGINS = [
   {
     id: "google-ads",
-    title: "Google Ads Plugin",
+    title: "Google Ads",
     price: 197,
     category: "Aquisição",
-    description: "Criação e otimização contínua de campanhas na rede de pesquisa do Google.",
+    description: "Gestão de campanhas no Google com relatórios e edição com IA.",
   },
   {
     id: "facebook-ads",
-    title: "Meta / Instagram Ads Plugin",
+    title: "Meta / Facebook Ads",
     price: 197,
     category: "Tráfego Pago",
-    description: "Anúncios direcionados no Instagram e Facebook com link direto para o WhatsApp.",
+    description: "Métricas e relatórios de suas campanhas por IA Voice.",
   },
   {
     id: "native-voice",
     title: "Módulo de Voz Nativa",
     price: 149,
     category: "Hiper-Realista",
-    description: "Atendimento por mensagens de áudio ultra-realistas com voz humana no WhatsApp.",
+    description: "Áudios ultra-realistas com voz humana natural direto no WhatsApp.",
   },
   {
     id: "smart-booking",
-    title: "Sincronização de Agenda & Lembretes",
+    title: "Sincronização de Agenda",
     price: 97,
     category: "Automação",
-    description: "Integração bidirecional com Google Calendar, iCal e confirmações automáticas.",
+    description: "Agendamento em tempo real com Google Agenda, iCal e sistemas clínicos.",
   },
   {
     id: "email-dispatch",
-    title: "Nutrição por E-mail & Lembretes",
+    title: "Nutrição por E-mail",
     price: 77,
     category: "Relacionamento",
-    description: "Régua automática de confirmação, reagendamento e orientações pré-consulta.",
+    description: "Confirmações, reagendamentos e orientações automáticas por e-mail.",
   },
   {
     id: "custom-plugin",
-    title: "Plugin / Integração Sob Medida",
+    title: "Integração Sob Medida",
     price: 249,
     category: "API Customizada",
-    description: "Desenvolvimento de webhook ou integração com sistema clínico específico.",
+    description: "Integração com sistemas clínicos ou APIs desenvolvida sob demanda.",
   },
 ];
 
@@ -63,6 +64,43 @@ export function PlanCalculator() {
     "smart-booking",
   ]);
   const [billingCycle, setBillingCycle] = useState("monthly"); // "monthly" | "yearly"
+  const [micPermission, setMicPermission] = useState("prompt"); // "prompt" | "granted" | "denied"
+  const greetedRef = useRef(false);
+  const {
+    isRecordingVoice,
+    isSpeaking,
+    isReadyToSpeak,
+    toggleVoiceRecording,
+    sendTextToVoice,
+  } = useLilithVoice();
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !navigator.permissions) return;
+    let active = true;
+    navigator.permissions
+      .query({ name: "microphone" })
+      .then((status) => {
+        if (!active) return;
+        setMicPermission(status.state);
+        status.addEventListener("change", () => {
+          setMicPermission(status.state);
+        });
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isReadyToSpeak && isRecordingVoice && !greetedRef.current) {
+      greetedRef.current = true;
+      sendTextToVoice("Olá! Como posso ajudar você hoje?");
+    }
+    if (!isRecordingVoice) {
+      greetedRef.current = false;
+    }
+  }, [isReadyToSpeak, isRecordingVoice, sendTextToVoice]);
 
   const togglePlugin = (id) => {
     setSelectedPlugins((prev) =>
@@ -108,15 +146,69 @@ export function PlanCalculator() {
     <div className="grid gap-8 lg:grid-cols-12">
       {/* Left Column: Plugin Selection Grid */}
       <div className="space-y-5 lg:col-span-7">
-        <div className="flex items-center justify-between gap-3 rounded-xl border border-zinc-200 bg-zinc-100/80 p-4 dark:border-zinc-800 dark:bg-zinc-900/60">
-          <div className="flex items-center gap-2.5">
-            <Zap className="size-5 text-indigo-600 dark:text-indigo-400" />
-            <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-              Plano Base Obrigatório: {BASE_PLAN.name}
-            </span>
+        <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900/60">
+          <div
+            className={`flex items-center transition-all duration-300 ${
+              isRecordingVoice || isSpeaking ? "gap-3.5" : "gap-2"
+            }`}
+          >
+            {/* Mini Planet Orb Tooltip */}
+            <button
+              type="button"
+              onClick={toggleVoiceRecording}
+              className="group relative m-0 block shrink-0 cursor-pointer appearance-none border-0 bg-transparent p-0"
+              aria-label={
+                isRecordingVoice
+                  ? "Encerrar chamada de voz"
+                  : "Iniciar chamada de voz com nossa agente"
+              }
+            >
+              <span
+                className={`relative block overflow-hidden rounded-full transition-all duration-300 ${
+                  isRecordingVoice || isSpeaking
+                    ? "h-7 w-7 scale-110 ring-2 ring-teal-300/70 shadow-[0_0_22px_6px_rgba(13,148,136,0.45)]"
+                    : "h-5 w-5"
+                }`}
+                style={{
+                  background:
+                    "conic-gradient(#bae6fd 0%, #38bdf8 30%, #0d9488 55%, #38bdf8 70%, #bae6fd 100%)",
+                  animation: "spin 8s linear infinite",
+                }}
+              >
+                <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/40 via-transparent to-black/25" />
+                <span className="relative flex h-full w-full items-center justify-center text-[8px] font-bold text-white drop-shadow-sm">
+                  ?
+                </span>
+              </span>
+
+              {/* Tooltip (desktop only) */}
+              <span
+                className={`pointer-events-none absolute left-1/2 top-full z-20 mt-2 hidden w-56 -translate-x-1/2 rounded-lg border border-zinc-200 bg-white p-2.5 text-center text-xs font-semibold text-zinc-700 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 sm:block dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-200 ${
+                  isRecordingVoice ? "hidden" : ""
+                }`}
+              >
+                {micPermission === "denied"
+                  ? "Permita o microfone no navegador para falar."
+                  : "Clique para tirar dúvidas com IA."}
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={toggleVoiceRecording}
+              className="cursor-pointer appearance-none border-0 bg-transparent p-0 text-left text-sm font-bold text-zinc-900 transition-colors hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400"
+            >
+              Tire dúvidas com nossa agente de IA.
+            </button>
           </div>
-          <span className="font-mono text-sm font-semibold text-indigo-700 dark:text-indigo-300">
-            R$ {BASE_PLAN.price}/mês
+          <span className="font-mono text-sm font-semibold">
+            {micPermission === "granted" ? (
+              <>
+                <span className="text-white">Plano base: </span>
+                <span className="text-primary">R$ {BASE_PLAN.price}/mês</span>
+              </>
+            ) : (
+              <span className="text-white">Permita o microfone para falar</span>
+            )}
           </span>
         </div>
 
@@ -176,11 +268,11 @@ export function PlanCalculator() {
 
       {/* Right Column: Live Plan Summary & Total */}
       <div className="lg:col-span-5">
-        <div className="sticky top-6 flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-7 shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
+        <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-7 shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
           <div className="space-y-5">
             {/* Header & Cycle Switch */}
-            <div className="flex items-center justify-between border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
-              <div>
+            <div className="flex items-start justify-between gap-3 border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
+              <div className="space-y-0.5">
                 <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
                   Resumo do seu Plano
                 </h3>
@@ -190,7 +282,7 @@ export function PlanCalculator() {
               </div>
 
               {/* Monthly vs Yearly Switch */}
-              <div className="flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100 p-1 dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="mt-1 flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100 p-1 dark:border-zinc-800 dark:bg-zinc-900">
                 <button
                   type="button"
                   onClick={() => setBillingCycle("monthly")}
@@ -223,7 +315,7 @@ export function PlanCalculator() {
                   <Check className="size-4 text-indigo-600 dark:text-indigo-400" />
                   Plano Base ({BASE_PLAN.name})
                 </span>
-                <span className="font-mono font-bold">R$ {BASE_PLAN.price}</span>
+                <span className="font-mono font-bold text-primary">R$ {BASE_PLAN.price}</span>
               </div>
 
               {selectedPluginObjects.length > 0 ? (
@@ -250,7 +342,7 @@ export function PlanCalculator() {
                   Investimento Total:
                 </span>
                 <div className="text-right">
-                  <span className="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">
+                  <span className="text-3xl font-extrabold text-primary font-mono">
                     R$ {totalMonthly}
                   </span>
                   <span className="text-sm text-zinc-500 dark:text-zinc-400"> / mês</span>

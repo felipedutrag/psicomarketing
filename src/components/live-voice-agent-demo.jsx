@@ -62,11 +62,11 @@ export function LiveVoiceAgentDemo() {
               Voz Bidirecional + Tool Calling
             </Badge>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-            Demonstração Lilith Live: Voz Nativa & Agendamento
+          <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            Simule Agendamento por IA e veja como é incrível!
           </h3>
           <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
-            Converse por voz com baixa latência via WebSocket com a IA e agende consultas na prática.
+            Crie agendamentos personalizados, cancele e remaque, deixamos uma agenda ao lado para você testar.
           </p>
         </div>
 

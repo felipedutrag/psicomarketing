@@ -2,6 +2,7 @@
 
 import { Check, X, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { MinimalLogo } from "@/components/minimal-logo";
 
 export function ComparisonTable() {
   const comparisonItems = [
@@ -65,9 +66,9 @@ export function ComparisonTable() {
             <div className="flex items-start gap-1.5 text-[11px] sm:text-xs text-indigo-950 dark:text-indigo-200 bg-indigo-500/10 dark:bg-indigo-950/50 p-2 rounded-lg border border-indigo-500/20 font-medium">
               <Check className="size-3.5 shrink-0 text-indigo-600 dark:text-indigo-400 mt-0.5" />
               <div>
-                <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-0.5">
-                  Com Psicomarketing IA
-                </span>
+                <div className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-0.5">
+                  <MinimalLogo />
+                </div>
                 <span>{item.ai}</span>
               </div>
             </div>
@@ -87,9 +88,9 @@ export function ComparisonTable() {
                 Atendimento Tradicional
               </th>
               <th className="p-4 font-semibold text-indigo-900 dark:text-indigo-300 bg-indigo-500/10 dark:bg-indigo-950/50 w-1/3">
-                <span className="inline-flex items-center gap-1.5">
-                  Com Psicomarketing IA
-                </span>
+                <div className="inline-flex items-center gap-1.5">
+                  <MinimalLogo />
+                </div>
               </th>
             </tr>
           </thead>

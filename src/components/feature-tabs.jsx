@@ -10,9 +10,9 @@ import {
   Cpu,
   Play,
   Pause,
-  Send,
   Sparkles,
-  CheckCircle2,
+  Volume2,
+  TrendingUp,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -108,29 +108,49 @@ export function FeatureTabs({ plugins }) {
               {/* Module-Specific Live Interactive Previews */}
               <div className="mt-5 pt-3.5 border-t border-zinc-200/80 dark:border-zinc-800/80">
                 {plugin.id === "google-ads" && (
-                  <div className="rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-1.5 dark:border-zinc-800 dark:bg-zinc-900/50">
-                    <span className="text-[10px] sm:text-xs text-zinc-400 font-mono block">Anúncio do Google Search</span>
-                    <p className="font-bold text-blue-600 dark:text-blue-400 line-clamp-1">
-                      Psicóloga Especialista | Agende no WhatsApp
-                    </p>
-                    <span className="inline-flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 font-medium">
-                      <CheckCircle2 className="size-3.5" /> Resposta em segundos
-                    </span>
+                  <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-4 text-xs sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/50">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-zinc-600 dark:text-zinc-400">
+                        <Volume2 className="size-3.5 text-indigo-600 dark:text-indigo-400" /> Google Ads por Voz
+                      </span>
+                      <span className="rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[10px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                        ativo
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-indigo-500/15 ring-1 ring-indigo-500/30">
+                        <Mic className="size-3.5 text-indigo-600 dark:text-indigo-400" />
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 leading-snug">
+                        "Aumente o valor do CPC."
+                      </span>
+                    </div>
                   </div>
                 )}
 
                 {plugin.id === "facebook-ads" && (
-                  <div className="rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-2 dark:border-zinc-800 dark:bg-zinc-900/50">
-                    <span className="text-[10px] sm:text-xs text-zinc-400 font-mono block">Instagram &amp; Meta Feed</span>
-                    <div className="flex items-center justify-between rounded-lg bg-indigo-500/10 px-3 py-2 text-indigo-700 dark:text-indigo-300 font-semibold text-xs">
-                      <span>Iniciar conversa no WhatsApp</span>
-                      <Send className="size-3.5 shrink-0 ml-1" />
+                  <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-4 text-xs sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/50">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-zinc-600 dark:text-zinc-400">
+                        <TrendingUp className="size-3.5 text-indigo-600 dark:text-indigo-400" /> Meta Ads por Voz
+                      </span>
+                      <span className="rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[10px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                        ativo
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-indigo-500/15 ring-1 ring-indigo-500/30">
+                        <Mic className="size-3.5 text-indigo-600 dark:text-indigo-400" />
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 leading-snug">
+                        "Resuma a performance de hoje"
+                      </span>
                     </div>
                   </div>
                 )}
 
                 {plugin.id === "native-voice" && (
-                  <div className="rounded-xl border border-indigo-500/30 bg-indigo-500/10 p-3.5 text-xs sm:text-sm space-y-2.5">
+                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-2.5 dark:border-zinc-800 dark:bg-zinc-900/50">
                     <div className="flex items-center justify-between gap-2 font-semibold text-indigo-800 dark:text-indigo-300 text-xs">
                       <span className="min-w-0 truncate">Voz Humana Nativa</span>
                       <span className="shrink-0 rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[11px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
@@ -155,8 +175,8 @@ export function FeatureTabs({ plugins }) {
                             key={i}
                             className={`flex-1 basis-0 rounded-full transition-all duration-300 ${
                               isPlayingAudio
-                                ? "bg-indigo-600 dark:bg-indigo-400 animate-pulse"
-                                : "bg-indigo-600/30 dark:bg-indigo-400/30"
+                                ? "bg-indigo-700 dark:bg-indigo-500 animate-pulse"
+                                : "bg-indigo-700/50 dark:bg-indigo-500/50"
                             }`}
                             style={{ height: `${isPlayingAudio ? Math.max(15, Math.min(100, h * 0.9)) : Math.max(15, h)}%` }}
                           />
@@ -167,27 +187,38 @@ export function FeatureTabs({ plugins }) {
                 )}
 
                 {plugin.id === "smart-booking" && (
-                  <div className="rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm flex items-center justify-between dark:border-zinc-800 dark:bg-zinc-900/50">
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">Google Calendar &amp; iCal</span>
-                    <span className="inline-flex items-center gap-1.5 font-semibold text-indigo-600 dark:text-indigo-400 text-xs">
-                      <Sparkles className="size-3.5" /> Sincronizado
-                    </span>
+                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-1.5 dark:border-zinc-800 dark:bg-zinc-900/50 font-mono">
+                    <span className="text-[10px] sm:text-xs text-zinc-400 block">Google Calendar &amp; iCal</span>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-zinc-700 dark:text-zinc-300 text-xs truncate font-sans">
+                        Consulta confirmada: Quarta-feira às 14h
+                      </p>
+                      <span className="inline-flex items-center gap-1.5 font-semibold text-indigo-600 dark:text-indigo-400 text-xs shrink-0">
+                        <Sparkles className="size-3.5" /> Sincronizado
+                      </span>
+                    </div>
                   </div>
                 )}
 
                 {plugin.id === "email-dispatch" && (
-                  <div className="rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-1 dark:border-zinc-800 dark:bg-zinc-900/50 font-mono">
+                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-1.5 dark:border-zinc-800 dark:bg-zinc-900/50 font-mono">
                     <span className="text-[10px] sm:text-xs text-zinc-400 block">E-mail Automático de Confirmação</span>
-                    <p className="text-zinc-700 dark:text-zinc-300 text-xs truncate font-sans">
-                      Sua consulta está confirmada para Quarta-feira às 14h
+                    <p className="text-zinc-700 dark:text-zinc-300 text-xs font-sans">
+                        Consulta confirmada para Quarta-feira às 14h
+                    </p>
+                    <p className="text-[10px] sm:text-[11px] text-zinc-500 dark:text-zinc-400 font-sans">
+                      Lembrete automático 24h e 1h antes do horário.
                     </p>
                   </div>
                 )}
 
                 {plugin.id === "custom-plugin" && (
-                  <div className="rounded-xl border border-zinc-200/80 bg-zinc-950 p-3.5 text-xs font-mono text-indigo-400 space-y-1 dark:border-zinc-800">
+                  <div className="flex min-h-[108px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-950 p-3.5 text-xs font-mono text-indigo-400 space-y-1 dark:border-zinc-800">
                     <span className="text-[10px] sm:text-xs text-zinc-500 font-sans block">Integração via API</span>
-                    <p className="truncate">definePlugin(&apos;SuaAPI&apos;, &#123; trigger: &apos;agendamento&apos; &#125;)</p>
+                    <div className="space-y-0.5 break-all leading-relaxed">
+                      <p>definePlugin(&apos;SuaAPI&apos;, &#123;</p>
+                      <p>&nbsp;&nbsp;trigger: &apos;agendamento&apos; &#125;)</p>
+                    </div>
                   </div>
                 )}
               </div>

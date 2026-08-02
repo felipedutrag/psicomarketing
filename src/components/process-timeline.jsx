@@ -1,9 +1,9 @@
 "use client";
 
-import { Globe, Mic, CalendarCheck, MailCheck } from "lucide-react";
+import { Mic, Plug, Workflow, LayoutDashboard } from "lucide-react";
 
 export function ProcessTimeline({ steps }) {
-  const stepIcons = [Globe, Mic, CalendarCheck, MailCheck];
+  const stepIcons = [Mic, Plug, Workflow, LayoutDashboard];
 
   return (
     <div className="rounded-xl border border-zinc-200 bg-zinc-100/70 p-5 sm:p-6 md:p-8 shadow-xs backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/50">

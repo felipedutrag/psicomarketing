@@ -39,7 +39,7 @@ export default function Home() {
         <section className="flex flex-col gap-10 pt-2">
           <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 py-6 md:py-8">
             <Badge>{content.heroBadge}</Badge>
-            <h1 className="text-3xl leading-tight font-semibold tracking-tight md:text-5xl">
+            <h1 className="text-3xl leading-tight font-semibold md:text-5xl">
               {content.heroTitle}
             </h1>
             <p className="text-base text-zinc-600 md:text-lg dark:text-zinc-400">
@@ -72,7 +72,7 @@ export default function Home() {
         <section id="modulos" className="space-y-4 scroll-mt-24">
           <div className="space-y-1">
             <Badge variant="outline">{content.pluginsBadge}</Badge>
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+            <h2 className="text-2xl font-semibold md:text-3xl">
               {content.pluginsTitle}
             </h2>
             <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
@@ -95,7 +95,7 @@ export default function Home() {
         <section id="fluxo" className="space-y-4 scroll-mt-24">
           <div className="space-y-1">
             <Badge variant="outline">Fluxo de Automação</Badge>
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+            <h2 className="text-2xl font-semibold md:text-3xl">
               {content.flowTitle}
             </h2>
             <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
@@ -113,7 +113,7 @@ export default function Home() {
         <section className="space-y-4">
           <div className="space-y-1">
             <Badge variant="outline">Comparativo Direto</Badge>
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+            <h2 className="text-2xl font-semibold md:text-3xl">
               Manual vs. Automação Inteligente
             </h2>
             <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
@@ -133,7 +133,7 @@ export default function Home() {
             <Badge variant="outline" className="border-indigo-500/30 text-indigo-700 dark:text-indigo-400">
               {content.investmentBadge}
             </Badge>
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+            <h2 className="text-2xl font-semibold md:text-3xl">
               {content.investmentTitle}
             </h2>
             <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
