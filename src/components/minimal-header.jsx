@@ -14,7 +14,7 @@ export function MinimalHeader() {
 
   return (
     <header className="sticky top-3 sm:top-4 z-50 mx-auto w-full max-w-7xl transition-all duration-300">
-      <div className="relative flex items-center rounded-full border border-zinc-200/80 bg-white/80 px-3 py-2 sm:px-4 sm:py-2.5 shadow-xs backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/80 md:px-6 md:py-3">
+      <div className="relative flex items-center rounded-full border border-zinc-200/80 bg-white/80 px-3 py-2 sm:px-4 sm:py-2.5 shadow-xs backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/80 md:px-6 md:py-3" style={{ borderRadius: '9999px' }}>
         {/* Left: Icon-only logo — compact, doesn't push the nav */}
         <Link
           href="/"

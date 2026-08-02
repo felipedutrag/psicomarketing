@@ -141,7 +141,7 @@ export default function Home() {
             </p>
           </div>
 
-          <Card className="border-indigo-500/30 bg-zinc-100/70 p-4 sm:p-6 md:p-10 dark:border-indigo-500/20 dark:bg-zinc-900/50">
+          <Card className="border-indigo-500/30 bg-zinc-100/70 p-2 sm:p-4 md:p-6 lg:p-10 dark:border-indigo-500/20 dark:bg-zinc-900/50">
             <CardContent className="p-0">
               <PlanCalculator />
             </CardContent>
