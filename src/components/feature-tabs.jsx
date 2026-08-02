@@ -74,32 +74,32 @@ export function FeatureTabs({ plugins }) {
       </div>
 
       {/* Modules Cards Grid */}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {filteredPlugins.map((plugin) => {
           const PluginIcon = ICON_MAP[plugin.iconName] || Globe;
 
           return (
             <div
               key={plugin.id}
-              className="group relative flex flex-col justify-between rounded-xl border border-zinc-200/90 bg-zinc-100/70 p-6 shadow-xs backdrop-blur transition-all duration-300 hover:border-indigo-500/40 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-indigo-500/30"
+              className="group relative flex flex-col justify-between rounded-xl border border-zinc-200/90 bg-zinc-100/70 p-4 sm:p-6 shadow-xs backdrop-blur transition-all duration-300 hover:border-indigo-500/40 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-indigo-500/30"
             >
               <div className="space-y-3.5">
                 {/* Header Row */}
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex size-11 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 transition-colors group-hover:border-indigo-500/40 group-hover:bg-indigo-500/10 dark:border-zinc-800 dark:bg-zinc-900">
-                    <PluginIcon className="size-5 text-zinc-700 transition-colors group-hover:text-indigo-600 dark:text-zinc-300 dark:group-hover:text-indigo-400" />
+                  <div className="flex size-9 sm:size-11 items-center justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 transition-colors group-hover:border-indigo-500/40 group-hover:bg-indigo-500/10 dark:border-zinc-800 dark:bg-zinc-900">
+                    <PluginIcon className="size-4 sm:size-5 text-zinc-700 transition-colors group-hover:text-indigo-600 dark:text-zinc-300 dark:group-hover:text-indigo-400" />
                   </div>
-                  <Badge variant="secondary" className="text-[11px] font-semibold py-0.5 px-2.5">
+                  <Badge variant="secondary" className="text-[10px] sm:text-[11px] font-semibold py-0.5 px-2 sm:px-2.5">
                     {plugin.badge}
                   </Badge>
                 </div>
 
                 {/* Title & Description */}
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-100 dark:group-hover:text-indigo-400 transition-colors">
+                  <h3 className="text-sm sm:text-base lg:text-lg font-bold text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-100 dark:group-hover:text-indigo-400 transition-colors">
                     {plugin.title}
                   </h3>
-                  <p className="mt-1.5 text-xs sm:text-sm text-zinc-700 dark:text-zinc-400 leading-relaxed">
+                  <p className="mt-1.5 text-[11px] sm:text-xs lg:text-sm text-zinc-700 dark:text-zinc-400 leading-relaxed">
                     {plugin.description}
                   </p>
                 </div>
@@ -108,20 +108,20 @@ export function FeatureTabs({ plugins }) {
               {/* Module-Specific Live Interactive Previews */}
               <div className="mt-5 pt-3.5 border-t border-zinc-200/80 dark:border-zinc-800/80">
                 {plugin.id === "google-ads" && (
-                  <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-4 text-xs sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/50">
+                  <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-[10px] sm:text-xs dark:border-zinc-800 dark:bg-zinc-900/50">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-400">
-                        <Volume2 className="size-3.5 text-indigo-600 dark:text-indigo-400" /> Google Ads por Voz
+                      <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-400">
+                        <Volume2 className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" /> Google Ads por Voz
                       </span>
-                      <span className="rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[10px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                      <span className="rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[9px] sm:text-[10px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
                         ativo
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-indigo-500/15 ring-1 ring-indigo-500/30">
-                        <Mic className="size-3.5 text-indigo-600 dark:text-indigo-400" />
+                      <span className="relative flex size-8 sm:size-9 shrink-0 items-center justify-center rounded-full bg-indigo-500/15 ring-1 ring-indigo-500/30">
+                        <Mic className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" />
                       </span>
-                      <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 leading-snug">
+                      <span className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 leading-snug">
                         "Aumente o valor do CPC."
                       </span>
                     </div>
@@ -129,20 +129,20 @@ export function FeatureTabs({ plugins }) {
                 )}
 
                 {plugin.id === "facebook-ads" && (
-                  <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-4 text-xs sm:text-sm dark:border-zinc-800 dark:bg-zinc-900/50">
+                  <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-[10px] sm:text-xs dark:border-zinc-800 dark:bg-zinc-900/50">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-400">
-                        <TrendingUp className="size-3.5 text-indigo-600 dark:text-indigo-400" /> Meta Ads por Voz
+                      <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-400">
+                        <TrendingUp className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" /> Meta Ads por Voz
                       </span>
-                      <span className="rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[10px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                      <span className="rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[9px] sm:text-[10px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
                         ativo
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-indigo-500/15 ring-1 ring-indigo-500/30">
-                        <Mic className="size-3.5 text-indigo-600 dark:text-indigo-400" />
+                      <span className="relative flex size-8 sm:size-9 shrink-0 items-center justify-center rounded-full bg-indigo-500/15 ring-1 ring-indigo-500/30">
+                        <Mic className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" />
                       </span>
-                      <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 leading-snug">
+                      <span className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 leading-snug">
                         "Resuma a performance de hoje"
                       </span>
                     </div>
@@ -150,10 +150,10 @@ export function FeatureTabs({ plugins }) {
                 )}
 
                 {plugin.id === "native-voice" && (
-                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-2.5 dark:border-zinc-800 dark:bg-zinc-900/50">
-                    <div className="flex items-center justify-between gap-2 font-semibold text-indigo-800 dark:text-indigo-300 text-xs">
+                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3 text-[10px] sm:text-xs space-y-2.5 dark:border-zinc-800 dark:bg-zinc-900/50">
+                    <div className="flex items-center justify-between gap-2 font-semibold text-indigo-800 dark:text-indigo-300 text-[10px] sm:text-xs">
                                           <span className="min-w-0 truncate">Sua Voz Comanda a Agenda</span>
-                      <span className="shrink-0 rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[11px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                      <span className="shrink-0 rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[10px] sm:text-[11px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
                         0:14
                       </span>
                     </div>
@@ -162,11 +162,11 @@ export function FeatureTabs({ plugins }) {
                         type="button"
                         onClick={() => setIsPlayingAudio(!isPlayingAudio)}
                         aria-label={isPlayingAudio ? "Pausar áudio de exemplo" : "Reproduzir áudio de exemplo"}
-                        className="flex size-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white shadow-xs hover:bg-indigo-500 transition-colors"
+                        className="flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white shadow-xs hover:bg-indigo-500 transition-colors"
                       >
-                        {isPlayingAudio ? <Pause className="size-4" /> : <Play className="size-4 ml-0.5" />}
+                        {isPlayingAudio ? <Pause className="size-3.5 sm:size-4" /> : <Play className="size-3.5 sm:size-4 ml-0.5" />}
                       </button>
-                      <div className="flex h-8 flex-1 min-w-0 items-center gap-[2px]">
+                      <div className="flex h-7 sm:h-8 flex-1 min-w-0 items-center gap-[2px]">
                         {[
                           40, 80, 50, 95, 60, 85, 45, 90, 40, 70, 85, 50, 95, 35, 60, 75, 55, 90, 45, 65,
                           55, 88, 42, 92, 58, 78, 48, 86, 38, 72, 90, 52, 96, 40, 62, 70, 58, 84, 44, 68,
@@ -187,34 +187,34 @@ export function FeatureTabs({ plugins }) {
                 )}
 
                 {plugin.id === "smart-booking" && (
-                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-1.5 dark:border-zinc-800 dark:bg-zinc-900/50 font-mono">
-                    <span className="text-[10px] sm:text-xs text-zinc-400 block">Google Calendar &amp; iCal</span>
+                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3 text-[10px] sm:text-xs space-y-1.5 dark:border-zinc-800 dark:bg-zinc-900/50 font-mono">
+                    <span className="text-[9px] sm:text-[10px] text-zinc-400 block">Google Calendar &amp; iCal</span>
                     <div className="flex items-center justify-between gap-2">
-                      <p className="text-zinc-700 dark:text-zinc-300 text-xs truncate font-sans">
+                      <p className="text-zinc-700 dark:text-zinc-300 text-[10px] sm:text-xs truncate font-sans">
                         Consulta confirmada: Quarta-feira às 14h
                       </p>
-                      <span className="inline-flex items-center gap-1.5 font-semibold text-indigo-600 dark:text-indigo-400 text-xs shrink-0">
-                        <Sparkles className="size-3.5" /> Sincronizado
+                      <span className="inline-flex items-center gap-1.5 font-semibold text-indigo-600 dark:text-indigo-400 text-[10px] sm:text-xs shrink-0">
+                        <Sparkles className="size-3 sm:size-3.5" /> Sincronizado
                       </span>
                     </div>
                   </div>
                 )}
 
                 {plugin.id === "email-dispatch" && (
-                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-1.5 dark:border-zinc-800 dark:bg-zinc-900/50 font-mono">
-                    <span className="text-[10px] sm:text-xs text-zinc-400 block">E-mail Automático de Confirmação</span>
-                    <p className="text-zinc-700 dark:text-zinc-300 text-xs font-sans">
+                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3 text-[10px] sm:text-xs space-y-1.5 dark:border-zinc-800 dark:bg-zinc-900/50 font-mono">
+                    <span className="text-[9px] sm:text-[10px] text-zinc-400 block">E-mail Automático de Confirmação</span>
+                    <p className="text-zinc-700 dark:text-zinc-300 text-[10px] sm:text-xs font-sans">
                         Consulta confirmada para Quarta-feira às 14h
                     </p>
-                    <p className="text-[10px] sm:text-[11px] text-zinc-500 dark:text-zinc-400 font-sans">
+                    <p className="text-[9px] sm:text-[10px] text-zinc-500 dark:text-zinc-400 font-sans">
                       Lembrete automático 24h e 1h antes do horário.
                     </p>
                   </div>
                 )}
 
                 {plugin.id === "custom-plugin" && (
-                  <div className="flex min-h-[108px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-950 p-3.5 text-xs font-mono text-indigo-400 space-y-1 dark:border-zinc-800">
-                    <span className="text-[10px] sm:text-xs text-zinc-500 font-sans block">Integração via API</span>
+                  <div className="flex min-h-[108px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-950 p-3.5 text-[10px] sm:text-xs font-mono text-indigo-400 space-y-1 dark:border-zinc-800">
+                    <span className="text-[9px] sm:text-[10px] text-zinc-500 font-sans block">Integração via API</span>
                     <div className="space-y-0.5 break-all leading-relaxed">
                       <p>definePlugin(&apos;SuaAPI&apos;, &#123;</p>
                       <p>&nbsp;&nbsp;trigger: &apos;agendamento&apos; &#125;)</p>
