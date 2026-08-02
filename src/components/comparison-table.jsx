@@ -7,29 +7,29 @@ import { MinimalLogo } from "@/components/minimal-logo";
 export function ComparisonTable() {
   const comparisonItems = [
     {
-      feature: "Tempo de resposta",
-      traditional: "1 a 5 horas (durante sessões)",
-      ai: "Instantâneo (< 5 segundos)",
+          feature: "Agendamento de Sessões",
+          traditional: "Manual, ligações e conflitos de horário",
+          ai: "Automático, 24/7, sem conflitos",
     },
     {
-      feature: "Fora do horário comercial",
-      traditional: "Sem resposta até o dia seguinte",
-      ai: "24/7 (24 horas, 7 dias por semana)",
+          feature: "Tempo de resposta",
+          traditional: "1 a 5 horas (durante sessões)",
+          ai: "Instantâneo (< 5 segundos)",
     },
     {
-      feature: "Tráfego Pago (Google & Meta)",
-      traditional: "Desconectado do atendimento",
-          ai: "Criação e gerenciamento de Ads",
+          feature: "Fora do horário comercial",
+          traditional: "Sem resposta até o dia seguinte",
+          ai: "24 horas, 7 dias por semana",
     },
     {
-      feature: "Atendimento por Áudio",
-      traditional: "Manual ou gravações frias",
-      ai: "Voz Nativa ultra-realista",
+          feature: "Lembrete Anti-Faltas",
+          traditional: "Confirmação manual",
+          ai: "Acompanhamento por IA",
     },
     {
-      feature: "Lembrete Anti-Faltas",
-      traditional: "Confirmação manual",
-      ai: "Régua automática + Reagendamento 1 clique",
+          feature: "Tráfego Pago (Google & Meta)",
+          traditional: "Desconectado do atendimento",
+          ai: "Gestão de Anúncios",
     },
     {
       feature: "Foco do Profissional",
@@ -67,7 +67,7 @@ export function ComparisonTable() {
               <Check className="size-3.5 shrink-0 text-indigo-600 dark:text-indigo-400 mt-0.5" />
               <div>
                 <div className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block mb-0.5">
-                  <MinimalLogo />
+                                  <MinimalLogo hideText subtle />
                 </div>
                 <span>{item.ai}</span>
               </div>
@@ -88,10 +88,8 @@ export function ComparisonTable() {
                 Atendimento Tradicional
               </th>
               <th className="p-4 font-semibold text-indigo-900 dark:text-indigo-300 bg-indigo-500/10 dark:bg-indigo-950/50 w-1/3">
-                <div className="inline-flex items-center gap-1.5">
-                  <MinimalLogo />
-                </div>
-              </th>
+                              <MinimalLogo hideText subtle />
+                            </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-200/80 dark:divide-zinc-800/80">
@@ -135,9 +133,9 @@ export function ComparisonTable() {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-zinc-200 bg-zinc-50 p-4 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/40 dark:text-zinc-400">
-        <span className="inline-flex items-center gap-1.5">
-          <ShieldCheck className="size-4 text-indigo-500" />
-          Implementação sem interrupções da sua agenda atual
+              <span className="inline-flex items-center gap-1.5 text-zinc-900 dark:text-zinc-100 font-semibold">
+                <ShieldCheck className="size-4 text-zinc-900 dark:text-zinc-100" />
+                Conforme Resolução CFP 11/2018 • Sigilo, ética e anamnese protegidos
         </span>
         <Badge variant="secondary" className="text-[10px]">
           Previsibilidade Total

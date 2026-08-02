@@ -14,43 +14,43 @@ const BASE_PLAN = {
 
 const AVAILABLE_PLUGINS = [
   {
-    id: "google-ads",
-    title: "Google Ads",
-    price: 197,
-    category: "Aquisição",
-    description: "Gestão de campanhas no Google com relatórios e edição com IA.",
+      id: "email-dispatch",
+      title: "WhatsApp Conector",
+      price: 77,
+      category: "Relacionamento",
+      description: "Agendamento automático de sessões pelo WhatsApp com IA.",
   },
   {
-    id: "facebook-ads",
-    title: "Meta / Facebook Ads",
-    price: 197,
-    category: "Tráfego Pago",
-    description: "Métricas e relatórios de suas campanhas por IA Voice.",
+      id: "landing-page-ai",
+      title: "Landing Page Conector",
+      price: 149,
+      category: "Conversão",
+      description: "Edite textos e imagens do seu site direto no painel com IA generativa.",
   },
   {
-    id: "native-voice",
-    title: "Módulo de Voz Nativa",
-    price: 149,
-    category: "Hiper-Realista",
-    description: "Áudios ultra-realistas com voz humana natural direto no WhatsApp.",
+      id: "google-ads",
+      title: "Google Ads Conector",
+      price: 197,
+      category: "Aquisição",
+      description: "Gestão de campanhas no Google com relatórios e edição com IA.",
   },
   {
-    id: "smart-booking",
-    title: "Sincronização de Agenda",
-    price: 97,
-    category: "Automação",
-    description: "Agendamento em tempo real com Google Agenda, iCal e sistemas clínicos.",
+      id: "facebook-ads",
+      title: "Meta Ads Conector",
+      price: 197,
+      category: "Tráfego Pago",
+      description: "Gerencia campanhas no Instagram e Facebook com IA.",
   },
   {
-    id: "email-dispatch",
-    title: "Nutrição por E-mail",
-    price: 77,
-    category: "Relacionamento",
-    description: "Confirmações, reagendamentos e orientações automáticas por e-mail.",
+      id: "smart-booking",
+      title: "Google Meet Conector",
+      price: 97,
+      category: "Automação",
+      description: "Agende e gerencie reuniões no Google Meet direto pelo WhatsApp com IA.",
   },
   {
     id: "custom-plugin",
-    title: "Integração Sob Medida",
+      title: "API Custom Conector",
     price: 249,
     category: "API Customizada",
     description: "Integração com sistemas clínicos ou APIs desenvolvida sob demanda.",
@@ -59,9 +59,9 @@ const AVAILABLE_PLUGINS = [
 
 export function PlanCalculator() {
   const [selectedPlugins, setSelectedPlugins] = useState([
-    "google-ads",
-    "native-voice",
-    "smart-booking",
+      "email-dispatch",
+      "landing-page-ai",
+      "google-ads",
   ]);
   const [billingCycle, setBillingCycle] = useState("monthly"); // "monthly" | "yearly"
   const [micPermission, setMicPermission] = useState("prompt"); // "prompt" | "granted" | "denied"
@@ -189,7 +189,7 @@ export function PlanCalculator() {
               >
                 {micPermission === "denied"
                   ? "Permita o microfone no navegador para falar."
-                  : "Clique para tirar dúvidas com IA."}
+                                  : "Clique aqui para tirar dúvidas!"}
               </span>
             </button>
             <button
@@ -197,19 +197,13 @@ export function PlanCalculator() {
               onClick={toggleVoiceRecording}
               className="cursor-pointer appearance-none border-0 bg-transparent p-0 text-left text-sm font-bold text-zinc-900 transition-colors hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400"
             >
-              Tire dúvidas com nossa agente de IA.
+                          Clique aqui para tirar dúvidas!
             </button>
           </div>
           <span className="font-mono text-sm font-semibold">
-            {micPermission === "granted" ? (
-              <>
-                <span className="text-white">Plano base: </span>
-                <span className="text-primary">R$ {BASE_PLAN.price}/mês</span>
-              </>
-            ) : (
-              <span className="text-white">Permita o microfone para falar</span>
-            )}
-          </span>
+                      <span className="text-white">Plano base: </span>
+                      <span className="text-primary">R$ {BASE_PLAN.price}/mês</span>
+                    </span>
         </div>
 
         <p className="text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-400">
@@ -303,7 +297,7 @@ export function PlanCalculator() {
                       : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                   }`}
                 >
-                  Anual (-20%)
+                  Anual
                 </button>
               </div>
             </div>

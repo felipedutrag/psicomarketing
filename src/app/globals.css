@@ -155,6 +155,23 @@
   animation: line-ignite 2.5s ease-in-out infinite;
 }
 
+/* Gradient shift animation for logo in comparison table */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 8s ease infinite;
+}
+
 
 @theme inline {
   --font-heading: var(--font-sans);

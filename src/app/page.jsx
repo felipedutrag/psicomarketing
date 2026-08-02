@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Gem } from "lucide-react";
 import { MinimalHeader } from "@/components/minimal-header";
 import { BotFlowScene } from "@/components/bot-flow-scene";
 import { FeatureTabs } from "@/components/feature-tabs";
@@ -39,14 +39,14 @@ export default function Home() {
         <section className="flex flex-col gap-10 pt-2">
           <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 py-6 md:py-8">
             <Badge>{content.heroBadge}</Badge>
-            <h1 className="text-3xl leading-tight font-semibold md:text-5xl">
-              {content.heroTitle}
+            <h1 className="text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center">
+                          Sua secretária de IA com <br /><span className="text-primary font-bold underline underline-offset-4 decoration-primary/30 flex items-center justify-center gap-2">super poderes <Gem className="size-5" /></span>
             </h1>
             <p className="text-base text-zinc-700 md:text-lg dark:text-zinc-400">
               {content.heroDescription}
             </p>
             <div className="flex flex-wrap justify-center gap-3 pt-2">
-              <Button asChild size="lg">
+                          <Button asChild size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md">
                 <Link href="#investimento">
                   {content.primaryCtaLabel} <ArrowRight className="size-4" />
                 </Link>
@@ -68,18 +68,18 @@ export default function Home() {
           <Separator />
         </div>
 
-        {/* Interactive Plugins Ecosystem Workspace */}
+        {/* Interactive Connectors Ecosystem Workspace */}
         <section id="modulos" className="space-y-4 scroll-mt-24">
           <div className="space-y-1">
-            <Badge variant="outline">{content.pluginsBadge}</Badge>
+                    <Badge variant="outline">{content.connectorsBadge}</Badge>
             <h2 className="text-2xl font-semibold md:text-3xl">
-              {content.pluginsTitle}
+                      {content.connectorsTitle}
             </h2>
             <p className="max-w-3xl text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
-              {content.pluginsDescription}
+                      {content.connectorsDescription}
             </p>
           </div>
-          <FeatureTabs plugins={content.plugins} />
+                  <FeatureTabs plugins={content.connectors} />
         </section>
 
         {/* Live Voice Agent Interactive Demo */}

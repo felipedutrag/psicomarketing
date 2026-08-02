@@ -152,7 +152,7 @@ export function FeatureTabs({ plugins }) {
                 {plugin.id === "native-voice" && (
                   <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-xs sm:text-sm space-y-2.5 dark:border-zinc-800 dark:bg-zinc-900/50">
                     <div className="flex items-center justify-between gap-2 font-semibold text-indigo-800 dark:text-indigo-300 text-xs">
-                      <span className="min-w-0 truncate">Voz Humana Nativa</span>
+                                          <span className="min-w-0 truncate">Controle por Voz e Texto</span>
                       <span className="shrink-0 rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[11px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
                         0:14
                       </span>
@@ -175,8 +175,8 @@ export function FeatureTabs({ plugins }) {
                             key={i}
                             className={`flex-1 basis-0 rounded-full transition-all duration-300 ${
                               isPlayingAudio
-                                ? "bg-indigo-700 dark:bg-indigo-500 animate-pulse"
-                                : "bg-indigo-700/50 dark:bg-indigo-500/50"
+                                                      ? "bg-indigo-500/60 dark:bg-indigo-400/60 animate-pulse"
+                                                      : "bg-indigo-500/30 dark:bg-indigo-400/30"
                             }`}
                             style={{ height: `${isPlayingAudio ? Math.max(15, Math.min(100, h * 0.9)) : Math.max(15, h)}%` }}
                           />

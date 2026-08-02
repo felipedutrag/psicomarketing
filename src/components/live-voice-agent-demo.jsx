@@ -30,14 +30,6 @@ const initialBookings = [
     tipoConsulta: "Primeira Consulta",
     status: "Confirmado",
   },
-  {
-    id: "b2",
-    nome: "Mariana Silva",
-    dia: "Quarta-feira",
-    horario: "17:00",
-    tipoConsulta: "Primeira Consulta",
-    status: "Confirmado",
-  },
 ];
 
 export function LiveVoiceAgentDemo() {
@@ -66,7 +58,7 @@ export function LiveVoiceAgentDemo() {
             Simule Agendamento por IA e veja como é incrível!
           </h3>
           <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
-            Crie agendamentos personalizados, cancele e remaque, deixamos uma agenda ao lado para você testar.
+                      Crie agendamentos personalizados, cancele e remaque, deixamos uma agenda fictícia ao lado para você testar.
           </p>
         </div>
 
@@ -150,11 +142,11 @@ export function LiveVoiceAgentDemo() {
                 {isSpeaking && (
                   <div className="absolute inset-0 flex items-center justify-center z-10">
                     <div className="flex items-center gap-1.5 h-12">
-                      <span className="w-1.5 bg-white/90 rounded-full animate-bounce h-6" style={{ animationDelay: "0ms" }} />
-                      <span className="w-1.5 bg-white/90 rounded-full animate-bounce h-10" style={{ animationDelay: "150ms" }} />
-                      <span className="w-1.5 bg-white/90 rounded-full animate-bounce h-8" style={{ animationDelay: "300ms" }} />
-                      <span className="w-1.5 bg-white/90 rounded-full animate-bounce h-11" style={{ animationDelay: "450ms" }} />
-                      <span className="w-1.5 bg-white/90 rounded-full animate-bounce h-7" style={{ animationDelay: "200ms" }} />
+                      <span className="w-1.5 bg-indigo-400/60 rounded-full animate-bounce h-6" style={{ animationDelay: "0ms" }} />
+                      <span className="w-1.5 bg-cyan-400/60 rounded-full animate-bounce h-10" style={{ animationDelay: "150ms" }} />
+                      <span className="w-1.5 bg-teal-400/60 rounded-full animate-bounce h-8" style={{ animationDelay: "300ms" }} />
+                      <span className="w-1.5 bg-emerald-400/60 rounded-full animate-bounce h-11" style={{ animationDelay: "450ms" }} />
+                      <span className="w-1.5 bg-teal-400/60 rounded-full animate-bounce h-7" style={{ animationDelay: "200ms" }} />
                     </div>
                   </div>
                 )}
@@ -166,7 +158,7 @@ export function LiveVoiceAgentDemo() {
                   <button
                     type="button"
                     onClick={toggleVoiceRecording}
-                    className={`size-11 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    className={`size-12 rounded-full flex items-center justify-center transition-all duration-300 ${
                       isRecordingVoice
                         ? "bg-rose-600 text-white hover:bg-rose-500 hover:scale-105 shadow-md shadow-rose-600/30"
                         : "bg-black text-white hover:bg-zinc-900 hover:scale-105 shadow-md"
@@ -174,9 +166,9 @@ export function LiveVoiceAgentDemo() {
                     title={isRecordingVoice ? "Encerrar chamada" : "Iniciar chamada"}
                   >
                     {isRecordingVoice ? (
-                      <PhoneOff className="size-4.5 fill-current" />
+                      <PhoneOff className="size-5.5 fill-current" />
                     ) : (
-                      <Phone className="size-4.5 fill-current" />
+                      <Phone className="size-5.5 fill-current" />
                     )}
                   </button>
                 </div>

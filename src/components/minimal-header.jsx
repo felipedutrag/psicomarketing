@@ -20,7 +20,7 @@ export function MinimalHeader() {
           href="/"
           className="relative z-10 flex shrink-0 items-center transition-opacity hover:opacity-90"
         >
-          <MinimalLogo />
+          <MinimalLogo subtle />
         </Link>
 
         {/* Center: Nav — absolutely centered, not pushed by logo or toggle */}
