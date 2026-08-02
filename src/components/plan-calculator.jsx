@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -158,7 +158,7 @@ export function PlanCalculator() {
           setMicPermission(status.state);
         });
       })
-      .catch(() => {});
+      .catch(() => { });
     return () => {
       active = false;
     };
@@ -350,9 +350,8 @@ export function PlanCalculator() {
         <div className="space-y-5 lg:col-span-7">
           <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900/60">
             <div
-              className={`flex items-center transition-all duration-300 ${
-                isRecordingVoice || isSpeaking ? "gap-3.5" : "gap-2"
-              }`}
+              className={`flex items-center transition-all duration-300 ${isRecordingVoice || isSpeaking ? "gap-3.5" : "gap-2"
+                }`}
             >
               <button
                 type="button"
@@ -365,11 +364,10 @@ export function PlanCalculator() {
                 }
               >
                 <span
-                  className={`relative block overflow-hidden rounded-full transition-all duration-300 ${
-                    isRecordingVoice || isSpeaking
-                      ? "h-7 w-7 scale-110 ring-2 ring-teal-300/70 shadow-[0_0_22px_6px_rgba(13,148,136,0.45)]"
-                      : "h-5 w-5"
-                  }`}
+                  className={`relative block overflow-hidden rounded-full transition-all duration-300 ${isRecordingVoice || isSpeaking
+                    ? "h-7 w-7 scale-110 ring-2 ring-teal-300/70 shadow-[0_0_22px_6px_rgba(13,148,136,0.45)]"
+                    : "h-5 w-5"
+                    }`}
                   style={{
                     background:
                       "conic-gradient(#bae6fd 0%, #38bdf8 30%, #0d9488 55%, #38bdf8 70%, #bae6fd 100%)",
@@ -383,9 +381,8 @@ export function PlanCalculator() {
                 </span>
 
                 <span
-                  className={`pointer-events-none absolute left-1/2 top-full z-20 mt-2 hidden w-56 -translate-x-1/2 rounded-lg border border-zinc-200 bg-white p-2.5 text-center text-xs font-semibold text-zinc-700 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 sm:block dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-200 ${
-                    isRecordingVoice ? "hidden" : ""
-                  }`}
+                  className={`pointer-events-none absolute left-1/2 top-full z-20 mt-2 hidden w-56 -translate-x-1/2 rounded-lg border border-zinc-200 bg-white p-2.5 text-center text-xs font-semibold text-zinc-700 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 sm:block dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-200 ${isRecordingVoice ? "hidden" : ""
+                    }`}
                 >
                   {micPermission === "denied"
                     ? "Permita o microfone no navegador para falar."
@@ -419,11 +416,10 @@ export function PlanCalculator() {
                   key={plugin.id}
                   type="button"
                   onClick={() => togglePlugin(plugin.id)}
-                  className={`group relative flex flex-col justify-between rounded-xl border p-5 text-left transition-all duration-200 ${
-                    isSelected
-                      ? "border-indigo-500 bg-indigo-500/10 shadow-xs dark:border-indigo-500/70 dark:bg-indigo-950/40"
-                      : "border-zinc-200/90 bg-zinc-100/70 hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-zinc-700"
-                  }`}
+                  className={`group relative flex flex-col justify-between rounded-xl border p-5 text-left transition-all duration-200 ${isSelected
+                    ? "border-indigo-500 bg-indigo-500/10 shadow-xs dark:border-indigo-500/70 dark:bg-indigo-950/40"
+                    : "border-zinc-200/90 bg-zinc-100/70 hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-zinc-700"
+                    }`}
                 >
                   <div className="space-y-2">
                     <div className="flex items-start justify-between gap-2">
@@ -431,11 +427,10 @@ export function PlanCalculator() {
                         {plugin.title}
                       </span>
                       <div
-                        className={`flex size-5 shrink-0 items-center justify-center rounded-md border transition-colors ${
-                          isSelected
-                            ? "border-indigo-500 bg-indigo-500 text-white dark:bg-indigo-500 dark:text-white"
-                            : "border-zinc-300 bg-white dark:border-zinc-700 dark:bg-zinc-950"
-                        }`}
+                        className={`flex size-5 shrink-0 items-center justify-center rounded-md border transition-colors ${isSelected
+                          ? "border-indigo-500 bg-indigo-500 text-white dark:bg-indigo-500 dark:text-white"
+                          : "border-zinc-300 bg-white dark:border-zinc-700 dark:bg-zinc-950"
+                          }`}
                       >
                         {isSelected ? <Check className="size-3 stroke-[3]" /> : <Plus className="size-3 text-zinc-400" />}
                       </div>
@@ -479,22 +474,20 @@ export function PlanCalculator() {
                   <button
                     type="button"
                     onClick={() => setBillingCycle("monthly")}
-                    className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all ${
-                      billingCycle === "monthly"
-                        ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
-                        : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                    }`}
+                    className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all ${billingCycle === "monthly"
+                      ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
+                      : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                      }`}
                   >
                     Mensal
                   </button>
                   <button
                     type="button"
                     onClick={() => setBillingCycle("yearly")}
-                    className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all ${
-                      billingCycle === "yearly"
-                        ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
-                        : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                    }`}
+                    className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all ${billingCycle === "yearly"
+                      ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
+                      : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                      }`}
                   >
                     Anual
                   </button>
@@ -606,17 +599,15 @@ export function PlanCalculator() {
 
             <div className="flex items-center gap-3 text-xs font-semibold">
               <div
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${
-                  checkoutStep >= 1 ? "bg-indigo-600 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400"
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${checkoutStep >= 1 ? "bg-indigo-600 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400"
+                  }`}
               >
                 <span>1</span>
                 <span>Dados & Agendamento</span>
               </div>
               <div
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${
-                  checkoutStep === 2 ? "bg-indigo-600 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400"
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${checkoutStep === 2 ? "bg-indigo-600 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400"
+                  }`}
               >
                 <span>2</span>
                 <span>Pagamento</span>
@@ -702,23 +693,22 @@ export function PlanCalculator() {
                     ) : groupedDates.length > 0 ? (
                       <div className="space-y-3 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50/50 dark:bg-zinc-950/50">
                         <div className="relative">
-                          <div className="flex gap-3 pb-2 overflow-x-auto scroll-hide">
-                            {currentDateGroup?.slots.map((slot) => (
+                          <div className="grid grid-cols-1 gap-3 min-h-[220px]">
+                            {currentDateGroup?.slots.slice(0, 3).map((slot) => (
                               <button
                                 key={slot.id}
                                 type="button"
                                 onClick={() => handleSlotSelect(slot)}
-                                className={`flex-1 min-w-[150px] flex items-center gap-2.5 p-3 rounded-lg border text-left transition-all ${
-                                  selectedSlot?.id === slot.id
-                                    ? "border-indigo-500 bg-indigo-500/10 dark:bg-indigo-950/50 ring-1 ring-indigo-500"
-                                    : "border-zinc-200 hover:border-indigo-300 dark:border-zinc-800 dark:hover:border-indigo-700 bg-white dark:bg-zinc-900"
-                                }`}
+                                className={`flex items-center gap-2.5 p-3 rounded-lg border text-left transition-all w-full ${selectedSlot?.id === slot.id
+                                  ? "border-indigo-500 bg-indigo-500/10 dark:bg-indigo-950/50 ring-1 ring-indigo-500"
+                                  : "border-zinc-200 hover:border-indigo-300 dark:border-zinc-800 dark:hover:border-indigo-700 bg-white dark:bg-zinc-900"
+                                  }`}
                                 disabled={generatingPix}
                               >
                                 <div className="w-8 h-8 rounded-md bg-indigo-500/10 flex items-center justify-center shrink-0">
                                   <Calendar className="size-4 text-indigo-600 dark:text-indigo-400" />
                                 </div>
-                                <span className="font-medium text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm truncate">
+                                <span className="font-medium text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm truncate flex-1">
                                   {slot.label}
                                 </span>
                                 {selectedSlot?.id === slot.id && (
@@ -729,49 +719,40 @@ export function PlanCalculator() {
                           </div>
 
                           {groupedDates.length > 1 && (
-                            <div className="flex items-center justify-between pt-2">
-                              <button
+                            <div className="flex items-center justify-between gap-3 pt-4">
+                              <Button
                                 type="button"
+                                variant="outline"
+                                size="sm"
                                 onClick={() => setCarouselIndex(Math.max(0, carouselIndex - 1))}
                                 disabled={carouselIndex === 0}
-                                className="flex items-center gap-1 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-indigo-600 disabled:opacity-30"
+                                className="gap-1 flex-1"
                               >
                                 <ChevronLeft className="size-4" /> Data Anterior
-                              </button>
+                              </Button>
 
-                              <div className="flex gap-1">
-                                {groupedDates.map((_, i) => (
-                                  <button
-                                    key={i}
-                                    type="button"
-                                    onClick={() => setCarouselIndex(i)}
-                                    className={`h-1.5 rounded-full transition-all ${
-                                      i === carouselIndex ? "bg-indigo-600 w-5" : "bg-zinc-300 dark:bg-zinc-700 w-1.5"
-                                    }`}
-                                  />
-                                ))}
-                              </div>
-
-                              <button
+                              <Button
                                 type="button"
+                                variant="outline"
+                                size="sm"
                                 onClick={() => setCarouselIndex(Math.min(groupedDates.length - 1, carouselIndex + 1))}
                                 disabled={carouselIndex >= groupedDates.length - 1}
-                                className="flex items-center gap-1 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-indigo-600 disabled:opacity-30"
+                                className="gap-1 flex-1"
                               >
                                 Próxima Data <ChevronRight className="size-4" />
-                              </button>
+                              </Button>
                             </div>
                           )}
                         </div>
 
                         <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center">
-                          {currentDateGroup ? currentDateGroup.slots.length : 0} horários em{" "}
+                          {currentDateGroup ? Math.min(3, currentDateGroup.slots.length) : 0} de {currentDateGroup ? currentDateGroup.slots.length : 0} horários em{" "}
                           {currentDateGroup
                             ? new Date(currentDateGroup.date).toLocaleDateString("pt-BR", {
-                                weekday: "long",
-                                day: "numeric",
-                                month: "long",
-                              })
+                              weekday: "long",
+                              day: "numeric",
+                              month: "long",
+                            })
                             : ""}
                         </p>
                       </div>
@@ -878,23 +859,23 @@ export function PlanCalculator() {
                 </Badge>
               </div>
 
-              <div className="grid gap-6 lg:grid-cols-12">
+              <div className="grid gap-6 grid-cols-1 lg:grid-cols-12">
                 {/* QR Code & Copia e Cola */}
-                <div className="lg:col-span-7 space-y-5 flex flex-col items-center text-center">
-                  <div className="p-4 bg-white rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md">
-                    <QRCodeSVG value={pixData.code} size={200} level="M" includeMargin={true} />
+                <div className="lg:col-span-7 flex flex-col w-full">
+                  <div className="flex-1 flex items-center justify-center">
+                    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md p-3 bg-white w-fit max-w-full">
+                      <QRCodeSVG value={pixData.code} size={160} level="M" includeMargin={false} className="max-w-full h-auto" />
+                    </div>
                   </div>
 
-                  <div className="w-full space-y-2 text-left">
+                  <div className="w-full space-y-2 text-left mt-5">
                     <Label className="text-xs text-zinc-500 uppercase tracking-wider font-bold">
                       Código PIX Copia e Cola
                     </Label>
                     <div className="relative">
-                      <textarea
-                        readOnly
-                        value={pixData.code}
-                        className="w-full px-3 py-2.5 bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl font-mono text-xs text-zinc-800 dark:text-zinc-200 min-h-[70px] resize-none pr-24"
-                      />
+                      <div className="w-full px-4 py-3 bg-zinc-50/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-xl font-mono text-xs text-zinc-600 dark:text-zinc-400 min-h-[70px] pr-28 break-all leading-relaxed">
+                        {pixData.code}
+                      </div>
                       <button
                         type="button"
                         onClick={handleCopyPix}
