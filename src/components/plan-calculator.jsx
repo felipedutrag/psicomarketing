@@ -7,50 +7,43 @@ import { Button } from "@/components/ui/button";
 import { useLilithVoice } from "@/hooks/use-lilith-voice";
 
 const BASE_PLAN = {
-  name: "IA Core Atendimento",
+  name: "IA Core + WhatsApp Conector",
   price: 297,
   description: "Atendimento 24/7 por texto no WhatsApp, qualificação de leads e gestão da agenda.",
 };
 
 const AVAILABLE_PLUGINS = [
   {
-      id: "email-dispatch",
-      title: "WhatsApp Conector",
-      price: 77,
-      category: "Relacionamento",
-      description: "Agendamento automático de sessões pelo WhatsApp com IA.",
+    id: "landing-page-ai",
+    title: "Landing Page Conector",
+    price: 149,
+    category: "Conversão",
+    description: "Edite textos e imagens do seu site direto no painel com IA generativa.",
   },
   {
-      id: "landing-page-ai",
-      title: "Landing Page Conector",
-      price: 149,
-      category: "Conversão",
-      description: "Edite textos e imagens do seu site direto no painel com IA generativa.",
+    id: "google-ads",
+    title: "Google Ads Conector",
+    price: 197,
+    category: "Aquisição",
+    description: "Gestão de campanhas no Google com relatórios e edição com IA.",
   },
   {
-      id: "google-ads",
-      title: "Google Ads Conector",
-      price: 197,
-      category: "Aquisição",
-      description: "Gestão de campanhas no Google com relatórios e edição com IA.",
+    id: "facebook-ads",
+    title: "Meta Ads Conector",
+    price: 197,
+    category: "Tráfego Pago",
+    description: "Gerencia campanhas no Instagram e Facebook com IA.",
   },
   {
-      id: "facebook-ads",
-      title: "Meta Ads Conector",
-      price: 197,
-      category: "Tráfego Pago",
-      description: "Gerencia campanhas no Instagram e Facebook com IA.",
-  },
-  {
-      id: "smart-booking",
-      title: "Google Meet Conector",
-      price: 97,
-      category: "Automação",
-      description: "Agende e gerencie reuniões no Google Meet direto pelo WhatsApp com IA.",
+    id: "smart-booking",
+    title: "Google Meet Conector",
+    price: 97,
+    category: "Automação",
+    description: "Agende e gerencie reuniões no Google Meet direto pelo WhatsApp com IA.",
   },
   {
     id: "custom-plugin",
-      title: "API Custom Conector",
+    title: "API Custom Conector",
     price: 249,
     category: "API Customizada",
     description: "Integração com sistemas clínicos ou APIs desenvolvida sob demanda.",
@@ -59,10 +52,8 @@ const AVAILABLE_PLUGINS = [
 
 export function PlanCalculator() {
   const [selectedPlugins, setSelectedPlugins] = useState([
-      "email-dispatch",
-      "landing-page-ai",
-      "google-ads",
-  ]);
+        "email-dispatch",
+    ]);
   const [billingCycle, setBillingCycle] = useState("monthly"); // "monthly" | "yearly"
   const [micPermission, setMicPermission] = useState("prompt"); // "prompt" | "granted" | "denied"
   const greetedRef = useRef(false);

@@ -3,7 +3,7 @@ export const siteContent = {
   heroBadge: "Ecossistema de IA Expansível para Psicólogos",
   heroTitle: "A sua secretária de IA com super poderes",
   heroDescription:
-      "Conecte módulos inteligentes de agendamento de sessões, WhatsApp e tráfego pago ao seu assistente digital. Flexível, ilimitado e feito sob medida. Controle tudo por texto ou voz.",
+        "Sua agenda se preenche sozinha enquanto você atende. IA responde leads no WhatsApp, agenda no Google Calendar, otimiza seus anúncios — tudo por voz.",
   primaryCtaLabel: "Montar meu ecossistema",
   secondaryCtaLabel: "Testar Voz Live",
   visualTitle: "Agenda Lotada no Piloto Automático",
@@ -12,11 +12,11 @@ export const siteContent = {
   connectorsBadge: "Arquitetura de Conectores",
   connectorsTitle: "Módulos de Poder para o seu Agente de IA",
   connectorsDescription:
-        "Adicione conectores sob demanda para personalizar sua experiência.",
+          "Ative só o que precisa. Pague só pelo que usa.",
   connectors: [
     {
       id: "smart-booking",
-          title: "Agendamento Automáticos",
+              title: "Agendamento Autônomo",
           description: "Deixe nossa IA cuidar de seus agendamentos de forma inteligente e eficiente",
       iconName: "Calendar",
       badge: "Automação",
@@ -30,7 +30,7 @@ export const siteContent = {
     },
     {
       id: "native-voice",
-          title: "Controle por Voz e Texto",
+              title: "Sua Voz Comanda a Agenda",
           description: "Gerencia sua agenda e pacientes direto pelo WhatsApp com comandos de voz.",
       iconName: "Mic",
       badge: "Hiper-Realista",
@@ -94,7 +94,7 @@ export const siteContent = {
   investmentBadge: "Investimento estratégico",
   investmentTitle: "Quanto vale ter um ecossistema completo rodando por você?",
   investmentDescription:
-      "Escolha os conectores e escale seu consultório com previsibilidade e zero estresse operacional.",
+        "Previsibilidade de caixa. Foco no clínico. Zero burocracia.",
   investmentCtaLabel: "Montar meus conectores",
   investmentCtaHref: "https://wa.me/5511989819696?text=Quero%20montar%20meu%20ecossistema%20de%20conectores",
   investmentFootnote: "Implementação com foco em performance, ética e previsibilidade.",

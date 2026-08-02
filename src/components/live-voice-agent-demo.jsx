@@ -55,7 +55,7 @@ export function LiveVoiceAgentDemo() {
             </Badge>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-            Simule Agendamento por IA e veja como é incrível!
+                      Fale com a IA e veja sua agenda preencher sozinha
           </h3>
           <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-400">
                       Crie agendamentos personalizados, cancele e remaque, deixamos uma agenda fictícia ao lado para você testar.
