@@ -1,0 +1,182 @@
+import Link from "next/link";
+import { ArrowRight, ShieldCheck, UserCheck, Stethoscope } from "lucide-react";
+import { MinimalHeader } from "@/components/nova-versao/minimal-header";
+import { BotFlowScene } from "@/components/nova-versao/bot-flow-scene";
+import { FeatureTabs } from "@/components/nova-versao/feature-tabs";
+import { LiveVoiceAgentDemo } from "@/components/nova-versao/live-voice-agent-demo";
+import { ProcessTimeline } from "@/components/nova-versao/process-timeline";
+import { ComparisonTable } from "@/components/nova-versao/comparison-table";
+import { PlanCalculator } from "@/components/nova-versao/plan-calculator";
+import { MinimalFooter } from "@/components/nova-versao/minimal-footer";
+import { novaVersaoContent as content } from "@/content/nova-versao-content";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+
+export default function NovaVersaoPage() {
+  return (
+    <main className="nova-versao-scope relative min-h-screen bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100 overflow-hidden">
+      {/* Subtle Dot Grid Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:32px_32px] opacity-60 pointer-events-none" />
+
+      {/* Top Ambient Light Orb */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-gradient-to-b from-indigo-500/15 via-purple-500/10 to-transparent blur-3xl rounded-full pointer-events-none" />
+
+      {/* Middle Right Ambient Glow */}
+      <div className="absolute top-[35%] -right-40 w-[600px] h-[600px] bg-indigo-500/10 dark:bg-indigo-600/15 blur-3xl rounded-full pointer-events-none" />
+
+      {/* Bottom Ambient Glow */}
+      <div className="absolute bottom-20 -left-40 w-[600px] h-[600px] bg-purple-500/10 dark:bg-purple-600/15 blur-3xl rounded-full pointer-events-none" />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-12 px-4 pt-4 pb-4 md:px-8 md:pt-6 md:pb-6">
+        <MinimalHeader />
+
+        {/* Hero & Calendar Section */}
+        <section className="flex flex-col gap-10 pt-2">
+          <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 py-4 md:py-6">
+            <Badge>{content.heroBadge}</Badge>
+            <h1 className="text-3xl leading-tight font-semibold tracking-tight md:text-5xl">
+              {content.heroTitle}
+            </h1>
+            <p className="text-base text-zinc-600 md:text-lg dark:text-zinc-400">
+              {content.heroDescription}
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 pt-2">
+              <Button asChild size="lg">
+                <Link href="#investimento">
+                  {content.primaryCtaLabel} <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/">{content.secondaryCtaLabel}</Link>
+              </Button>
+            </div>
+          </div>
+
+          <Card className="w-full overflow-hidden border-zinc-200/90 bg-zinc-100/70 dark:border-zinc-800/90 dark:bg-zinc-900/50">
+            <CardContent className="p-0">
+              <BotFlowScene />
+            </CardContent>
+          </Card>
+        </section>
+
+        <Separator />
+
+        {/* Interactive Plugins Ecosystem Workspace */}
+        <section id="modulos" className="space-y-4 scroll-mt-24">
+          <div className="space-y-1">
+            <Badge variant="outline">{content.pluginsBadge}</Badge>
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+              {content.pluginsTitle}
+            </h2>
+            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+              {content.pluginsDescription}
+            </p>
+          </div>
+          <FeatureTabs plugins={content.plugins} />
+        </section>
+
+        {/* Live Voice Agent Interactive Demo */}
+        <section id="live-demo" className="space-y-4 scroll-mt-24">
+          <LiveVoiceAgentDemo />
+        </section>
+
+        <Separator />
+
+        {/* Timeline Pipeline */}
+        <section id="fluxo" className="space-y-4 scroll-mt-24">
+          <div className="space-y-1">
+            <Badge variant="outline">Fluxo de Automação</Badge>
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+              {content.flowTitle}
+            </h2>
+            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+              {content.flowDescription}
+            </p>
+          </div>
+          <ProcessTimeline steps={content.flowSteps} />
+        </section>
+
+        <Separator />
+
+        {/* Notion-Style Comparison Matrix */}
+        <section className="space-y-4">
+          <div className="space-y-1">
+            <Badge variant="outline">Comparativo Direto</Badge>
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+              Manual vs. Automação Inteligente
+            </h2>
+            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+              Entenda por que clínicas e psicólogos estão migrando para o modelo modular.
+            </p>
+          </div>
+          <ComparisonTable />
+        </section>
+
+        <Separator />
+
+        {/* Ethics & Security Section */}
+        <section className="space-y-4">
+          <div className="space-y-1">
+            <Badge variant="outline">Ética & Sigilo</Badge>
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+              {content.ethicsTitle}
+            </h2>
+            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+              {content.ethicsDescription}
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {content.ethicsItems.map((item, idx) => {
+              const icons = [UserCheck, Stethoscope, ShieldCheck];
+              const IconComponent = icons[idx] || ShieldCheck;
+              return (
+                <div
+                  key={item.title}
+                  className="rounded-xl border border-zinc-200/90 bg-zinc-100/70 p-6 dark:border-zinc-800/90 dark:bg-zinc-900/50 shadow-xs flex flex-col items-start"
+                >
+                  <div className="mb-3 rounded-lg bg-indigo-500/10 p-3 text-indigo-600 dark:text-indigo-400">
+                    <IconComponent className="size-6" />
+                  </div>
+                  <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-1.5">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    {item.text}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Final Investment Section & Calculator */}
+        <section id="investimento" className="space-y-6">
+          <div className="space-y-1">
+            <Badge variant="outline" className="border-indigo-500/30 text-indigo-700 dark:text-indigo-400">
+              {content.investmentBadge}
+            </Badge>
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+              {content.investmentTitle}
+            </h2>
+            <p className="max-w-3xl text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+              {content.investmentDescription}
+            </p>
+          </div>
+
+          <Card className="border-indigo-500/30 bg-zinc-100/70 p-6 md:p-10 dark:border-indigo-500/20 dark:bg-zinc-900/50">
+            <CardContent className="p-0">
+              <PlanCalculator />
+            </CardContent>
+          </Card>
+        </section>
+
+        <MinimalFooter />
+      </div>
+    </main>
+  );
+}
