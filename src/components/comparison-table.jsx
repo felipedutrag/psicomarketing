@@ -53,7 +53,7 @@ export function ComparisonTable() {
 
             {/* Traditional */}
             <div className="flex items-start gap-1.5 text-[11px] sm:text-xs text-zinc-700 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/60 p-2 rounded-lg">
-              <X className="size-3.5 shrink-0 text-red-500 mt-0.5" />
+              <X className="size-3.5 shrink-0 text-red-500 mt-0.5 hidden sm:block" />
               <div>
                 <span className="text-[9px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mb-0.5">
                   Manual / Tradicional
@@ -64,7 +64,7 @@ export function ComparisonTable() {
 
             {/* AI Psicomarketing */}
             <div className="flex items-start gap-1.5 text-[11px] sm:text-xs text-indigo-950 dark:text-indigo-200 bg-indigo-500/10 dark:bg-indigo-950/50 p-2 rounded-lg border border-indigo-500/20 font-medium">
-              <Check className="size-3.5 shrink-0 text-indigo-600 dark:text-indigo-400 mt-0.5" />
+              <Check className="size-3.5 shrink-0 text-indigo-600 dark:text-indigo-400 mt-0.5 hidden sm:block" />
               <div className="flex items-center gap-2">
                 <MinimalLogo hideText subtle />
                 <span>{item.ai}</span>

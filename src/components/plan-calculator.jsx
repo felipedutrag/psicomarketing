@@ -345,7 +345,7 @@ export function PlanCalculator() {
   return (
     <div className="space-y-8">
       {/* Top 2 Columns Layout */}
-      <div className="grid gap-8 lg:grid-cols-12">
+      <div className="grid gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-12">
         {/* Left Column: Plugin Selection Grid */}
         <div className="space-y-5 lg:col-span-7">
           <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900/60">
@@ -407,7 +407,7 @@ export function PlanCalculator() {
             Selecione os plugins que deseja adicionar ao seu agente de IA:
           </p>
 
-          <div className="grid gap-3.5 sm:grid-cols-2">
+          <div className="grid gap-3.5 grid-cols-1 sm:grid-cols-2">
             {AVAILABLE_PLUGINS.map((plugin) => {
               const isSelected = selectedPlugins.includes(plugin.id);
 
@@ -416,27 +416,27 @@ export function PlanCalculator() {
                   key={plugin.id}
                   type="button"
                   onClick={() => togglePlugin(plugin.id)}
-                  className={`group relative flex flex-col justify-between rounded-xl border p-5 text-left transition-all duration-200 ${isSelected
+                  className={`group relative flex flex-col justify-between rounded-xl border p-4 sm:p-5 text-left transition-all duration-200 ${isSelected
                     ? "border-indigo-500 bg-indigo-500/10 shadow-xs dark:border-indigo-500/70 dark:bg-indigo-950/40"
                     : "border-zinc-200/90 bg-zinc-100/70 hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-zinc-700"
                     }`}
                 >
                   <div className="space-y-2">
                     <div className="flex items-start justify-between gap-2">
-                      <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                      <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
                         {plugin.title}
                       </span>
                       <div
-                        className={`flex size-5 shrink-0 items-center justify-center rounded-md border transition-colors ${isSelected
+                        className={`flex size-4 sm:size-5 shrink-0 items-center justify-center rounded-md border transition-colors ${isSelected
                           ? "border-indigo-500 bg-indigo-500 text-white dark:bg-indigo-500 dark:text-white"
                           : "border-zinc-300 bg-white dark:border-zinc-700 dark:bg-zinc-950"
                           }`}
                       >
-                        {isSelected ? <Check className="size-3 stroke-[3]" /> : <Plus className="size-3 text-zinc-400" />}
+                        {isSelected ? <Check className="size-2.5 sm:size-3 stroke-[3]" /> : <Plus className="size-2.5 sm:size-3 text-zinc-400" />}
                       </div>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-400 leading-relaxed">
+                    <p className="text-[11px] sm:text-xs text-zinc-700 dark:text-zinc-400 leading-relaxed">
                       {plugin.description}
                     </p>
                   </div>
@@ -457,12 +457,12 @@ export function PlanCalculator() {
 
         {/* Right Column: Live Plan Summary & Total */}
         <div className="lg:col-span-5">
-          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-7 shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
+          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-4 sm:p-7 shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
             <div className="space-y-5">
               {/* Header & Cycle Switch */}
-              <div className="flex items-start justify-between gap-3 border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
                 <div className="space-y-0.5">
-                  <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                  <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
                     Resumo do seu Plano
                   </h3>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
@@ -474,7 +474,7 @@ export function PlanCalculator() {
                   <button
                     type="button"
                     onClick={() => setBillingCycle("monthly")}
-                    className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all ${billingCycle === "monthly"
+                    className={`rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-[10px] sm:text-xs font-semibold transition-all ${billingCycle === "monthly"
                       ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
                       : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                       }`}
@@ -484,7 +484,7 @@ export function PlanCalculator() {
                   <button
                     type="button"
                     onClick={() => setBillingCycle("yearly")}
-                    className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all ${billingCycle === "yearly"
+                    className={`rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-[10px] sm:text-xs font-semibold transition-all ${billingCycle === "yearly"
                       ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
                       : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                       }`}
@@ -495,29 +495,29 @@ export function PlanCalculator() {
               </div>
 
               {/* Included Items List */}
-              <div className="space-y-2.5 text-xs sm:text-sm">
-                <div className="flex items-center justify-between font-semibold text-zinc-800 dark:text-zinc-200 text-sm sm:text-base">
+              <div className="space-y-2.5 text-[11px] sm:text-xs">
+                <div className="flex items-center justify-between font-semibold text-zinc-800 dark:text-zinc-200 text-xs sm:text-sm">
                   <span>Plano Starter</span>
                   <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">R$ {BASE_PLAN.price}</span>
                 </div>
 
-                <div className="pl-6 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
+                <div className="pl-4 sm:pl-6 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-400">
                   <p className="font-medium text-zinc-900 dark:text-zinc-100">+ WhatsApp Conector (incluso)</p>
-                  <p className="text-zinc-500 dark:text-zinc-400 mt-0.5">Atendimento 24/7 por texto, qualificação de leads e agendamentos automáticos.</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 mt-0.5 text-[10px] sm:text-xs">Atendimento 24/7 por texto, qualificação de leads e agendamentos automáticos.</p>
                 </div>
 
                 {selectedPluginObjects.length > 0 ? (
                   selectedPluginObjects.map((plugin) => (
                     <div
                       key={plugin.id}
-                      className="flex items-center justify-between text-zinc-700 dark:text-zinc-400 pl-6 text-xs sm:text-sm"
+                      className="flex items-center justify-between text-zinc-700 dark:text-zinc-400 pl-4 sm:pl-6 text-[11px] sm:text-xs"
                     >
                       <span>+ {plugin.title}</span>
                       <span className="font-mono font-medium">R$ {plugin.price}</span>
                     </div>
                   ))
                 ) : (
-                  <p className="pl-6 text-xs sm:text-sm italic text-zinc-400">
+                  <p className="pl-4 sm:pl-6 text-[11px] sm:text-xs italic text-zinc-400">
                     Nenhum conector adicional selecionado
                   </p>
                 )}
@@ -526,19 +526,19 @@ export function PlanCalculator() {
               {/* Total Display */}
               <div className="border-t border-zinc-200/80 pt-5 dark:border-zinc-800">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-400">
+                  <span className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-400">
                     Investimento Total:
                   </span>
                   <div className="text-right">
-                    <span className="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">
+                    <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">
                       R$ {totalMonthly}
                     </span>
-                    <span className="text-sm text-zinc-500 dark:text-zinc-400"> / mês</span>
+                    <span className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400"> / mês</span>
                   </div>
                 </div>
 
                 {billingCycle === "yearly" && (
-                  <p className="mt-1.5 text-right text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                  <p className="mt-1.5 text-right text-[10px] sm:text-xs font-semibold text-indigo-600 dark:text-indigo-400">
                     Economia de 20% aplicada no plano anual!
                   </p>
                 )}
@@ -551,23 +551,23 @@ export function PlanCalculator() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="w-full py-6 text-base font-semibold border-indigo-500/40 text-indigo-600 hover:bg-indigo-500/10 dark:text-indigo-400"
+                  className="w-full py-4 sm:py-6 text-sm sm:text-base font-semibold border-indigo-500/40 text-indigo-600 hover:bg-indigo-500/10 dark:text-indigo-400"
                   onClick={() => setIsCheckoutExpanded(false)}
                 >
-                  Recolher Checkout <ChevronUp className="size-5 ml-1.5" />
+                  Recolher Checkout <ChevronUp className="size-4 sm:size-5 ml-1.5" />
                 </Button>
               ) : (
                 <Button
                   size="lg"
-                  className="w-full py-6 text-base font-medium bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 cursor-pointer"
+                  className="w-full py-4 sm:py-6 text-sm sm:text-base font-medium bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 cursor-pointer"
                   onClick={handleOpenCheckout}
                 >
-                  Ativar Módulos Selecionados <ArrowRight className="size-5 ml-1.5" />
+                  Ativar Módulos Selecionados <ArrowRight className="size-4 sm:size-5 ml-1.5" />
                 </Button>
               )}
 
-              <div className="flex items-center justify-center gap-1.5 text-center text-xs text-zinc-500 dark:text-zinc-400">
-                <ShieldCheck className="size-4 text-indigo-500" />
+              <div className="flex items-center justify-center gap-1.5 text-center text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">
+                <ShieldCheck className="size-3.5 sm:size-4 text-indigo-500" />
                 <span>Sem fidelidade obrigatória • Suporte prioritário</span>
               </div>
             </div>
@@ -579,34 +579,35 @@ export function PlanCalculator() {
       {isCheckoutExpanded && (
         <div
           ref={checkoutRef}
-          className="rounded-2xl border border-indigo-500/30 bg-white/90 dark:bg-zinc-900/90 p-6 sm:p-8 shadow-xl backdrop-blur transition-all duration-300 animate-in fade-in slide-in-from-top-4"
+          className="rounded-2xl border border-indigo-500/30 bg-white/90 dark:bg-zinc-900/90 p-4 sm:p-6 lg:p-8 shadow-xl backdrop-blur transition-all duration-300 animate-in fade-in slide-in-from-top-4"
         >
           {/* Header & Steps Indicator */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4 sm:pb-5 mb-4 sm:mb-6">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="border-indigo-500/30 text-indigo-600 dark:text-indigo-400">
+                <Badge variant="outline" className="border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-[10px] sm:text-xs">
                   Checkout no Calculador
                 </Badge>
-                <span className="text-xs font-semibold text-zinc-400">
+                <span className="text-[10px] sm:text-xs font-semibold text-zinc-400">
                   Passo {checkoutStep} de 2
                 </span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+              <h3 className="text-base sm:text-xl lg:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
                 {checkoutStep === 1 ? "Dados Pessoais & Call de Onboarding" : "Finalizar Pagamento via PIX"}
               </h3>
             </div>
 
-            <div className="flex items-center gap-3 text-xs font-semibold">
+            <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-semibold">
               <div
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${checkoutStep >= 1 ? "bg-indigo-600 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400"
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full ${checkoutStep >= 1 ? "bg-indigo-600 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400"
                   }`}
               >
                 <span>1</span>
-                <span>Dados & Agendamento</span>
+                <span className="hidden sm:inline">Dados & Agendamento</span>
+                <span className="sm:hidden">Dados</span>
               </div>
               <div
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${checkoutStep === 2 ? "bg-indigo-600 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400"
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full ${checkoutStep === 2 ? "bg-indigo-600 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400"
                   }`}
               >
                 <span>2</span>
@@ -618,7 +619,7 @@ export function PlanCalculator() {
           {/* Step 1: Form + Calendar Slots */}
           {checkoutStep === 1 && (
             <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-6">
-              <div className="grid gap-6 lg:grid-cols-12">
+              <div className="grid gap-6 grid-cols-1 lg:grid-cols-12">
                 {/* Form Fields & Calendar */}
                 <div className="lg:col-span-7 space-y-5">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
@@ -626,14 +627,14 @@ export function PlanCalculator() {
                   </h4>
 
                   <div className="space-y-2">
-                    <Label htmlFor="fullName" className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                    <Label htmlFor="fullName" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                       Nome Completo
                     </Label>
                     <Input
                       id="fullName"
                       placeholder="Ex: Dra. Ana Silva"
                       {...register("fullName")}
-                      className={`${errors.fullName ? "border-red-500 focus:border-red-500" : ""} rounded-lg h-11 bg-zinc-50 dark:bg-zinc-950`}
+                      className={`${errors.fullName ? "border-red-500 focus:border-red-500" : ""} rounded-lg h-10 sm:h-11 bg-zinc-50 dark:bg-zinc-950`}
                       disabled={generatingPix}
                     />
                     {errors.fullName && (
@@ -643,15 +644,15 @@ export function PlanCalculator() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                        <Mail className="size-4 text-zinc-400" /> E-mail
+                      <Label htmlFor="email" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                        <Mail className="size-3.5 sm:size-4 text-zinc-400" /> E-mail
                       </Label>
                       <Input
                         id="email"
                         type="email"
                         placeholder="ana@exemplo.com"
                         {...register("email")}
-                        className={`${errors.email ? "border-red-500 focus:border-red-500" : ""} rounded-lg h-11 bg-zinc-50 dark:bg-zinc-950`}
+                        className={`${errors.email ? "border-red-500 focus:border-red-500" : ""} rounded-lg h-10 sm:h-11 bg-zinc-50 dark:bg-zinc-950`}
                         disabled={generatingPix}
                       />
                       {errors.email && (
@@ -660,8 +661,8 @@ export function PlanCalculator() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="whatsapp" className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                        <Phone className="size-4 text-zinc-400" /> WhatsApp com DDD
+                      <Label htmlFor="whatsapp" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                        <Phone className="size-3.5 sm:size-4 text-zinc-400" /> WhatsApp com DDD
                       </Label>
                       <Input
                         id="whatsapp"
@@ -669,7 +670,7 @@ export function PlanCalculator() {
                         value={whatsappValue}
                         onChange={onWhatsAppChange}
                         maxLength={20}
-                        className={`${errors.whatsapp ? "border-red-500 focus:border-red-500" : ""} rounded-lg h-11 bg-zinc-50 dark:bg-zinc-950`}
+                        className={`${errors.whatsapp ? "border-red-500 focus:border-red-500" : ""} rounded-lg h-10 sm:h-11 bg-zinc-50 dark:bg-zinc-950`}
                         disabled={generatingPix}
                       />
                       {errors.whatsapp && (
@@ -680,15 +681,15 @@ export function PlanCalculator() {
 
                   {/* Date & Time Slot Picker */}
                   <div className="pt-3 space-y-3">
-                    <Label className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                      <Calendar className="size-4 text-indigo-500" />
+                    <Label className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                      <Calendar className="size-3.5 sm:size-4 text-indigo-500" />
                       Escolha o Horário da Call de Onboarding
                     </Label>
 
                     {loadingSlots ? (
-                      <div className="flex flex-col items-center justify-center py-8 gap-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50">
-                        <Loader2 className="size-8 text-indigo-600 animate-spin" />
-                        <p className="text-zinc-500 text-sm">Buscando horários disponíveis na agenda...</p>
+                      <div className="flex flex-col items-center justify-center py-6 sm:py-8 gap-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50">
+                        <Loader2 className="size-6 sm:size-8 text-indigo-600 animate-spin" />
+                        <p className="text-zinc-500 text-xs sm:text-sm">Buscando horários disponíveis na agenda...</p>
                       </div>
                     ) : groupedDates.length > 0 ? (
                       <div className="space-y-3 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50/50 dark:bg-zinc-950/50">
@@ -863,32 +864,32 @@ export function PlanCalculator() {
                 {/* QR Code & Copia e Cola */}
                 <div className="lg:col-span-7 flex flex-col w-full">
                   <div className="flex-1 flex items-center justify-center">
-                    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md p-3 bg-white w-fit max-w-full">
-                      <QRCodeSVG value={pixData.code} size={160} level="M" includeMargin={false} className="max-w-full h-auto" />
+                    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md p-2 sm:p-3 bg-white w-fit max-w-full">
+                      <QRCodeSVG value={pixData.code} size={140} level="M" includeMargin={false} className="max-w-full h-auto" />
                     </div>
                   </div>
 
-                  <div className="w-full space-y-2 text-left mt-5">
-                    <Label className="text-xs text-zinc-500 uppercase tracking-wider font-bold">
+                  <div className="w-full space-y-2 text-left mt-4 sm:mt-5">
+                    <Label className="text-[10px] sm:text-xs text-zinc-500 uppercase tracking-wider font-bold">
                       Código PIX Copia e Cola
                     </Label>
                     <div className="relative">
-                      <div className="w-full px-4 py-3 bg-zinc-50/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-xl font-mono text-xs text-zinc-600 dark:text-zinc-400 min-h-[70px] pr-28 break-all leading-relaxed">
+                      <div className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-zinc-50/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-xl font-mono text-[10px] sm:text-xs text-zinc-600 dark:text-zinc-400 min-h-[60px] sm:min-h-[70px] pr-24 sm:pr-28 break-all leading-relaxed">
                         {pixData.code}
                       </div>
                       <button
                         type="button"
                         onClick={handleCopyPix}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 shadow cursor-pointer"
+                        className="absolute right-2 sm:right-2.5 top-1/2 -translate-y-1/2 px-2 sm:px-3 py-1.5 sm:py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] sm:text-xs font-semibold rounded-lg transition-colors flex items-center gap-1 sm:gap-1.5 shadow cursor-pointer"
                       >
                         {copied ? (
                           <>
-                            <CheckCircle2 className="size-3.5 text-emerald-300" />
+                            <CheckCircle2 className="size-3 sm:size-3.5 text-emerald-300" />
                             <span>Copiado!</span>
                           </>
                         ) : (
                           <>
-                            <Copy className="size-3.5" />
+                            <Copy className="size-3 sm:size-3.5" />
                             <span>Copiar</span>
                           </>
                         )}
