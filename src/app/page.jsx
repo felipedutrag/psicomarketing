@@ -69,7 +69,7 @@ export default function Home() {
         </div>
 
         {/* Interactive Connectors Ecosystem Workspace */}
-        <section id="modulos" className="space-y-4 scroll-mt-24">
+        <section id="modulos" className="hidden space-y-4 scroll-mt-24 md:block">
           <div className="space-y-1">
                     <Badge variant="outline" className="text-[10px] sm:text-xs">{content.connectorsBadge}</Badge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
@@ -87,12 +87,12 @@ export default function Home() {
           <LiveVoiceAgentDemo />
         </section>
 
-        <div className="-my-3 md:-my-4">
+        <div className="hidden -my-3 md:-my-4 md:block">
           <Separator />
         </div>
 
         {/* Timeline Pipeline */}
-        <section id="fluxo" className="space-y-4 scroll-mt-24">
+        <section id="fluxo" className="hidden space-y-4 scroll-mt-24 md:block">
           <div className="space-y-1">
             <Badge variant="outline" className="text-[10px] sm:text-xs">Fluxo de Automação</Badge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
@@ -105,12 +105,12 @@ export default function Home() {
           <ProcessTimeline steps={content.flowSteps} />
         </section>
 
-        <div className="-my-3 md:-my-4">
+        <div className="hidden -my-3 md:-my-4 md:block">
           <Separator />
         </div>
 
         {/* Notion-Style Comparison Matrix */}
-        <section className="space-y-4">
+        <section className="hidden space-y-4 md:block">
           <div className="space-y-1">
             <Badge variant="outline" className="text-[10px] sm:text-xs">Comparativo Direto</Badge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
@@ -128,7 +128,7 @@ export default function Home() {
         </div>
 
         {/* Final Investment Section & Calculator */}
-        <section id="investimento" className="space-y-4 sm:space-y-6 scroll-mt-24 pt-4 md:pt-6">
+        <section id="investimento" className="space-y-0.5 sm:space-y-6 scroll-mt-24 pt-4 md:pt-6">
           <div className="space-y-1">
             <Badge variant="outline" className="border-indigo-500/30 text-indigo-700 dark:text-indigo-400 text-[10px] sm:text-xs">
               {content.investmentBadge}
@@ -141,7 +141,7 @@ export default function Home() {
             </p>
           </div>
 
-          <Card className="border-indigo-500/30 bg-zinc-100/70 p-2 sm:p-4 md:p-6 lg:p-10 dark:border-indigo-500/20 dark:bg-zinc-900/50">
+          <Card className="border-transparent bg-transparent p-0 shadow-none ring-0 md:border-indigo-500/30 md:bg-zinc-100/70 md:p-2 md:shadow-xs md:ring-1 lg:p-10 dark:bg-transparent dark:md:border-indigo-500/20 dark:md:bg-zinc-900/50">
             <CardContent className="p-0">
               <PlanCalculator />
             </CardContent>

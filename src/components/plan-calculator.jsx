@@ -345,7 +345,7 @@ export function PlanCalculator() {
         <button
           type="button"
           onClick={toggleVoiceRecording}
-          className="group relative m-0 block shrink-0 cursor-pointer appearance-none border-0 bg-transparent p-0"
+          className="group relative m-0 hidden shrink-0 cursor-pointer appearance-none border-0 bg-transparent p-0 sm:block"
           aria-label={
             isRecordingVoice
               ? "Encerrar chamada de voz"
@@ -388,7 +388,7 @@ export function PlanCalculator() {
           Clique aqui para tirar dúvidas!
         </button>
       </div>
-      <span className="font-mono text-sm font-semibold">
+      <span className="hidden font-mono text-sm font-semibold md:inline">
         <span className="text-zinc-600 dark:text-zinc-400">Plano base: </span>
         <span className="text-indigo-600 dark:text-indigo-400 font-bold">R$ {BASE_PLAN.price}/mês</span>
       </span>
@@ -403,6 +403,7 @@ export function PlanCalculator() {
         <div className="space-y-5 lg:col-span-7">
           <div className="hidden lg:block">{voiceHelpBar}</div>
 
+          <div className="hidden lg:block space-y-5">
           <p className="text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-400">
             Selecione os plugins que deseja adicionar ao seu agente de IA:
           </p>
@@ -453,12 +454,12 @@ export function PlanCalculator() {
               );
             })}
           </div>
+          </div>
         </div>
 
         {/* Right Column: Live Plan Summary & Total */}
         <div className="lg:col-span-5 space-y-5">
-          <div className="lg:hidden">{voiceHelpBar}</div>
-          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-4 sm:p-7 shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
+          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-[18px] sm:p-[26px] md:p-[34px] shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
             <div className="space-y-5">
               {/* Header */}
               <div className="border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
@@ -593,68 +594,88 @@ export function PlanCalculator() {
             <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-6">
               <div className="grid gap-6 grid-cols-1 lg:grid-cols-12">
                 {/* Form Fields & Calendar */}
-                <div className="lg:col-span-7 space-y-5">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
-                    <User className="size-4 text-indigo-500" /> Preencha seus Dados
-                  </h4>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                      Nome Completo
-                    </Label>
-                    <Input
-                      id="fullName"
-                      placeholder="Ex: Dra. Ana Silva"
-                      {...register("fullName")}
-                      className={`${errors.fullName ? "border-red-500 focus:border-red-500" : ""} rounded-lg h-10 sm:h-11 bg-zinc-50 dark:bg-zinc-950`}
-                      disabled={generatingPix}
-                    />
-                    {errors.fullName && (
-                      <p className="text-xs text-red-500">{errors.fullName.message}</p>
-                    )}
+                <div className="lg:col-span-7 space-y-6">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 ring-1 ring-indigo-500/20">
+                      <User className="size-4 text-indigo-600 dark:text-indigo-400" />
+                    </span>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100">
+                        Preencha seus Dados
+                      </h4>
+                      <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400">
+                        Usaremos para ativar seus módulos e agendar a call.
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                        <Mail className="size-3.5 sm:size-4 text-zinc-400" /> E-mail
+                  <div className="space-y-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="fullName" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                        Nome Completo
                       </Label>
                       <Input
-                        id="email"
-                        type="email"
-                        placeholder="ana@exemplo.com"
-                        {...register("email")}
-                        className={`${errors.email ? "border-red-500 focus:border-red-500" : ""} rounded-lg h-10 sm:h-11 bg-zinc-50 dark:bg-zinc-950`}
+                        id="fullName"
+                        placeholder="Ex: Dra. Ana Silva"
+                        {...register("fullName")}
+                        className={`${errors.fullName ? "border-red-500 focus:border-red-500 dark:border-red-500" : "border-zinc-200 bg-white focus:border-indigo-400 dark:border-zinc-700 dark:bg-zinc-950"} rounded-xl h-11 px-3.5 text-sm sm:text-base transition-all focus-visible:ring-indigo-500/20`}
                         disabled={generatingPix}
                       />
-                      {errors.email && (
-                        <p className="text-xs text-red-500">{errors.email.message}</p>
+                      {errors.fullName && (
+                        <p className="flex items-center gap-1 text-xs text-red-500">
+                          <X className="size-3" /> {errors.fullName.message}
+                        </p>
                       )}
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="whatsapp" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                        <Phone className="size-3.5 sm:size-4 text-zinc-400" /> WhatsApp com DDD
-                      </Label>
-                      <Input
-                        id="whatsapp"
-                        placeholder="(11) 99999-9999"
-                        value={whatsappValue}
-                        onChange={onWhatsAppChange}
-                        maxLength={20}
-                        className={`${errors.whatsapp ? "border-red-500 focus:border-red-500" : ""} rounded-lg h-10 sm:h-11 bg-zinc-50 dark:bg-zinc-950`}
-                        disabled={generatingPix}
-                      />
-                      {errors.whatsapp && (
-                        <p className="text-xs text-red-500">{errors.whatsapp.message}</p>
-                      )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="email" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+                          <Mail className="size-3.5 text-zinc-400" /> E-mail
+                        </Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="ana@exemplo.com"
+                          {...register("email")}
+                          className={`${errors.email ? "border-red-500 focus:border-red-500 dark:border-red-500" : "border-zinc-200 bg-white focus:border-indigo-400 dark:border-zinc-700 dark:bg-zinc-950"} rounded-xl h-11 px-3.5 text-sm sm:text-base transition-all focus-visible:ring-indigo-500/20`}
+                          disabled={generatingPix}
+                        />
+                        {errors.email && (
+                          <p className="flex items-center gap-1 text-xs text-red-500">
+                            <X className="size-3" /> {errors.email.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <Label htmlFor="whatsapp" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+                          <Phone className="size-3.5 text-zinc-400" /> WhatsApp com DDD
+                        </Label>
+                        <Input
+                          id="whatsapp"
+                          placeholder="(11) 99999-9999"
+                          value={whatsappValue}
+                          onChange={onWhatsAppChange}
+                          maxLength={20}
+                          className={`${errors.whatsapp ? "border-red-500 focus:border-red-500 dark:border-red-500" : "border-zinc-200 bg-white focus:border-indigo-400 dark:border-zinc-700 dark:bg-zinc-950"} rounded-xl h-11 px-3.5 text-sm sm:text-base transition-all focus-visible:ring-indigo-500/20`}
+                          disabled={generatingPix}
+                        />
+                        {errors.whatsapp && (
+                          <p className="flex items-center gap-1 text-xs text-red-500">
+                            <X className="size-3" /> {errors.whatsapp.message}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
 
                   {/* Date & Time Slot Picker */}
-                  <div className="pt-3 space-y-3">
+                  <div className="space-y-3">
                     <Label className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                      <Calendar className="size-3.5 sm:size-4 text-indigo-500" />
+                      <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-indigo-500/10 ring-1 ring-indigo-500/20">
+                        <Calendar className="size-3.5 text-indigo-600 dark:text-indigo-400" />
+                      </span>
                       Escolha o Horário da Call de Onboarding
                     </Label>
 
@@ -736,28 +757,35 @@ export function PlanCalculator() {
                     )}
 
                     {errors.selectedDate && (
-                      <p className="text-xs text-red-500">{errors.selectedDate.message}</p>
+                      <p className="flex items-center gap-1 text-xs text-red-500">
+                        <X className="size-3" /> {errors.selectedDate.message}
+                      </p>
                     )}
                   </div>
                 </div>
 
                 {/* Summary & Confirm Column */}
-                <div className="lg:col-span-5 flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 bg-zinc-50/80 dark:bg-zinc-950/80 space-y-6">
+                <div className="lg:col-span-5 flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 bg-zinc-50/80 dark:bg-zinc-950/80 space-y-6">
                   <div className="space-y-4">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                      Resumo da Ativação
-                    </h4>
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 ring-1 ring-indigo-500/20">
+                        <ShieldCheck className="size-4 text-indigo-600 dark:text-indigo-400" />
+                      </span>
+                      <h4 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100">
+                        Resumo da Ativação
+                      </h4>
+                    </div>
 
                     <div className="space-y-2 text-sm border-b border-zinc-200 dark:border-zinc-800 pb-4">
                       <div className="flex justify-between font-semibold text-zinc-900 dark:text-zinc-100">
                         <span>Plano IA Core</span>
-                        <span>R$ {BASE_PLAN.price}/mês</span>
+                        <span className="font-mono">R$ {BASE_PLAN.price}/mês</span>
                       </div>
                       {selectedPluginObjects.length > 0 ? (
                         selectedPluginObjects.map((p) => (
                           <div key={p.id} className="flex justify-between text-xs text-zinc-600 dark:text-zinc-400 pl-3">
                             <span>+ {p.title}</span>
-                            <span>R$ {p.price}/mês</span>
+                            <span className="font-mono">R$ {p.price}/mês</span>
                           </div>
                         ))
                       ) : (
@@ -768,7 +796,7 @@ export function PlanCalculator() {
                     <div className="space-y-1">
                       <div className="flex justify-between text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100">
                         <span>Investimento Mensal:</span>
-                        <span className="text-indigo-600 dark:text-indigo-400">R$ {totalMonthly}/mês</span>
+                        <span className="text-indigo-600 dark:text-indigo-400 font-mono">R$ {totalMonthly}/mês</span>
                       </div>
                       <p className="text-xs text-zinc-500">
                         Ciclo Mensal • Sem fidelidade
