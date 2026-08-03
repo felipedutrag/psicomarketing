@@ -170,7 +170,7 @@ export function PromptEditor() {
             <Sparkles className="h-3 w-3" />
             <p>O prompt é salvo no Redis e usado pelo process-ai em todas as conversas</p>
           </div>
-          <p>• Suporta variáveis como {'{}firstName{}'} e {'{}stageBlock{}'}</p>
+          <p>• Suporta variáveis de contexto do sistema</p>
           <p>• Reset volta ao prompt padrão do sistema</p>
         </div>
       </CardContent>

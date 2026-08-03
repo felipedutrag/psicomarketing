@@ -1,5 +1,6 @@
 import { Redis } from '@upstash/redis'
 import { DASHBOARD_CONFIG, type Lead } from './config'
+import { normalizePhone, type ScrapedPlace } from './maps-scraper'
 
 const redis = Redis.fromEnv()
 
@@ -43,8 +44,7 @@ export async function clearLeads(): Promise<void> {
   }
 }
 
-export function parseManualInput(input: string): Partial<Lead>[] {
-  const lines = input.split('\n').filter(line => line.trim())
+export function parseManualInput(input: string): Partial<Lead>[] {  const lines = input.split('\n').filter(line => line.trim())
   const leads: Partial<Lead>[] = []
   
   for (const line of lines) {
@@ -63,4 +63,28 @@ export function parseManualInput(input: string): Partial<Lead>[] {
   }
   
   return leads
+}
+
+export async function saveScrapedLeads(places: ScrapedPlace[]): Promise<Lead[]> {
+  const existing = await getLeads()
+  const existingPhones = new Set(existing.map(l => l.whatsapp).filter(Boolean))
+
+  const toSave: Lead[] = []
+  for (const place of places) {
+    const whatsapp = place.whatsapp ? normalizePhone(place.whatsapp) : ''
+    if (whatsapp && existingPhones.has(whatsapp)) continue
+
+    toSave.push({
+      id: `lead_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+      nome: place.nome,
+      whatsapp,
+      website: place.website,
+      status: 'pending',
+      created_at: new Date().toISOString(),
+    })
+    if (whatsapp) existingPhones.add(whatsapp)
+  }
+
+  await saveLeads(toSave)
+  return toSave
 }

@@ -1,5 +1,6 @@
 import { Client, LocalAuth } from 'whatsapp-web.js'
-import { qrcode } from 'qrcode-terminal'
+import * as qrcode from 'qrcode'
+import * as qrcodeTerminal from 'qrcode-terminal'
 import { Redis } from '@upstash/redis'
 import { DASHBOARD_CONFIG } from '../dashboard/config'
 
@@ -41,11 +42,29 @@ export class WhatsAppClient {
 
     this.client.on('qr', async (qr) => {
       this.qrCode = qr
-      qrcode.generate(qr, { small: true })
-      console.log('[WHATSAPP] QR Code gerado')
-      
-      // Salvar QR code no Redis
-      await redis.set(`${DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY}:qr`, qr)
+      console.log('[WHATSAPP] ==========================================')
+      console.log('[WHATSAPP] QR Code gerado - escaneie com o WhatsApp')
+      console.log('[WHATSAPP] O painel exibe o QR; se preferir, use o login manual')
+      console.log('[WHATSAPP] ==========================================')
+
+      // Gerar QR code como imagem (salvo no painel)
+      try {
+        const qrCodeDataUrl = await qrcode.toDataURL(qr)
+        await redis.set(`${DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY}:qr`, qrCodeDataUrl)
+      } catch (error) {
+        console.error('[WHATSAPP] Erro ao gerar imagem do QR code:', error)
+        await redis.set(`${DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY}:qr`, qr)
+      }
+
+      // Também exibe o QR em texto no terminal para facilidade de autenticação
+      try {
+        qrcodeTerminal.generate(qr, { small: true }, (terminalQr) => {
+          console.log('[WHATSAPP] QR Code no terminal:')
+          console.log(terminalQr)
+        })
+      } catch (error) {
+        console.error('[WHATSAPP] Erro ao exibir QR no terminal:', error)
+      }
     })
 
     this.client.on('ready', async () => {

@@ -51,7 +51,8 @@ export async function updateStats(): Promise<void> {
 
 export async function getStats() {
   const stats = await redis.get(DASHBOARD_CONFIG.STATS_KEY)
-  return stats ? JSON.parse(stats as string) : null
+  if (!stats) return null
+  return typeof stats === 'string' ? JSON.parse(stats) : stats
 }
 
 export function formatPhoneNumber(phone: string): string {
