@@ -60,18 +60,6 @@ export default function DashboardPage() {
 
         {/* Notion Content Canvas */}
         <main className="flex-1 px-4 sm:px-12 py-6 pb-20 max-w-7xl w-full mx-auto space-y-6">
-          {/* Notion Callout Block Notice */}
-          <div className="flex items-start gap-3 rounded-[6px] border border-indigo-200/60 bg-indigo-50/50 p-3.5 dark:border-indigo-900/30 dark:bg-indigo-950/20 text-xs text-indigo-900 dark:text-indigo-200">
-            <span className="text-base">💡</span>
-            <div className="space-y-0.5">
-              <span className="font-semibold text-zinc-900 dark:text-zinc-100">Bem-vindo ao seu Psicomarketing OS!</span>
-              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-[11px]">
-                Este workspace centraliza a busca de novos leads via Google Maps, enriquece a abordagem com
-                IA e realiza envios com intervalos anti-ban configurados. Alterne entre as visões abaixo para gerenciar a operação.
-              </p>
-            </div>
-          </div>
-
           {/* Notion Database View Switcher Bar */}
           <div className="flex items-center justify-between border-b border-zinc-200/80 dark:border-[#242424] pb-1.5">
             <div className="flex flex-wrap items-center gap-1">

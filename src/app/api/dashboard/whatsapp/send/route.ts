@@ -1,9 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getLeads, updateLead } from '@/lib/dashboard/scraping'
 import { setWhatsAppStatus, getRandomDelay, formatPhoneNumber, getSendDelay, setLastSendTime, getQueuePaused, getScheduleWindow, isWithinWindow, updateStats } from '@/lib/dashboard/whatsapp'
+import { getWhatsAppClient, getWhatsAppClientIfExists } from '@/lib/whatsapp/manager'
 
 const DEFAULT_MESSAGE =
   'Olá, me chamo Gabriele, achei seu contato no Google Meu Negócio e queria apresentar uma solução que pode aumentar seus atendimentos e reduzir gastos com anúncios. Você pode falar 1 minuto?'
+
+// Envia mensagem com fallback de reconexão automática
+async function sendWithReconnect(client: any, phone: string, message: string, maxRetries = 2): Promise<any> {
+  let lastError: Error | null = null
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      // Verificar saúde antes de cada tentativa
+      if (attempt > 1 || !client.isReady()) {
+        console.log(`[SEND] Tentativa ${attempt}/${maxRetries} - verificando conexão...`)
+        const healthy = await client.isHealthy()
+        if (!healthy) {
+          console.warn(`[SEND] Cliente não saudável, reconectando (tentativa ${attempt})...`)
+          await client.stop()
+          await new Promise(r => setTimeout(r, 2000))
+          await client.start()
+        }
+      }
+      
+      const result = await client.sendMessage(phone, message)
+      if (attempt > 1) {
+        console.log(`[SEND] Reconexão bem-sucedida na tentativa ${attempt}`)
+      }
+      return result
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error))
+      console.error(`[SEND] Erro na tentativa ${attempt}:`, lastError.message)
+      
+      if (attempt < maxRetries) {
+        // Esperar antes de tentar novamente
+        await new Promise(r => setTimeout(r, 3000 * attempt))
+      }
+    }
+  }
+  
+  throw lastError || new Error('Falha ao enviar após tentativas de reconexão')
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +49,6 @@ export async function POST(req: NextRequest) {
     const { phone, message, leadIds } = body
 
     if (phone && message) {
-      const { getWhatsAppClient } = await import('@/lib/whatsapp/manager')
       const client = getWhatsAppClient()
 
       if (!client.isReady()) {
@@ -21,13 +58,18 @@ export async function POST(req: NextRequest) {
         )
       }
 
-      const result = await client.sendMessage(phone, message)
-      await setWhatsAppStatus('ready')
-      return NextResponse.json({
-        success: true,
-        count: 1,
-        results: [{ phone, status: 'sent', id: result?.id?.id || result?.id?._serialized || undefined }],
-      })
+      try {
+        const result = await sendWithReconnect(client, phone, message)
+        await setWhatsAppStatus('ready')
+        return NextResponse.json({
+          success: true,
+          count: 1,
+          results: [{ phone, status: 'sent', id: result?.id?.id || result?.id?._serialized || undefined }],
+        })
+      } catch (error) {
+        await setWhatsAppStatus('error')
+        return NextResponse.json({ error: error instanceof Error ? error.message : 'Erro ao enviar mensagem' }, { status: 500 })
+      }
     }
 
     // Envio em lote de leads
@@ -57,7 +99,6 @@ export async function POST(req: NextRequest) {
 
     await setWhatsAppStatus('sending')
 
-    const { getWhatsAppClient } = await import('@/lib/whatsapp/manager')
     const client = getWhatsAppClient()
     if (!client.isReady()) {
       await setWhatsAppStatus('error')
@@ -83,7 +124,7 @@ export async function POST(req: NextRequest) {
       const text = lead.mensagem_personalizada || lead.mensagem_inicial || DEFAULT_MESSAGE
 
       try {
-        await client.sendMessage(targetPhone, text)
+        await sendWithReconnect(client, targetPhone, text)
         await updateLead(lead.id, {
           status: 'sent',
           na_fila: false,

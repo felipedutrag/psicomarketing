@@ -15,6 +15,8 @@ export class WhatsAppClient {
   private client: Client | null = null
   private qrCode: string | null = null
   private started = false
+  private healthCheckInterval: NodeJS.Timeout | null = null
+  private isHealthChecking = false
 
   constructor() {
     this.initialize()
@@ -92,6 +94,15 @@ export class WhatsAppClient {
     this.client.on('disconnected', async (reason) => {
       console.log('[WHATSAPP] Desconectado:', reason)
       await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'disconnected')
+      // Auto-reconnect imediato ao detectar desconexão
+      if (this.started) {
+        console.log('[WHATSAPP] Desconexão detectada - agendando reconexão automática...')
+        setTimeout(() => {
+          this.reconnect().catch(err => {
+            console.error('[WHATSAPP] Erro na reconexão agendada:', err)
+          })
+        }, 1000)
+      }
     })
 
     this.client.on('message', async (message) => {
@@ -99,28 +110,6 @@ export class WhatsAppClient {
         await message.reply('pong')
       }
     })
-  }
-
-  async start() {
-    if (!this.client) return
-
-    // Se já estiver rodando/conectado, não reinicia o navegador (evita lock da sessão)
-    if (this.started && this.isReady()) {
-      console.log('[WHATSAPP] Cliente já está conectado, ignorando start')
-      return
-    }
-
-    await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'connecting')
-    console.log('[WHATSAPP] Iniciando cliente...')
-
-    try {
-      await this.initializeWithRetry()
-      this.started = true
-    } catch (error) {
-      console.error('[WHATSAPP] Erro ao iniciar:', error)
-      await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'error')
-      throw error
-    }
   }
 
   private async initializeWithRetry(): Promise<void> {
@@ -182,21 +171,6 @@ export class WhatsAppClient {
     process.once('SIGINT', cleanup)
   }
 
-  async stop() {
-    if (!this.client) return
-    
-    console.log('[WHATSAPP] Parando cliente...')
-    await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'disconnected')
-    
-    try {
-      await this.client.destroy()
-    } catch (error) {
-      console.error('[WHATSAPP] Erro ao parar:', error)
-    } finally {
-      this.started = false
-    }
-  }
-
   async sendMessage(phone: string, message: string) {
     if (!this.client) {
       throw new Error('Cliente não inicializado')
@@ -219,5 +193,127 @@ export class WhatsAppClient {
 
   isReady(): boolean {
     return this.client ? this.client.info !== undefined : false
+  }
+
+  // Health check real - verifica se o WhatsApp Web está realmente conectado
+  async isHealthy(): Promise<boolean> {
+    if (!this.client || !this.isReady()) {
+      return false
+    }
+    try {
+      // Tentar acessar propriedades que só existem quando realmente conectado
+      const info = this.client.info
+      if (!info || !info.wid || !info.pushname) {
+        return false
+      }
+      // Verificar se o cliente ainda tem o browser vivo
+      const pupPage = (this.client as any).pupPage
+      if (pupPage && pupPage.isClosed()) {
+        return false
+      }
+      return true
+    } catch (error) {
+      console.warn('[WHATSAPP] Health check falhou:', error instanceof Error ? error.message : error)
+      return false
+    }
+  }
+
+  // Inicia o polling de health check automático
+  startHealthCheck(intervalMs = 30000): void {
+    if (this.healthCheckInterval) {
+      return // Já está rodando
+    }
+    console.log('[WHATSAPP] Iniciando health check automático a cada', intervalMs, 'ms')
+    this.healthCheckInterval = setInterval(async () => {
+      if (this.isHealthChecking) return
+      this.isHealthChecking = true
+      try {
+        const healthy = await this.isHealthy()
+        const status = await redis.get(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY)
+        
+        if (!healthy && (status === 'connected' || status === 'ready')) {
+          console.warn('[WHATSAPP] Health check detectou desconexão! Status:', status, 'Tentando reconectar...')
+          await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'disconnected')
+          // Tentar reconectar automaticamente
+          await this.reconnect()
+        } else if (healthy) {
+          // Garantir que o status está correto
+          if (status === 'connected' || status === 'ready') {
+            // Tudo ok
+          }
+        }
+      } catch (error) {
+        console.error('[WHATSAPP] Erro no health check:', error)
+      } finally {
+        this.isHealthChecking = false
+      }
+    }, intervalMs)
+  }
+
+  // Para o health check
+  stopHealthCheck(): void {
+    if (this.healthCheckInterval) {
+      clearInterval(this.healthCheckInterval)
+      this.healthCheckInterval = null
+      console.log('[WHATSAPP] Health check automático parado')
+    }
+  }
+
+  // Reconexão automática
+  private async reconnect(): Promise<void> {
+    console.log('[WHATSAPP] Iniciando reconexão automática...')
+    try {
+      await this.stop()
+      await sleep(2000)
+      await this.start()
+      this.startHealthCheck()
+      console.log('[WHATSAPP] Reconexão automática concluída')
+    } catch (error) {
+      console.error('[WHATSAPP] Falha na reconexão automática:', error)
+      await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'error')
+    }
+  }
+
+  // Sobrecarrega start para iniciar health check
+  async start(): Promise<void> {
+    if (!this.client) return
+
+    // Se já estiver rodando/conectado, não reinicia o navegador (evita lock da sessão)
+    if (this.started && await this.isHealthy()) {
+      console.log('[WHATSAPP] Cliente já está saudável, ignorando start')
+      this.startHealthCheck()
+      return
+    }
+
+    await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'connecting')
+    console.log('[WHATSAPP] Iniciando cliente...')
+
+    try {
+      await this.initializeWithRetry()
+      this.started = true
+      this.startHealthCheck()
+    } catch (error) {
+      console.error('[WHATSAPP] Erro ao iniciar:', error)
+      await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'error')
+      throw error
+    }
+  }
+
+  // Sobrecarrega stop para parar health check
+  async stop(): Promise<void> {
+    if (!this.client) return
+    
+    this.stopHealthCheck()
+    
+    console.log('[WHATSAPP] Parando cliente...')
+    await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'disconnected')
+    
+    try {
+      await this.client.destroy()
+    } catch (error) {
+      console.error('[WHATSAPP] Erro ao parar:', error)
+    } finally {
+      this.started = false
+    }
   }
 }
