@@ -62,7 +62,7 @@ export function FeatureTabs({ plugins }) {
             key={cat.id}
             type="button"
             onClick={() => setActiveCategory(cat.id)}
-            className={`rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition-all duration-200 ${
+            className={`rounded-full px-3 py-1.5 text-[11px] sm:px-4 sm:py-2 sm:text-sm font-semibold transition-all duration-200 ${
               activeCategory === cat.id
                 ? "border border-indigo-500/50 bg-indigo-500/10 text-indigo-700 shadow-xs dark:border-indigo-500/40 dark:bg-indigo-950/50 dark:text-indigo-300"
                 : "border border-zinc-200/80 bg-white/80 text-zinc-700 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-400 dark:hover:text-zinc-100"

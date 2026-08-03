@@ -117,7 +117,7 @@ export function BotFlowScene() {
       {/* Mobile View: 3 Days (Segunda, Terça, Quarta) */}
       <div className="block md:hidden w-full">
         <div className="grid grid-cols-[auto_1fr_1fr_1fr] gap-0.5 sm:gap-1 text-center text-[9px] sm:text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
-          <div className="p-0.5 pr-2">Horário</div>
+          <div className="p-0.5 pr-2 text-left">Horário</div>
           {MOBILE_DAYS.map((day) => (
             <div
               key={day}
@@ -131,7 +131,7 @@ export function BotFlowScene() {
         <div className="mt-1.5 sm:mt-2 space-y-1 sm:space-y-1.5">
           {TIMES.map((time) => (
             <div key={time} className="grid grid-cols-[auto_1fr_1fr_1fr] items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[10px]">
-              <div className="pr-0.5 pr-2 text-center font-mono text-[9px] sm:text-[10px] text-zinc-400 dark:text-zinc-500">
+              <div className="pl-0.5 pr-2 text-left font-mono text-[9px] sm:text-[10px] text-zinc-400 dark:text-zinc-500">
                 {time}
               </div>
               {MOBILE_DAYS.map((_, dayIndex) => {
@@ -154,7 +154,7 @@ export function BotFlowScene() {
                             {slot.patient.split(" ")[0]} {slot.patient.split(" ")[1]}
                           </p>
                         </div>
-                        <span className="inline-block truncate rounded-sm bg-blue-200/60 px-0.5 py-0.3 text-[6px] sm:text-[7px] md:text-[8px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
+                        <span className="block truncate rounded-sm bg-blue-200/60 px-0.5 py-0.3 text-[6px] sm:text-[7px] md:text-[8px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
                           {slot.type}
                         </span>
                       </div>
@@ -173,7 +173,7 @@ export function BotFlowScene() {
       {/* Desktop View: All 5 Days (Segunda a Sexta) */}
       <div className="hidden md:block w-full">
         <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr] gap-1.5 text-center text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-          <div className="p-1 pr-2">Horário</div>
+          <div className="p-1 pr-2 text-left">Horário</div>
           {ALL_DAYS.map((day) => (
             <div
               key={day}
@@ -187,7 +187,7 @@ export function BotFlowScene() {
         <div className="mt-2.5 space-y-2">
           {TIMES.map((time) => (
             <div key={time} className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr] items-center gap-1.5 text-xs">
-              <div className="pr-1 pr-2 text-center font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
+              <div className="pl-1 pr-2 text-left font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
                 {time}
               </div>
               {ALL_DAYS.map((_, dayIndex) => {
@@ -210,7 +210,7 @@ export function BotFlowScene() {
                             {slot.patient.split(" ")[0]} {slot.patient.split(" ")[1]}
                           </p>
                         </div>
-                        <span className="inline-block truncate rounded-sm bg-blue-200/60 px-1 py-0.3 text-[9px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
+                        <span className="block truncate rounded-sm bg-blue-200/60 px-1 py-0.3 text-[9px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
                           {slot.type}
                         </span>
                       </div>
@@ -229,7 +229,7 @@ export function BotFlowScene() {
       <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-zinc-500 dark:text-zinc-400 pt-1">
         <span className="inline-flex items-center gap-1">
           <Sparkles className="size-3 text-blue-500" />
-          A IA tria o paciente e encaixa automaticamente na sua agenda
+          IA tria o paciente e encaixa na agenda
         </span>
         <span className="inline-flex items-center gap-1 font-mono text-[10px]">
           <UserCheck className="size-3 text-zinc-400" />

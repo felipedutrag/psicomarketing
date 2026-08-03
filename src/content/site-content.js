@@ -5,12 +5,12 @@ export const siteContent = {
   heroDescription:
         "Sua agenda se preenche sozinha enquanto você atende. IA responde leads no WhatsApp, agenda no Google Calendar, otimiza seus anúncios — tudo por voz.",
   primaryCtaLabel: "Montar meu ecossistema",
-  secondaryCtaLabel: "Testar Voz Live",
+  secondaryCtaLabel: "Testar Voz",
   visualTitle: "Agenda Lotada no Piloto Automático",
   visualDescription:
       "Veja sua semana sendo preenchida automaticamente com consultas qualificadas oriundas dos seus anúncios e conectores.",
   connectorsBadge: "Arquitetura de Conectores",
-  connectorsTitle: "Módulos de Poder para o seu Agente de IA",
+  connectorsTitle: "Seu agente de IA com superpoderes",
   connectorsDescription:
           "Ative só o que precisa. Pague só pelo que usa.",
   connectors: [

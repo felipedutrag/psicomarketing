@@ -6,7 +6,7 @@ export function ProcessTimeline({ steps }) {
   const stepIcons = [Mic, Plug, Workflow, LayoutDashboard];
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-zinc-100/70 p-3 sm:p-5 md:p-6 lg:p-8 shadow-xs backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/50">
+    <div className="rounded-xl border border-zinc-200 bg-zinc-100/70 p-4 sm:p-5 md:p-6 lg:p-8 shadow-xs backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/50">
       {/* Mobile Vertical View */}
       <div className="relative flex md:hidden flex-col gap-4 sm:gap-5">
         {/* Connecting Vertical Line */}
@@ -15,14 +15,14 @@ export function ProcessTimeline({ steps }) {
         {steps.map((stepText, idx) => {
           const Icon = stepIcons[idx % stepIcons.length];
           return (
-            <div key={idx} className="relative z-10 flex items-start gap-3 sm:gap-4 group">
+            <div key={idx} className="relative z-10 flex items-center gap-3 sm:gap-4 group">
               {/* Step Node Circle (Left) */}
               <div className="flex size-8 sm:size-10 shrink-0 items-center justify-center rounded-lg border-2 border-indigo-500/40 bg-white shadow-xs transition-all duration-300 group-hover:scale-110 group-hover:border-indigo-600 group-hover:bg-indigo-600 group-hover:shadow-md group-hover:shadow-indigo-500/30 dark:bg-zinc-950 dark:border-indigo-500/40">
                 <Icon className="size-3.5 sm:size-4 text-indigo-600 transition-colors group-hover:text-white dark:text-indigo-400 dark:group-hover:text-white" />
               </div>
 
               {/* Step Content (Right of Icon) */}
-              <div className="space-y-1 pt-0.5">
+              <div className="space-y-1">
                 <span className="inline-block rounded-full bg-indigo-500/10 px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300">
                   Etapa 0{idx + 1}
                 </span>

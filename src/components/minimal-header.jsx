@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import Link from "next/link";
 import { MinimalLogo } from "./minimal-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -25,14 +26,18 @@ export function MinimalHeader() {
 
         {/* Center: Nav — absolutely centered, not pushed by logo or toggle */}
         <nav className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 rounded-lg bg-zinc-100/70 p-1 dark:bg-zinc-900/60 border border-zinc-200/60 dark:border-zinc-800/60">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="rounded-md px-3.5 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-white hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
-            >
-              {link.label}
-            </a>
+          {navLinks.map((link, index) => (
+            <Fragment key={link.href}>
+              <a
+                href={link.href}
+                className="rounded-md px-3.5 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-white hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+              >
+                {link.label}
+              </a>
+              {(index === 1 || index === 2) && (
+                <span aria-hidden className="mx-0.5 h-4 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
+              )}
+            </Fragment>
           ))}
         </nav>
 

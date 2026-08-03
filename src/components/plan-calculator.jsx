@@ -692,7 +692,7 @@ export function PlanCalculator() {
                         <p className="text-zinc-500 text-xs sm:text-sm">Buscando horários disponíveis na agenda...</p>
                       </div>
                     ) : groupedDates.length > 0 ? (
-                      <div className="space-y-3 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50/50 dark:bg-zinc-950/50">
+                      <div className="mx-auto w-full space-y-3 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50/50 dark:bg-zinc-950/50">
                         <div className="relative">
                           <div className="grid grid-cols-1 gap-3 min-h-[220px]">
                             {currentDateGroup?.slots.slice(0, 3).map((slot) => (
@@ -700,7 +700,7 @@ export function PlanCalculator() {
                                 key={slot.id}
                                 type="button"
                                 onClick={() => handleSlotSelect(slot)}
-                                className={`flex items-center gap-2.5 p-3 rounded-lg border text-left transition-all w-full ${selectedSlot?.id === slot.id
+                                className={`flex items-center justify-center sm:justify-start gap-2.5 p-3 rounded-lg border text-center sm:text-left transition-all w-full ${selectedSlot?.id === slot.id
                                   ? "border-indigo-500 bg-indigo-500/10 dark:bg-indigo-950/50 ring-1 ring-indigo-500"
                                   : "border-zinc-200 hover:border-indigo-300 dark:border-zinc-800 dark:hover:border-indigo-700 bg-white dark:bg-zinc-900"
                                   }`}
@@ -709,7 +709,7 @@ export function PlanCalculator() {
                                 <div className="w-8 h-8 rounded-md bg-indigo-500/10 flex items-center justify-center shrink-0">
                                   <Calendar className="size-4 text-indigo-600 dark:text-indigo-400" />
                                 </div>
-                                <span className="font-medium text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm truncate flex-1">
+                                <span className="font-medium text-zinc-900 dark:text-zinc-100 text-xs sm:text-sm truncate flex-1 text-center sm:text-left">
                                   {slot.label}
                                 </span>
                                 {selectedSlot?.id === slot.id && (
@@ -729,7 +729,7 @@ export function PlanCalculator() {
                                 disabled={carouselIndex === 0}
                                 className="gap-1 flex-1"
                               >
-                                <ChevronLeft className="size-4" /> Data Anterior
+                                <ChevronLeft className="size-4" /> Anterior
                               </Button>
 
                               <Button
@@ -740,7 +740,7 @@ export function PlanCalculator() {
                                 disabled={carouselIndex >= groupedDates.length - 1}
                                 className="gap-1 flex-1"
                               >
-                                Próxima Data <ChevronRight className="size-4" />
+                                Próximo <ChevronRight className="size-4" />
                               </Button>
                             </div>
                           )}
@@ -794,7 +794,7 @@ export function PlanCalculator() {
                     </div>
 
                     <div className="space-y-1">
-                      <div className="flex justify-between text-base font-bold text-zinc-900 dark:text-zinc-100">
+                      <div className="flex justify-between text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100">
                         <span>Investimento Mensal:</span>
                         <span className="text-indigo-600 dark:text-indigo-400">R$ {totalMonthly}/mês</span>
                       </div>
