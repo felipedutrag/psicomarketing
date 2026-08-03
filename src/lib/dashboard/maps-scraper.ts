@@ -1,4 +1,7 @@
 import puppeteer, { type Browser, type Page } from 'puppeteer'
+import os from 'os'
+import fs from 'fs'
+import path from 'path'
 
 export interface ScrapedPlace {
   nome: string
@@ -20,6 +23,22 @@ const LAUNCH_ARGS = [
 const USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
 
+function findChromeExecutable(): string | undefined {
+  const candidates = [
+    'chrome/win64-148.0.7778.97/chrome-win64/chrome.exe',
+    'chrome/win64-146.0.7680.31/chrome-win64/chrome.exe',
+    'chrome/win64-145.0.7680.31/chrome-win64/chrome.exe',
+    'chrome/win64-146.0.7680.31/chrome-win64/chrome.exe',
+    'chrome-headless-shell/win64-146.0.7680.31/chrome-headless-shell-win64/chrome-headless-shell.exe',
+  ]
+  const base = process.env.PUPPETEER_CACHE_DIR || path.join(os.homedir(), '.cache', 'puppeteer')
+  for (const candidate of candidates) {
+    const p = path.join(base, candidate)
+    if (fs.existsSync(p)) return p
+  }
+  return undefined
+}
+
 export async function scrapeLeadsByCities(
   templateUrl: string,
   cities: string[],
@@ -29,7 +48,12 @@ export async function scrapeLeadsByCities(
     throw new Error('A URL modelo deve conter o placeholder ${CIDADE}')
   }
 
-  const browser = await puppeteer.launch({ headless: true, args: LAUNCH_ARGS })
+  const executablePath = findChromeExecutable()
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: LAUNCH_ARGS,
+    ...(executablePath ? { executablePath } : {}),
+  })
   const found: ScrapedPlace[] = []
   const seen = new Set<string>()
 
