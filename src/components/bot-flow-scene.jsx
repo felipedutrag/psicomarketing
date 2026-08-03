@@ -66,7 +66,7 @@ export function BotFlowScene() {
       {/* Top Header Metrics */}
       <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-b border-zinc-200/80 pb-2 sm:pb-3 dark:border-zinc-800/80">
         <div className="flex items-center gap-2 min-w-0 flex-1">
-          <div className="flex size-6 sm:size-7 md:size-8 items-center justify-center rounded-lg bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 shrink-0">
+          <div className="flex size-6 sm:size-7 md:size-8 items-center justify-center bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 shrink-0">
             <Calendar className="size-3 sm:size-3.5 md:size-4" />
           </div>
           <div className="min-w-0">
@@ -100,14 +100,14 @@ export function BotFlowScene() {
       </div>
 
       {/* Live Activity Banner */}
-      <div className="flex items-center justify-between rounded-lg border border-blue-500/20 bg-blue-500/10 px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-xs text-blue-800 dark:border-blue-500/30 dark:bg-blue-950/40 dark:text-blue-300">
+      <div className="flex items-center justify-between border border-blue-500/20 bg-blue-500/10 px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-xs text-blue-800 dark:border-blue-500/30 dark:bg-blue-950/40 dark:text-blue-300">
         <div className="flex items-center gap-2 overflow-hidden">
           <MessageSquare className="size-3 sm:size-3.5 shrink-0 animate-pulse text-blue-600 dark:text-blue-400" />
           <span className="truncate font-medium">
             {lastNotification ? lastNotification.text : "Aguardando novas mensagens..."}
           </span>
         </div>
-        <span className="shrink-0 rounded bg-blue-500/20 px-1 sm:px-1.5 py-0.5 text-[9px] sm:text-[10px] font-semibold text-blue-700 dark:bg-blue-500/30 dark:text-blue-300">
+        <span className="shrink-0 rounded-sm bg-blue-500/20 px-1 sm:px-1.5 py-0.5 text-[9px] sm:text-[10px] font-semibold text-blue-700 dark:bg-blue-500/30 dark:text-blue-300">
           Ao vivo
         </span>
       </div>
@@ -116,21 +116,21 @@ export function BotFlowScene() {
 
       {/* Mobile View: 3 Days (Segunda, Terça, Quarta) */}
       <div className="block md:hidden w-full">
-        <div className="grid grid-cols-[3.5rem_1fr_1fr_1fr] gap-0.5 sm:gap-1 text-center text-[9px] sm:text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
+        <div className="grid grid-cols-[3.5rem_1fr_1fr_1fr] gap-1 sm:gap-1.5 text-center text-[9px] sm:text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
           <div className="p-0.5 pr-2 text-left">Horário</div>
           {MOBILE_DAYS.map((day) => (
             <div
               key={day}
-              className="rounded bg-zinc-200/60 p-0.5 sm:p-1 text-[9px] sm:text-[10px] font-semibold text-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300"
+              className="bg-zinc-200/60 p-0.5 sm:p-1 text-[9px] sm:text-[10px] font-semibold text-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300"
             >
               {day}
             </div>
           ))}
         </div>
 
-        <div className="mt-1.5 sm:mt-2 space-y-1 sm:space-y-1.5">
+        <div className="mt-2 sm:mt-2.5 space-y-1 sm:space-y-1.5">
           {TIMES.map((time) => (
-            <div key={time} className="grid grid-cols-[3.5rem_1fr_1fr_1fr] items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[10px]">
+            <div key={time} className="grid grid-cols-[3.5rem_1fr_1fr_1fr] items-center gap-1 sm:gap-1.5 text-[9px] sm:text-[10px]">
               <div className="pl-0.5 pr-2 text-left font-mono text-[9px] sm:text-[10px] text-zinc-400 dark:text-zinc-500">
                 {time}
               </div>
@@ -141,7 +141,7 @@ export function BotFlowScene() {
                 return (
                   <div
                     key={key}
-                    className={`flex h-18 sm:h-20 md:h-24 flex-col justify-center rounded border p-0.5 sm:p-1 transition-all duration-300 ${slot
+                    className={`flex h-18 sm:h-20 md:h-24 flex-col justify-center border p-0.5 sm:p-1 transition-all duration-300 ${slot
                       ? "animate-in fade-in zoom-in-95 border-blue-500/40 bg-blue-50 dark:border-blue-800/60 dark:bg-blue-950/50"
                       : "border-dashed border-zinc-200 bg-white/50 text-zinc-400 dark:border-zinc-800 dark:bg-zinc-950/30 dark:text-zinc-600"
                       }`}
@@ -154,7 +154,7 @@ export function BotFlowScene() {
                             {slot.patient.split(" ")[0]} {slot.patient.split(" ")[1]}
                           </p>
                         </div>
-                        <span className="inline-block truncate rounded-sm bg-blue-200/60 px-0.5 py-0.3 text-[6px] sm:text-[7px] md:text-[8px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
+                        <span className="inline-block truncate bg-blue-200/60 px-0.5 py-0.3 text-[6px] sm:text-[7px] md:text-[8px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
                           {slot.type}
                         </span>
                       </div>
@@ -172,21 +172,21 @@ export function BotFlowScene() {
 
       {/* Desktop View: All 5 Days (Segunda a Sexta) */}
       <div className="hidden md:block w-full">
-        <div className="grid grid-cols-[4rem_1fr_1fr_1fr_1fr_1fr] gap-1.5 text-center text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+        <div className="grid grid-cols-[4rem_1fr_1fr_1fr_1fr_1fr] gap-2 text-center text-xs font-semibold text-zinc-500 dark:text-zinc-400">
           <div className="p-1 pr-2 text-left">Horário</div>
           {ALL_DAYS.map((day) => (
             <div
               key={day}
-              className="rounded-lg bg-zinc-200/60 p-1.5 text-xs font-semibold text-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300"
+              className="bg-zinc-200/60 p-1.5 text-xs font-semibold text-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300"
             >
               {day}
             </div>
           ))}
         </div>
 
-        <div className="mt-2.5 space-y-2">
+        <div className="mt-3 space-y-2.5">
           {TIMES.map((time) => (
-            <div key={time} className="grid grid-cols-[4rem_1fr_1fr_1fr_1fr_1fr] items-center gap-1.5 text-xs">
+            <div key={time} className="grid grid-cols-[4rem_1fr_1fr_1fr_1fr_1fr] items-center gap-2 text-xs">
               <div className="pl-1 pr-2 text-left font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
                 {time}
               </div>
@@ -197,7 +197,7 @@ export function BotFlowScene() {
                 return (
                   <div
                     key={key}
-                    className={`flex h-24 flex-col justify-center rounded-lg border p-2 transition-all duration-300 ${slot
+                    className={`flex h-24 flex-col justify-center border p-2 transition-all duration-300 ${slot
                       ? "animate-in fade-in zoom-in-95 border-blue-500/40 bg-blue-50 dark:border-blue-800/60 dark:bg-blue-950/50"
                       : "border-dashed border-zinc-200 bg-white/50 text-zinc-400 dark:border-zinc-800 dark:bg-zinc-950/30 dark:text-zinc-600"
                       }`}
@@ -210,7 +210,7 @@ export function BotFlowScene() {
                             {slot.patient.split(" ")[0]} {slot.patient.split(" ")[1]}
                           </p>
                         </div>
-                        <span className="inline-block truncate rounded-sm bg-blue-200/60 px-1 py-0.3 text-[9px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
+                        <span className="inline-block truncate bg-blue-200/60 px-1 py-0.3 text-[9px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
                           {slot.type}
                         </span>
                       </div>
@@ -239,4 +239,3 @@ export function BotFlowScene() {
     </div>
   );
 }
-

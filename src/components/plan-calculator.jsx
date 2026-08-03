@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -88,8 +88,8 @@ function formatWhatsApp(value) {
   }
   const sliced = digits.slice(0, 11);
   if (sliced.length <= 2) return sliced;
-  if (sliced.length <= 7) return `(${sliced.slice(0, 2)}) ${sliced.slice(2)}`;
-  return `(${sliced.slice(0, 2)}) ${sliced.slice(2, 7)}-${sliced.slice(7)}`;
+  if (sliced.length <= 7) return `(${sliced.slice(0, 2)}) {sliced.slice(2)}`;
+  return `(${sliced.slice(0, 2)}) {sliced.slice(2, 7)}-{sliced.slice(7)}`;
 }
 
 function groupSlotsByDate(slots) {
@@ -218,7 +218,7 @@ export function PlanCalculator() {
       }
     } catch (error) {
       console.error("Erro ao buscar slots:", error);
-    } finally {
+      } finally {
       setLoadingSlots(false);
     }
   };
@@ -329,14 +329,14 @@ export function PlanCalculator() {
   const formatTimer = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    return `${mins.toString().padStart(2, "0")}:{secs.toString().padStart(2, "0")}`;
   };
 
   const groupedDates = groupSlotsByDate(availableSlots);
   const currentDateGroup = groupedDates[carouselIndex];
 
   const voiceHelpBar = (
-    <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900/60">
+    <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900/60 relative z-10">
       <div
         className={`flex items-center transition-all duration-300 ${
           isRecordingVoice || isSpeaking ? "gap-3.5" : "gap-2"
@@ -396,11 +396,11 @@ export function PlanCalculator() {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 mobile-only:space-y-4">
       {/* Top 2 Columns Layout */}
-      <div className="grid gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-12">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mobile-only:gap-0 mobile-only:flex mobile-only:flex-col mobile-only:gap-y-4">
         {/* Left Column: Plugin Selection Grid */}
-        <div className="space-y-5 lg:col-span-7">
+        <div className="space-y-5 lg:col-span-7 mobile-only:space-y-0">
           <div className="hidden lg:block">{voiceHelpBar}</div>
 
           <div className="hidden lg:block space-y-5">
@@ -447,7 +447,7 @@ export function PlanCalculator() {
                       {plugin.category}
                     </Badge>
                     <span className="font-mono text-xs font-bold text-indigo-700 dark:text-indigo-300">
-                      {plugin.price ? `+R$ ${plugin.price}/mês` : "Solicitar Cotação"}
+                      {plugin.price ? `+R$ {plugin.price}/mês` : "Solicitar Cotação"}
                     </span>
                   </div>
                 </button>
@@ -458,11 +458,11 @@ export function PlanCalculator() {
         </div>
 
         {/* Right Column: Live Plan Summary & Total */}
-        <div className="lg:col-span-5 space-y-5">
-          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-[18px] sm:p-[26px] md:p-[34px] shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
-            <div className="space-y-5">
+        <div className="lg:col-span-5 space-y-5 lg:space-y-5 mobile-only:mt-0 mobile-only:pt-0">
+          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-[18px] sm:p-[26px] md:p-[34px] shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80 mobile-only:mt-0 mobile-only:p-4 mobile-only:!mt-0">
+            <div className="space-y-5 mobile-only:space-y-4">
               {/* Header */}
-              <div className="border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
+              <div className="border-b border-zinc-200/80 pb-4 dark:border-zinc-800 mobile-only:pb-3">
                 <div className="space-y-0.5">
                   <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
                     Resumo do seu Plano
@@ -474,15 +474,11 @@ export function PlanCalculator() {
               </div>
 
               {/* Included Items List */}
-              <div className="space-y-2.5 text-[11px] sm:text-xs">
-                <div className="flex items-center justify-between font-semibold text-zinc-800 dark:text-zinc-200 text-xs sm:text-sm">
-                  <span>Plano Starter</span>
-                  <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400">R$ {BASE_PLAN.price}</span>
-                </div>
-
+              <div className="space-y-2.5 text-[11px] sm:text-xs mobile-only:space-y-2">
+                
                 <div className="pl-4 sm:pl-6 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-400">
-                  <p className="font-medium text-zinc-900 dark:text-zinc-100">+ WhatsApp Conector (incluso)</p>
-                  <p className="text-zinc-500 dark:text-zinc-400 mt-0.5 text-[10px] sm:text-xs">Atendimento 24/7 por texto, qualificação de leads e agendamentos automáticos.</p>
+                  <p className="font-medium text-zinc-900 dark:text-zinc-100">+ WhatsApp Conector (incluso, R$ {BASE_PLAN.price})</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 mt-0.5 text-[10px] sm:text-xs mobile-only:text-[9px]">Atendimento 24/7 por texto, qualificação de leads e agendamentos automáticos.</p>
                 </div>
 
                 {selectedPluginObjects.length > 0 ? (
@@ -496,20 +492,20 @@ export function PlanCalculator() {
                     </div>
                   ))
                 ) : (
-                  <p className="pl-4 sm:pl-6 text-[11px] sm:text-xs italic text-zinc-400">
+                  <p className="pl-4 sm:pl-6 text-[11px] sm:text-xs italic text-zinc-400 mobile-only:hidden">
                     Nenhum conector adicional selecionado
                   </p>
                 )}
               </div>
 
               {/* Total Display */}
-              <div className="border-t border-zinc-200/80 pt-5 dark:border-zinc-800">
+              <div className="border-t border-zinc-200/80 pt-5 dark:border-zinc-800 mobile-only:pt-4">
                 <div className="flex items-baseline justify-between">
                   <span className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-400">
                     Investimento Total:
                   </span>
                   <div className="text-right">
-                    <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">
+                    <span className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono mobile-only:text-xl">
                       R$ {totalMonthly}
                     </span>
                     <span className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400"> / mês</span>
@@ -519,7 +515,7 @@ export function PlanCalculator() {
             </div>
 
             {/* CTA Button & Footnote */}
-            <div className="mt-5 sm:mt-8 space-y-3">
+            <div className="mt-5 sm:mt-8 mobile-only:mt-5 space-y-3 mobile-only:space-y-2.5">
               {isCheckoutExpanded ? (
                 <Button
                   size="lg"
@@ -532,10 +528,10 @@ export function PlanCalculator() {
               ) : (
                 <Button
                   size="lg"
-                  className="w-full py-4 sm:py-6 text-sm sm:text-base font-medium bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 cursor-pointer"
+                  className="w-full py-4 sm:py-6 text-sm sm:text-base font-medium bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 cursor-pointer mobile-only:py-3.5 mobile-only:text-xs"
                   onClick={handleOpenCheckout}
                 >
-                  Ativar Módulos Selecionados <ArrowRight className="size-4 sm:size-5 ml-1.5" />
+                  Ativar Módulos Selecionados <ArrowRight className="size-4 sm:size-5 ml-1.5 mobile-only:size-3.5" />
                 </Button>
               )}
 
@@ -638,7 +634,7 @@ export function PlanCalculator() {
                           type="email"
                           placeholder="ana@exemplo.com"
                           {...register("email")}
-                          className={`${errors.email ? "border-red-500 focus:border-red-500 dark:border-red-500" : "border-zinc-200 bg-white focus:border-indigo-400 dark:border-zinc-700 dark:bg-zinc-950"} rounded-xl h-11 px-3.5 text-sm sm:text-base transition-all focus-visible:ring-indigo-500/20`}
+                          className={`${errors.email ? "border-red-500 focus:border-red-500 dark:red:focus:border-red-500 dark:border-red-500" : "border-zinc-200 bg-white focus:border-indigo-400 dark:border-zinc-700 dark:bg-zinc-950"} rounded-xl h-11 px-3.5 text-sm sm:text-base transition-all focus-visible:ring-indigo-500/20`}
                           disabled={generatingPix}
                         />
                         {errors.email && (
@@ -658,7 +654,7 @@ export function PlanCalculator() {
                           value={whatsappValue}
                           onChange={onWhatsAppChange}
                           maxLength={20}
-                          className={`${errors.whatsapp ? "border-red-500 focus:border-red-500 dark:border-red-500" : "border-zinc-200 bg-white focus:border-indigo-400 dark:border-zinc-700 dark:bg-zinc-950"} rounded-xl h-11 px-3.5 text-sm sm:text-base transition-all focus-visible:ring-indigo-500/20`}
+                          className={`${errors.whatsapp ? "border-red-500 focus:border-red-500 dark:focus:border-red-500 dark:border-red-500" : "border-zinc-200 bg-white focus:border-indigo-400 dark:border-zinc-700 dark:bg-zinc-950"} rounded-xl h-11 px-3.5 text-sm sm:text-base transition-all focus-visible:ring-indigo-500/20`}
                           disabled={generatingPix}
                         />
                         {errors.whatsapp && (
@@ -765,7 +761,7 @@ export function PlanCalculator() {
                 </div>
 
                 {/* Summary & Confirm Column */}
-                <div className="lg:col-span-5 flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 bg-zinc-50/80 dark:bg-zinc-950/80 space-y-6">
+                <div className="lg:col-span-12 flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 bg-zinc-50/80 dark:bg-zinc-950/80 space-y-6 mt-6">
                   <div className="space-y-4">
                     <div className="flex items-center gap-2.5">
                       <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 ring-1 ring-indigo-500/20">
@@ -777,10 +773,7 @@ export function PlanCalculator() {
                     </div>
 
                     <div className="space-y-2 text-sm border-b border-zinc-200 dark:border-zinc-800 pb-4">
-                      <div className="flex justify-between font-semibold text-zinc-900 dark:text-zinc-100">
-                        <span>Plano IA Core</span>
-                        <span className="font-mono">R$ {BASE_PLAN.price}/mês</span>
-                      </div>
+                      
                       {selectedPluginObjects.length > 0 ? (
                         selectedPluginObjects.map((p) => (
                           <div key={p.id} className="flex justify-between text-xs text-zinc-600 dark:text-zinc-400 pl-3">
@@ -789,7 +782,7 @@ export function PlanCalculator() {
                           </div>
                         ))
                       ) : (
-                        <p className="text-xs italic text-zinc-400 pl-3">Nenhum conector extra</p>
+                        <p className="text-xs italic text-zinc-400 pl-3 mobile-only:hidden">Nenhum conector extra</p>
                       )}
                     </div>
 
@@ -861,7 +854,6 @@ export function PlanCalculator() {
               </div>
 
               <div className="grid gap-6 grid-cols-1 lg:grid-cols-12">
-                {/* QR Code & Copia e Cola */}
                 <div className="lg:col-span-7 flex flex-col w-full">
                   <div className="flex-1 flex items-center justify-center">
                     <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-md p-2 sm:p-3 bg-white w-fit max-w-full">
@@ -898,7 +890,6 @@ export function PlanCalculator() {
                   </div>
                 </div>
 
-                {/* Details & Installer Info */}
                 <div className="lg:col-span-5 space-y-5">
                   <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50/80 dark:bg-zinc-950/80 space-y-3 text-sm">
                     <div className="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-2">
@@ -919,7 +910,6 @@ export function PlanCalculator() {
                     </div>
                   </div>
 
-                  {/* Installer Card */}
                   <div className="rounded-xl border border-indigo-500/30 bg-indigo-500/10 p-4 space-y-2">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">

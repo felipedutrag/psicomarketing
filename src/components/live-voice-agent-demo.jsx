@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useLilithVoice, GEMINI_LIVE_VOICES } from "@/hooks/use-lilith-voice";
 import { Button } from "@/components/ui/button";
@@ -55,7 +55,7 @@ export function LiveVoiceAgentDemo() {
             </Badge>
           </div>
           <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                      Fale com a IA e veja sua agenda preencher sozinha
+                      Fale com a IA e preencha sua agenda
           </h3>
           <p className="text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
                       Crie agendamentos personalizados, cancele e remaque, deixamos uma agenda fictícia ao lado para você testar.
@@ -162,7 +162,7 @@ export function LiveVoiceAgentDemo() {
                     className={`size-10 sm:size-12 rounded-full flex items-center justify-center transition-all duration-300 ${
                       isRecordingVoice
                         ? "bg-rose-600 text-white hover:bg-rose-500 hover:scale-105 shadow-md shadow-rose-600/30"
-                        : "bg-black text-white hover:bg-zinc-900 hover:scale-105 shadow-md"
+                        : "bg-indigo-600 text-white hover:bg-indigo-500 hover:scale-105 shadow-md shadow-indigo-600/30 animate-pulse"
                     }`}
                     title={isRecordingVoice ? "Encerrar chamada" : "Iniciar chamada"}
                   >
@@ -181,7 +181,7 @@ export function LiveVoiceAgentDemo() {
           <div className="w-full space-y-2 mt-2">
             <p className="text-[10px] sm:text-xs font-medium text-zinc-700 dark:text-zinc-400">
               {isRecordingVoice
-                ? `Sessão live ativa com a voz ${selectedVoice}. Fale no microfone.`
+                ? `Sessão live activa com a voz ${selectedVoice}. Fale no microfone.`
                 : `Clique no botão do orbe para iniciar a chamada por voz em tempo real.`}
             </p>
           </div>

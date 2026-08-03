@@ -40,13 +40,13 @@ export default function Home() {
           <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 py-4 sm:py-6 md:py-8">
             <Badge className="text-[10px] sm:text-xs">{content.heroBadge}</Badge>
             <h1 className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center">
-                          Sua secretária de IA com <br /><span className="text-primary font-bold underline underline-offset-4 decoration-primary/30 flex items-center justify-center gap-2">super poderes <Gem className="size-4 sm:size-5" /></span>
+              Sua secretária de IA com <br /><span className="text-primary font-bold underline underline-offset-4 decoration-primary/30 flex items-center justify-center gap-2">super poderes <Gem className="size-4 sm:size-5" /></span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
               {content.heroDescription}
             </p>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-2">
-                          <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md px-2.5 text-xs sm:px-3 sm:text-sm sm:h-8">
+              <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md px-2.5 text-xs sm:px-3 sm:text-sm sm:h-8">
                 <Link href="#investimento">
                   {content.primaryCtaLabel} <ArrowRight className="size-3.5 sm:size-4" />
                 </Link>
@@ -71,15 +71,15 @@ export default function Home() {
         {/* Interactive Connectors Ecosystem Workspace */}
         <section id="modulos" className="hidden space-y-4 scroll-mt-24 md:block">
           <div className="space-y-1">
-                    <Badge variant="outline" className="text-[10px] sm:text-xs">{content.connectorsBadge}</Badge>
+            <Badge variant="outline" className="text-[10px] sm:text-xs">{content.connectorsBadge}</Badge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
-                      {content.connectorsTitle}
+              {content.connectorsTitle}
             </h2>
             <p className="max-w-3xl text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
-                      {content.connectorsDescription}
+              {content.connectorsDescription}
             </p>
           </div>
-                  <FeatureTabs plugins={content.connectors} />
+          <FeatureTabs plugins={content.connectors} />
         </section>
 
         {/* Live Voice Agent Interactive Demo */}
