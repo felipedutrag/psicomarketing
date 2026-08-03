@@ -73,12 +73,19 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json()
-    const { id: userId, first_name: firstName, last_input_text: userText, phone, whatsapp_phone } = body
+    // ManyChat pode enviar o nome em diferentes campos (snake_case, camelCase, etc.)
+    const userId = body.id
+    const firstName = body.first_name || body.firstName || body.name || body.first_name_text || 'Lead'
+    const userText = body.last_input_text || body.lastInputText || body.text || ''
+    const phone = body.phone || body.whatsapp_phone || body.phone_number || ''
 
     // Remove thread do body pois não usamos mais (centralizado no Redis)
     const { thread, ...bodyWithoutThread } = body
 
-    console.log('[WEBHOOK] Recebido:', { userId, firstName, userText, phone, whatsapp_phone })
+    // Garantir que first_name esteja no body enviado para process-ai (normalizado)
+    bodyWithoutThread.first_name = firstName
+
+    console.log('[WEBHOOK] Recebido:', { userId, firstName, userText, phone })
 
     if (!userId || !userText) {
       console.error('[WEBHOOK] Missing data:', { userId, userText })

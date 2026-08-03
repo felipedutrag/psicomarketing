@@ -23,7 +23,9 @@ export async function POST(req: NextRequest) {
   console.log('[PROCESS-AI] ========================================')
   try {
     const body = await req.json()
-    const { id: userId, first_name: firstName } = body
+    // Aceitar diferentes variações do campo nome (ManyChat/webhook pode enviar em formatos diferentes)
+    const userId = body.id
+    const firstName = body.first_name || body.firstName || body.name || 'Lead'
     console.log('[PROCESS-AI] Iniciando processamento:', { userId, firstName })
 
     const GROQ_KEY = process.env.GROQ_API_KEY
