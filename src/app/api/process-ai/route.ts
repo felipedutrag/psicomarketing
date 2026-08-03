@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
     const stage = await getLeadStage(userId)
     console.log('[PROCESS-AI] Etapa do funil:', stage)
 
-    const system = buildSystemPrompt(firstName || 'Lead', stage)
+    const system = await buildSystemPrompt(firstName || 'Lead', stage)
 
     // --- EXECUÇÃO DO AGENTE DE IA EM CASCATA COM FALLBACKS ---
     let reply = ''

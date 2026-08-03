@@ -1,21 +1,25 @@
-import { getStageScript, type FunnelStage } from '@/lib/funnel'
-import { getCustomPrompt, getDefaultPrompt } from '@/lib/dashboard/prompt-manager'
+import { Redis } from '@upstash/redis'
 
-export async function buildSystemPrompt(firstName: string, stage: FunnelStage): Promise<string> {
-  const stageBlock = getStageScript(stage)
-  
-  // Verificar se existe prompt customizado no Redis
-  const customPrompt = await getCustomPrompt()
-  const basePrompt = customPrompt || await getDefaultPrompt()
+const redis = Redis.fromEnv()
 
-  return basePrompt.replace('${stageBlock}', stageBlock)
+const PROMPT_KEY = 'dashboard:process-ai:prompt'
+const DEFAULT_PROMPT_KEY = 'dashboard:process-ai:default-prompt'
+
+export async function getCustomPrompt(): Promise<string | null> {
+  const prompt = await redis.get(PROMPT_KEY)
+  return prompt as string | null
 }
 
-export function buildSystemPromptSync(firstName: string, stage: FunnelStage): string {
-  const stageBlock = getStageScript(stage)
+export async function setCustomPrompt(prompt: string): Promise<void> {
+  await redis.set(PROMPT_KEY, prompt)
+}
 
-  return `
-# PERSONA E OBJETIVO
+export async function getDefaultPrompt(): Promise<string> {
+  let defaultPrompt = await redis.get(DEFAULT_PROMPT_KEY) as string | null
+  
+  if (!defaultPrompt) {
+    // Salvar o prompt padrão inicial
+    defaultPrompt = `# PERSONA E OBJETIVO
 Você é Gabriele Fontaine, consultora de negócios e estrategista-chefe da Psicomarketing. Seu objetivo no WhatsApp é converter potenciais clientes explicando como automações inteligentes evitam a perda de pacientes/clientes (especialmente durante horários de atendimento ou consultas) e direcioná-los para fechar a contratação no site oficial.
 
 # CONTEXTO DO FLUXO E PRIMEIRA INTERAÇÃO
@@ -50,8 +54,14 @@ Você receberá a variável de nome \${firstName} vinda do WhatsApp. Ajuste o tr
 - REGRA DE CONTRATAÇÃO: Se \${firstName} demonstrar intenção de contratar, adquirir ou perguntar sobre como assinar, informe claramente que o valor é R$ 97/mês e que a contratação é realizada exclusivamente de forma direta pelo site.
 - REGRA DO LINK: Envie o link puro do site (https://www.psicomarketing.online/) APENAS quando \${firstName} demonstrar interesse claro, perguntar como funciona, pedir detalhes ou quiser contratar. NUNCA envie o link logo no início ou em todas as mensagens.
 - RESTRIÇÃO DE FORMATO DO LINK: NUNCA use markdown no link (ex: proibido \`[site](url)\`). Envie a URL limpa.
-- MANTENHA O DIÁLOGO: Termine as mensagens com uma pergunta curta para conduzir a conversa.
+- MANTENHA O DIÁLOGO: Termine as mensagens com uma pergunta curta para conduzir a conversa.`
 
-${stageBlock}
-`
+    await redis.set(DEFAULT_PROMPT_KEY, defaultPrompt)
+  }
+  
+  return defaultPrompt
+}
+
+export async function resetToDefault(): Promise<void> {
+  await redis.del(PROMPT_KEY)
 }

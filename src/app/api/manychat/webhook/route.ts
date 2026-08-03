@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Redis } from '@upstash/redis'
 import { waitUntil } from '@vercel/functions'
+import { updateLead, getLeadById } from '@/lib/dashboard/scraping'
+import { updateStats } from '@/lib/dashboard/whatsapp'
 
 const redis = Redis.fromEnv()
 
@@ -32,6 +34,30 @@ async function processAI(body: Record<string, unknown>) {
   }
 }
 
+// Função para atualizar lead baseado no webhook do ManyChat
+async function updateLeadFromWebhook(userId: string, userText: string) {
+  try {
+    // Buscar lead pelo número de telefone ou ID
+    const leadId = `lead_${userId}` // Pode precisar de ajuste baseado no mapeamento
+    const lead = await getLeadById(leadId)
+    
+    if (lead && lead.status === 'sent') {
+      // Atualizar para responded
+      await updateLead(leadId, {
+        status: 'responded',
+        data_resposta: new Date().toISOString(),
+      })
+      
+      // Atualizar estatísticas
+      await updateStats()
+      
+      console.log('[WEBHOOK] Lead atualizado para responded:', leadId)
+    }
+  } catch (err) {
+    console.error('[WEBHOOK] Erro ao atualizar lead:', err)
+  }
+}
+
 export async function GET() {
   console.log('[WEBHOOK] GET request received')
   return NextResponse.json({ status: 'ok', message: 'Webhook endpoint is active' })
@@ -57,6 +83,13 @@ export async function POST(req: NextRequest) {
     if (!userId || !userText) {
       console.error('[WEBHOOK] Missing data:', { userId, userText })
       return NextResponse.json({ error: 'Missing data' }, { status: 400 })
+    }
+
+    // Atualizar lead se for resposta (após envio)
+    if (userText && userText.length > 0) {
+      waitUntil(updateLeadFromWebhook(userId, userText).catch(err => {
+        console.error('[WEBHOOK] Erro ao atualizar lead:', err)
+      }))
     }
 
     const bufferKey = `buffer:${userId}`
