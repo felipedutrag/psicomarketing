@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Sparkles, Loader2, CheckCircle } from 'lucide-react'
@@ -54,55 +53,65 @@ export function MessagePersonalizer({ selectedLeadIds = [], onPersonalized }: Me
   }
 
   const defaultPrompt = `Você é um especialista em personalização de mensagens de WhatsApp para marketing B2B.
-Sua tarefa é personalizar uma mensagem base para cada lead, usando o nome da pessoa de forma natural e profissional.
-Mantenha o tom original da mensagem mas adapte para soar mais pessoal para cada destinatário.
-A mensagem deve ser curta, direta e profissional, adequada para WhatsApp.
-Não altere a essência da mensagem original, apenas personalize com o nome.`
+Sua tarefa é personalizar uma mensagem base para cada lead, usando o nome da pessoa de forma natural e profissional.`
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Personalização com IA</CardTitle>
+        <CardTitle className="text-sm font-semibold flex items-center gap-2">
+          <span>✨</span>
+          <span>Personalização com IA</span>
+        </CardTitle>
         <CardDescription>
-          Personalize mensagens automaticamente usando IA com fallback
+          Personalize mensagens automaticamente usando IA com multiprovedores
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 rounded-[6px] bg-zinc-100 dark:bg-[#202020] p-2.5 border border-zinc-200/60 dark:border-[#282828]">
           <Switch
             id="custom-prompt"
             checked={useCustomPrompt}
             onCheckedChange={setUseCustomPrompt}
           />
-          <Label htmlFor="custom-prompt">Usar prompt personalizado</Label>
+          <Label htmlFor="custom-prompt" className="text-xs font-medium cursor-pointer text-zinc-800 dark:text-zinc-200">
+            Usar prompt personalizado
+          </Label>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="base-message">Mensagem Base</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="base-message" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+            Mensagem Base
+          </Label>
           <Textarea
             id="base-message"
             placeholder="Exemplo: Olá {nome}, gostaria de apresentar nossa solução de automação para psicólogos..."
             value={baseMessage}
             onChange={(e) => setBaseMessage(e.target.value)}
-            rows={4}
+            rows={5}
           />
         </div>
 
         {useCustomPrompt && (
-          <div className="space-y-2">
-            <Label htmlFor="custom-prompt-input">Prompt Personalizado</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="custom-prompt-input" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+              Prompt Personalizado
+            </Label>
             <Textarea
               id="custom-prompt-input"
               placeholder={defaultPrompt}
               value={customPrompt}
               onChange={(e) => setCustomPrompt(e.target.value)}
               rows={6}
-              className="font-mono text-sm"
+              className="font-mono text-xs"
             />
           </div>
         )}
 
-        <Button onClick={handlePersonalize} disabled={isPersonalizing || !baseMessage.trim()}>
+        <Button
+          onClick={handlePersonalize}
+          disabled={isPersonalizing || !baseMessage.trim()}
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
+        >
           {isPersonalizing ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -118,7 +127,7 @@ Não altere a essência da mensagem original, apenas personalize com o nome.`
 
         {result && (
           <div
-            className={`rounded-md border px-4 py-3 text-sm ${
+            className={`rounded-[6px] border px-3 py-2 text-xs ${
               result.success
                 ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
                 : 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400'
@@ -135,13 +144,13 @@ Não altere a essência da mensagem original, apenas personalize com o nome.`
           </div>
         )}
 
-        <div className="text-xs text-gray-500">
-          <p>• Modelos: Gemini → NVIDIA → Groq (fallback)</p>
+        <div className="space-y-1 text-[11px] text-zinc-400 dark:text-zinc-500 border-t border-zinc-200/60 dark:border-[#242424] pt-3">
+          <p>• Modelos: Gemini → NVIDIA → Groq (fallback automatizado)</p>
           <p>• Personalização baseada no nome do lead</p>
           <p>• Mensagens salvas no Redis</p>
           {selectedLeadIds.length === 0 && (
-            <p className="mt-1 text-amber-600">
-              • Selecione leads na tabela acima. Sem seleção, personaliza apenas os pendentes.
+            <p className="text-amber-600 dark:text-amber-400 font-medium">
+              • Sem seleção prévia: personaliza apenas os pendentes.
             </p>
           )}
         </div>

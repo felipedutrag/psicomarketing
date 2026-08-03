@@ -87,39 +87,61 @@ export function PromptEditor() {
   }
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Editor de Prompt do Process-AI</CardTitle>
+        <CardTitle className="text-sm font-semibold flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span>📝</span>
+            <span>Editor de Prompt do Process-AI</span>
+          </div>
+          <Button
+            onClick={fetchPrompts}
+            variant="ghost"
+            size="icon"
+            disabled={isLoading}
+            className="h-7 w-7 text-zinc-400 hover:text-zinc-100"
+          >
+            <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+          </Button>
+        </CardTitle>
         <CardDescription>
           Personalize o prompt usado pelo sistema de IA no WhatsApp
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 rounded-[6px] bg-zinc-100 dark:bg-[#202020] p-2.5 border border-zinc-200/60 dark:border-[#282828]">
           <Switch
             id="use-custom"
             checked={useCustom}
             onCheckedChange={setUseCustom}
             disabled={!customPrompt}
           />
-          <Label htmlFor="use-custom">Usar prompt customizado</Label>
+          <Label htmlFor="use-custom" className="text-xs font-medium cursor-pointer text-zinc-800 dark:text-zinc-200">
+            Usar prompt customizado
+          </Label>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="prompt-editor">Prompt Customizado</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="prompt-editor" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+            Prompt Customizado
+          </Label>
           <Textarea
             id="prompt-editor"
             placeholder="Digite seu prompt customizado aqui..."
             value={customPrompt}
             onChange={(e) => setCustomPrompt(e.target.value)}
-            rows={15}
-            className="font-mono text-sm"
+            rows={8}
+            className="font-mono text-xs"
             disabled={isLoading}
           />
         </div>
 
         <div className="flex gap-2">
-          <Button onClick={handleSave} disabled={isSaving || !customPrompt.trim()}>
+          <Button
+            onClick={handleSave}
+            disabled={isSaving || !customPrompt.trim()}
+            className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
+          >
             {isSaving ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -133,7 +155,12 @@ export function PromptEditor() {
             )}
           </Button>
 
-          <Button onClick={handleReset} variant="outline" disabled={isSaving}>
+          <Button
+            onClick={handleReset}
+            variant="outline"
+            disabled={isSaving}
+            className="flex-1 border-zinc-300 dark:border-[#333] hover:bg-zinc-100 dark:hover:bg-[#282828]"
+          >
             {isSaving ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -146,15 +173,11 @@ export function PromptEditor() {
               </>
             )}
           </Button>
-
-          <Button onClick={fetchPrompts} variant="ghost" size="icon" disabled={isLoading}>
-            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-          </Button>
         </div>
 
         {result && (
           <div
-            className={`rounded-md border px-4 py-3 text-sm ${
+            className={`rounded-[6px] border px-3 py-2 text-xs ${
               result.success
                 ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
                 : 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400'
@@ -171,10 +194,10 @@ export function PromptEditor() {
           </div>
         )}
 
-        <div className="text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-3 w-3" />
-            <p>O prompt é salvo no Redis e usado pelo process-ai em todas as conversas</p>
+        <div className="space-y-1 text-[11px] text-zinc-400 dark:text-zinc-500 border-t border-zinc-200/60 dark:border-[#242424] pt-3">
+          <div className="flex items-center gap-1.5 font-medium text-zinc-600 dark:text-zinc-400">
+            <Sparkles className="h-3 w-3 text-indigo-500" />
+            <p>Salvo no Redis e utilizado pelo process-ai em todas as conversas</p>
           </div>
           <p>• Suporta variáveis de contexto do sistema</p>
           <p>• Reset volta ao prompt padrão do sistema</p>

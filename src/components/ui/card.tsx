@@ -11,7 +11,7 @@ const Card = React.forwardRef<
     data-slot="card"
     data-size={size}
     className={cn(
-      'group/card flex flex-col overflow-hidden rounded-lg bg-zinc-100/70 dark:bg-zinc-900/50 text-sm text-card-foreground shadow-xs ring-1 ring-foreground/5 [--card-spacing:--spacing(5)] data-[size=sm]:[--card-spacing:--spacing(4)] dark:ring-foreground/10',
+      'group/card flex flex-col overflow-hidden rounded-[8px] bg-white dark:bg-[#181818] border border-zinc-200/80 dark:border-[#242424] text-sm text-card-foreground shadow-2xs transition-colors',
       className
     )}
     {...props}
@@ -27,7 +27,7 @@ const CardHeader = React.forwardRef<
     ref={ref}
     data-slot="card-header"
     className={cn(
-      'group/card-header @container/card-header grid auto-rows-min items-start gap-1.5 rounded-t-lg p-(--card-spacing) pb-3 has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing)',
+      'group/card-header flex flex-col space-y-1.5 p-5 pb-3',
       className
     )}
     {...props}
@@ -42,7 +42,7 @@ const CardTitle = React.forwardRef<
   <div
     ref={ref}
     data-slot="card-title"
-    className={cn('font-heading text-base font-medium', className)}
+    className={cn('font-heading text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100', className)}
     {...props}
   />
 ))
@@ -55,7 +55,7 @@ const CardDescription = React.forwardRef<
   <div
     ref={ref}
     data-slot="card-description"
-    className={cn('text-sm text-muted-foreground', className)}
+    className={cn('text-xs text-zinc-500 dark:text-zinc-400', className)}
     {...props}
   />
 ))
@@ -84,7 +84,7 @@ const CardContent = React.forwardRef<
   <div
     ref={ref}
     data-slot="card-content"
-    className={cn('p-(--card-spacing)', className)}
+    className={cn('p-5 pt-2', className)}
     {...props}
   />
 ))
@@ -98,7 +98,7 @@ const CardFooter = React.forwardRef<
     ref={ref}
     data-slot="card-footer"
     className={cn(
-      'flex items-center rounded-b-lg p-(--card-spacing) pt-0 [.border-t]:pt-(--card-spacing)',
+      'flex items-center p-5 pt-0',
       className
     )}
     {...props}

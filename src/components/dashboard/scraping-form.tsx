@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Search, Loader2, Upload } from 'lucide-react'
+import { Search, Loader2, Trash2 } from 'lucide-react'
 
 interface ScrapeResultItem {
   nome: string
@@ -67,42 +67,51 @@ export function ScrapingForm() {
   }
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Buscar Leads</CardTitle>
+        <CardTitle className="text-sm font-semibold flex items-center gap-2">
+          <span>🔍</span>
+          <span>Buscar Leads no Google Maps</span>
+        </CardTitle>
         <CardDescription>
-          Busca automática de leads no Google Maps usando uma URL modelo por cidade
+          Captura automatizada por cidade usando busca parametrizada
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="template-url">URL modelo</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="template-url" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+            URL modelo
+          </Label>
           <Input
             id="template-url"
             value={templateUrl}
             onChange={(e) => setTemplateUrl(e.target.value)}
             placeholder="https://www.google.com/maps/search/psicologos+em+${CIDADE}"
-            className="font-mono text-sm"
+            className="font-mono text-xs"
           />
-          <p className="text-xs text-muted-foreground">
-            Use <code className="bg-muted px-1 rounded">{"${CIDADE}"}</code> como parâmetro que será substituído por cada cidade.
+          <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
+            Use <code className="bg-zinc-100 dark:bg-[#222] px-1 py-0.5 rounded text-indigo-600 dark:text-indigo-400 font-mono">{"${CIDADE}"}</code> como parâmetro dinâmico.
           </p>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="cities">Cidades (uma por linha)</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="cities" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+            Cidades (uma por linha)
+          </Label>
           <Textarea
             id="cities"
             placeholder={'São Paulo\nGuarulhos\nCampinas\nSantos'}
             value={cities}
             onChange={(e) => setCities(e.target.value)}
-            rows={6}
-            className="font-mono text-sm"
+            rows={4}
+            className="font-mono text-xs"
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="data-count">Quantidade de dados por cidade</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="data-count" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+            Quantidade de dados por cidade
+          </Label>
           <Input
             id="data-count"
             type="number"
@@ -113,8 +122,12 @@ export function ScrapingForm() {
           />
         </div>
 
-        <div className="flex gap-2">
-          <Button onClick={handleScrape} disabled={isLoading || !templateUrl.trim() || !cities.trim()}>
+        <div className="flex gap-2 pt-1">
+          <Button
+            onClick={handleScrape}
+            disabled={isLoading || !templateUrl.trim() || !cities.trim()}
+            className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
+          >
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -128,20 +141,26 @@ export function ScrapingForm() {
             )}
           </Button>
 
-          <Button onClick={handleClear} variant="destructive" disabled={isLoading}>
-            Limpar Todos
+          <Button
+            onClick={handleClear}
+            variant="outline"
+            disabled={isLoading}
+            className="border-red-300 text-red-600 dark:border-red-900/50 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer"
+          >
+            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
+            Limpar
           </Button>
         </div>
 
         {isLoading && (
-          <p className="text-sm text-muted-foreground">
-            Buscando nos mapas... isso pode levar alguns minutos.
+          <p className="text-xs text-zinc-400 dark:text-zinc-500 animate-pulse">
+            Buscando nos mapas... isso pode levar alguns segundos por cidade.
           </p>
         )}
 
         {result && (
           <div
-            className={`rounded-md border px-4 py-3 text-sm ${
+            className={`rounded-[6px] border px-3 py-2 text-xs ${
               result.success
                 ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
                 : 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400'
@@ -151,7 +170,7 @@ export function ScrapingForm() {
               <div className="space-y-2">
                 <p>✓ {result.count} leads importados de {result.scraped} encontrados!</p>
                 {result.results && result.results.length > 0 && (
-                  <ul className="text-xs space-y-1 max-h-40 overflow-auto">
+                  <ul className="text-[11px] space-y-1 max-h-36 overflow-auto">
                     {result.results.map((r, i) => (
                       <li key={i}>
                         {r.nome} - {r.whatsapp} {r.website ? `- ${r.website}` : ''}

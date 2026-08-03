@@ -66,56 +66,62 @@ export function ScheduleConfig() {
   }
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Clock className="h-4 w-4 text-primary" />
-          Horário de Envio
+        <CardTitle className="text-sm font-semibold flex items-center gap-2">
+          <Clock className="h-4 w-4 text-purple-500" />
+          <span>Horário Comercial de Envio</span>
         </CardTitle>
         <CardDescription>
-          Restrinja a fila de envio a um intervalo diário (ex.: 09:00 às 17:00)
+          Restrinja o disparo automático de mensagens a janelas de horário comercial
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {isLoading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
+          <div className="flex justify-center py-6">
+            <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
+          </div>
         ) : (
           <>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 rounded-[6px] bg-zinc-100 dark:bg-[#202020] p-2.5 border border-zinc-200/60 dark:border-[#282828]">
               <Switch id="schedule-enabled" checked={enabled} onCheckedChange={setEnabled} />
-              <Label htmlFor="schedule-enabled">
-                {enabled ? 'Envio limitado ao horário definido' : 'Envio liberado a qualquer hora'}
+              <Label htmlFor="schedule-enabled" className="text-xs font-medium cursor-pointer text-zinc-800 dark:text-zinc-200">
+                {enabled ? 'Envio limitado ao horário definido' : 'Envio liberado 24 horas por dia'}
               </Label>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="schedule-start">Início</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="schedule-start" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                  Horário Início
+                </Label>
                 <Input id="schedule-start" type="time" value={start} onChange={e => setStart(e.target.value)} disabled={!enabled} />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="schedule-end">Fim</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="schedule-end" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                  Horário Fim
+                </Label>
                 <Input id="schedule-end" type="time" value={end} onChange={e => setEnd(e.target.value)} disabled={!enabled} />
               </div>
             </div>
 
-            <Button onClick={handleSave} disabled={isSaving}>
+            <Button onClick={handleSave} disabled={isSaving} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
               {isSaving ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Salvando...
                 </>
               ) : (
                 <>
-                  <Save className="h-4 w-4" />
-                  Salvar Horário
+                  <Save className="mr-2 h-4 w-4" />
+                  Salvar Horário Comercial
                 </>
               )}
             </Button>
 
             {feedback && (
               <div
-                className={`rounded-md border px-3 py-2 text-sm ${
+                className={`rounded-[6px] border px-3 py-2 text-xs ${
                   feedback.type === 'success'
                     ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
                     : 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400'
@@ -125,8 +131,8 @@ export function ScheduleConfig() {
               </div>
             )}
 
-            <p className="text-xs text-muted-foreground">
-              Fora do intervalo, a fila fica suspensa automaticamente e o envio é bloqueado até a próxima abertura.
+            <p className="text-[11px] text-zinc-400 dark:text-zinc-500 border-t border-zinc-200/60 dark:border-[#242424] pt-3">
+              • Fora da janela, a fila de disparos fica automaticamente pausada até o próximo horário de abertura.
             </p>
           </>
         )}

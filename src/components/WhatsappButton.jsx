@@ -1,11 +1,19 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import styles from "./WhatsappButton.module.css";
 
 const WHATSAPP_NUMBER = "5511972667778";
 const WHATSAPP_MESSAGE = "Olá! Quero testar a IA de atendimento no WhatsApp agora.";
 
 export default function WhatsappButton() {
+  const pathname = usePathname();
+
+  // Oculta o botão flutuante no painel da dashboard
+  if (pathname?.startsWith('/dashboard')) {
+    return null;
+  }
+
   const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
   return (

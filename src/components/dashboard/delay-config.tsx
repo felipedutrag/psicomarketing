@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Loader2, Save } from 'lucide-react'
+import { Loader2, Save, ShieldCheck } from 'lucide-react'
 
 export function DelayConfig() {
   const [delayMin, setDelayMin] = useState<string>('')
@@ -69,21 +69,28 @@ export function DelayConfig() {
   }
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Configurações de Envio</CardTitle>
+        <CardTitle className="text-sm font-semibold flex items-center gap-2">
+          <ShieldCheck className="h-4 w-4 text-indigo-500" />
+          <span>Configurações Anti-Ban (Delays)</span>
+        </CardTitle>
         <CardDescription>
-          Configure o intervalo de espera (delay) entre mensagens para evitar bloqueios
+          Configure o intervalo de espera randômico entre envios para simular comportamento humano
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {isLoading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
+          <div className="flex justify-center py-6">
+            <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
+          </div>
         ) : (
           <>
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="delay-min">Delay Mínimo (segundos)</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="delay-min" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                  Delay Mínimo (segundos)
+                </Label>
                 <Input
                   id="delay-min"
                   type="number"
@@ -92,8 +99,10 @@ export function DelayConfig() {
                   onChange={e => setDelayMin(e.target.value)}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="delay-max">Delay Máximo (segundos)</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="delay-max" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                  Delay Máximo (segundos)
+                </Label>
                 <Input
                   id="delay-max"
                   type="number"
@@ -104,7 +113,7 @@ export function DelayConfig() {
               </div>
             </div>
 
-            <Button onClick={handleSave} disabled={isSaving}>
+            <Button onClick={handleSave} disabled={isSaving} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
               {isSaving ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -113,14 +122,14 @@ export function DelayConfig() {
               ) : (
                 <>
                   <Save className="mr-2 h-4 w-4" />
-                  Salvar Delay
+                  Salvar Intervalo Anti-Ban
                 </>
               )}
             </Button>
 
             {feedback && (
               <div
-                className={`rounded-md border px-3 py-2 text-sm ${
+                className={`rounded-[6px] border px-3 py-2 text-xs ${
                   feedback.type === 'success'
                     ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
                     : 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400'
@@ -130,8 +139,8 @@ export function DelayConfig() {
               </div>
             )}
 
-            <p className="text-xs text-muted-foreground">
-              O delay é aplicado entre cada mensagem enviada em lote. Valores maiores reduzem o risco de bloqueio no WhatsApp.
+            <p className="text-[11px] text-zinc-400 dark:text-zinc-500 border-t border-zinc-200/60 dark:border-[#242424] pt-3">
+              • O delay é aplicado entre cada mensagem individual. Intervalos maiores que 30s reduzem drasticamente o risco de bloqueio.
             </p>
           </>
         )}
