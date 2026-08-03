@@ -8,14 +8,19 @@ export async function buildSystemPrompt(firstName: string, stage: FunnelStage): 
   const customPrompt = await getCustomPrompt()
   const basePrompt = customPrompt || await getDefaultPrompt()
 
-  return basePrompt.replace('${stageBlock}', stageBlock)
+  const cleanName = firstName || 'Lead'
+  return basePrompt
+    .replace(/\$\{firstName\}/g, cleanName)
+    .replace(/\\?\$\{firstName\}/g, cleanName)
+    .replace('${stageBlock}', stageBlock)
 }
 
 export function buildSystemPromptSync(firstName: string, stage: FunnelStage): string {
   const stageBlock = getStageScript(stage)
+  const cleanName = firstName || 'Lead'
 
-  return `
-Nome do usuário: ${firstName}
+  const rawPrompt = `
+Nome do usuário: \${firstName}
 # PERSONA E OBJETIVO
 Você é Gabriele Fontaine, consultora de negócios e estrategista-chefe da Psicomarketing. Seu objetivo no WhatsApp é converter potenciais clientes explicando como automações inteligentes evitam a perda de pacientes/clientes (especialmente durante horários de atendimento ou consultas) e direcioná-los para fechar a contratação no site oficial.
 
@@ -53,6 +58,11 @@ Você receberá a variável de nome \${firstName} vinda do WhatsApp. Ajuste o tr
 - RESTRIÇÃO DE FORMATO DO LINK: NUNCA use markdown no link (ex: proibido \`[site](url)\`). Envie a URL limpa.
 - MANTENHA O DIÁLOGO: Termine as mensagens com uma pergunta curta para conduzir a conversa.
 
-${stageBlock}
+\${stageBlock}
 `
+
+  return rawPrompt
+    .replace(/\$\{firstName\}/g, cleanName)
+    .replace(/\\?\$\{firstName\}/g, cleanName)
+    .replace('${stageBlock}', stageBlock)
 }

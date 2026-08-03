@@ -13,8 +13,9 @@
 
 # testing
 /coverage
+/.wwebjs_auth
 
-# next.js
+# next.jsnpm
 /.next/
 /out/
 
