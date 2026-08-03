@@ -35,7 +35,8 @@ export async function updateStats(): Promise<void> {
   }
 
   for (const key of leads) {
-    const lead = await redis.hgetall(key) as Record<string, unknown>
+    const lead = await redis.hgetall(key) as Record<string, unknown> | null
+    if (!lead) continue
     const status = lead.status as string
     if (status in stats) {
       stats[status as keyof typeof stats]++

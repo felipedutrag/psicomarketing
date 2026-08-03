@@ -15,8 +15,8 @@ export async function getLeads(): Promise<Lead[]> {
   const leads: Lead[] = []
   
   for (const key of keys) {
-    const lead = await redis.hgetall(key) as Record<string, unknown>
-    if (lead.id) {
+    const lead = await redis.hgetall(key) as Record<string, unknown> | null
+    if (lead && lead.id) {
       leads.push(lead as unknown as Lead)
     }
   }
@@ -25,8 +25,8 @@ export async function getLeads(): Promise<Lead[]> {
 }
 
 export async function getLeadById(id: string): Promise<Lead | null> {
-  const lead = await redis.hgetall(`${DASHBOARD_CONFIG.LEADS_KEY}:${id}`) as Record<string, unknown>
-  return lead.id ? (lead as unknown as Lead) : null
+  const lead = await redis.hgetall(`${DASHBOARD_CONFIG.LEADS_KEY}:${id}`) as Record<string, unknown> | null
+  return lead && lead.id ? (lead as unknown as Lead) : null
 }
 
 export async function updateLead(id: string, updates: Partial<Lead>): Promise<void> {
