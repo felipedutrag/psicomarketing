@@ -107,7 +107,6 @@ function groupSlotsByDate(slots) {
 
 export function PlanCalculator() {
   const [selectedPlugins, setSelectedPlugins] = useState([]);
-  const [billingCycle, setBillingCycle] = useState("monthly");
   const [micPermission, setMicPermission] = useState("prompt");
 
   // Inline Checkout State
@@ -247,13 +246,7 @@ export function PlanCalculator() {
       return acc;
     }, 0);
 
-    const monthlyTotal = BASE_PLAN.price + pluginsTotal;
-
-    if (billingCycle === "yearly") {
-      return Math.round(monthlyTotal * 0.8);
-    }
-
-    return monthlyTotal;
+    return BASE_PLAN.price + pluginsTotal;
   };
 
   const totalMonthly = calculateTotal();
@@ -342,66 +335,73 @@ export function PlanCalculator() {
   const groupedDates = groupSlotsByDate(availableSlots);
   const currentDateGroup = groupedDates[carouselIndex];
 
+  const voiceHelpBar = (
+    <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900/60">
+      <div
+        className={`flex items-center transition-all duration-300 ${
+          isRecordingVoice || isSpeaking ? "gap-3.5" : "gap-2"
+        }`}
+      >
+        <button
+          type="button"
+          onClick={toggleVoiceRecording}
+          className="group relative m-0 block shrink-0 cursor-pointer appearance-none border-0 bg-transparent p-0"
+          aria-label={
+            isRecordingVoice
+              ? "Encerrar chamada de voz"
+              : "Iniciar chamada de voz com nossa agente"
+          }
+        >
+          <span
+            className={`relative block overflow-hidden rounded-full transition-all duration-300 ${
+              isRecordingVoice || isSpeaking
+                ? "h-7 w-7 scale-110 ring-2 ring-teal-300/70 shadow-[0_0_22px_6px_rgba(13,148,136,0.45)]"
+                : "h-5 w-5"
+            }`}
+            style={{
+              background:
+                "conic-gradient(#bae6fd 0%, #38bdf8 30%, #0d9488 55%, #38bdf8 70%, #bae6fd 100%)",
+              animation: "spin 8s linear infinite",
+            }}
+          >
+            <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/40 via-transparent to-black/25" />
+            <span className="relative flex h-full w-full items-center justify-center text-[8px] font-bold text-white drop-shadow-sm">
+              ?
+            </span>
+          </span>
+
+          <span
+            className={`pointer-events-none absolute left-1/2 top-full z-20 mt-2 hidden w-56 -translate-x-1/2 rounded-lg border border-zinc-200 bg-white p-2.5 text-center text-xs font-semibold text-zinc-700 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 sm:block dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-200 ${
+              isRecordingVoice ? "hidden" : ""
+            }`}
+          >
+            {micPermission === "denied"
+              ? "Permita o microfone no navegador para falar."
+              : "Clique aqui para tirar dúvidas!"}
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={toggleVoiceRecording}
+          className="cursor-pointer appearance-none border-0 bg-transparent p-0 text-left text-sm font-bold text-zinc-900 transition-colors hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400"
+        >
+          Clique aqui para tirar dúvidas!
+        </button>
+      </div>
+      <span className="font-mono text-sm font-semibold">
+        <span className="text-zinc-600 dark:text-zinc-400">Plano base: </span>
+        <span className="text-indigo-600 dark:text-indigo-400 font-bold">R$ {BASE_PLAN.price}/mês</span>
+      </span>
+    </div>
+  );
+
   return (
     <div className="space-y-8">
       {/* Top 2 Columns Layout */}
       <div className="grid gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-12">
         {/* Left Column: Plugin Selection Grid */}
         <div className="space-y-5 lg:col-span-7">
-          <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900/60">
-            <div
-              className={`flex items-center transition-all duration-300 ${isRecordingVoice || isSpeaking ? "gap-3.5" : "gap-2"
-                }`}
-            >
-              <button
-                type="button"
-                onClick={toggleVoiceRecording}
-                className="group relative m-0 block shrink-0 cursor-pointer appearance-none border-0 bg-transparent p-0"
-                aria-label={
-                  isRecordingVoice
-                    ? "Encerrar chamada de voz"
-                    : "Iniciar chamada de voz com nossa agente"
-                }
-              >
-                <span
-                  className={`relative block overflow-hidden rounded-full transition-all duration-300 ${isRecordingVoice || isSpeaking
-                    ? "h-7 w-7 scale-110 ring-2 ring-teal-300/70 shadow-[0_0_22px_6px_rgba(13,148,136,0.45)]"
-                    : "h-5 w-5"
-                    }`}
-                  style={{
-                    background:
-                      "conic-gradient(#bae6fd 0%, #38bdf8 30%, #0d9488 55%, #38bdf8 70%, #bae6fd 100%)",
-                    animation: "spin 8s linear infinite",
-                  }}
-                >
-                  <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/40 via-transparent to-black/25" />
-                  <span className="relative flex h-full w-full items-center justify-center text-[8px] font-bold text-white drop-shadow-sm">
-                    ?
-                  </span>
-                </span>
-
-                <span
-                  className={`pointer-events-none absolute left-1/2 top-full z-20 mt-2 hidden w-56 -translate-x-1/2 rounded-lg border border-zinc-200 bg-white p-2.5 text-center text-xs font-semibold text-zinc-700 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 sm:block dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-200 ${isRecordingVoice ? "hidden" : ""
-                    }`}
-                >
-                  {micPermission === "denied"
-                    ? "Permita o microfone no navegador para falar."
-                    : "Clique aqui para tirar dúvidas!"}
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={toggleVoiceRecording}
-                className="cursor-pointer appearance-none border-0 bg-transparent p-0 text-left text-sm font-bold text-zinc-900 transition-colors hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400"
-              >
-                Clique aqui para tirar dúvidas!
-              </button>
-            </div>
-            <span className="font-mono text-sm font-semibold">
-              <span className="text-zinc-600 dark:text-zinc-400">Plano base: </span>
-              <span className="text-indigo-600 dark:text-indigo-400 font-bold">R$ {BASE_PLAN.price}/mês</span>
-            </span>
-          </div>
+          <div className="hidden lg:block">{voiceHelpBar}</div>
 
           <p className="text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-400">
             Selecione os plugins que deseja adicionar ao seu agente de IA:
@@ -456,11 +456,12 @@ export function PlanCalculator() {
         </div>
 
         {/* Right Column: Live Plan Summary & Total */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5 space-y-5">
+          <div className="lg:hidden">{voiceHelpBar}</div>
           <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-4 sm:p-7 shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80">
             <div className="space-y-5">
-              {/* Header & Cycle Switch */}
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
+              {/* Header */}
+              <div className="border-b border-zinc-200/80 pb-4 dark:border-zinc-800">
                 <div className="space-y-0.5">
                   <h3 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100">
                     Resumo do seu Plano
@@ -468,29 +469,6 @@ export function PlanCalculator() {
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Estimativa de investimento mensal
                   </p>
-                </div>
-
-                <div className="mt-1 flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-100 p-1 dark:border-zinc-800 dark:bg-zinc-900">
-                  <button
-                    type="button"
-                    onClick={() => setBillingCycle("monthly")}
-                    className={`rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-[10px] sm:text-xs font-semibold transition-all ${billingCycle === "monthly"
-                      ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
-                      : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                      }`}
-                  >
-                    Mensal
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBillingCycle("yearly")}
-                    className={`rounded-md px-2 py-1 sm:px-2.5 sm:py-1.5 text-[10px] sm:text-xs font-semibold transition-all ${billingCycle === "yearly"
-                      ? "bg-white text-zinc-900 shadow-sm dark:bg-zinc-800 dark:text-zinc-50"
-                      : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-                      }`}
-                  >
-                    Anual
-                  </button>
                 </div>
               </div>
 
@@ -536,17 +514,11 @@ export function PlanCalculator() {
                     <span className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400"> / mês</span>
                   </div>
                 </div>
-
-                {billingCycle === "yearly" && (
-                  <p className="mt-1.5 text-right text-[10px] sm:text-xs font-semibold text-indigo-600 dark:text-indigo-400">
-                    Economia de 20% aplicada no plano anual!
-                  </p>
-                )}
               </div>
             </div>
 
             {/* CTA Button & Footnote */}
-            <div className="mt-8 space-y-3">
+            <div className="mt-5 sm:mt-8 space-y-3">
               {isCheckoutExpanded ? (
                 <Button
                   size="lg"
@@ -799,7 +771,7 @@ export function PlanCalculator() {
                         <span className="text-indigo-600 dark:text-indigo-400">R$ {totalMonthly}/mês</span>
                       </div>
                       <p className="text-xs text-zinc-500">
-                        Ciclo: {billingCycle === "yearly" ? "Anual (20% OFF)" : "Mensal"} • Sem fidelidade
+                        Ciclo Mensal • Sem fidelidade
                       </p>
                     </div>
 

@@ -116,7 +116,7 @@ export function BotFlowScene() {
 
       {/* Mobile View: 3 Days (Segunda, Terça, Quarta) */}
       <div className="block md:hidden w-full">
-        <div className="grid grid-cols-[auto_1fr_1fr_1fr] gap-0.5 sm:gap-1 text-center text-[9px] sm:text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
+        <div className="grid grid-cols-[3.5rem_1fr_1fr_1fr] gap-0.5 sm:gap-1 text-center text-[9px] sm:text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
           <div className="p-0.5 pr-2 text-left">Horário</div>
           {MOBILE_DAYS.map((day) => (
             <div
@@ -130,7 +130,7 @@ export function BotFlowScene() {
 
         <div className="mt-1.5 sm:mt-2 space-y-1 sm:space-y-1.5">
           {TIMES.map((time) => (
-            <div key={time} className="grid grid-cols-[auto_1fr_1fr_1fr] items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[10px]">
+            <div key={time} className="grid grid-cols-[3.5rem_1fr_1fr_1fr] items-center gap-0.5 sm:gap-1 text-[9px] sm:text-[10px]">
               <div className="pl-0.5 pr-2 text-left font-mono text-[9px] sm:text-[10px] text-zinc-400 dark:text-zinc-500">
                 {time}
               </div>
@@ -147,14 +147,14 @@ export function BotFlowScene() {
                       }`}
                   >
                     {slot && (
-                      <div className="space-y-0.5">
+                      <div className="space-y-0.5 text-center">
                         <div className="flex items-center gap-0.5 justify-center">
                           <CheckCircle2 className="size-2 sm:size-2.5 sm:size-3 shrink-0 text-blue-600 dark:text-blue-400" />
                           <p className="truncate text-[8px] sm:text-[9px] md:text-[10px] font-bold text-zinc-900 dark:text-zinc-100 text-center">
                             {slot.patient.split(" ")[0]} {slot.patient.split(" ")[1]}
                           </p>
                         </div>
-                        <span className="block truncate rounded-sm bg-blue-200/60 px-0.5 py-0.3 text-[6px] sm:text-[7px] md:text-[8px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
+                        <span className="inline-block truncate rounded-sm bg-blue-200/60 px-0.5 py-0.3 text-[6px] sm:text-[7px] md:text-[8px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
                           {slot.type}
                         </span>
                       </div>
@@ -172,12 +172,12 @@ export function BotFlowScene() {
 
       {/* Desktop View: All 5 Days (Segunda a Sexta) */}
       <div className="hidden md:block w-full">
-        <div className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr] gap-1.5 text-center text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+        <div className="grid grid-cols-[4rem_1fr_1fr_1fr_1fr_1fr] gap-1.5 text-center text-xs font-semibold text-zinc-500 dark:text-zinc-400">
           <div className="p-1 pr-2 text-left">Horário</div>
           {ALL_DAYS.map((day) => (
             <div
               key={day}
-              className="rounded bg-zinc-200/60 p-1.5 text-xs font-semibold text-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300"
+              className="rounded-lg bg-zinc-200/60 p-1.5 text-xs font-semibold text-zinc-700 dark:bg-zinc-800/60 dark:text-zinc-300"
             >
               {day}
             </div>
@@ -186,7 +186,7 @@ export function BotFlowScene() {
 
         <div className="mt-2.5 space-y-2">
           {TIMES.map((time) => (
-            <div key={time} className="grid grid-cols-[auto_1fr_1fr_1fr_1fr_1fr] items-center gap-1.5 text-xs">
+            <div key={time} className="grid grid-cols-[4rem_1fr_1fr_1fr_1fr_1fr] items-center gap-1.5 text-xs">
               <div className="pl-1 pr-2 text-left font-mono text-[11px] text-zinc-400 dark:text-zinc-500">
                 {time}
               </div>
@@ -203,14 +203,14 @@ export function BotFlowScene() {
                       }`}
                   >
                     {slot ? (
-                      <div className="space-y-0.5">
+                      <div className="space-y-0.5 text-center">
                         <div className="flex items-center gap-1 justify-center">
                           <CheckCircle2 className="size-3 shrink-0 text-blue-600 dark:text-blue-400" />
                           <p className="truncate text-[10px] font-bold text-zinc-900 dark:text-zinc-100 text-center">
                             {slot.patient.split(" ")[0]} {slot.patient.split(" ")[1]}
                           </p>
                         </div>
-                        <span className="block truncate rounded-sm bg-blue-200/60 px-1 py-0.3 text-[9px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
+                        <span className="inline-block truncate rounded-sm bg-blue-200/60 px-1 py-0.3 text-[9px] font-medium text-blue-800 dark:bg-blue-900/60 dark:text-blue-200 text-center">
                           {slot.type}
                         </span>
                       </div>

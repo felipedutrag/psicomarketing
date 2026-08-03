@@ -41,11 +41,11 @@ export function ComparisonTable() {
   return (
     <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100/70 shadow-xs backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/50">
       {/* Mobile Stacked Card View */}
-      <div className="block md:hidden p-1 sm:p-2 space-y-1.5 sm:space-y-2.5">
+      <div className="block md:hidden p-4 sm:p-5 space-y-2 sm:space-y-2.5">
         {comparisonItems.map((item, idx) => (
           <div
             key={idx}
-            className="rounded-xl border border-zinc-200/90 bg-white/90 p-2 sm:p-3 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-950/80 space-y-2 sm:space-y-2.5"
+            className="rounded-xl border border-zinc-200/90 bg-white/90 p-3 sm:p-3 shadow-xs dark:border-zinc-800/90 dark:bg-zinc-950/80 space-y-2 sm:space-y-2.5"
           >
             <span className="text-[10px] sm:text-xs font-bold text-zinc-900 dark:text-zinc-100 block border-b border-zinc-200/80 dark:border-zinc-800/80 pb-1 sm:pb-1.5">
               {item.feature}
@@ -53,7 +53,7 @@ export function ComparisonTable() {
 
             {/* Traditional */}
             <div className="flex items-start gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] text-zinc-700 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-900/60 p-1.5 sm:p-2 rounded-lg">
-              <X className="size-3 sm:size-3.5 shrink-0 text-red-500 mt-0.5" />
+              <X className="size-6 shrink-0 text-red-500 mt-0.5" />
               <div>
                 <span className="text-[8px] sm:text-[9px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mb-0.5">
                   Manual / Tradicional
@@ -106,7 +106,7 @@ export function ComparisonTable() {
                   </td>
                   <td className="p-4 text-zinc-700 dark:text-zinc-400">
                     <div className="flex items-start gap-2">
-                      <X className="size-4 shrink-0 text-red-500 mt-0.5" />
+                      <X className="size-6 shrink-0 text-red-500 mt-0.5" />
                       <span>{item.traditional}</span>
                     </div>
                   </td>
