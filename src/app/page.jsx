@@ -38,7 +38,7 @@ export default function Home() {
         {/* Hero & Calendar Section */}
         <section className="flex flex-col gap-6 sm:gap-10 pt-2">
           <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 py-4 sm:py-6 md:py-8">
-            <Badge className="text-[10px] sm:text-xs">{content.heroBadge}</Badge>
+            <Badge variant="outline" className="text-[10px] sm:text-xs">{content.heroBadge}</Badge>
             <h1 className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center">
               Sua secretária de IA com <br /><span className="text-primary font-bold underline underline-offset-4 decoration-primary/30 flex items-center justify-center gap-2">super poderes <Gem className="size-4 sm:size-5" /></span>
             </h1>
@@ -130,7 +130,7 @@ export default function Home() {
         {/* Final Investment Section & Calculator */}
         <section id="investimento" className="space-y-0.5 sm:space-y-6 scroll-mt-24 pt-4 md:pt-6">
           <div className="space-y-1">
-            <Badge variant="outline" className="border-indigo-500/30 text-indigo-700 dark:text-indigo-400 text-[10px] sm:text-xs">
+            <Badge variant="outline" className="text-[10px] sm:text-xs">
               {content.investmentBadge}
             </Badge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
@@ -141,7 +141,7 @@ export default function Home() {
             </p>
           </div>
 
-          <Card className="border-transparent bg-transparent p-0 shadow-none ring-0 md:border-indigo-500/30 md:bg-zinc-100/70 md:p-2 md:shadow-xs md:ring-1 lg:p-10 dark:bg-transparent dark:md:border-indigo-500/20 dark:md:bg-zinc-900/50">
+          <Card className="w-full overflow-hidden border-zinc-200/90 bg-zinc-100/70 dark:border-zinc-800/90 dark:bg-zinc-900/50">
             <CardContent className="p-0">
               <PlanCalculator />
             </CardContent>

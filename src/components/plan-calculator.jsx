@@ -443,7 +443,7 @@ export function PlanCalculator() {
                   </div>
 
                   <div className="mt-4 flex items-center justify-between border-t border-zinc-200/60 pt-2.5 dark:border-zinc-800/60">
-                    <Badge variant="secondary" className="text-[10px] py-0.5 px-2">
+                    <Badge variant="outline" className="text-[10px] py-0.5 px-2">
                       {plugin.category}
                     </Badge>
                     <span className="font-mono text-xs font-bold text-indigo-700 dark:text-indigo-300">
@@ -554,7 +554,7 @@ export function PlanCalculator() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4 sm:pb-5 mb-4 sm:mb-6">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-[10px] sm:text-xs">
+                <Badge variant="outline" className="text-[10px] sm:text-xs">
                   Checkout no Calculador
                 </Badge>
                 <span className="text-[10px] sm:text-xs font-semibold text-zinc-400">
@@ -848,7 +848,7 @@ export function PlanCalculator() {
                     </p>
                   </div>
                 </div>
-                <Badge className="bg-green-600 text-white font-mono text-xs">
+                <Badge variant="outline" className="text-green-700 dark:text-green-400 border-green-500/30 text-xs font-mono">
                   Aguardando PIX
                 </Badge>
               </div>
