@@ -25,7 +25,9 @@ export function StatsPanel() {
 
   useEffect(() => {
     fetchStats()
-    const interval = setInterval(fetchStats, 30000) // Atualiza a cada 30 segundos
+    const interval = setInterval(() => {
+      if (!document.hidden) fetchStats()
+    }, 30000) // Atualiza a cada 30 segundos (pausa quando a aba está oculta)
     return () => clearInterval(interval)
   }, [])
 

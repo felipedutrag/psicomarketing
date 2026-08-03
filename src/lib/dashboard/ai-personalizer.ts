@@ -38,10 +38,20 @@ Retorne o resultado no formato JSON:
   let result = ''
   let lastError: unknown = null
 
-  // Tenta NVIDIA primeiro
-  if (NVIDIA_KEY) {
+  // Tenta Gemini primeiro (modelo principal: gemini-3.5-flash-lite)
+  if (GEMINI_KEY) {
     try {
-      const response = await runNvidia(NVIDIA_KEY, systemPrompt, [], userPrompt, 'dashboard', CONFIG.PRIMARY_MODEL)
+      const response = await runGemini(GEMINI_KEY, systemPrompt, [], userPrompt, 'dashboard')
+      result = response.reply
+    } catch (err) {
+      lastError = err
+    }
+  }
+
+  // Fallback para NVIDIA
+  if (!result && NVIDIA_KEY) {
+    try {
+      const response = await runNvidia(NVIDIA_KEY, systemPrompt, [], userPrompt, 'dashboard', CONFIG.SECONDARY_NVIDIA_MODEL)
       result = response.reply
     } catch (err) {
       lastError = err
@@ -51,17 +61,7 @@ Retorne o resultado no formato JSON:
   // Fallback para Groq
   if (!result && GROQ_KEY) {
     try {
-      const response = await runGroq(GROQ_KEY, systemPrompt, [], userPrompt, 'dashboard', CONFIG.PRIMARY_MODEL)
-      result = response.reply
-    } catch (err) {
-      lastError = err
-    }
-  }
-
-  // Fallback para Gemini
-  if (!result && GEMINI_KEY) {
-    try {
-      const response = await runGemini(GEMINI_KEY, systemPrompt, [], userPrompt, 'dashboard')
+      const response = await runGroq(GROQ_KEY, systemPrompt, [], userPrompt, 'dashboard', CONFIG.GROQ_FALLBACK_MODEL)
       result = response.reply
     } catch (err) {
       lastError = err

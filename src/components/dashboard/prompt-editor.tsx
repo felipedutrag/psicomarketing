@@ -153,7 +153,13 @@ export function PromptEditor() {
         </div>
 
         {result && (
-          <div className={`p-4 rounded-md ${result.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+          <div
+            className={`rounded-md border px-4 py-3 text-sm ${
+              result.success
+                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
+                : 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400'
+            }`}
+          >
             {result.success ? (
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />

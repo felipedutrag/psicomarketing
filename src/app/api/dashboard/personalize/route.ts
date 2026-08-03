@@ -30,15 +30,19 @@ export async function POST(req: NextRequest) {
       customPrompt,
     })
 
-    // Atualizar leads com mensagens personalizadas
+    // Atualizar leads com mensagens personalizadas.
+    // Normaliza whatsapp como string (o Redis retorna como número) e garante que
+    // todo lead dos selecionados receba uma mensagem (fallback só troca {nome}).
+    const personalizedByWhatsapp = new Map<string, string>()
     for (const item of personalized) {
-      const lead = leads.find(l => l.whatsapp === item.whatsapp)
-      if (lead) {
-        await updateLead(lead.id, {
-          mensagem_personalizada: item.mensagem_personalizada,
-          status: 'personalized',
-        })
-      }
+      personalizedByWhatsapp.set(String(item.whatsapp), item.mensagem_personalizada)
+    }
+    for (const lead of leads) {
+      const mensagem = personalizedByWhatsapp.get(String(lead.whatsapp)) || baseMessage.replace(/{nome}/gi, lead.nome)
+      await updateLead(lead.id, {
+        mensagem_personalizada: mensagem,
+        status: 'personalized',
+      })
     }
 
     return NextResponse.json({ 

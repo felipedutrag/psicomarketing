@@ -19,6 +19,7 @@ export interface Lead {
   mensagem_inicial?: string
   mensagem_personalizada?: string
   status: 'pending' | 'personalized' | 'sent' | 'responded' | 'error'
+  na_fila?: boolean
   data_envio?: string
   data_resposta?: string
   erro?: string

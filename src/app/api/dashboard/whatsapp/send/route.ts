@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getLeads, updateLead } from '@/lib/dashboard/scraping'
-import { setWhatsAppStatus, getRandomDelay, formatPhoneNumber } from '@/lib/dashboard/whatsapp'
+import { setWhatsAppStatus, getRandomDelay, formatPhoneNumber, getSendDelay, setLastSendTime, getQueuePaused, getScheduleWindow, isWithinWindow, updateStats } from '@/lib/dashboard/whatsapp'
+
+const DEFAULT_MESSAGE =
+  'Olá, me chamo Gabriele, achei seu contato no Google Meu Negócio e queria apresentar uma solução que pode aumentar seus atendimentos e reduzir gastos com anúncios. Você pode falar 1 minuto?'
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,11 +35,24 @@ export async function POST(req: NextRequest) {
     if (leadIds && leadIds.length > 0) {
       leads = leads.filter(lead => leadIds.includes(lead.id))
     } else {
-      leads = leads.filter(lead => lead.status === 'personalized')
+      // Sem seleção explícita, envia apenas os que estão na fila
+      leads = leads.filter(lead => lead.na_fila === true && lead.status !== 'sent' && lead.status !== 'responded')
     }
 
     if (leads.length === 0) {
       return NextResponse.json({ error: 'Nenhum lead pronto para envio' }, { status: 400 })
+    }
+
+    if (await getQueuePaused()) {
+      return NextResponse.json({ error: 'A fila de envio está pausada. Retome-a antes de enviar.' }, { status: 400 })
+    }
+
+    const scheduleWindow = await getScheduleWindow()
+    if (!isWithinWindow(new Date(), scheduleWindow)) {
+      return NextResponse.json(
+        { error: `Fora do horário de envio (${scheduleWindow.start} às ${scheduleWindow.end}). Aguarde a janela abrir.` },
+        { status: 400 }
+      )
     }
 
     await setWhatsAppStatus('sending')
@@ -51,19 +67,26 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const results = []
-    for (const lead of leads) {
-      const targetPhone = formatPhoneNumber(lead.whatsapp)
-      const text = lead.mensagem_personalizada || lead.mensagem_inicial
+    const { delayMin, delayMax } = await getSendDelay()
 
-      if (!text) {
+    const results = []
+    let skipped = 0
+
+    for (const lead of leads) {
+      if (!lead.whatsapp) {
+        skipped++
+        results.push({ lead: lead.nome, phone: '', status: 'skipped' })
         continue
       }
+
+      const targetPhone = formatPhoneNumber(lead.whatsapp)
+      const text = lead.mensagem_personalizada || lead.mensagem_inicial || DEFAULT_MESSAGE
 
       try {
         await client.sendMessage(targetPhone, text)
         await updateLead(lead.id, {
           status: 'sent',
+          na_fila: false,
           data_envio: new Date().toISOString(),
         })
         results.push({ lead: lead.nome, phone: targetPhone, status: 'sent' })
@@ -75,15 +98,23 @@ export async function POST(req: NextRequest) {
         results.push({ lead: lead.nome, phone: targetPhone, status: 'error' })
       }
 
-      const delay = getRandomDelay()
-      await new Promise(resolve => setTimeout(resolve, Math.min(delay, 1000)))
+      // Delay anti-ban configurável entre as mensagens
+      const delay = getRandomDelay(delayMin * 1000, delayMax * 1000)
+      await new Promise(resolve => setTimeout(resolve, delay))
     }
+
+    // Registra o fim do disparo para a fila calcular o próximo envio
+    await setLastSendTime(Date.now())
+    await updateStats()
 
     await setWhatsAppStatus('ready')
 
     return NextResponse.json({
       success: true,
       count: results.length,
+      sent: results.filter(r => r.status === 'sent').length,
+      errored: results.filter(r => r.status === 'error').length,
+      skipped,
       results,
     })
   } catch (error) {

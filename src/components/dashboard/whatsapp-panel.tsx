@@ -33,7 +33,9 @@ export function WhatsAppPanel() {
 
   useEffect(() => {
     const initial = setTimeout(fetchStatus, 0)
-    const interval = setInterval(fetchStatus, 5000)
+    const interval = setInterval(() => {
+      if (!document.hidden) fetchStatus()
+    }, 5000)
     return () => {
       clearTimeout(initial)
       clearInterval(interval)
@@ -195,10 +197,10 @@ export function WhatsAppPanel() {
 
         {feedback && (
           <div
-            className={`text-sm p-2 rounded border ${
+            className={`rounded-md border px-3 py-2 text-sm ${
               feedback.type === 'success'
-                ? 'border-green-500/50 text-green-600 dark:text-green-400'
-                : 'border-red-500/50 text-red-600 dark:text-red-400'
+                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
+                : 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400'
             }`}
           >
             {feedback.text}

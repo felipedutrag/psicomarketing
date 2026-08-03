@@ -1,2 +1,3 @@
-2026/08/03-14:19:47.995 17f0 Creating DB D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\Local Storage\leveldb since it was missing.
-2026/08/03-14:19:48.059 17f0 Reusing MANIFEST D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\Local Storage\leveldb/MANIFEST-000001
+2026/08/03-15:34:47.649 77e0 Reusing MANIFEST D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\Local Storage\leveldb/MANIFEST-000001
+2026/08/03-15:34:47.659 77e0 Recovering log #4
+2026/08/03-15:34:47.660 77e0 Reusing old log D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\Local Storage\leveldb/000004.log 

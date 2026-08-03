@@ -40,3 +40,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# whatsapp session (chrome profile) - fora do watch do Turbopack para nao derrubar o dev server
+/.wwebjs_auth/
+.wwebjs_auth/
+.wwebapp/

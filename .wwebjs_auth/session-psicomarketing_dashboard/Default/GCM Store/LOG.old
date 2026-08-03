@@ -1,2 +1,3 @@
-2026/08/03-14:19:54.236 25a4 Creating DB D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\GCM Store since it was missing.
-2026/08/03-14:19:54.248 25a4 Reusing MANIFEST D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\GCM Store/MANIFEST-000001
+2026/08/03-15:34:56.179 62dc Reusing MANIFEST D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\GCM Store/MANIFEST-000001
+2026/08/03-15:34:56.180 62dc Recovering log #3
+2026/08/03-15:34:56.181 62dc Reusing old log D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\GCM Store/000003.log 

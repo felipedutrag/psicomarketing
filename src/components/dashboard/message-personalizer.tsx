@@ -9,7 +9,12 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Sparkles, Loader2, CheckCircle } from 'lucide-react'
 
-export function MessagePersonalizer() {
+interface MessagePersonalizerProps {
+  selectedLeadIds?: string[]
+  onPersonalized?: () => void
+}
+
+export function MessagePersonalizer({ selectedLeadIds = [], onPersonalized }: MessagePersonalizerProps) {
   const [baseMessage, setBaseMessage] = useState('')
   const [customPrompt, setCustomPrompt] = useState('')
   const [useCustomPrompt, setUseCustomPrompt] = useState(false)
@@ -32,11 +37,15 @@ export function MessagePersonalizer() {
         body: JSON.stringify({
           baseMessage,
           customPrompt: useCustomPrompt ? customPrompt : undefined,
+          leadIds: selectedLeadIds,
         })
       })
 
       const data = await response.json()
       setResult(data)
+      if (data.success && onPersonalized) {
+        onPersonalized()
+      }
     } catch (error) {
       setResult({ success: false, error: 'Erro ao personalizar mensagens' })
     } finally {
@@ -108,7 +117,13 @@ Não altere a essência da mensagem original, apenas personalize com o nome.`
         </Button>
 
         {result && (
-          <div className={`p-4 rounded-md ${result.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+          <div
+            className={`rounded-md border px-4 py-3 text-sm ${
+              result.success
+                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
+                : 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400'
+            }`}
+          >
             {result.success ? (
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4" />
@@ -121,9 +136,14 @@ Não altere a essência da mensagem original, apenas personalize com o nome.`
         )}
 
         <div className="text-xs text-gray-500">
-          <p>• Modelos: NVIDIA → Groq → Gemini (fallback)</p>
+          <p>• Modelos: Gemini → NVIDIA → Groq (fallback)</p>
           <p>• Personalização baseada no nome do lead</p>
           <p>• Mensagens salvas no Redis</p>
+          {selectedLeadIds.length === 0 && (
+            <p className="mt-1 text-amber-600">
+              • Selecione leads na tabela acima. Sem seleção, personaliza apenas os pendentes.
+            </p>
+          )}
         </div>
       </CardContent>
     </Card>
