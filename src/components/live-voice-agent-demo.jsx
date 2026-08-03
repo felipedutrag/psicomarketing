@@ -1,6 +1,7 @@
 "use client";
 
-import { useLilithVoice, GEMINI_LIVE_VOICES } from "@/hooks/use-lilith-voice";
+import { useLilithVoice } from "@/hooks/use-lilith-voice";
+import { GEMINI_LIVE_VOICES } from "@/lib/gemini-live/config";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
