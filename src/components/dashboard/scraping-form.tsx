@@ -12,6 +12,7 @@ interface ScrapeResultItem {
   nome: string
   whatsapp?: string
   website?: string
+  endereco?: string
 }
 
 export function ScrapingForm() {
@@ -173,7 +174,7 @@ export function ScrapingForm() {
                   <ul className="text-[11px] space-y-1 max-h-36 overflow-auto">
                     {result.results.map((r, i) => (
                       <li key={i}>
-                        {r.nome} - {r.whatsapp} {r.website ? `- ${r.website}` : ''}
+                        {r.nome} - {r.whatsapp} {r.website ? `- ${r.website}` : ''} {r.endereco ? `(${r.endereco})` : ''}
                       </li>
                     ))}
                   </ul>

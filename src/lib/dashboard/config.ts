@@ -16,6 +16,7 @@ export interface Lead {
   nome: string
   whatsapp: string
   website?: string
+  endereco?: string
   mensagem_inicial?: string
   mensagem_personalizada?: string
   status: 'pending' | 'personalized' | 'sent' | 'responded' | 'error'

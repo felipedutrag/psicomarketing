@@ -59,7 +59,7 @@ export default function DashboardPage() {
         />
 
         {/* Notion Content Canvas */}
-        <main className="flex-1 px-4 sm:px-12 py-6 max-w-7xl w-full mx-auto space-y-6">
+        <main className="flex-1 px-4 sm:px-12 py-6 pb-20 max-w-7xl w-full mx-auto space-y-6">
           {/* Notion Callout Block Notice */}
           <div className="flex items-start gap-3 rounded-[6px] border border-indigo-200/60 bg-indigo-50/50 p-3.5 dark:border-indigo-900/30 dark:bg-indigo-950/20 text-xs text-indigo-900 dark:text-indigo-200">
             <span className="text-base">💡</span>
@@ -234,7 +234,7 @@ export default function DashboardPage() {
 
           {/* Tab 4: Dispatch Queue */}
           {activeTab === 'queue' && (
-            <div className="space-y-6 animate-in fade-in duration-200 max-w-4xl">
+            <div className="space-y-6 animate-in fade-in duration-200">
               <SendQueue />
             </div>
           )}

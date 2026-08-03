@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         success: true,
         count: saved.length,
         scraped: scraped.length,
-        results: saved.map(l => ({ nome: l.nome, whatsapp: l.whatsapp, website: l.website })),
+        results: saved.map(l => ({ nome: l.nome, whatsapp: l.whatsapp, website: l.website, endereco: l.endereco })),
       })
     }
 

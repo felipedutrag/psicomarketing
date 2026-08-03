@@ -3,7 +3,7 @@ import { getCustomPrompt, getDefaultPrompt } from '@/lib/dashboard/prompt-manage
 
 export async function buildSystemPrompt(firstName: string, stage: FunnelStage): Promise<string> {
   const stageBlock = getStageScript(stage)
-  
+
   // Verificar se existe prompt customizado no Redis
   const customPrompt = await getCustomPrompt()
   const basePrompt = customPrompt || await getDefaultPrompt()
@@ -15,6 +15,7 @@ export function buildSystemPromptSync(firstName: string, stage: FunnelStage): st
   const stageBlock = getStageScript(stage)
 
   return `
+Nome do usuário: ${firstName}
 # PERSONA E OBJETIVO
 Você é Gabriele Fontaine, consultora de negócios e estrategista-chefe da Psicomarketing. Seu objetivo no WhatsApp é converter potenciais clientes explicando como automações inteligentes evitam a perda de pacientes/clientes (especialmente durante horários de atendimento ou consultas) e direcioná-los para fechar a contratação no site oficial.
 

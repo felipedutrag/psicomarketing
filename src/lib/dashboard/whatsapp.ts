@@ -22,9 +22,9 @@ export async function setQRCode(qrCode: string): Promise<void> {
 }
 
 export async function updateStats(): Promise<void> {
-  const leads = await redis.keys(`${DASHBOARD_CONFIG.LEADS_KEY}:*`)
+  const keys = await redis.keys(`${DASHBOARD_CONFIG.LEADS_KEY}:*`)
   const stats = {
-    total_leads: leads.length,
+    total_leads: keys.length,
     pending: 0,
     personalized: 0,
     sent: 0,
@@ -34,12 +34,19 @@ export async function updateStats(): Promise<void> {
     last_updated: new Date().toISOString(),
   }
 
-  for (const key of leads) {
-    const lead = await redis.hgetall(key) as Record<string, unknown> | null
-    if (!lead) continue
-    const status = lead.status as string
-    if (status in stats) {
-      stats[status as keyof typeof stats]++
+  if (keys.length > 0) {
+    const pipeline = redis.pipeline()
+    for (const key of keys) {
+      pipeline.hgetall(key)
+    }
+    const results = await pipeline.exec() as (Record<string, unknown> | null)[]
+
+    for (const lead of results) {
+      if (!lead) continue
+      const status = lead.status as string
+      if (status in stats) {
+        stats[status as keyof typeof stats]++
+      }
     }
   }
 

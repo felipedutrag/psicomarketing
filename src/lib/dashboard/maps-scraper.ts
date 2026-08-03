@@ -7,9 +7,17 @@ export interface ScrapedPlace {
   nome: string
   whatsapp?: string
   website?: string
+  endereco?: string
 }
 
 const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms))
+
+function normalizeText(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+}
 
 const LAUNCH_ARGS = [
   '--no-sandbox',
@@ -65,7 +73,7 @@ export async function scrapeLeadsByCities(
       const url = templateUrl.replace('${CIDADE}', encodeURIComponent(cleanCity))
       console.log(`[SCRAPER] Buscando leads para "${cleanCity}" -> ${url}`)
 
-      const cityLeads = await scrapeCity(browser, url, limitPerCity)
+      const cityLeads = await scrapeCity(browser, url, limitPerCity, cleanCity)
 
       for (const lead of cityLeads) {
         const key = (lead.whatsapp || lead.nome).toLowerCase()
@@ -83,8 +91,9 @@ export async function scrapeLeadsByCities(
   return found
 }
 
-async function scrapeCity(browser: Browser, url: string, limit: number): Promise<ScrapedPlace[]> {
-  const page = await browser.newPage()
+async function scrapeCity(browser: Browser, url: string, limit: number, cityName: string): Promise<ScrapedPlace[]> {
+  const context = await browser.createBrowserContext()
+  const page = await context.newPage()
   await page.setUserAgent(USER_AGENT)
   await page.setExtraHTTPHeaders({ 'Accept-Language': 'pt-BR,pt;q=0.9' })
   await page.setViewport({ width: 1366, height: 900 })
@@ -94,10 +103,20 @@ async function scrapeCity(browser: Browser, url: string, limit: number): Promise
     await sleep(4000)
     await dismissConsent(page)
 
-    // Rola a página para carregar mais resultados
-    for (let i = 0; i < Math.ceil(limit / 20) + 2; i++) {
-      await page.keyboard.press('End')
-      await sleep(700)
+    // Rola o feed do Google Maps (div[role="feed"]) para carregar mais resultados até atingir o limite
+    for (let i = 0; i < 35; i++) {
+      const currentCount = await page.evaluate(() => {
+        const feed = document.querySelector('div[role="feed"]')
+        if (feed) {
+          feed.scrollTop = feed.scrollHeight
+        }
+        const urls = Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href*="/maps/place/"]'))
+          .map(a => a.href.split('?')[0])
+        return Array.from(new Set(urls)).length
+      })
+
+      if (currentCount >= limit * 1.5) break
+      await sleep(1000)
     }
 
     const placeUrls = await page.evaluate(() => {
@@ -105,7 +124,7 @@ async function scrapeCity(browser: Browser, url: string, limit: number): Promise
         .map(a => a.href.split('?')[0])
       return Array.from(new Set(urls))
     })
-    console.log(`[SCRAPER] ${placeUrls.length} lugares encontrados`)
+    console.log(`[SCRAPER] ${placeUrls.length} lugares encontrados para ${cityName}`)
 
     const results: ScrapedPlace[] = []
     const selected = placeUrls.slice(0, limit)
@@ -124,7 +143,7 @@ async function scrapeCity(browser: Browser, url: string, limit: number): Promise
 
     return results
   } finally {
-    await page.close()
+    await context.close()
   }
 }
 
@@ -164,7 +183,13 @@ async function scrapePlace(page: Page, url: string): Promise<ScrapedPlace | null
         phone = tel ? tel.href.replace('tel:', '') : ''
       }
 
-      return { nome, website, phone }
+      let endereco = ''
+      const addressEl = document.querySelector('button[data-item-id="address"]') || document.querySelector('[data-item-id="address"]') || document.querySelector('.Io6YTe')
+      if (addressEl) {
+        endereco = addressEl.textContent?.trim() || ''
+      }
+
+      return { nome, website, phone, endereco }
     })
 
     if (!data.nome && !data.phone) return null
@@ -175,6 +200,7 @@ async function scrapePlace(page: Page, url: string): Promise<ScrapedPlace | null
       const digits = normalizePhone(data.phone)
       if (digits) lead.whatsapp = digits
     }
+    if (data.endereco) lead.endereco = data.endereco
 
     return lead
   } catch {

@@ -39,6 +39,47 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
   const [filterQuery, setFilterQuery] = useState('')
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
+  const [colWidths, setColWidths] = useState({
+    nome: 220,
+    whatsapp: 140,
+    mensagem: 240,
+    website: 150,
+    status: 140,
+    acoes: 100,
+  })
+
+  const [resizingCol, setResizingCol] = useState<string | null>(null)
+  const [startX, setStartX] = useState(0)
+  const [startWidth, setStartWidth] = useState(0)
+
+  const handleMouseDown = (col: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    setResizingCol(col)
+    setStartX(e.clientX)
+    setStartWidth(colWidths[col as keyof typeof colWidths])
+  }
+
+  useEffect(() => {
+    if (!resizingCol) return
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const diff = e.clientX - startX
+      const newWidth = Math.max(80, startWidth + diff)
+      setColWidths(prev => ({ ...prev, [resizingCol]: newWidth }))
+    }
+
+    const handleMouseUp = () => {
+      setResizingCol(null)
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [resizingCol, startX, startWidth])
+
   const visibleLeads = leads
     .filter((lead) => lead.status !== 'sent')
     .filter((lead) =>
@@ -260,7 +301,7 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
 
       {/* Notion Style Table */}
       <div className="overflow-x-auto rounded-md border border-zinc-200/80 bg-white dark:bg-[#202020] dark:border-[#2f2f2f]">
-        <Table>
+        <Table className="w-full table-fixed">
           <TableHeader className="bg-zinc-50 dark:bg-[#1a1a1a]">
             <TableRow className="border-b border-zinc-200/80 dark:border-[#2b2b2b]">
               <TableHead className="w-10">
@@ -269,12 +310,29 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
                   onCheckedChange={handleSelectAll}
                 />
               </TableHead>
-              <TableHead className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">Aa Nome</TableHead>
-              <TableHead className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">📱 WhatsApp</TableHead>
-              <TableHead className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">💬 Mensagem</TableHead>
-              <TableHead className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">🔗 Website</TableHead>
-              <TableHead className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">🏷️ Status</TableHead>
-              <TableHead className="text-right text-xs font-semibold text-zinc-600 dark:text-zinc-400">Ações</TableHead>
+              <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.nome }}>
+                Aa Nome
+                <div onMouseDown={(e) => handleMouseDown('nome', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
+              </TableHead>
+              <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.whatsapp }}>
+                📱 WhatsApp
+                <div onMouseDown={(e) => handleMouseDown('whatsapp', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
+              </TableHead>
+              <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.mensagem }}>
+                💬 Mensagem
+                <div onMouseDown={(e) => handleMouseDown('mensagem', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
+              </TableHead>
+              <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.website }}>
+                🔗 Website
+                <div onMouseDown={(e) => handleMouseDown('website', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
+              </TableHead>
+              <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.status }}>
+                🏷️ Status
+                <div onMouseDown={(e) => handleMouseDown('status', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
+              </TableHead>
+              <TableHead className="relative text-right text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none" style={{ width: colWidths.acoes }}>
+                Ações
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -296,45 +354,48 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
                   key={lead.id}
                   className="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/40 border-b border-zinc-100 dark:border-[#2b2b2b] text-xs transition-colors"
                 >
-                  <TableCell>
+                  <TableCell className="w-10">
                     <Checkbox
                       checked={selectedIds.includes(lead.id)}
                       onCheckedChange={(checked) => handleSelectLead(lead.id, checked as boolean)}
                     />
                   </TableCell>
-                  <TableCell className="font-semibold text-zinc-900 dark:text-zinc-100">
-                    {lead.nome}
+                  <TableCell className="font-semibold text-zinc-900 dark:text-zinc-100 truncate" style={{ width: colWidths.nome }}>
+                    <div className="truncate" title={lead.nome}>{lead.nome}</div>
                   </TableCell>
-                  <TableCell className="font-mono text-zinc-600 dark:text-zinc-400">
-                    {lead.whatsapp}
+                  <TableCell className="font-mono text-zinc-600 dark:text-zinc-400 truncate" style={{ width: colWidths.whatsapp }}>
+                    <div className="truncate">{lead.whatsapp}</div>
                   </TableCell>
-                  <TableCell className="max-w-[280px]">
+                  <TableCell style={{ width: colWidths.mensagem }}>
                     <details className="cursor-pointer group">
-                      <summary className="text-[11px] text-zinc-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                      <summary className="text-[11px] text-zinc-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 truncate">
                         Ver mensagem...
                       </summary>
-                      <div className="mt-1.5 p-2 rounded bg-zinc-100 dark:bg-[#181818] border border-zinc-200/60 dark:border-[#2f2f2f] text-[11px] text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">
+                      <div className="mt-1.5 p-2 rounded bg-zinc-100 dark:bg-[#181818] border border-zinc-200/60 dark:border-[#2f2f2f] text-[11px] text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap max-w-xs">
                         {getPlannedMessage(lead)}
                       </div>
                     </details>
                   </TableCell>
-                  <TableCell>
+                  <TableCell style={{ width: colWidths.website }}>
                     {lead.website ? (
                       <a
                         href={lead.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
+                        className="inline-flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 hover:underline truncate max-w-full"
+                        title={lead.website}
                       >
-                        {getWebsiteLabel(lead.website)}
-                        <ExternalLink className="h-3 w-3" />
+                        <span className="truncate">{getWebsiteLabel(lead.website)}</span>
+                        <ExternalLink className="h-3 w-3 shrink-0" />
                       </a>
                     ) : (
                       <span className="text-zinc-400">-</span>
                     )}
                   </TableCell>
-                  <TableCell>{getNotionStatusBadge(lead.status, lead.na_fila)}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell style={{ width: colWidths.status }}>
+                    {getNotionStatusBadge(lead.status, lead.na_fila)}
+                  </TableCell>
+                  <TableCell className="text-right" style={{ width: colWidths.acoes }}>
                     <div className="flex items-center justify-end gap-1">
                       <Button
                         onClick={() =>

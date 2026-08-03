@@ -1,3 +1,6 @@
-2026/08/03-16:01:26.623 6830 Reusing MANIFEST D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\Local Storage\leveldb/MANIFEST-000001
-2026/08/03-16:01:26.633 6830 Recovering log #4
-2026/08/03-16:01:26.637 6830 Reusing old log D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\Local Storage\leveldb/000004.log 
+2026/08/03-16:41:31.687 29d0 Reusing MANIFEST D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\Local Storage\leveldb/MANIFEST-000001
+2026/08/03-16:41:31.696 29d0 Recovering log #4
+2026/08/03-16:41:31.699 29d0 Reusing old log D:\psicomarketing\.wwebjs_auth\session-psicomarketing_dashboard\Default\Local Storage\leveldb/000004.log 
+2026/08/03-16:42:31.703 6048 Level-0 table #7: started
+2026/08/03-16:42:31.707 6048 Level-0 table #7: 15255 bytes OK
+2026/08/03-16:42:31.711 6048 Delete type=0 #4

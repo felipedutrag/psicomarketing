@@ -6,21 +6,33 @@ const redis = Redis.fromEnv()
 
 export async function saveLeads(leads: Lead[]): Promise<void> {
   for (const lead of leads) {
-    await redis.hset(`${DASHBOARD_CONFIG.LEADS_KEY}:${lead.id}`, lead as unknown as Record<string, unknown>)
+    const cleanLead: Record<string, unknown> = {}
+    for (const [k, v] of Object.entries(lead)) {
+      if (v !== null && v !== undefined) {
+        cleanLead[k] = v
+      }
+    }
+    await redis.hset(`${DASHBOARD_CONFIG.LEADS_KEY}:${lead.id}`, cleanLead)
   }
 }
 
 export async function getLeads(): Promise<Lead[]> {
   const keys = await redis.keys(`${DASHBOARD_CONFIG.LEADS_KEY}:*`)
-  const leads: Lead[] = []
-  
+  if (keys.length === 0) return []
+
+  const pipeline = redis.pipeline()
   for (const key of keys) {
-    const lead = await redis.hgetall(key) as Record<string, unknown> | null
+    pipeline.hgetall(key)
+  }
+  const results = await pipeline.exec() as (Record<string, unknown> | null)[]
+
+  const leads: Lead[] = []
+  for (const lead of results) {
     if (lead && lead.id) {
       leads.push(lead as unknown as Lead)
     }
   }
-  
+
   return leads.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 }
 
@@ -30,7 +42,15 @@ export async function getLeadById(id: string): Promise<Lead | null> {
 }
 
 export async function updateLead(id: string, updates: Partial<Lead>): Promise<void> {
-  await redis.hset(`${DASHBOARD_CONFIG.LEADS_KEY}:${id}`, updates as unknown as Record<string, unknown>)
+  const cleanUpdates: Record<string, unknown> = {}
+  for (const [k, v] of Object.entries(updates)) {
+    if (v !== null && v !== undefined) {
+      cleanUpdates[k] = v
+    }
+  }
+  if (Object.keys(cleanUpdates).length > 0) {
+    await redis.hset(`${DASHBOARD_CONFIG.LEADS_KEY}:${id}`, cleanUpdates)
+  }
 }
 
 export async function deleteLead(id: string): Promise<void> {
@@ -79,6 +99,7 @@ export async function saveScrapedLeads(places: ScrapedPlace[]): Promise<Lead[]> 
       nome: place.nome,
       whatsapp,
       website: place.website,
+      endereco: place.endereco,
       status: 'pending',
       created_at: new Date().toISOString(),
     })
