@@ -56,12 +56,18 @@ export async function POST(req: NextRequest) {
 
     if (name === 'enviarConfirmacaoAgendamento') {
       const { id, nome, dia, horario, tipoConsulta } = (args || {}) as EnviarConfirmacaoArgs
-      if (id === undefined || id === null || String(id).trim() === '') {
+      
+      // Tentar obter id dos parâmetros de contexto da URL se não fornecido
+      const contextId = args?.contextId as string | undefined
+      const targetId = id || contextId
+      
+      if (!targetId || String(targetId).trim() === '') {
         return NextResponse.json({
           status: 'error',
           message: 'Não foi possível enviar a confirmação: o parâmetro id é obrigatório.',
         })
       }
+      
       const message = [
         `✅ Confirmação de Agendamento (simulado)`,
         ``,
@@ -72,10 +78,10 @@ export async function POST(req: NextRequest) {
         ``,
         `Se precisar remarcar ou cancelar, é só chamar a Lilith. 😉`,
       ].join('\n')
-      const manychat = await sendMessage(id, message)
+      const manychat = await sendMessage(targetId, message)
       return NextResponse.json({
         status: 'success',
-        message: `Confirmação de agendamento enviada para o ID ${id} via ManyChat.`,
+        message: `Confirmação de agendamento enviada para o ID ${targetId} via ManyChat.`,
         agendamento: {
           id: `b-${Date.now()}`,
           nome: nome || 'Paciente',

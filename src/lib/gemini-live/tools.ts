@@ -41,32 +41,36 @@ export const GEMINI_LIVE_TOOLS: ToolDeclaration[] = [
   },
   {
     name: 'enviarConfirmacaoAgendamento',
-    description: 'Envia a confirmação do agendamento simulado para o paciente via ManyChat (WhatsApp), usando o id do usuário no ManyChat.',
+    description: 'Envia a confirmação do agendamento simulado para o paciente via ManyChat (WhatsApp), usando o id do usuário no ManyChat. Use o id do contexto de identificação se disponível.',
     parameters: {
       type: 'OBJECT',
       properties: {
-        id: { type: 'STRING', description: 'ID do usuário/subscriber no ManyChat que deve receber a confirmação' },
+        id: { type: 'STRING', description: 'ID do usuário/subscriber no ManyChat que deve receber a confirmação (use o id do contexto se disponível)' },
         nome: { type: 'STRING', description: 'Nome completo do paciente' },
         dia: { type: 'STRING', description: 'Dia da semana da consulta (ex: Quinta-feira, Amanhã)' },
         horario: { type: 'STRING', description: 'Horário da consulta (ex: 15:00)' },
         tipoConsulta: { type: 'STRING', description: 'Tipo da consulta (ex: Acolhimento, Terapia Individual)' },
       },
-      required: ['id'],
+      required: [],
     },
   },
 ]
 
 export const SYSTEM_INSTRUCTION = `Você é a Lilith, a assistente de voz inteligente e oficial do Psicomarketing.
-Assim que a chamada for iniciada, cumprimente o usuário imediatamente em áudio com uma saudação calorosa e profissional (ex: "Olá! Eu sou a Lilith, assistente inteligente do Psicomarketing. Como posso te ajudar a automatizar e escalar seu consultório hoje?").
+Assim que a chamada for iniciada, cumprimente o usuário imediatamente em áudio com uma saudação calorosa e profissional.
+Se o nome do usuário estiver disponível, use-o no cumprimento (ex: "Olá, {nome}! Eu sou a Lilith, assistente inteligente do Psicomarketing. Como posso te ajudar a automatizar e escalar seu consultório hoje?").
+Se o nome não estiver disponível, use um cumprimento genérico (ex: "Olá! Eu sou a Lilith, assistente inteligente do Psicomarketing. Como posso te ajudar a automatizar e escalar seu consultório hoje?").
+IMPORTANTE: Você DEVE começar falando imediatamente assim que a sessão for iniciada, não espere o usuário falar primeiro.
 Sua missão é explicar para psicólogos e clínicas como a automação inteligente escala o consultório.
 Seja direta, empática, profissional e perspicaz.
 Quando o usuário quiser agendar uma consulta ou demonstração, chame a ferramenta agendarConsulta com nome, dia e horário.
+Após um agendamento bem-sucedido, chame a ferramenta enviarConfirmacaoAgendamento para enviar a confirmação via WhatsApp usando o id do usuário.
 Responda de forma concisa e natural, ideal para conversa em áudio em tempo real.`
 
 export function buildSystemInstruction(identity?: { nome?: string; id?: string }): string {
   const identityNote =
     identity && (identity.nome || identity.id)
-      ? `\n\nContexto opcional de identificação desta sessão (use apenas se fizer sentido na conversa):\n- nome: ${identity.nome || 'não informado'}\n- id: ${identity.id || 'não informado'}`
+      ? `\n\nContexto de identificação do usuário nesta sessão:\n- nome: ${identity.nome || 'não informado'}\n- id: ${identity.id || 'não informado'}\nUse o nome do usuário nos cumprimentos e na conversa quando apropriado.`
       : ''
   return `${SYSTEM_INSTRUCTION}${identityNote}`
 }

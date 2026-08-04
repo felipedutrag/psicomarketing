@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLilithVoice } from "@/hooks/use-lilith-voice";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -14,6 +14,19 @@ import {
 const initialBookings = [];
 
 export function LiveVoiceAgentDemo() {
+  const [identity, setIdentity] = useState({ nome: null, id: null });
+
+  // Ler parâmetros da URL
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      setIdentity({
+        nome: urlParams.get('nome') || null,
+        id: urlParams.get('id') || null
+      });
+    }
+  }, []);
+
   const {
     isRecordingVoice,
     isSpeaking,
@@ -21,7 +34,7 @@ export function LiveVoiceAgentDemo() {
     startLiveDialog,
     selectedVoice,
     scheduledBookings,
-  } = useLilithVoice();
+  } = useLilithVoice(identity);
 
   const displayBookings = [...scheduledBookings, ...initialBookings];
 

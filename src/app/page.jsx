@@ -15,7 +15,13 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-export default function Home() {
+export default async function Home({ searchParams }) {
+  // Ler parâmetros nome e id da URL
+  const params = await searchParams
+  const urlParams = {
+    nome: params?.nome || null,
+    id: params?.id || null
+  };
   return (
     <main className="site-scope relative min-h-screen overflow-x-clip bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
       {/* Subtle Dot Grid Background */}

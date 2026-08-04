@@ -75,7 +75,12 @@ function normalizeSchemaTypes(schema: any): any {
 
 const RESPONSE_SAMPLE_RATE = 24000
 
-export function useLilithVoice() {
+interface Identity {
+  nome?: string | null
+  id?: string | null
+}
+
+export function useLilithVoice(identity?: Identity) {
   const [isRecordingVoice, setIsRecordingVoice] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [isReadyToSpeak, setIsReadyToSpeak] = useState(false)
@@ -110,6 +115,7 @@ export function useLilithVoice() {
 
   const lastToolCallRef = useRef<string | null>(null)
   const newTurnRef = useRef(false)
+  const identityRef = useRef(identity)
 
   const sessionIdRef = useRef(sessionId)
   const resumptionHandleRef = useRef<string | null>(null)
@@ -121,10 +127,11 @@ export function useLilithVoice() {
   useEffect(() => {
     sessionIdRef.current = sessionId
     voiceNameRef.current = selectedVoice
+    identityRef.current = identity
     const savedSession = loadSession()
     resumptionHandleRef.current = savedSession?.resumptionHandle ?? null
     conversationHistoryRef.current = savedSession?.history ?? []
-  }, [sessionId, selectedVoice])
+  }, [sessionId, selectedVoice, identity])
 
   const persistResumptionHandle = useCallback((handle: string | null) => {
     if (handle === resumptionHandleRef.current) return
@@ -228,9 +235,12 @@ export function useLilithVoice() {
     }
 
     try {
+      const identityParams = identity 
+        ? `&nome=${encodeURIComponent(identity.nome || '')}&id=${encodeURIComponent(identity.id || '')}`
+        : ''
       const res = await fetch(
         getApiUrl(
-          `/api/gemini-live/config?sessionId=${sessionIdRef.current}&voiceName=${selectedVoice}&nome=Lilith&id=${sessionIdRef.current}`
+          `/api/gemini-live/config?sessionId=${sessionIdRef.current}&voiceName=${selectedVoice}${identityParams}`
         )
       )
       const { key: apiKey, tools, systemInstruction: customInstruction, voiceName } = await res.json()
@@ -417,6 +427,9 @@ export function useLilithVoice() {
           startAudioPipeline()
           reconnectAttemptsRef.current = 0
           setIsReadyToSpeak(true)
+          
+          // Enviar uma mensagem vazia para forçar a IA a começar a falar
+          ws.send(JSON.stringify({ realtimeInput: { mediaChunks: [] } }))
           return
         }
 
@@ -518,10 +531,16 @@ export function useLilithVoice() {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 let finalResponse: any
                 try {
+                  // Adicionar contexto de identificação aos argumentos
+                  const enrichedArgs = {
+                    ...f.args,
+                    contextId: identityRef.current?.id || null
+                  }
+                  
                   const res = await fetch(getApiUrl('/api/gemini-live/tools/execute'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: f.name, args: f.args }),
+                    body: JSON.stringify({ name: f.name, args: enrichedArgs }),
                   })
                   const result = await res.json()
                   if (result.agendamento) {
