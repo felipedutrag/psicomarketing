@@ -3,9 +3,10 @@ const MC_API = 'https://api.manychat.com/fb'
 
 export function getAuthHeader() {
   const envToken = process.env.MANYCHAT_API_KEY?.trim()
-  if (envToken && envToken.length > 15 && !envToken.includes('undefined') && !envToken.includes('null')) {
+  if (envToken) {
     const clean = envToken.replace(/^Bearer\s+/i, '').trim()
-    if (clean.length > 10) {
+    // Valid ManyChat tokens follow format: <account_id>:<hash> (ex: 4893318:6124c3758...)
+    if (/^\d+:[a-zA-Z0-9_-]+$/.test(clean)) {
       return `Bearer ${clean}`
     }
   }
@@ -54,7 +55,9 @@ export async function sendMessage(userId: string | number, text: string) {
   const json = await res.json()
   console.log('[MANYCHAT] sendMessage response:', res.status, json)
   if (!res.ok || json.status !== 'success') {
-    console.error('[MANYCHAT] sendMessage ERR', res.status, json.message, JSON.stringify(json.details?.messages || json.details))
+    const errMsg = json.message || `HTTP ${res.status}`
+    console.error('[MANYCHAT] sendMessage ERR', res.status, errMsg, JSON.stringify(json.details?.messages || json.details))
+    throw new Error(`ManyChat API Error: ${errMsg}`)
   }
   return json
 }
@@ -113,7 +116,9 @@ export async function sendMessageWithButtons(
   const json = await res.json()
   console.log('[MANYCHAT] sendMessageWithButtons response:', res.status, json)
   if (!res.ok || json.status !== 'success') {
-    console.error('[MANYCHAT] sendMessageWithButtons ERR', res.status, json.message, JSON.stringify(json.details?.messages || json.details))
+    const errMsg = json.message || `HTTP ${res.status}`
+    console.error('[MANYCHAT] sendMessageWithButtons ERR', res.status, errMsg, JSON.stringify(json.details?.messages || json.details))
+    throw new Error(`ManyChat API Error: ${errMsg}`)
   }
   return json
 }
