@@ -1,6 +1,6 @@
 export function MinimalLogo({ hideText = false, muted = false, tableHeader = false, subtle = false }) {
   return (
-    <div className={`inline-flex items-center gap-2.5 ${muted ? "opacity-80" : ""}`}>
+    <div className={`inline-flex items-center gap-1.5 ${muted ? "opacity-80" : ""}`}>
       <div
         className={`relative grid place-items-center rounded-lg border shadow-xs transition-all duration-700 ${tableHeader
             ? "size-9 animate-gradient-shift"
@@ -41,7 +41,7 @@ export function MinimalLogo({ hideText = false, muted = false, tableHeader = fal
         </svg>
       </div>
       {!hideText && (
-        <span className={`text-sm sm:text-base font-semibold tracking-tight leading-none ${subtle ? "text-indigo-700 dark:text-zinc-100" : "text-zinc-900 dark:text-zinc-100"}`}>
+        <span className={`text-sm sm:text-base font-medium tracking-tight leading-none ${subtle ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-900 dark:text-zinc-100"}`}>
           Psicomarketing
         </span>
       )}
