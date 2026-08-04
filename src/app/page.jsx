@@ -141,11 +141,9 @@ export default function Home() {
             </p>
           </div>
 
-          <Card className="w-full overflow-hidden border-zinc-200/90 bg-zinc-100/70 dark:border-zinc-800/90 dark:bg-zinc-900/50">
-            <CardContent className="p-0">
+          <div className="w-full">
               <PlanCalculator />
-            </CardContent>
-          </Card>
+            </div>
         </section>
       </div>
 
