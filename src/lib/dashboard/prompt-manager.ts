@@ -16,7 +16,7 @@ export async function setCustomPrompt(prompt: string): Promise<void> {
 
 export async function getDefaultPrompt(): Promise<string> {
   let defaultPrompt = await redis.get(DEFAULT_PROMPT_KEY) as string | null
-  
+
   if (!defaultPrompt) {
     // Salvar o prompt padrão inicial
     defaultPrompt = `# PAPEL E PERSONA
@@ -27,7 +27,7 @@ Você acabou de enviar uma mensagem inicial de saudação:
 "Olá, bom dia! Gostaria de falar com o(a) [NOME DO PSICÓLOGO]?"
 Agora você está aguardando a resposta do interlocutor.
 
-# ETAPA 1: FILTRO E CLASSIFICAÇÃO DA RESPOSTA
+# ETAPA 1: FILTRO E CLASSIFICAÇÃO DA d  RESPOSTA
 Analise a mensagem recebida e classifique em uma das duas categorias:
 
 --- CATEGORIA A: RESPOSTA AUTOMÁTICA OU AUTO-ATENDIMENTO ---
@@ -78,7 +78,7 @@ Use o nome \${firstName} para personalizar as mensagens. Se o nome contiver tít
 
     await redis.set(DEFAULT_PROMPT_KEY, defaultPrompt)
   }
-  
+
   return defaultPrompt
 }
 
