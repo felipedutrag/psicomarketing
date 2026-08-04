@@ -120,7 +120,7 @@ export function LiveVoiceAgentDemo() {
 
                 {/* Audio Wave Visualizer Overlay when speaking */}
                 {isSpeaking && (
-                  <div className="absolute inset-0 flex items-center justify-center z-10">
+                  <div className="absolute inset-0 hidden sm:flex items-center justify-center z-10">
                     <div className="flex items-center gap-1.5 h-12">
                       <span className="w-1.5 bg-indigo-400/60 rounded-full animate-bounce h-6" style={{ animationDelay: "0ms" }} />
                       <span className="w-1.5 bg-cyan-400/60 rounded-full animate-bounce h-10" style={{ animationDelay: "150ms" }} />
