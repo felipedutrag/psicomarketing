@@ -100,33 +100,9 @@ export const TOOL_DEFS: ToolDef[] = [
       }
     }
   },
-  {
-    name: 'send_message_with_buttons',
-    description: 'Envia uma mensagem com botões interativos para o lead via WhatsApp (ManyChat). ATENÇÃO EXTREMA: Use esta tool APENAS E SOMENTE SE O LEAD SOLICITAR EXPLICITAMENTE o envio de botões ou opções em formato de botão (ex: "me manda o botão", "envia opções por botão", "manda botões"). NUNCA use esta tool espontaneamente se o lead não pediu expressamente por botões. O botão de URL aceita templates: http://psicomarketing.online/?nome={firstname}&id={id} - os placeholders {firstname} e {id} serão preenchidos automaticamente.',
-    parameters: {
-      type: 'object',
-      properties: {
-        text: {
-          type: 'string',
-          description: 'Texto da mensagem que será exibida acima dos botões.'
-        },
-        buttons: {
-          type: 'array',
-          description: 'Lista de botões (máximo 3 para WhatsApp). Cada botão precisa de text (rótulo) e payload (ação) ou url (link). Para URL, use o template: http://psicomarketing.online/?nome={firstname}&id={id}',
-          items: {
-            type: 'object',
-            properties: {
-              text: { type: 'string', description: 'Rótulo do botão (MÁXIMO 20 caracteres por exigência do WhatsApp, ex: "Ver no site", "Agendar agora")' },
-              payload: { type: 'string', description: 'Ação/payload enviado quando clicar (ex: "agendar", "falar_humano", "ver_precos")' },
-              url: { type: 'string', description: 'URL opcional para botão de link externo. Use template: http://psicomarketing.online/?nome={firstname}&id={id}' }
-            },
-            required: ['text']
-          }
-        }
-      },
-      required: ['text', 'buttons']
-    }
-  },
+  // send_message_with_buttons foi removida das tools da IA intencionalmente.
+  // O botão só deve ser enviado via chamada programática explícita no código,
+  // nunca por decisão autônoma do modelo. Veja tool-executors.ts para uso direto.
   {
     name: 'voice_booking_completed',
     description: 'Registra que o usuário completou um agendamento por voz na landing page e move o lead para a etapa de fechamento (f_fechamento). Use quando o usuário demonstrar interesse após testar a IA de voz ou fazer um agendamento simulado.',
