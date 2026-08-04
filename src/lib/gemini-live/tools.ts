@@ -39,6 +39,21 @@ export const GEMINI_LIVE_TOOLS: ToolDeclaration[] = [
       required: ['plugin'],
     },
   },
+  {
+    name: 'enviarConfirmacaoAgendamento',
+    description: 'Envia a confirmação do agendamento simulado para o paciente via ManyChat (WhatsApp), usando o id do usuário no ManyChat.',
+    parameters: {
+      type: 'OBJECT',
+      properties: {
+        id: { type: 'STRING', description: 'ID do usuário/subscriber no ManyChat que deve receber a confirmação' },
+        nome: { type: 'STRING', description: 'Nome completo do paciente' },
+        dia: { type: 'STRING', description: 'Dia da semana da consulta (ex: Quinta-feira, Amanhã)' },
+        horario: { type: 'STRING', description: 'Horário da consulta (ex: 15:00)' },
+        tipoConsulta: { type: 'STRING', description: 'Tipo da consulta (ex: Acolhimento, Terapia Individual)' },
+      },
+      required: ['id'],
+    },
+  },
 ]
 
 export const SYSTEM_INSTRUCTION = `Você é a Lilith, a assistente de voz inteligente e oficial do Psicomarketing.
@@ -47,3 +62,11 @@ Sua missão é explicar para psicólogos e clínicas como a automação intelige
 Seja direta, empática, profissional e perspicaz.
 Quando o usuário quiser agendar uma consulta ou demonstração, chame a ferramenta agendarConsulta com nome, dia e horário.
 Responda de forma concisa e natural, ideal para conversa em áudio em tempo real.`
+
+export function buildSystemInstruction(identity?: { nome?: string; id?: string }): string {
+  const identityNote =
+    identity && (identity.nome || identity.id)
+      ? `\n\nContexto opcional de identificação desta sessão (use apenas se fizer sentido na conversa):\n- nome: ${identity.nome || 'não informado'}\n- id: ${identity.id || 'não informado'}`
+      : ''
+  return `${SYSTEM_INSTRUCTION}${identityNote}`
+}

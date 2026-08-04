@@ -296,9 +296,11 @@ export class WhatsAppClient {
         this.initialize()
       }
 
-      // Se já estiver rodando/conectado, não reinicia o navegador (evita lock da sessão)
-      if (this.started && await this.isHealthy()) {
-        console.log('[WHATSAPP] Cliente já está saudável, ignorando start')
+      // Se já está rodando (navegador vivo com session lock), NÃO reinicia o
+      // navegador. Isso evita conflito de lock "browser is already running"
+      // quando múltiplas chamadas de status chegam durante a espera do QR.
+      // A recuperação de browser morto é feita pelo reconnect()/health check.
+      if (this.started) {
         this.startHealthCheck()
         return
       }

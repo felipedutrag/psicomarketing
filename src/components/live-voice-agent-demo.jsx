@@ -1,49 +1,39 @@
 "use client";
 
+import { useEffect } from "react";
 import { useLilithVoice } from "@/hooks/use-lilith-voice";
-import { GEMINI_LIVE_VOICES } from "@/lib/gemini-live/config";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Mic,
-  MicOff,
   CalendarCheck,
-  Volume2,
   CheckCircle2,
   Phone,
   PhoneOff,
 } from "lucide-react";
 
-const initialBookings = [
-  {
-    id: "b1",
-    nome: "Mariana Silva",
-    dia: "Quarta-feira",
-    horario: "14:00",
-    tipoConsulta: "Primeira Consulta",
-    status: "Confirmado",
-  },
-];
+const initialBookings = [];
 
 export function LiveVoiceAgentDemo() {
   const {
     isRecordingVoice,
     isSpeaking,
     toggleVoiceRecording,
+    startLiveDialog,
     selectedVoice,
-    setSelectedVoice,
     scheduledBookings,
   } = useLilithVoice();
 
   const displayBookings = [...scheduledBookings, ...initialBookings];
+
+  useEffect(() => {
+    const onStartVoice = () => {
+      if (!isRecordingVoice) {
+        startLiveDialog();
+      }
+    };
+    window.addEventListener("psicomarketing:start-voice", onStartVoice);
+    return () => window.removeEventListener("psicomarketing:start-voice", onStartVoice);
+  }, [startLiveDialog, isRecordingVoice]);
 
   return (
     <Card className="p-4 sm:p-6 md:p-8 bg-zinc-100/70 dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800 backdrop-blur-sm transition-all duration-300">
@@ -61,21 +51,6 @@ export function LiveVoiceAgentDemo() {
           <p className="text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
                       Crie agendamentos personalizados, cancele e remaque, deixamos uma agenda fictícia ao lado para você testar.
           </p>
-        </div>
-
-        {/* Live Status Badge */}
-        <div className="flex items-center gap-2">
-          {isRecordingVoice ? (
-            <Badge className="bg-indigo-600 text-white px-2 sm:px-3 py-1 text-[10px] sm:text-xs gap-2 animate-pulse">
-              <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-white animate-ping" />
-              <span className="hidden sm:inline">Sessão Live Ativa ({selectedVoice})</span>
-              <span className="sm:hidden">Live ({selectedVoice})</span>
-            </Badge>
-          ) : (
-            <Badge variant="outline" className="text-zinc-500 px-2 sm:px-3 py-1 text-[10px] sm:text-xs">
-              Sessão em Espera
-            </Badge>
-          )}
         </div>
       </div>
 
@@ -188,42 +163,8 @@ export function LiveVoiceAgentDemo() {
           </div>
         </div>
 
-        {/* Right Column: Voice Selector & Session Bookings Feed */}
+        {/* Right Column: Session Bookings Feed */}
         <div className="lg:col-span-7 flex flex-col justify-between space-y-4 sm:space-y-5">
-          {/* Voice Selector Dropdown (Positioned on the Right Side) */}
-          <div className="bg-white/80 dark:bg-zinc-950/60 p-3 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 text-left space-y-2 md:py-8 md:px-6">
-            <div className="flex items-center justify-between gap-2">
-              <label className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-500" />
-                <span className="hidden sm:inline">Seletor de Voz Nativa (Gemini Live)</span>
-                <span className="sm:hidden">Voz Nativa</span>
-              </label>
-              <Badge variant="secondary" className="text-[9px] sm:text-[10px] font-semibold">
-                7 Opções
-              </Badge>
-            </div>
-            <div className="line-ignite h-px w-full" />
-            <p className="text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">
-              Escolha o timbre de voz com sintetizador em tempo real (PCM 24kHz):
-            </p>
-            <Select
-              value={selectedVoice}
-              onValueChange={setSelectedVoice}
-              disabled={isRecordingVoice}
-            >
-              <SelectTrigger className="w-full h-8 sm:h-9 text-[10px] sm:text-xs font-semibold">
-                <SelectValue placeholder="Escolha uma voz" />
-              </SelectTrigger>
-              <SelectContent>
-                {GEMINI_LIVE_VOICES.map((v) => (
-                  <SelectItem key={v.id} value={v.id}>
-                    {v.name} • {v.gender} — {v.style}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
           {/* Session Bookings Feed */}
           <div className="flex-1 bg-indigo-500/5 dark:bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-3 sm:p-5 flex flex-col justify-between">
             <div>
@@ -239,7 +180,12 @@ export function LiveVoiceAgentDemo() {
               </div>
 
               <div className="space-y-2 sm:space-y-2.5 max-h-[140px] sm:max-h-[180px] overflow-y-auto pr-1">
-                {displayBookings.map((b) => (
+                {displayBookings.length === 0 ? (
+                  <div className="flex items-center justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white/60 dark:bg-zinc-900/60 border border-dashed border-zinc-300/70 dark:border-zinc-700/70 text-zinc-400 dark:text-zinc-500 text-center">
+                    Sem agendamentos ainda!
+                  </div>
+                ) : (
+                displayBookings.map((b) => (
                   <div
                     key={b.id}
                     className="flex items-center justify-between text-[10px] sm:text-xs p-2 sm:p-3 rounded-lg bg-white/90 dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs"
@@ -255,7 +201,8 @@ export function LiveVoiceAgentDemo() {
                       </Badge>
                     </div>
                   </div>
-                ))}
+                ))
+                )}
               </div>
             </div>
           </div>

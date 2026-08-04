@@ -56,7 +56,8 @@ function loadSession(): SessionData | null {
   }
 }
 
-function normalizeSchemaTypes(schema: unknown): unknown {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function normalizeSchemaTypes(schema: any): any {
   if (!schema || typeof schema !== 'object') return schema
   if (Array.isArray(schema)) return schema.map(normalizeSchemaTypes)
   const result: Record<string, unknown> = {}
@@ -71,6 +72,8 @@ function normalizeSchemaTypes(schema: unknown): unknown {
   }
   return result
 }
+
+const RESPONSE_SAMPLE_RATE = 24000
 
 export function useLilithVoice() {
   const [isRecordingVoice, setIsRecordingVoice] = useState(false)
@@ -101,10 +104,11 @@ export function useLilithVoice() {
   const shouldReconnectRef = useRef(false)
   const nextPlaybackTimeRef = useRef(0)
   const activeSourcesRef = useRef<AudioBufferSourceNode[]>([])
+  const isSpeakingRef = useRef(false)
   const currentUtteranceRef = useRef({ userText: '', modelText: '' })
   const turnCounterRef = useRef(0)
 
-  const lastToolCallRef = useRef<unknown>(null)
+  const lastToolCallRef = useRef<string | null>(null)
   const newTurnRef = useRef(false)
 
   const sessionIdRef = useRef(sessionId)
@@ -112,6 +116,7 @@ export function useLilithVoice() {
   const conversationHistoryRef = useRef<unknown[]>([])
   const voiceNameRef = useRef(selectedVoice)
   const startLiveDialogRef = useRef<(() => Promise<void>) | null>(null)
+  const reconnectAttemptsRef = useRef(0)
 
   useEffect(() => {
     sessionIdRef.current = sessionId
@@ -127,6 +132,7 @@ export function useLilithVoice() {
   }, [])
 
   const saveHistoryToSupabase = useCallback(async () => {
+    if (conversationHistoryRef.current.length === 0) return
     try {
       const userId = '8024902234'
       await fetch(getApiUrl('/api/gemini-live/voice-history'), {
@@ -150,6 +156,7 @@ export function useLilithVoice() {
     activeSourcesRef.current = []
     nextPlaybackTimeRef.current = 0
     setIsSpeaking(false)
+    isSpeakingRef.current = false
   }, [])
 
   const cleanupAudio = useCallback(() => {
@@ -208,7 +215,9 @@ export function useLilithVoice() {
     if (window.speechSynthesis) window.speechSynthesis.cancel()
     setIsRecordingVoice(true)
     shouldReconnectRef.current = true
+    reconnectAttemptsRef.current = 0
 
+    // Garante limpeza completa de qualquer instância anterior antes de conectar
     cleanupAudio()
     if (wsRef.current) {
       try {
@@ -221,11 +230,10 @@ export function useLilithVoice() {
     try {
       const res = await fetch(
         getApiUrl(
-          `/api/gemini-live/config?sessionId=${sessionIdRef.current}&voiceName=${selectedVoice}`
+          `/api/gemini-live/config?sessionId=${sessionIdRef.current}&voiceName=${selectedVoice}&nome=Lilith&id=${sessionIdRef.current}`
         )
       )
-      const { key: apiKey, tools, systemInstruction: customInstruction, voiceName } =
-        await res.json()
+      const { key: apiKey, tools, systemInstruction: customInstruction, voiceName } = await res.json()
 
       if (!apiKey) {
         setIsRecordingVoice(false)
@@ -240,7 +248,7 @@ export function useLilithVoice() {
         await audioCtxRef.current.resume()
       }
 
-      const micProcessorName = `mic-processor-${Math.random().toString(36).substring(2, 9)}`
+      const micProcessorName = `mic-processor-${Date.now()}`
       const workletCode = `
         class MicProcessor extends AudioWorkletProcessor {
           process(inputs, outputs, parameters) {
@@ -260,177 +268,383 @@ export function useLilithVoice() {
       const blob = new Blob([workletCode], { type: 'application/javascript' })
       const workletUrl = URL.createObjectURL(blob)
       await audioCtxRef.current.audioWorklet.addModule(workletUrl)
+      URL.revokeObjectURL(workletUrl)
 
-      micStreamRef.current = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const source = audioCtxRef.current.createMediaStreamSource(micStreamRef.current)
-      micWorkletNodeRef.current = new AudioWorkletNode(audioCtxRef.current, micProcessorName)
-      source.connect(micWorkletNodeRef.current)
+      micStreamRef.current = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      })
+      const micSource = audioCtxRef.current.createMediaStreamSource(micStreamRef.current)
+      const micWorkletNode = new AudioWorkletNode(audioCtxRef.current, micProcessorName)
+      micWorkletNodeRef.current = micWorkletNode
 
-      wsRef.current = new WebSocket(
-        `${GEMINI_LIVE_CONFIG.WS_BASE_URL}?key=${apiKey}`
-      )
+      const silentGain = audioCtxRef.current.createGain()
+      silentGain.gain.value = 0
+      micWorkletNode.connect(silentGain)
+      silentGain.connect(audioCtxRef.current.destination)
 
-      wsRef.current.onopen = () => {
-        setIsReadyToSpeak(true)
-        const setupMessage = {
-          setup: {
-            model: GEMINI_LIVE_CONFIG.DEFAULT_MODEL,
-            generation_config: {
-              response_modalities: ['AUDIO', 'TEXT'],
-              speech_config: {
-                voice_config: {
-                  prebuilt_voice_config: { voice_name: voiceName },
+      let setupComplete = false
+      let audioPipelineStarted = false
+
+      const savedVoiceName = voiceNameRef.current
+      let resumeHandleUsed = resumptionHandleRef.current
+      if (savedVoiceName && voiceName && savedVoiceName !== voiceName) {
+        console.log(
+          '[useLilithVoice] Voz mudou de',
+          savedVoiceName,
+          'para',
+          voiceName,
+          '- descartando resumption handle.'
+        )
+        resumeHandleUsed = null
+        resumptionHandleRef.current = null
+      }
+      voiceNameRef.current = voiceName || GEMINI_LIVE_CONFIG.DEFAULT_VOICE
+
+      const startAudioPipeline = () => {
+        if (audioPipelineStarted || ws.readyState !== WebSocket.OPEN) return
+        audioPipelineStarted = true
+
+        micWorkletNode.port.onmessage = (e) => {
+          if (ws.readyState !== WebSocket.OPEN) return
+          const { data } = e.data
+          const base64Audio = convertFloat32ToPcmBase64(data)
+          ws.send(
+            JSON.stringify({
+              realtimeInput: {
+                audio: {
+                  data: base64Audio,
+                  mimeType: 'audio/pcm;rate=16000',
                 },
               },
-            },
-            system_instruction: {
-              parts: [{ text: customInstruction }],
-            },
-            tools: tools.map((t: unknown) => normalizeSchemaTypes(t)),
-          },
+            })
+          )
         }
-        if (resumptionHandleRef.current) {
-          // @ts-ignore
-          setupMessage.setup.session = { resumption_handle: resumptionHandleRef.current }
-        }
-        wsRef.current?.send(JSON.stringify(setupMessage))
+        micSource.connect(micWorkletNode)
       }
 
-      wsRef.current.onmessage = async (event) => {
-        const data = JSON.parse(event.data)
-        
+      const ws = new WebSocket(`${GEMINI_LIVE_CONFIG.WS_BASE_URL}?key=${apiKey}`)
+      wsRef.current = ws
+
+      ws.onclose = (event) => {
+        if (event.code && event.code !== 1000) {
+          console.warn(`WebSocket fechado (code=${event.code}, reason=${event.reason || 'n/a'})`)
+        }
+        if (resumeHandleUsed && !setupComplete) {
+          console.warn(
+            '[Native Resumption] Falha ao retomar sessão, handle descartado:',
+            event.reason || event.code
+          )
+          resumptionHandleRef.current = null
+          saveSession(conversationHistoryRef.current, false, sessionIdRef.current, null, voiceNameRef.current)
+        }
+        setIsReadyToSpeak(false)
+
+        if (
+          shouldReconnectRef.current &&
+          reconnectAttemptsRef.current < GEMINI_LIVE_CONFIG.MAX_RECONNECT_ATTEMPTS
+        ) {
+          const attempt = reconnectAttemptsRef.current + 1
+          reconnectAttemptsRef.current = attempt
+          const delay = Math.min(
+            GEMINI_LIVE_CONFIG.RECONNECT_DELAY_MS * Math.pow(2, attempt - 1),
+            GEMINI_LIVE_CONFIG.MAX_RECONNECT_DELAY_MS
+          )
+          setTimeout(() => {
+            if (shouldReconnectRef.current) {
+              startLiveDialogRef.current?.()
+            }
+          }, delay)
+        } else {
+          shouldReconnectRef.current = false
+          setIsRecordingVoice(false)
+        }
+      }
+
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error)
+      }
+
+      ws.onopen = () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const normalizedTools = (tools || []).map((t: any) => ({
+          ...t,
+          parameters: normalizeSchemaTypes(t.parameters),
+        }))
+
+        const formattedTools = [
+          {
+            functionDeclarations: normalizedTools.concat([
+              {
+                name: 'desligar_conexao',
+                description: 'Encerra a chamada.',
+                parameters: { type: 'object', properties: {} },
+              },
+            ]),
+          },
+        ]
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const setupPayload: any = {
+          model: GEMINI_LIVE_CONFIG.DEFAULT_MODEL,
+          generationConfig: {
+            responseModalities: ['AUDIO'],
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: { voiceName: voiceName || GEMINI_LIVE_CONFIG.DEFAULT_VOICE },
+              },
+            },
+          },
+          tools: formattedTools,
+          systemInstruction: { parts: [{ text: customInstruction }] },
+          sessionResumption: resumeHandleUsed ? { handle: resumeHandleUsed } : {},
+        }
+
+        ws.send(JSON.stringify({ setup: setupPayload }))
+      }
+
+      ws.onmessage = async (event) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const data = JSON.parse(
+          typeof event.data === 'string' ? event.data : await event.data.text()
+        ) as any
+
         if (data.setupComplete) {
-          persistResumptionHandle(data.session?.resumption_handle || null)
+          setupComplete = true
+          startAudioPipeline()
+          reconnectAttemptsRef.current = 0
+          setIsReadyToSpeak(true)
           return
         }
 
-        if (data.toolCall) {
-          lastToolCallRef.current = data.toolCall
-          const f = data.toolCall.functionCall
-          try {
-            const res = await fetch(getApiUrl('/api/gemini-live/tools/execute'), {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name: f.name, args: f.args }),
+        if (data.serverContent?.interrupted) {
+          stopAllPlayback()
+          return
+        }
+
+        const resumptionUpdate = data.sessionResumptionUpdate
+        if (resumptionUpdate?.resumable && resumptionUpdate?.newHandle) {
+          persistResumptionHandle(resumptionUpdate.newHandle)
+        }
+
+        const serverContent = data.serverContent
+        if (serverContent) {
+          const modelTurn = serverContent.modelTurn
+          const userTurn = serverContent.userTurn
+
+          if (userTurn?.parts) {
+            userTurn.parts
+              .filter((p: any) => p.text)
+              .forEach((p: any) => (currentUtteranceRef.current.userText += p.text))
+          }
+
+          if (modelTurn?.parts) {
+            modelTurn.parts
+              .filter((p: any) => p.text)
+              .forEach((p: any) => (currentUtteranceRef.current.modelText += p.text))
+          }
+        }
+
+        if (data.serverContent?.turnComplete) {
+          newTurnRef.current = true
+          const { userText, modelText } = currentUtteranceRef.current
+          const displayUserText = userText || '[áudio do usuário]'
+
+          if (userText || modelText) {
+            conversationHistoryRef.current.push({
+              role: 'user',
+              content: displayUserText,
+              timestamp: new Date(),
             })
-            const result = await res.json()
-            if (wsRef.current) {
-              wsRef.current.send(
-                JSON.stringify({
-                  toolResponse: {
-                    id: data.toolCall.id,
-                    response: { response: result },
-                  },
-                })
-              )
+            conversationHistoryRef.current.push({
+              role: 'model',
+              content: modelText || '[áudio da Lilith]',
+              timestamp: new Date(),
+            })
+
+            turnCounterRef.current++
+            if (turnCounterRef.current >= 4) {
+              saveHistoryToSupabase()
+              turnCounterRef.current = 0
             }
-          } catch {}
-          return
+
+            saveSession(
+              conversationHistoryRef.current,
+              true,
+              sessionIdRef.current,
+              resumptionHandleRef.current,
+              voiceNameRef.current
+            )
+          }
+          currentUtteranceRef.current = { userText: '', modelText: '' }
         }
 
-        if (data.serverContent) {
-          const content = data.serverContent
-          if (content.modelTurn) {
-            const parts = content.modelTurn.parts || []
-            let textResponse = ''
-            for (const part of parts) {
-              if (part.text) textResponse += part.text
-              if (part.functionCall) {
-                // Handle function call
-              }
+        const modelParts = data.serverContent?.modelTurn?.parts || []
+        const toolCall = data.toolCall || data.tool_call
+        const functionCalls = [
+          ...(toolCall?.functionCalls || toolCall?.function_calls || []),
+          ...modelParts.filter((p: any) => p.functionCall).map((p: any) => p.functionCall),
+        ]
+
+        if (functionCalls.length > 0) {
+          console.log(
+            '[ToolFunction]',
+            functionCalls.map((f: any) => f.name).join(', ')
+          )
+          // eslint-disable-next-line no-async-promise-executor
+          ;(async () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const dedupKey = JSON.stringify(
+              functionCalls.map((f: any) => ({ name: f.name, args: f.args }))
+            )
+            if (lastToolCallRef.current === dedupKey) {
+              console.warn('[ToolFunction] Duplicate call ignored')
+              return
             }
-            
-            if (content.modelTurn?.audioData) {
-              const audioData = content.modelTurn.audioData
-              if (audioData.data && Array.isArray(audioData.data)) {
-                for (const chunk of audioData.data) {
-                  if (chunk.data) {
-                    const pcmBytes = Uint8Array.from(atob(chunk.data), (c) => c.charCodeAt(0))
-                    const audioBuffer = await audioCtxRef.current?.decodeAudioData(
-                      pcmBytes.buffer.slice(0)
-                    )
-                    if (audioBuffer && audioCtxRef.current) {
-                      const source = audioCtxRef.current.createBufferSource()
-                      source.buffer = audioBuffer
-                      source.connect(audioCtxRef.current.destination)
-                      activeSourcesRef.current.push(source)
-                      source.start(nextPlaybackTimeRef.current)
-                      nextPlaybackTimeRef.current += audioBuffer.duration
-                      setIsSpeaking(true)
-                      source.onended = () => {
-                        const idx = activeSourcesRef.current.indexOf(source)
-                        if (idx > -1) activeSourcesRef.current.splice(idx, 1)
-                        if (activeSourcesRef.current.length === 0) {
-                          setIsSpeaking(false)
-                        }
-                      }
-                    }
+            lastToolCallRef.current = dedupKey
+            setTimeout(() => {
+              lastToolCallRef.current = null
+            }, 10000)
+
+            const responses = await Promise.all(
+              functionCalls.map(async (f: any) => {
+                if (f.name === 'desligar_conexao') {
+                  setTimeout(stopLiveDialog, 400)
+                  return { name: f.name, id: f.id, response: { status: 'success' } }
+                }
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                let finalResponse: any
+                try {
+                  const res = await fetch(getApiUrl('/api/gemini-live/tools/execute'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: f.name, args: f.args }),
+                  })
+                  const result = await res.json()
+                  if (result.agendamento) {
+                    setScheduledBookings((prev) => [...prev, result.agendamento])
+                  }
+                  finalResponse =
+                    result.status === 'success'
+                      ? result
+                      : { error: result.message || result.error || 'Erro desconhecido' }
+                } catch (e) {
+                  finalResponse = {
+                    error: `Falha ao executar ferramenta ${f.name}: ${
+                      e instanceof Error ? e.message : 'Erro desconhecido'
+                    }`,
                   }
                 }
-              }
+                return { name: f.name, id: f.id, response: finalResponse }
+              })
+            )
+            ws.send(JSON.stringify({ toolResponse: { functionResponses: responses } }))
+          })().catch((e) => console.error('[ToolFunction] Erro na execução:', e))
+          return
+        }
+
+        const audioPart = modelParts.find((p: any) => p.inlineData?.data)
+        if (audioPart) {
+          if (newTurnRef.current) {
+            stopAllPlayback()
+            newTurnRef.current = false
+          }
+          const binaryString = window.atob(audioPart.inlineData.data)
+          const bytes = new Uint8Array(binaryString.length)
+          for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i)
+          const int16 = new Int16Array(bytes.buffer)
+          const float32 = new Float32Array(int16.length)
+          for (let i = 0; i < int16.length; i++) float32[i] = int16[i] / 32768.0
+          const buffer = audioCtxRef.current!.createBuffer(1, float32.length, RESPONSE_SAMPLE_RATE)
+          buffer.getChannelData(0).set(float32)
+          const source = audioCtxRef.current!.createBufferSource()
+          source.buffer = buffer
+          source.connect(audioCtxRef.current!.destination)
+          const now = audioCtxRef.current!.currentTime
+          if (nextPlaybackTimeRef.current < now) nextPlaybackTimeRef.current = now + 0.04
+          source.start(nextPlaybackTimeRef.current)
+          nextPlaybackTimeRef.current += buffer.duration
+          activeSourcesRef.current.push(source)
+          setIsSpeaking(true)
+          isSpeakingRef.current = true
+          source.onended = () => {
+            activeSourcesRef.current = activeSourcesRef.current.filter((s) => s !== source)
+            if (activeSourcesRef.current.length === 0) {
+              setIsSpeaking(false)
+              isSpeakingRef.current = false
             }
           }
         }
       }
-
-      wsRef.current.onclose = () => {
-        if (shouldReconnectRef.current) {
-          setTimeout(() => {
-            if (shouldReconnectRef.current) {
-              startLiveDialog()
-            }
-          }, GEMINI_LIVE_CONFIG.RECONNECT_DELAY_MS)
-        } else {
-          setIsRecordingVoice(false)
-          setIsReadyToSpeak(false)
-        }
-      }
-
-      wsRef.current.onerror = (error) => {
-        console.error('WebSocket error:', error)
-      }
-
-      micWorkletNodeRef.current.port.onmessage = async (event) => {
-        if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return
-        
-        const { data, isTalking } = event.data
-        if (isTalking && !isRecordingVoice) {
-          setIsRecordingVoice(true)
-        }
-        
-        const base64Audio = convertFloat32ToPcmBase64(data)
-        wsRef.current.send(
-          JSON.stringify({
-            realtimeInput: {
-              mediaChunks: [
-                {
-                  mimeType: 'audio/pcm',
-                  data: base64Audio,
-                },
-              ],
-            },
-          })
-        )
-      }
     } catch (error) {
-      console.error('Error starting live dialog:', error)
+      console.error('[useLilithVoice] Erro:', error)
       setIsRecordingVoice(false)
       setIsReadyToSpeak(false)
     }
-  }, [selectedVoice, cleanupAudio, persistResumptionHandle, convertFloat32ToPcmBase64, isRecordingVoice])
+  }, [
+    selectedVoice,
+    cleanupAudio,
+    stopLiveDialog,
+    persistResumptionHandle,
+    convertFloat32ToPcmBase64,
+    saveHistoryToSupabase,
+  ])
+
+  useEffect(() => {
+    startLiveDialogRef.current = startLiveDialog
+  }, [startLiveDialog])
+
+  const sendTextToVoice = useCallback((text: string) => {
+    if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return false
+    const textInput = {
+      clientContent: {
+        turns: [
+          {
+            role: 'user',
+            parts: [{ text }],
+          },
+        ],
+        turnComplete: true,
+      },
+    }
+    currentUtteranceRef.current = {
+      userText: currentUtteranceRef.current.userText + text,
+      modelText: currentUtteranceRef.current.modelText,
+    }
+    wsRef.current.send(JSON.stringify(textInput))
+    return true
+  }, [])
+
+  const toggleVoiceRecording = useCallback(() => {
+    if (isRecordingVoice) {
+      stopLiveDialog()
+    } else {
+      startLiveDialog()
+    }
+  }, [isRecordingVoice, startLiveDialog, stopLiveDialog])
 
   useEffect(() => {
     const handleBeforeUnload = () => {
+      saveSession(
+        conversationHistoryRef.current,
+        isRecordingVoice,
+        sessionIdRef.current,
+        resumptionHandleRef.current,
+        voiceNameRef.current
+      )
       saveHistoryToSupabase()
     }
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-  }, [saveHistoryToSupabase])
+  }, [isRecordingVoice, saveHistoryToSupabase])
 
   return {
     isRecordingVoice,
     isSpeaking,
-    isReadyToSpeak,
+    isReadyToSpeak: isReadyToSpeak && !isSpeaking,
     scheduledBookings,
     transcripts,
     selectedVoice,
@@ -438,6 +652,8 @@ export function useLilithVoice() {
     sessionId,
     startLiveDialog,
     stopLiveDialog,
+    toggleVoiceRecording,
+    sendTextToVoice,
     GEMINI_LIVE_VOICES,
   }
 }

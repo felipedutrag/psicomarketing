@@ -1,16 +1,14 @@
-import Link from "next/link";
-import { ArrowRight, Gem } from "lucide-react";
 import { MinimalHeader } from "@/components/minimal-header";
 import { BotFlowScene } from "@/components/bot-flow-scene";
 import { FeatureTabs } from "@/components/feature-tabs";
 import { LiveVoiceAgentDemo } from "@/components/live-voice-agent-demo";
+import { StartVoiceButton } from "@/components/start-voice-button";
 import { ProcessTimeline } from "@/components/process-timeline";
 import { ComparisonTable } from "@/components/comparison-table";
 import { PlanCalculator } from "@/components/plan-calculator";
 import { MinimalFooter } from "@/components/minimal-footer";
 import { siteContent as content } from "@/content/site-content";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -37,23 +35,15 @@ export default function Home() {
 
         {/* Hero & Calendar Section */}
         <section className="flex flex-col gap-6 sm:gap-10 pt-2">
-          <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 py-4 sm:py-6 md:py-8">
-            <Badge variant="outline" className="text-[10px] sm:text-xs">{content.heroBadge}</Badge>
+          <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 pt-0.5 sm:pt-1.5 md:pt-2 pb-4 sm:pb-6 md:pb-8">
             <h1 className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center">
-              Sua secretária de IA com <br /><span className="text-primary font-bold underline underline-offset-4 decoration-primary/30 flex items-center justify-center gap-2">super poderes <Gem className="size-4 sm:size-5" /></span>
+              Sua secretária de IA com <br /><span className="text-purple-600 dark:text-purple-400 font-bold underline underline-offset-4 decoration-primary/30">super poderes</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
               {content.heroDescription}
             </p>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-2">
-              <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md px-2.5 text-xs sm:px-3 sm:text-sm sm:h-8">
-                <Link href="#investimento">
-                  {content.primaryCtaLabel} <ArrowRight className="size-3.5 sm:size-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="sm" className="px-2.5 text-xs sm:px-3 sm:text-sm sm:h-8">
-                <Link href="#live-demo">{content.secondaryCtaLabel}</Link>
-              </Button>
+              <StartVoiceButton label={content.primaryCtaLabel} />
             </div>
           </div>
 
@@ -87,10 +77,6 @@ export default function Home() {
           <LiveVoiceAgentDemo />
         </section>
 
-        <div className="hidden -my-3 md:-my-4 md:block">
-          <Separator />
-        </div>
-
         {/* Timeline Pipeline */}
         <section id="fluxo" className="hidden space-y-4 scroll-mt-24 md:block">
           <div className="space-y-1">
@@ -123,12 +109,12 @@ export default function Home() {
           <ComparisonTable />
         </section>
 
-        <div className="-my-3 md:-my-4">
+        <div className="hidden -my-3 md:-my-4 md:block">
           <Separator />
         </div>
 
-        {/* Final Investment Section & Calculator */}
-        <section id="investimento" className="space-y-0.5 sm:space-y-6 scroll-mt-24 pt-4 md:pt-6">
+        {/* Final Investment Section & Calculator (desktop only) */}
+        <section id="investimento" className="hidden space-y-0.5 sm:space-y-6 scroll-mt-24 pt-4 md:block md:pt-6">
           <div className="space-y-1">
             <Badge variant="outline" className="text-[10px] sm:text-xs">
               {content.investmentBadge}

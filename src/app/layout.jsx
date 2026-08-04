@@ -1,7 +1,6 @@
 import { Plus_Jakarta_Sans, IBM_Plex_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import WhatsappButton from "@/components/WhatsappButton";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -37,13 +36,7 @@ export default function RootLayout({ children }) {
   try {
     var storageKey = "psicomarketing-theme";
     var stored = localStorage.getItem(storageKey);
-    var theme = stored === "dark" || stored === "light" ? stored : "system";
-    var resolved =
-      theme === "system"
-        ? window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light"
-        : theme;
+    var resolved = stored === "dark" ? "dark" : "light";
     var root = document.documentElement;
     root.classList.toggle("dark", resolved === "dark");
     root.style.colorScheme = resolved;
@@ -53,9 +46,8 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           {children}
-          <WhatsappButton />
         </ThemeProvider>
       </body>
     </html>

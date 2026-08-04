@@ -1,10 +1,12 @@
 export const GEMINI_LIVE_CONFIG = {
-  WS_BASE_URL: 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent',
-  DEFAULT_MODEL: 'models/gemini-2.0-flash-exp',
+  WS_BASE_URL: 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent',
+  DEFAULT_MODEL: 'models/gemini-3.1-flash-live-preview',
   DEFAULT_VOICE: 'Leda',
   SESSION_EXPIRY_MS: 7200000, // 2 horas
   MAX_HISTORY_SIZE: 20,
   RECONNECT_DELAY_MS: 1000,
+  MAX_RECONNECT_ATTEMPTS: 3,
+  MAX_RECONNECT_DELAY_MS: 4000,
   AUDIO_SAMPLE_RATE: 16000,
   VOICE_THRESHOLD: 0.05,
 } as const

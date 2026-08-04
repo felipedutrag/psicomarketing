@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { sendMessage } from '@/lib/manychat'
 
 interface ToolRequestBody {
   name: string
@@ -14,6 +15,14 @@ interface AgendarConsultaArgs {
 
 interface ExplicarPluginArgs {
   plugin?: string
+}
+
+interface EnviarConfirmacaoArgs {
+  id?: string | number
+  nome?: string
+  dia?: string
+  horario?: string
+  tipoConsulta?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -42,6 +51,40 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         status: 'success',
         message: `O plugin ${plugin || 'selecionado'} automatiza a captação e atendimento de pacientes com máxima conformidade ética.`,
+      })
+    }
+
+    if (name === 'enviarConfirmacaoAgendamento') {
+      const { id, nome, dia, horario, tipoConsulta } = (args || {}) as EnviarConfirmacaoArgs
+      if (id === undefined || id === null || String(id).trim() === '') {
+        return NextResponse.json({
+          status: 'error',
+          message: 'Não foi possível enviar a confirmação: o parâmetro id é obrigatório.',
+        })
+      }
+      const message = [
+        `✅ Confirmação de Agendamento (simulado)`,
+        ``,
+        `Olá, ${nome || 'paciente'}! Sua consulta foi agendada pela Lilith:`,
+        `• Tipo: ${tipoConsulta || 'Sessão de Acolhimento'}`,
+        `• Dia: ${dia || 'Quinta-feira'}`,
+        `• Horário: ${horario || '15:00'}`,
+        ``,
+        `Se precisar remarcar ou cancelar, é só chamar a Lilith. 😉`,
+      ].join('\n')
+      const manychat = await sendMessage(id, message)
+      return NextResponse.json({
+        status: 'success',
+        message: `Confirmação de agendamento enviada para o ID ${id} via ManyChat.`,
+        agendamento: {
+          id: `b-${Date.now()}`,
+          nome: nome || 'Paciente',
+          dia: dia || 'Quinta-feira',
+          horario: horario || '15:00',
+          tipoConsulta: tipoConsulta || 'Sessão de Acolhimento',
+          status: 'Confirmado via IA Live',
+        },
+        manychat,
       })
     }
 

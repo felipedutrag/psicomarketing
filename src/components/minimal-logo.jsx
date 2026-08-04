@@ -41,7 +41,7 @@ export function MinimalLogo({ hideText = false, muted = false, tableHeader = fal
         </svg>
       </div>
       {!hideText && (
-        <span className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+        <span className="text-sm sm:text-base font-semibold tracking-tight leading-none text-zinc-900 dark:text-zinc-100">
           Psicomarketing
         </span>
       )}

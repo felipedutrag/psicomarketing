@@ -16,11 +16,11 @@ function useClientTheme(): 'light' | 'dark' | 'system' {
   return useSyncExternalStore(
     emptySubscribe,
     () => {
-      if (typeof window === 'undefined') return 'system'
-      const stored = localStorage.getItem(STORAGE_KEY) || 'system'
-      return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system'
+      if (typeof window === 'undefined') return 'light'
+      const stored = localStorage.getItem(STORAGE_KEY) || 'light'
+      return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'light'
     },
-    () => 'system'
+    () => 'light'
   )
 }
 

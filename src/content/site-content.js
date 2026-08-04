@@ -4,7 +4,7 @@ export const siteContent = {
   heroTitle: "A sua secretária de IA com super poderes",
   heroDescription:
         "Sua agenda se preenche sozinha enquanto você atende. IA responde leads no WhatsApp, agenda no Google Calendar, otimiza seus anúncios — tudo por voz.",
-  primaryCtaLabel: "Montar meu agente",
+  primaryCtaLabel: "Testar Agendamento por Voz",
   secondaryCtaLabel: "Testar Voz",
   visualTitle: "Agenda Lotada no Piloto Automático",
   visualDescription:

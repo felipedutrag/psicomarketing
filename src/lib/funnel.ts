@@ -22,7 +22,7 @@ export const STAGE_SCRIPTS: Record<FunnelStage, string> = {
 
   f_fechamento: `Adicione a [TAG: f_fechamento] quando o cliente aprovar o preview enviado, fizer perguntas sobre contratação, formas de pagamento, valores ou demonstrar intenção clara de fechar o serviço (ex: "gostei", "como faço pra ter esse site?", "quanto custa pra ficar comigo?", "qual o PIX?").`,
 
-  f_quebra_objecao: `Adicione a [TAG: f_quebra_objecao] se o cliente recusar a oferta, apresentar dúvidas/refeições, dizer que não precisa, achar caro ou demonstrar desinteresse no momento (ex: "não tenho interesse", "já tenho site", "agora não", "achei caro").`
+  f_quebra_objecao: `Adicione a [TAG: f_quebra_objecao] se o cliente recusar a oferta, apresentar dúvidas/objeções, dizer que não precisa, achar caro ou demonstrar desinteresse no momento (ex: "não tenho interesse", "já tenho site", "agora não", "achei caro").`
 };
 
 // Lê a etapa atual do funil do lead.
@@ -60,23 +60,24 @@ export async function getLeadStage(userId: string | number): Promise<FunnelStage
   return 'f_interessado'
 }
 
-// Move o lead para uma nova etapa: remove a tag da etapa anterior e aplica a nova.
+// Move o lead para uma nova etapa: remove todas as outras tags do funil e aplica a nova.
+// Remove em paralelo (Promise.all) sem consultar a etapa anterior — as funções do ManyChat
+// ignoram remoção de tags que o usuário não possui, evitando tag fantasma e chamadas extras.
 export async function setLeadStage(userId: string | number, newStage: FunnelStage) {
   console.log('[FUNNEL] setLeadStage:', userId, newStage)
   const key = `funnel:${userId}`
 
-  // Remove todas as outras tags do funil e aplica a nova
-  const current = await getLeadStage(userId)
   const others = FUNNEL_STAGES.filter(s => s !== newStage)
-  for (const stage of others) {
-    if (stage === current) {
+  await Promise.all(
+    others.map(async (stage) => {
       try {
         await removeTagByName(userId, stage)
       } catch (err) {
         console.error('[FUNNEL] Erro ao remover tag:', stage, err)
       }
-    }
-  }
+    })
+  )
+
   try {
     await addTagByName(userId, newStage)
   } catch (err) {
