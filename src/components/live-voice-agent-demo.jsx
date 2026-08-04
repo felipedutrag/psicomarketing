@@ -117,20 +117,8 @@ export function LiveVoiceAgentDemo() {
                     backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
                   }}
                 />
-
-                {/* Audio Wave Visualizer Overlay when speaking */}
-                {isSpeaking && (
-                  <div className="absolute inset-0 hidden sm:flex items-center justify-center z-10">
-                    <div className="flex items-center gap-1.5 h-12">
-                      <span className="w-1.5 bg-indigo-400/60 rounded-full animate-bounce h-6" style={{ animationDelay: "0ms" }} />
-                      <span className="w-1.5 bg-cyan-400/60 rounded-full animate-bounce h-10" style={{ animationDelay: "150ms" }} />
-                      <span className="w-1.5 bg-teal-400/60 rounded-full animate-bounce h-8" style={{ animationDelay: "300ms" }} />
-                      <span className="w-1.5 bg-emerald-400/60 rounded-full animate-bounce h-11" style={{ animationDelay: "450ms" }} />
-                      <span className="w-1.5 bg-teal-400/60 rounded-full animate-bounce h-7" style={{ animationDelay: "200ms" }} />
-                    </div>
-                  </div>
-                )}
               </div>
+
 
               {/* Seamless Notch Cutout Button Overlay at Bottom Center */}
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20">
