@@ -1,6 +1,7 @@
 import { Redis } from '@upstash/redis'
 import { getNextAvailableSlots, createBooking, cancelBooking, formatSlot } from '@/lib/calcom'
 import { getLeadStage, setLeadStage, getStageScript, type FunnelStage } from '@/lib/funnel'
+import { sendMessageWithButtons } from '@/lib/manychat-buttons'
 
 const redis = Redis.fromEnv()
 
@@ -119,6 +120,23 @@ export async function executeTool(
       console.error('[PROCESS-AI] cancel_appointment falhou:', err)
       return {
         response: { success: false, error: err instanceof Error ? err.message : 'Erro ao cancelar agendamento' }
+      }
+    }
+  }
+
+  if (name === 'send_message_with_buttons') {
+    console.log('[PROCESS-AI] Function send_message_with_buttons chamada:', JSON.stringify(args))
+    const { text, buttons } = args as { text?: string; buttons?: Array<{ text: string; payload?: string; url?: string }> }
+    if (!text || !buttons || !Array.isArray(buttons) || buttons.length === 0) {
+      return { response: { success: false, error: 'Texto e botões são obrigatórios' } }
+    }
+    try {
+      const result = await sendMessageWithButtons(userId, text, buttons)
+      return { response: { success: true, result } }
+    } catch (err) {
+      console.error('[PROCESS-AI] send_message_with_buttons falhou:', err)
+      return {
+        response: { success: false, error: err instanceof Error ? err.message : 'Erro ao enviar mensagem com botões' }
       }
     }
   }

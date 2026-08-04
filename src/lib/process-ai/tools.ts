@@ -99,6 +99,33 @@ export const TOOL_DEFS: ToolDef[] = [
         }
       }
     }
+  },
+  {
+    name: 'send_message_with_buttons',
+    description: 'Envia uma mensagem com botões interativos para o lead via WhatsApp (ManyChat). Use para oferecer opções rápidas como agendar, ver preços, falar com humano, etc.',
+    parameters: {
+      type: 'object',
+      properties: {
+        text: {
+          type: 'string',
+          description: 'Texto da mensagem que será exibida acima dos botões.'
+        },
+        buttons: {
+          type: 'array',
+          description: 'Lista de botões (máximo 3 para WhatsApp). Cada botão precisa de text (rótulo) e payload (ação) ou url (link).',
+          items: {
+            type: 'object',
+            properties: {
+              text: { type: 'string', description: 'Rótulo do botão (ex: "Agendar reunião")' },
+              payload: { type: 'string', description: 'Ação/payload enviado quando clicar (ex: "agendar", "falar_humano", "ver_precos")' },
+              url: { type: 'string', description: 'URL opcional para botão de link externo' }
+            },
+            required: ['text']
+          }
+        }
+      },
+      required: ['text', 'buttons']
+    }
   }
 ]
 
