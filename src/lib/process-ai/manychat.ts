@@ -7,8 +7,12 @@ export interface Button {
 }
 
 function getAuthHeader() {
-  const token = process.env.MANYCHAT_API_KEY || CONFIG.MC_AUTH()
-  return token.startsWith('Bearer ') ? token : `Bearer ${token}`
+  const envToken = process.env.MANYCHAT_API_KEY?.trim()
+  const rawToken = (envToken && envToken !== 'undefined' && envToken !== 'null') 
+    ? envToken 
+    : CONFIG.MC_AUTH()
+  const cleanToken = rawToken.replace(/^Bearer\s+/i, '').trim()
+  return `Bearer ${cleanToken}`
 }
 
 export async function mcSendMessage(userId: string, text: string) {

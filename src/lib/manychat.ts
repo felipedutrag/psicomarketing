@@ -1,10 +1,19 @@
 const MANYCHAT_AUTH = `4893318:6124c375829053829537d02892ea7ce8`
 const MC_API = 'https://api.manychat.com/fb'
 
+export function getAuthHeader() {
+  const envToken = process.env.MANYCHAT_API_KEY?.trim()
+  const rawToken = (envToken && envToken !== 'undefined' && envToken !== 'null') 
+    ? envToken 
+    : MANYCHAT_AUTH
+  const cleanToken = rawToken.replace(/^Bearer\s+/i, '').trim()
+  return `Bearer ${cleanToken}`
+}
+
 export async function getSubscriber(userId: string | number) {
   console.log('[MANYCHAT] getSubscriber:', userId)
   const res = await fetch(`${MC_API}/subscriber/getInfo?subscriber_id=${userId}`, {
-    headers: { Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
+    headers: { Authorization: getAuthHeader() },
   })
   const json = await res.json()
   console.log('[MANYCHAT] getSubscriber response:', res.status, json)
@@ -15,7 +24,7 @@ export async function setCustomField(userId: string | number, fieldName: string,
   console.log('[MANYCHAT] setCustomField:', userId, fieldName, fieldValue)
   const res = await fetch(`${MC_API}/subscriber/setCustomField`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
+    headers: { 'Content-Type': 'application/json', Authorization: getAuthHeader() },
     body: JSON.stringify({ subscriber_id: userId, field_name: fieldName, field_value: fieldValue }),
   })
   const json = await res.json()
@@ -27,7 +36,7 @@ export async function sendMessage(userId: string | number, text: string) {
   console.log('[MANYCHAT] sendMessage:', userId, text.substring(0, 100))
   const res = await fetch(`${MC_API}/sending/sendContent`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
+    headers: { 'Content-Type': 'application/json', Authorization: getAuthHeader() },
     body: JSON.stringify({
       subscriber_id: userId,
       data: {
@@ -79,7 +88,7 @@ export async function sendMessageWithButtons(
 
   const res = await fetch(`${MC_API}/sending/sendContent`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
+    headers: { 'Content-Type': 'application/json', Authorization: getAuthHeader() },
     body: JSON.stringify({
       subscriber_id: subscriberId,
       data: {
@@ -106,7 +115,7 @@ export async function addTagByName(userId: string | number, tagName: string) {
   console.log('[MANYCHAT] addTagByName:', userId, tagName)
   const res = await fetch(`${MC_API}/subscriber/addTagByName`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
+    headers: { 'Content-Type': 'application/json', Authorization: getAuthHeader() },
     body: JSON.stringify({ subscriber_id: userId, tag_name: tagName }),
   })
   const json = await res.json()
@@ -118,7 +127,7 @@ export async function addTagById(userId: string | number, tagId: number | string
   console.log('[MANYCHAT] addTagById:', userId, tagId)
   const res = await fetch(`${MC_API}/subscriber/addTag`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
+    headers: { 'Content-Type': 'application/json', Authorization: getAuthHeader() },
     body: JSON.stringify({ subscriber_id: userId, tag_id: Number(tagId) }),
   })
   const json = await res.json()
@@ -130,7 +139,7 @@ export async function removeTagByName(userId: string | number, tagName: string) 
   console.log('[MANYCHAT] removeTagByName:', userId, tagName)
   const res = await fetch(`${MC_API}/subscriber/removeTagByName`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
+    headers: { 'Content-Type': 'application/json', Authorization: getAuthHeader() },
     body: JSON.stringify({ subscriber_id: userId, tag_name: tagName }),
   })
   const json = await res.json()
@@ -181,7 +190,7 @@ export async function findSubscriberByPhone(phone: string) {
     try {
       const url = `${MC_API}/subscriber/findBySystemField?phone=${encodeURIComponent(p)}`
       const res = await fetch(url, {
-        headers: { Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
+        headers: { Authorization: getAuthHeader() },
       })
       const json = await res.json()
       console.log(`[MANYCHAT] findBySystemField phone=${p} response:`, res.status, JSON.stringify(json))
@@ -205,7 +214,7 @@ export async function findSubscriberByEmail(email: string) {
   try {
     const url = `${MC_API}/subscriber/findBySystemField?email=${encodeURIComponent(email)}`
     const res = await fetch(url, {
-      headers: { Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
+      headers: { Authorization: getAuthHeader() },
     })
     const json = await res.json()
     console.log(`[MANYCHAT] findBySystemField email=${email} response:`, res.status, JSON.stringify(json))
