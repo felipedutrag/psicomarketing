@@ -95,8 +95,6 @@ export async function sendMessageWithButtons(
 
   const payload = {
     subscriber_id: subscriberId,
-    messaging_type: 'message',
-    tag: 'ACCOUNT_UPDATE', // Required for messages outside 24h window
     data: {
       version: 'v2',
       content: {
@@ -119,10 +117,20 @@ export async function sendMessageWithButtons(
   })
   const json = await res.json()
   console.log('[MANYCHAT] sendMessageWithButtons response:', res.status, json)
+  
   if (!res.ok || json.status !== 'success') {
     const errMsg = json.message || `HTTP ${res.status}`
     const details = JSON.stringify(json.details?.messages || json.details || json)
     console.error('[MANYCHAT] sendMessageWithButtons ERR', res.status, errMsg, details)
+    
+    // Check if it's the 24h window restriction error (code 3011)
+    if (json.code === 3011 || errMsg.includes('message tag') || errMsg.includes('24 hours')) {
+      console.log('[MANYCHAT] Fallback: sending message without buttons due to 24h restriction')
+      // Fallback: send message without buttons and include the URL in the text
+      const fallbackText = `${text}\n\n${cleanUrl}`
+      return sendMessage(userId, fallbackText)
+    }
+    
     throw new Error(`ManyChat API Error: ${errMsg} - ${details}`)
   }
   return json
