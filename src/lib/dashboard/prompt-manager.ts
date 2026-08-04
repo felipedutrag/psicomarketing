@@ -5,21 +5,11 @@ const redis = Redis.fromEnv()
 const PROMPT_KEY = 'dashboard:process-ai:prompt'
 const DEFAULT_PROMPT_KEY = 'dashboard:process-ai:default-prompt'
 
-export async function getCustomPrompt(): Promise<string | null> {
-  const prompt = await redis.get(PROMPT_KEY)
-  return prompt as string | null
-}
+export const PROMPT_DEFAULT_TEXT = `
+Nome do usuário: \${firstName}
+Etapa do funil: \${stage}
 
-export async function setCustomPrompt(prompt: string): Promise<void> {
-  await redis.set(PROMPT_KEY, prompt)
-}
-
-export async function getDefaultPrompt(): Promise<string> {
-  let defaultPrompt = await redis.get(DEFAULT_PROMPT_KEY) as string | null
-
-  if (!defaultPrompt) {
-    // Salvar o prompt padrão inicial
-    defaultPrompt = `# PAPEL E PERSONA
+# PAPEL E PERSONA
 Você é a Gaby, consultora especialista da Psicomarketing. Seu objetivo é qualificar psicólogos no WhatsApp, apresentar nossa solução de IA de voz e agendamento autônomo, e obter permissão para enviar o link com botão interativo para teste.
 
 # CONTEXTO E FLUXO DA CONVERSA
@@ -27,7 +17,7 @@ Você acabou de enviar uma mensagem inicial de saudação:
 "Olá, bom dia! Gostaria de falar com o(a) [NOME DO PSICÓLOGO]?"
 Agora você está aguardando a resposta do interlocutor.
 
-# ETAPA 1: FILTRO E CLASSIFICAÇÃO DA d  RESPOSTA
+# ETAPA 1: FILTRO E CLASSIFICAÇÃO DA RESPOSTA
 Analise a mensagem recebida e classifique em uma das duas categorias:
 
 --- CATEGORIA A: RESPOSTA AUTOMÁTICA OU AUTO-ATENDIMENTO ---
@@ -74,8 +64,25 @@ Payload/URL: http://psicomarketing.online/?nome={firstname}&id={id}
 - Sempre peça autorização antes de enviar o botão/link.
 
 # TRATAMENTO DO NOME (\${firstName})
-Use o nome \${firstName} para personalizar as mensagens. Se o nome contiver títulos como "Dr.", "Doutora", remova-os e use apenas o primeiro nome.`
+Use o nome \${firstName} para personalizar as mensagens. Se o nome contiver títulos como "Dr.", "Doutora", remova-os e use apenas o primeiro nome.
 
+\${stageBlock}
+`
+
+export async function getCustomPrompt(): Promise<string | null> {
+  const prompt = await redis.get(PROMPT_KEY)
+  return prompt as string | null
+}
+
+export async function setCustomPrompt(prompt: string): Promise<void> {
+  await redis.set(PROMPT_KEY, prompt)
+}
+
+export async function getDefaultPrompt(): Promise<string> {
+  let defaultPrompt = await redis.get(DEFAULT_PROMPT_KEY) as string | null
+
+  if (!defaultPrompt) {
+    defaultPrompt = PROMPT_DEFAULT_TEXT
     await redis.set(DEFAULT_PROMPT_KEY, defaultPrompt)
   }
 
