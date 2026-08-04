@@ -144,17 +144,42 @@ function toGeminiSchema(params: ToolDef['parameters']) {
       case 'integer': return SchemaType.INTEGER
       case 'boolean': return SchemaType.BOOLEAN
       case 'array': return SchemaType.ARRAY
+      case 'object': return SchemaType.OBJECT
       default: return SchemaType.STRING
     }
   }
   const convertProps = (props: Record<string, unknown>): Record<string, unknown> => {
     const out: Record<string, unknown> = {}
     for (const [k, v] of Object.entries(props)) {
-      const p = v as { type?: string; description?: string }
-      out[k] = {
+      const p = v as {
+        type?: string
+        description?: string
+        items?: Record<string, unknown>
+        properties?: Record<string, unknown>
+        required?: string[]
+      }
+      const propSchema: Record<string, unknown> = {
         type: p.type ? mapType(p.type) : SchemaType.STRING,
         ...(p.description ? { description: p.description } : {})
       }
+      if (p.type === 'array' && p.items) {
+        const itemType = (p.items.type as string) || 'string'
+        if (itemType === 'object' && p.items.properties) {
+          propSchema.items = {
+            type: SchemaType.OBJECT,
+            properties: convertProps(p.items.properties as Record<string, unknown>),
+            ...(p.items.required ? { required: p.items.required } : {})
+          }
+        } else {
+          propSchema.items = {
+            type: mapType(itemType)
+          }
+        }
+      } else if (p.type === 'object' && p.properties) {
+        propSchema.properties = convertProps(p.properties as Record<string, unknown>)
+        if (p.required) propSchema.required = p.required
+      }
+      out[k] = propSchema
     }
     return out
   }
