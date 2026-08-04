@@ -6,7 +6,7 @@ export const CONFIG = {
   GEMINI_TIMEOUT_MS: 25000,
   PRIMARY_MODEL: process.env.PRIMARY_MODEL || 'openai/gpt-oss-120b',
   SECONDARY_NVIDIA_MODEL: 'nvidia/nemotron-3-ultra-550b-a55b',
-  GROQ_FALLBACK_MODEL: 'llama-3.3-70b-versatile',
+  GROQ_FALLBACK_MODEL: 'openai/gpt-oss-120b',
   MAX_TOOL_ROUNDS: 5,
   MC_API: 'https://api.manychat.com/fb',
   MC_AUTH: () => `4893318:6124c375829053829537d02892ea7ce8`
