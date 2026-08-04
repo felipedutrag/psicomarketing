@@ -3,11 +3,13 @@ const MC_API = 'https://api.manychat.com/fb'
 
 export function getAuthHeader() {
   const envToken = process.env.MANYCHAT_API_KEY?.trim()
-  const rawToken = (envToken && envToken !== 'undefined' && envToken !== 'null') 
-    ? envToken 
-    : MANYCHAT_AUTH
-  const cleanToken = rawToken.replace(/^Bearer\s+/i, '').trim()
-  return `Bearer ${cleanToken}`
+  if (envToken && envToken.length > 15 && !envToken.includes('undefined') && !envToken.includes('null')) {
+    const clean = envToken.replace(/^Bearer\s+/i, '').trim()
+    if (clean.length > 10) {
+      return `Bearer ${clean}`
+    }
+  }
+  return `Bearer ${MANYCHAT_AUTH}`
 }
 
 export async function getSubscriber(userId: string | number) {
@@ -34,11 +36,12 @@ export async function setCustomField(userId: string | number, fieldName: string,
 
 export async function sendMessage(userId: string | number, text: string) {
   console.log('[MANYCHAT] sendMessage:', userId, text.substring(0, 100))
+  const subscriberId = typeof userId === 'string' && /^\d+$/.test(userId) ? Number(userId) : userId
   const res = await fetch(`${MC_API}/sending/sendContent`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: getAuthHeader() },
     body: JSON.stringify({
-      subscriber_id: userId,
+      subscriber_id: subscriberId,
       data: {
         version: 'v2',
         content: {
@@ -50,6 +53,9 @@ export async function sendMessage(userId: string | number, text: string) {
   })
   const json = await res.json()
   console.log('[MANYCHAT] sendMessage response:', res.status, json)
+  if (!res.ok || json.status !== 'success') {
+    console.error('[MANYCHAT] sendMessage ERR', res.status, json.message, JSON.stringify(json.details?.messages || json.details))
+  }
   return json
 }
 
@@ -94,6 +100,7 @@ export async function sendMessageWithButtons(
       data: {
         version: 'v2',
         content: {
+          type: 'whatsapp',
           messages: [{
             type: 'text',
             text,
