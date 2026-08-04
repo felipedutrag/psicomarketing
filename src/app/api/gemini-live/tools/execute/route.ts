@@ -11,18 +11,11 @@ interface AgendarConsultaArgs {
   dia?: string
   horario?: string
   tipoConsulta?: string
+  contextId?: string
 }
 
 interface ExplicarPluginArgs {
   plugin?: string
-}
-
-interface EnviarConfirmacaoArgs {
-  id?: string | number
-  nome?: string
-  dia?: string
-  horario?: string
-  tipoConsulta?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -32,17 +25,45 @@ export async function POST(req: NextRequest) {
 
     if (name === 'agendarConsulta') {
       const { nome, dia, horario, tipoConsulta } = (args || {}) as AgendarConsultaArgs
+      
+      // Tentar obter id dos parâmetros de contexto da URL
+      const contextId = args?.contextId as string | undefined
+      
+      // Criar o objeto de agendamento
+      const agendamento = {
+        id: `b-${Date.now()}`,
+        nome: nome || 'Paciente',
+        dia: dia || 'Quinta-feira',
+        horario: horario || '15:00',
+        tipoConsulta: tipoConsulta || 'Sessão de Acolhimento',
+        status: 'Confirmado via IA Live',
+      }
+      
+      // Enviar confirmação via WhatsApp se o id estiver disponível
+      let manychatResult = null
+      if (contextId) {
+        try {
+          const message = [
+            `✅ Confirmação de Agendamento (simulado)`,
+            ``,
+            `Olá, ${nome || 'paciente'}! Sua consulta foi agendada pela Lilith:`,
+            `• Tipo: ${tipoConsulta || 'Sessão de Acolhimento'}`,
+            `• Dia: ${dia || 'Quinta-feira'}`,
+            `• Horário: ${horario || '15:00'}`,
+            ``,
+            `Se precisar remarcar ou cancelar, é só chamar a Lilith. 😉`,
+          ].join('\n')
+          manychatResult = await sendMessage(contextId, message)
+        } catch (err) {
+          console.error('[agendarConsulta] Erro ao enviar confirmação WhatsApp:', err)
+        }
+      }
+      
       return NextResponse.json({
         status: 'success',
         message: `Consulta de ${nome || 'Paciente'} agendada com sucesso para ${dia || 'esta semana'} às ${horario || '15:00'}.`,
-        agendamento: {
-          id: `b-${Date.now()}`,
-          nome: nome || 'Paciente',
-          dia: dia || 'Quinta-feira',
-          horario: horario || '15:00',
-          tipoConsulta: tipoConsulta || 'Sessão de Acolhimento',
-          status: 'Confirmado via IA Live',
-        },
+        agendamento,
+        manychat: manychatResult ? { enviado: true } : { enviado: false, motivo: 'ID não disponível' }
       })
     }
 
@@ -51,46 +72,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         status: 'success',
         message: `O plugin ${plugin || 'selecionado'} automatiza a captação e atendimento de pacientes com máxima conformidade ética.`,
-      })
-    }
-
-    if (name === 'enviarConfirmacaoAgendamento') {
-      const { id, nome, dia, horario, tipoConsulta } = (args || {}) as EnviarConfirmacaoArgs
-      
-      // Tentar obter id dos parâmetros de contexto da URL se não fornecido
-      const contextId = args?.contextId as string | undefined
-      const targetId = id || contextId
-      
-      if (!targetId || String(targetId).trim() === '') {
-        return NextResponse.json({
-          status: 'error',
-          message: 'Não foi possível enviar a confirmação: o parâmetro id é obrigatório.',
-        })
-      }
-      
-      const message = [
-        `✅ Confirmação de Agendamento (simulado)`,
-        ``,
-        `Olá, ${nome || 'paciente'}! Sua consulta foi agendada pela Lilith:`,
-        `• Tipo: ${tipoConsulta || 'Sessão de Acolhimento'}`,
-        `• Dia: ${dia || 'Quinta-feira'}`,
-        `• Horário: ${horario || '15:00'}`,
-        ``,
-        `Se precisar remarcar ou cancelar, é só chamar a Lilith. 😉`,
-      ].join('\n')
-      const manychat = await sendMessage(targetId, message)
-      return NextResponse.json({
-        status: 'success',
-        message: `Confirmação de agendamento enviada para o ID ${targetId} via ManyChat.`,
-        agendamento: {
-          id: `b-${Date.now()}`,
-          nome: nome || 'Paciente',
-          dia: dia || 'Quinta-feira',
-          horario: horario || '15:00',
-          tipoConsulta: tipoConsulta || 'Sessão de Acolhimento',
-          status: 'Confirmado via IA Live',
-        },
-        manychat,
       })
     }
 

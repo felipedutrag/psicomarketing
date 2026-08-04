@@ -16,7 +16,7 @@ export interface ToolDeclaration {
 export const GEMINI_LIVE_TOOLS: ToolDeclaration[] = [
   {
     name: 'agendarConsulta',
-    description: 'Realiza o agendamento automático de consultas com o psicólogo.',
+    description: 'Realiza o agendamento automático de consultas com o psicólogo e envia automaticamente a confirmação via WhatsApp usando o id do usuário do contexto.',
     parameters: {
       type: 'OBJECT',
       properties: {
@@ -39,21 +39,6 @@ export const GEMINI_LIVE_TOOLS: ToolDeclaration[] = [
       required: ['plugin'],
     },
   },
-  {
-    name: 'enviarConfirmacaoAgendamento',
-    description: 'Envia a confirmação do agendamento simulado para o paciente via ManyChat (WhatsApp), usando o id do usuário no ManyChat. Use o id do contexto de identificação se disponível.',
-    parameters: {
-      type: 'OBJECT',
-      properties: {
-        id: { type: 'STRING', description: 'ID do usuário/subscriber no ManyChat que deve receber a confirmação (use o id do contexto se disponível)' },
-        nome: { type: 'STRING', description: 'Nome completo do paciente' },
-        dia: { type: 'STRING', description: 'Dia da semana da consulta (ex: Quinta-feira, Amanhã)' },
-        horario: { type: 'STRING', description: 'Horário da consulta (ex: 15:00)' },
-        tipoConsulta: { type: 'STRING', description: 'Tipo da consulta (ex: Acolhimento, Terapia Individual)' },
-      },
-      required: [],
-    },
-  },
 ]
 
 export const SYSTEM_INSTRUCTION = `Você é a Lilith, a assistente de voz inteligente e oficial do Psicomarketing.
@@ -64,7 +49,7 @@ NÃO espere o usuário falar primeiro. Inicie a conversa imediatamente.
 Sua missão é explicar para psicólogos e clínicas como a automação inteligente escala o consultório.
 Seja direta, empática, profissional e perspicaz.
 Quando o usuário quiser agendar uma consulta ou demonstração, chame a ferramenta agendarConsulta com nome, dia e horário.
-Após um agendamento bem-sucedido, chame a ferramenta enviarConfirmacaoAgendamento para enviar a confirmação via WhatsApp usando o id do usuário.
+A ferramenta agendarConsulta já envia automaticamente a confirmação via WhatsApp se o id do usuário estiver disponível no contexto.
 Responda de forma concisa e natural, ideal para conversa em áudio em tempo real.`
 
 export function buildSystemInstruction(identity?: { nome?: string; id?: string }): string {
