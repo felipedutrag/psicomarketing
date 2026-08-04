@@ -413,12 +413,12 @@ export function PlanCalculator() {
                   key={plugin.id}
                   type="button"
                   onClick={() => togglePlugin(plugin.id)}
-                  className={`group relative flex flex-col justify-between rounded-xl border p-4 sm:p-5 text-left transition-all duration-200 ${isSelected
+                  className={`group relative flex flex-col justify-between rounded-xl border p-5 sm:p-6 h-full text-left transition-all duration-200 ${isSelected
                     ? "border-indigo-500 bg-indigo-500/10 shadow-xs dark:border-indigo-500/70 dark:bg-indigo-950/40"
                     : "border-zinc-200/90 bg-zinc-100/70 hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-zinc-700"
                     }`}
                 >
-                  <div className="space-y-2">
+                  <div className="space-y-2 flex-1">
                     <div className="flex items-start justify-between gap-2">
                       <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100">
                         {plugin.title}
@@ -443,7 +443,7 @@ export function PlanCalculator() {
                       {plugin.category}
                     </Badge>
                     <span className="font-mono text-xs font-bold text-indigo-700 dark:text-indigo-300">
-                      {plugin.price ? `+R$ {plugin.price}/mês` : "Solicitar Cotação"}
+                      {plugin.price ? `+R$ ${plugin.price}/mês` : "Solicitar Cotação"}
                     </span>
                   </div>
                 </button>
@@ -463,12 +463,12 @@ export function PlanCalculator() {
                     key={plugin.id}
                     type="button"
                     onClick={() => togglePlugin(plugin.id)}
-                    className={`group relative flex flex-col justify-between rounded-xl border p-4 text-left transition-all duration-200 ${isSelected
+                    className={`group relative flex flex-col justify-between rounded-xl border p-4 h-full text-left transition-all duration-200 ${isSelected
                       ? "border-indigo-500 bg-indigo-500/10 shadow-xs dark:border-indigo-500/70 dark:bg-indigo-950/40"
                       : "border-zinc-200/90 bg-zinc-100/70 hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-zinc-700"
                       }`}
                   >
-                    <div className="space-y-2">
+                    <div className="space-y-2 flex-1">
                       <div className="flex items-start justify-between gap-2">
                         <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
                           {plugin.title}
@@ -493,7 +493,7 @@ export function PlanCalculator() {
                         {plugin.category}
                       </Badge>
                       <span className="font-mono text-xs font-bold text-indigo-700 dark:text-indigo-300">
-                        {plugin.price ? `+R$ {plugin.price}/mês` : "Solicitar Cotação"}
+                        {plugin.price ? `+R$ ${plugin.price}/mês` : "Solicitar Cotação"}
                       </span>
                     </div>
                   </button>
