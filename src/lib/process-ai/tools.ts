@@ -18,13 +18,13 @@ export const TOOL_DEFS: ToolDef[] = [
   },
   {
     name: 'update_funnel_stage',
-    description: 'Move o lead para uma nova etapa do funil. Etapas válidas: f_interessado, f_reuniao_agendada, f_quebra_objecao, f_fechamento. Use ao avançar ou desviar o lead no funil.',
+    description: 'Move o lead para uma nova etapa do funil. Etapas válidas: f_interessado (quando manifestar interesse no link/site), f_fechamento (quando fizer agendamento por voz ou demonstrar intenção de fechar), f_quebra_objecao (quando recusar após oferta pós agendamento). Use ao avançar ou desviar o lead no funil.',
     parameters: {
       type: 'object',
       properties: {
         stage: {
           type: 'string',
-          description: 'Nova etapa do funil (f_interessado, f_reuniao_agendada, f_quebra_objecao ou f_fechamento).'
+          description: 'Nova etapa do funil (f_interessado, f_fechamento ou f_quebra_objecao).'
         }
       },
       required: ['stage']
@@ -126,6 +126,11 @@ export const TOOL_DEFS: ToolDef[] = [
       },
       required: ['text', 'buttons']
     }
+  },
+  {
+    name: 'voice_booking_completed',
+    description: 'Registra que o usuário completou um agendamento por voz na landing page e move o lead para a etapa de fechamento (f_fechamento). Use quando o usuário demonstrar interesse após testar a IA de voz ou fazer um agendamento simulado.',
+    parameters: { type: 'object', properties: {} }
   }
 ]
 

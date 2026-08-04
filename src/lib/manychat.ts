@@ -78,8 +78,8 @@ export async function sendMessageWithButtons(
   console.log('[MANYCHAT] sendMessageWithButtons:', userId, text.substring(0, 100), buttons)
   
   // Format strictly 1 URL button for ManyChat WhatsApp v2 Content API
-  const firstBtn = (buttons && buttons.length > 0) ? buttons[0] : { text: 'Acessar Site', url: 'https://psicomarketing.online/' }
-  const caption = (firstBtn.text || 'Acessar Site').trim().substring(0, 20)
+  const firstBtn = (buttons && buttons.length > 0) ? buttons[0] : { text: 'Conhecer IA de Voz', url: 'https://psicomarketing.online/' }
+  const caption = (firstBtn.text || 'Conhecer IA de Voz').trim().substring(0, 20)
   let cleanUrl = (firstBtn.url || 'https://psicomarketing.online/').trim()
   if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
     cleanUrl = `https://${cleanUrl}`

@@ -18,6 +18,10 @@ interface ExplicarPluginArgs {
   plugin?: string
 }
 
+interface VoiceBookingCompletedArgs {
+  contextId?: string
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as ToolRequestBody
@@ -39,19 +43,25 @@ export async function POST(req: NextRequest) {
         status: 'Confirmado via IA Live',
       }
       
-      // Enviar confirmação via WhatsApp se o id estiver disponível
+      // Enviar confirmação via WhatsApp com oferta se o id estiver disponível
       let manychatResult = null
       if (contextId) {
         try {
           const message = [
             `✅ Confirmação de Agendamento (simulado)`,
             ``,
-            `Olá, ${nome || 'paciente'}! Sua consulta foi agendada pela Lilith:`,
+            `Olá, ${nome || 'paciente'}! Sua consulta foi agendada pela Gaby:`,
             `• Tipo: ${tipoConsulta || 'Sessão de Acolhimento'}`,
             `• Dia: ${dia || 'Quinta-feira'}`,
             `• Horário: ${horario || '15:00'}`,
             ``,
-            `Se precisar remarcar ou cancelar, é só chamar a Lilith. 😉`,
+            `🎁 OFERTA ESPECIAL: Deseja implementar esse nível de atendimento em seu consultório?`,
+            ``,
+            `Se fechar nos próximos 5 minutos, você ganha DE BRINDE uma landing page de alta conversão, com 7 dias de garantia!`,
+            ``,
+            `💰 Link de pagamento: https://invoice.infinitepay.io/plans/psicomarketing/g4Ssfk658T`,
+            ``,
+            `Se precisar remarcar ou cancelar, é só chamar a Gaby. 😉`,
           ].join('\n')
           manychatResult = await sendMessage(contextId, message)
         } catch (err) {
@@ -72,6 +82,34 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         status: 'success',
         message: `O plugin ${plugin || 'selecionado'} automatiza a captação e atendimento de pacientes com máxima conformidade ética.`,
+      })
+    }
+
+    if (name === 'voice_booking_completed') {
+      const { contextId } = (args || {}) as VoiceBookingCompletedArgs
+      console.log('[Gemini Live] voice_booking_completed chamada com contextId:', contextId)
+      
+      if (contextId) {
+        try {
+          // Adicionar tag de fechamento no ManyChat
+          const { setLeadStage } = await import('@/lib/funnel')
+          await setLeadStage(contextId, 'f_fechamento')
+          return NextResponse.json({
+            status: 'success',
+            message: 'Tag de fechamento adicionada após agendamento por voz',
+          })
+        } catch (err) {
+          console.error('[Gemini Live] Erro ao adicionar tag f_fechamento:', err)
+          return NextResponse.json({
+            status: 'error',
+            error: err instanceof Error ? err.message : 'Erro ao adicionar tag de fechamento'
+          }, { status: 500 })
+        }
+      }
+      
+      return NextResponse.json({
+        status: 'success',
+        message: 'Agendamento por voz registrado (sem ID disponível para tag)'
       })
     }
 

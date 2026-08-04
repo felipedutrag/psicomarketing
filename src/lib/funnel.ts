@@ -18,11 +18,11 @@ export const FUNNEL_TAG_IDS: Record<FunnelStage, number> = {
 }
 
 export const STAGE_SCRIPTS: Record<FunnelStage, string> = {
-  f_interessado: `Adicione a [TAG: f_interessado] assim que o cliente demonstrar intenção ou concordar em receber uma demonstração/preview gratuito do site (ex: "quero ver", "pode mandar", "como fica?", "manda o link", "tenho interesse").`,
+  f_interessado: `Adicione a [TAG: f_interessado] assim que o cliente demonstrar interesse em obter o link do site ou concordar em receber uma demonstração/preview gratuito do site (ex: "quero ver", "pode mandar", "como fica?", "manda o link", "tenho interesse", "sim, manda"). Use a ferramenta send_message_with_buttons para enviar o botão interativo quando solicitado.`,
 
-  f_fechamento: `Adicione a [TAG: f_fechamento] quando o cliente aprovar o preview enviado, fizer perguntas sobre contratação, formas de pagamento, valores ou demonstrar intenção clara de fechar o serviço (ex: "gostei", "como faço pra ter esse site?", "quanto custa pra ficar comigo?", "qual o PIX?").`,
+  f_fechamento: `Adicione a [TAG: f_fechamento] quando o cliente fizer o agendamento por voz na landing page, aprovar o preview enviado, fizer perguntas sobre contratação, formas de pagamento, valores ou demonstrar intenção clara de fechar o serviço (ex: "gostei", "como faço pra ter esse site?", "quanto custa pra ficar comigo?", "qual o PIX?", agendamento concluído na IA de voz).`,
 
-  f_quebra_objecao: `Adicione a [TAG: f_quebra_objecao] se o cliente recusar a oferta, apresentar dúvidas/objeções, dizer que não precisa, achar caro ou demonstrar desinteresse no momento (ex: "não tenho interesse", "já tenho site", "agora não", "achei caro").`
+  f_quebra_objecao: `Adicione a [TAG: f_quebra_objecao] se o cliente recusar a oferta, apresentar dúvidas/objeções, dizer que não precisa, achar caro ou demonstrar desinteresse no momento após a oferta pós agendamento (ex: "não tenho interesse", "já tenho site", "agora não", "achei caro", "vou pensar sobre", "deixa pra depois").`
 };
 
 // Lê a etapa atual do funil do lead.

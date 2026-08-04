@@ -544,6 +544,11 @@ export function useLilithVoice(identity?: Identity) {
                   setTimeout(stopLiveDialog, 400)
                   return { name: f.name, id: f.id, response: { status: 'success' } }
                 }
+                if (f.name === 'voice_booking_completed') {
+                  console.log('[LilithVoice] voice_booking_completed chamada')
+                  // Registra que o usuário completou agendamento por voz
+                  return { name: f.name, id: f.id, response: { status: 'success', message: 'Agendamento por voz registrado' } }
+                }
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 let finalResponse: any
                 try {

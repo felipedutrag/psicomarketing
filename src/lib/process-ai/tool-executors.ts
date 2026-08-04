@@ -27,6 +27,18 @@ export async function executeTool(
     return { response: { success: true, stage: newStage } }
   }
 
+  if (name === 'voice_booking_completed') {
+    console.log('[PROCESS-AI] Function voice_booking_completed chamada')
+    // Adicionar tag de fechamento quando usuário fizer agendamento por voz
+    try {
+      await setLeadStage(userId, 'f_fechamento')
+      return { response: { success: true, message: 'Tag de fechamento adicionada após agendamento por voz' } }
+    } catch (err) {
+      console.error('[PROCESS-AI] voice_booking_completed falhou:', err)
+      return { response: { success: false, error: err instanceof Error ? err.message : 'Erro ao adicionar tag de fechamento' } }
+    }
+  }
+
   if (name === 'save_lead_data') {
     console.log('[PROCESS-AI] Function save_lead_data chamada:', JSON.stringify(args))
     const { email, perfil, volume_atendimentos, principal_dor } = args as {
@@ -136,7 +148,7 @@ export async function executeTool(
       const id = context?.webhookUserId || userId
 
       // Forçar sempre exatamente 1 botão de URL do site com os parâmetros do lead
-      const firstBtn = (buttons && Array.isArray(buttons) && buttons.length > 0) ? buttons[0] : { text: 'Acessar Site' }
+      const firstBtn = (buttons && Array.isArray(buttons) && buttons.length > 0) ? buttons[0] : { text: 'Conhecer IA de Voz' }
       const rawUrl = firstBtn.url || `http://psicomarketing.online/?nome={firstname}&id={id}`
       const url = rawUrl
         .replace('{firstname}', encodeURIComponent(firstName))
@@ -145,7 +157,7 @@ export async function executeTool(
         .replace('{user_id}', encodeURIComponent(id))
 
       const processedButtons = [{
-        text: (firstBtn.text || 'Acessar Site').substring(0, 20),
+        text: (firstBtn.text || 'Conhecer IA de Voz').substring(0, 20),
         url
       }]
       

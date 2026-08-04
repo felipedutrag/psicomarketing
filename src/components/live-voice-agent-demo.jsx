@@ -74,17 +74,6 @@ export function LiveVoiceAgentDemo() {
         <div className="lg:col-span-5 flex flex-col items-center justify-between p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-950/60 rounded-xl border border-zinc-200 dark:border-zinc-800 text-center relative overflow-hidden">
           {/* Authentic ChatGPT Advanced Voice & ElevenLabs Planet Orb */}
           <div className="relative my-2 sm:my-4 flex flex-col items-center justify-center w-full min-h-[200px] sm:min-h-[260px]">
-            {/* Outer Subtle Ambient Glow */}
-            <div
-              className={`absolute w-48 sm:w-64 h-44 sm:h-60 rounded-full transition-all duration-700 ${
-                isSpeaking
-                  ? "bg-gradient-to-r from-cyan-400/40 via-emerald-400/40 to-teal-500/40 blur-2xl animate-pulse scale-110"
-                  : isRecordingVoice
-                  ? "bg-gradient-to-r from-cyan-500/30 via-teal-500/30 to-green-500/30 blur-xl animate-pulse"
-                  : "bg-gradient-to-r from-cyan-500/10 via-teal-500/10 to-green-500/10 blur-lg"
-              }`}
-            />
-
             {/* Main Planet Sphere with Notch Cutout Container */}
             <div className="relative flex items-center justify-center">
               {/* Main Planet Sphere */}
