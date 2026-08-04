@@ -100,9 +100,32 @@ export const TOOL_DEFS: ToolDef[] = [
       }
     }
   },
-  // send_message_with_buttons foi removida das tools da IA intencionalmente.
-  // O botão só deve ser enviado via chamada programática explícita no código,
-  // nunca por decisão autônoma do modelo. Veja tool-executors.ts para uso direto.
+  {
+    name: 'send_message_with_buttons',
+    description: 'Envia uma mensagem com botão interativo de URL para o lead via WhatsApp. Use SOMENTE quando o fluxo indicar envio do link/site ao lead (ex: lead concordou em ver a demonstração, disse "pode mandar", "manda aí", "quero ver", "sim"). NÃO use em respostas de objeção, perguntas, saudações ou qualquer outra situação. O botão de URL aceita templates: http://psicomarketing.online/?nome={firstname}&id={id} — os placeholders são preenchidos automaticamente.',
+    parameters: {
+      type: 'object',
+      properties: {
+        text: {
+          type: 'string',
+          description: 'Texto da mensagem exibida acima do botão (ex: "Clique abaixo para interagir com nossa IA de voz 👇").'
+        },
+        buttons: {
+          type: 'array',
+          description: 'Array com exatamente 1 botão de URL.',
+          items: {
+            type: 'object',
+            properties: {
+              text: { type: 'string', description: 'Rótulo do botão — máximo 20 caracteres (ex: "Testar Agora 🚀").' },
+              url: { type: 'string', description: 'URL do botão. Use o template: http://psicomarketing.online/?nome={firstname}&id={id}' }
+            },
+            required: ['text', 'url']
+          }
+        }
+      },
+      required: ['text', 'buttons']
+    }
+  },
   {
     name: 'voice_booking_completed',
     description: 'Registra que o usuário completou um agendamento por voz na landing page e move o lead para a etapa de fechamento (f_fechamento). Use quando o usuário demonstrar interesse após testar a IA de voz ou fazer um agendamento simulado.',
