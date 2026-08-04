@@ -1,4 +1,4 @@
-import { getStageScript, type FunnelStage } from '@/lib/funnel'
+﻿import { getStageScript, type FunnelStage } from '@/lib/funnel'
 import { getCustomPrompt, getDefaultPrompt } from '@/lib/dashboard/prompt-manager'
 
 export async function buildSystemPrompt(firstName: string, stage: FunnelStage): Promise<string> {
@@ -8,16 +8,16 @@ export async function buildSystemPrompt(firstName: string, stage: FunnelStage): 
   const customPrompt = await getCustomPrompt()
   const basePrompt = customPrompt || await getDefaultPrompt()
 
-  const cleanName = firstName || 'Lead'
+  const cleanName = firstName || "Lead"
   return basePrompt
     .replace(/\$\{firstName\}/g, cleanName)
     .replace(/\\?\$\{firstName\}/g, cleanName)
-    .replace('${stageBlock}', stageBlock)
+    .replace("${stageBlock}", stageBlock)
 }
 
 export function buildSystemPromptSync(firstName: string, stage: FunnelStage): string {
   const stageBlock = getStageScript(stage)
-  const cleanName = firstName || 'Lead'
+  const cleanName = firstName || "Lead"
 
   const rawPrompt = `
 Nome do usuário: \${firstName}
@@ -56,6 +56,7 @@ Você receberá a variável de nome \${firstName} vinda do WhatsApp. Ajuste o tr
 - REGRA DE CONTRATAÇÃO: Se \${firstName} demonstrar intenção de contratar, adquirir ou perguntar sobre como assinar, informe claramente que o valor é R$ 97/mês e que a contratação é realizada exclusivamente de forma direta pelo site.
 - REGRA DO LINK: Envie o link puro do site (https://www.psicomarketing.online/) APENAS quando \${firstName} demonstrar interesse claro, perguntar como funciona, pedir detalhes ou quiser contratar. NUNCA envie o link logo no início ou em todas as mensagens.
 - RESTRIÇÃO DE FORMATO DO LINK: NUNCA use markdown no link (ex: proibido \`[site](url)\`). Envie a URL limpa.
+- BOTÕES DINÂMICOS: Você pode usar a tool send_message_with_buttons para enviar botões com links personalizados. Use o template de URL: http://psicomarketing.online/?nome={firstname}&id={id} - os placeholders {firstname} e {id} serão preenchidos automaticamente com o nome e ID do lead. Isso é ideal para direcionar para o site de checkout com os dados do lead já preenchidos.
 - MANTENHA O DIÁLOGO: Termine as mensagens com uma pergunta curta para conduzir a conversa.
 
 \${stageBlock}
@@ -64,5 +65,5 @@ Você receberá a variável de nome \${firstName} vinda do WhatsApp. Ajuste o tr
   return rawPrompt
     .replace(/\$\{firstName\}/g, cleanName)
     .replace(/\\?\$\{firstName\}/g, cleanName)
-    .replace('${stageBlock}', stageBlock)
+    .replace("${stageBlock}", stageBlock)
 }

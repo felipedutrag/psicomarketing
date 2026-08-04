@@ -4,13 +4,20 @@ import { CONFIG } from './config'
 import { OPENAI_TOOLS, GEMINI_TOOLS } from './tools'
 import { executeTool } from './tool-executors'
 
+export interface ToolContext {
+  firstName?: string
+  webhookUserId?: string
+  webhookFirstName?: string
+}
+
 export async function runNvidia(
   apiKey: string,
   system: string,
   history: Array<[string, string]>,
   userText: string,
   userId: string,
-  modelName: string = CONFIG.SECONDARY_NVIDIA_MODEL
+  modelName: string = CONFIG.SECONDARY_NVIDIA_MODEL,
+  context?: ToolContext
 ): Promise<{ reply: string }> {
   const messages: Array<Record<string, unknown>> = [
     { role: 'system', content: system },
@@ -53,7 +60,7 @@ export async function runNvidia(
         } catch {
           args = {}
         }
-        const { response } = await executeTool(tc.function.name, args, userId)
+        const { response } = await executeTool(tc.function.name, args, userId, context)
         messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(response) })
       }
       continue
@@ -73,7 +80,8 @@ export async function runGroq(
   history: Array<[string, string]>,
   userText: string,
   userId: string,
-  modelName: string = CONFIG.GROQ_FALLBACK_MODEL
+  modelName: string = CONFIG.GROQ_FALLBACK_MODEL,
+  context?: ToolContext
 ): Promise<{ reply: string }> {
   const messages: Array<Record<string, unknown>> = [
     { role: 'system', content: system },
@@ -116,7 +124,7 @@ export async function runGroq(
         } catch {
           args = {}
         }
-        const { response } = await executeTool(tc.function.name, args, userId)
+        const { response } = await executeTool(tc.function.name, args, userId, context)
         messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(response) })
       }
       continue
@@ -135,7 +143,8 @@ export async function runGemini(
   system: string,
   history: Array<[string, string]>,
   userText: string,
-  userId: string
+  userId: string,
+  context?: ToolContext
 ): Promise<{ reply: string }> {
   const genAI = new GoogleGenerativeAI(apiKey)
   const historyParts: Array<{ role: string; parts: Array<{ text: string }> }> = history.map(([r, t]) => ({
@@ -166,7 +175,7 @@ export async function runGemini(
           console.log(`[PROCESS-AI] Gemini ${modelName} rodada ${round + 1}: ${fnCalls.length} function call(s)`)
           const fnResponses: Part[] = []
           for (const fn of fnCalls) {
-            const { response: toolResp } = await executeTool(fn.name, (fn.args || {}) as Record<string, unknown>, userId)
+            const { response: toolResp } = await executeTool(fn.name, (fn.args || {}) as Record<string, unknown>, userId, context)
             fnResponses.push({
               functionResponse: { name: fn.name, response: toolResp }
             })

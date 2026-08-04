@@ -8,7 +8,8 @@ const redis = Redis.fromEnv()
 export async function executeTool(
   name: string,
   args: Record<string, unknown>,
-  userId: string
+  userId: string,
+  context?: { firstName?: string; webhookUserId?: string; webhookFirstName?: string }
 ): Promise<{ response: Record<string, unknown> }> {
   if (name === 'get_lead_stage') {
     console.log('[PROCESS-AI] Function get_lead_stage chamada')
@@ -131,7 +132,22 @@ export async function executeTool(
       return { response: { success: false, error: 'Texto e botões são obrigatórios' } }
     }
     try {
-      const result = await sendMessageWithButtons(userId, text, buttons)
+      // Construir URLs dinâmicas se o botão tiver template
+      const processedButtons = buttons.map(btn => {
+        if (btn.url && (btn.url.includes('{') || btn.url.includes('http://psicomarketing.online'))) {
+          const firstName = context?.webhookFirstName || context?.firstName || 'Lead'
+          const id = context?.webhookUserId || userId
+          const url = btn.url
+            .replace('{firstname}', encodeURIComponent(firstName))
+            .replace('{first_name}', encodeURIComponent(firstName))
+            .replace('{id}', encodeURIComponent(id))
+            .replace('{user_id}', encodeURIComponent(id))
+          return { ...btn, url }
+        }
+        return btn
+      })
+      
+      const result = await sendMessageWithButtons(userId, text, processedButtons)
       return { response: { success: true, result } }
     } catch (err) {
       console.error('[PROCESS-AI] send_message_with_buttons falhou:', err)

@@ -102,7 +102,7 @@ export const TOOL_DEFS: ToolDef[] = [
   },
   {
     name: 'send_message_with_buttons',
-    description: 'Envia uma mensagem com botões interativos para o lead via WhatsApp (ManyChat). Use para oferecer opções rápidas como agendar, ver preços, falar com humano, etc.',
+    description: 'Envia uma mensagem com botões interativos para o lead via WhatsApp (ManyChat). Use para oferecer opções rápidas como agendar, ver preços, falar com humano, etc. O botão de URL aceita templates: http://psicomarketing.online/?nome={firstname}&id={id} - os placeholders {firstname} e {id} serão preenchidos automaticamente com os dados do webhook.',
     parameters: {
       type: 'object',
       properties: {
@@ -112,13 +112,13 @@ export const TOOL_DEFS: ToolDef[] = [
         },
         buttons: {
           type: 'array',
-          description: 'Lista de botões (máximo 3 para WhatsApp). Cada botão precisa de text (rótulo) e payload (ação) ou url (link).',
+          description: 'Lista de botões (máximo 3 para WhatsApp). Cada botão precisa de text (rótulo) e payload (ação) ou url (link). Para URL, use o template: http://psicomarketing.online/?nome={firstname}&id={id}',
           items: {
             type: 'object',
             properties: {
               text: { type: 'string', description: 'Rótulo do botão (ex: "Agendar reunião")' },
               payload: { type: 'string', description: 'Ação/payload enviado quando clicar (ex: "agendar", "falar_humano", "ver_precos")' },
-              url: { type: 'string', description: 'URL opcional para botão de link externo' }
+              url: { type: 'string', description: 'URL opcional para botão de link externo. Use template: http://psicomarketing.online/?nome={firstname}&id={id}' }
             },
             required: ['text']
           }

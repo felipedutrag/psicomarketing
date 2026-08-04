@@ -84,6 +84,9 @@ export async function POST(req: NextRequest) {
 
     // Garantir que first_name esteja no body enviado para process-ai (normalizado)
     bodyWithoutThread.first_name = firstName
+    // Passar userId e firstName para uso em botões dinâmicos
+    bodyWithoutThread.user_id = userId
+    bodyWithoutThread.first_name = firstName
 
     console.log('[WEBHOOK] Recebido:', { userId, firstName, userText, phone })
 
