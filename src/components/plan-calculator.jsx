@@ -404,10 +404,6 @@ export function PlanCalculator() {
           <div className="hidden lg:block">{voiceHelpBar}</div>
 
           <div className="hidden lg:block space-y-5">
-          <p className="text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-400">
-            Selecione os plugins que deseja adicionar ao seu agente de IA:
-          </p>
-
           <div className="grid gap-3.5 grid-cols-1 sm:grid-cols-2">
             {AVAILABLE_PLUGINS.map((plugin) => {
               const isSelected = selectedPlugins.includes(plugin.id);
@@ -454,6 +450,56 @@ export function PlanCalculator() {
               );
             })}
           </div>
+          </div>
+
+          {/* Mobile Plugin Grid */}
+          <div className="lg:hidden space-y-3">
+            <div className="grid gap-3 grid-cols-1">
+              {AVAILABLE_PLUGINS.map((plugin) => {
+                const isSelected = selectedPlugins.includes(plugin.id);
+
+                return (
+                  <button
+                    key={plugin.id}
+                    type="button"
+                    onClick={() => togglePlugin(plugin.id)}
+                    className={`group relative flex flex-col justify-between rounded-xl border p-4 text-left transition-all duration-200 ${isSelected
+                      ? "border-indigo-500 bg-indigo-500/10 shadow-xs dark:border-indigo-500/70 dark:bg-indigo-950/40"
+                      : "border-zinc-200/90 bg-zinc-100/70 hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-zinc-700"
+                      }`}
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                          {plugin.title}
+                        </span>
+                        <div
+                          className={`flex size-5 shrink-0 items-center justify-center rounded-md border transition-colors ${isSelected
+                            ? "border-indigo-500 bg-indigo-500 text-white dark:bg-indigo-500 dark:text-white"
+                            : "border-zinc-300 bg-white dark:border-zinc-700 dark:bg-zinc-950"
+                            }`}
+                        >
+                          {isSelected ? <Check className="size-3 stroke-[3]" /> : <Plus className="size-3 text-zinc-400" />}
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-zinc-700 dark:text-zinc-400 leading-relaxed">
+                        {plugin.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-between border-t border-zinc-200/60 pt-2 dark:border-zinc-800/60">
+                      <Badge variant="outline" className="text-[10px] py-0.5 px-2">
+                        {plugin.category}
+                      </Badge>
+                      <span className="font-mono text-xs font-bold text-indigo-700 dark:text-indigo-300">
+                        {plugin.price ? `+R$ {plugin.price}/mês` : "Solicitar Cotação"}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
