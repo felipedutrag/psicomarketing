@@ -67,22 +67,22 @@ export async function setLeadStage(userId: string | number, newStage: FunnelStag
   console.log('[FUNNEL] setLeadStage:', userId, newStage)
   const key = `funnel:${userId}`
 
-  const others = FUNNEL_STAGES.filter(s => s !== newStage)
-  await Promise.all(
-    others.map(async (stage) => {
-      try {
-        await removeTagByName(userId, stage)
-      } catch (err) {
-        console.error('[FUNNEL] Erro ao remover tag:', stage, err)
-      }
-    })
-  )
+  // Só remove a tag anterior se for diferente da nova (evita chamadas desnecessárias ao ManyChat)
+  try {
+    const previousStage = await redis.get<string>(key)
+    if (previousStage && previousStage !== newStage && FUNNEL_STAGES.includes(previousStage as FunnelStage)) {
+      await removeTagByName(userId, previousStage)
+    }
+  } catch (err) {
+    console.error('[FUNNEL] Erro ao remover tag anterior:', err)
+  }
 
   try {
     await addTagByName(userId, newStage)
   } catch (err) {
     console.error('[FUNNEL] Erro ao adicionar tag:', newStage, err)
   }
+
   await redis.set(key, newStage)
   console.log('[FUNNEL] Stage atualizado para:', newStage)
   return newStage
