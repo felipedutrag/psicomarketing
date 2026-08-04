@@ -133,7 +133,6 @@ export async function POST(req: NextRequest) {
             const result = await runGroq(GROQ_KEY, system, thread, fullUserText, userId, CONFIG.GROQ_FALLBACK_MODEL, toolContext)
             reply = result.reply
             messageSent = result.messageSent || false
-            console.log('[PROCESS-AI] Resposta recebida via modelo principal (Groq):', reply)
           } catch (err) {
             lastError = err
             console.error(`[PROCESS-AI] Modelo principal (Groq) falhou:`, err instanceof Error ? err.message : err)
@@ -147,7 +146,6 @@ export async function POST(req: NextRequest) {
             const result = await runGemini(GEMINI_KEY, system, thread, fullUserText, userId, toolContext)
             reply = result.reply
             messageSent = result.messageSent || false
-            console.log('[PROCESS-AI] Resposta recebida via segundo modelo (Gemini):', reply)
           } catch (err) {
             lastError = err
             console.error('[PROCESS-AI] Segundo modelo (Gemini) falhou:', err instanceof Error ? err.message : err)
@@ -161,7 +159,6 @@ export async function POST(req: NextRequest) {
             const result = await runNvidia(NVIDIA_KEY, system, thread, fullUserText, userId, CONFIG.SECONDARY_NVIDIA_MODEL, toolContext)
             reply = result.reply
             messageSent = result.messageSent || false
-            console.log('[PROCESS-AI] Resposta recebida via NVIDIA fallback:', reply)
           } catch (err) {
             lastError = err
             console.error(`[PROCESS-AI] Fallback NVIDIA (${CONFIG.SECONDARY_NVIDIA_MODEL}) falhou:`, err instanceof Error ? err.message : err)
@@ -178,9 +175,7 @@ export async function POST(req: NextRequest) {
     if (reply.trim() === '') {
       console.log('[PROCESS-AI] Resposta vazia - ferramenta já enviou a mensagem, pulando envio')
     } else {
-      console.log('[PROCESS-AI] Enviando mensagem para ManyChat:', reply)
       await mcSendMessage(userId, reply)
-      console.log('[PROCESS-AI] Mensagem enviada com sucesso')
     }
 
     // Só apaga o buffer após sucesso total (evita perder mensagem em falha)

@@ -1,8 +1,8 @@
 export const CONFIG = {
   MAX_DURATION: 180,
-  DEBOUNCE_MS: 5000,
+  DEBOUNCE_MS: 0,
   MAX_THREAD_SIZE: 20,
-  GEMINI_MODELS: ['gemini-2.0-flash', 'gemini-1.5-flash'],
+  GEMINI_MODELS: ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'],
   GEMINI_TIMEOUT_MS: 25000,
   PRIMARY_MODEL: process.env.PRIMARY_MODEL || 'llama-3.3-70b-versatile',
   SECONDARY_NVIDIA_MODEL: 'nvidia/nemotron-3-ultra-550b-a55b',
