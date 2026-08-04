@@ -150,7 +150,7 @@ export async function executeTool(
       }]
       
       const result = await sendMessageWithButtons(userId, text, processedButtons)
-      return { response: { success: true, result } }
+      return { response: { success: true, result, message_sent: true } }
     } catch (err) {
       console.error('[PROCESS-AI] send_message_with_buttons falhou:', err)
       return {

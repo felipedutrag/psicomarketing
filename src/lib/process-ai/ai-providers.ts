@@ -53,6 +53,7 @@ export async function runNvidia(
     if (toolCalls && toolCalls.length > 0) {
       console.log(`[NVIDIA] ${toolCalls.length} tool call(s)`)
       messages.push(msg)
+      let messageSent = false
       for (const tc of toolCalls) {
         let args: Record<string, unknown> = {}
         try {
@@ -61,7 +62,15 @@ export async function runNvidia(
           args = {}
         }
         const { response } = await executeTool(tc.function.name, args, userId, context)
+        if (response.message_sent) {
+          messageSent = true
+        }
         messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(response) })
+      }
+      // Se a ferramenta enviou uma mensagem, retorna uma string vazia para evitar envio duplicado
+      if (messageSent) {
+        console.log(`[NVIDIA] Ferramenta enviou mensagem, retornando resposta vazia`)
+        return { reply: '' }
       }
       continue
     }
@@ -117,6 +126,7 @@ export async function runGroq(
     if (toolCalls && toolCalls.length > 0) {
       console.log(`[GROQ] ${toolCalls.length} tool call(s)`)
       messages.push(msg)
+      let messageSent = false
       for (const tc of toolCalls) {
         let args: Record<string, unknown> = {}
         try {
@@ -125,7 +135,15 @@ export async function runGroq(
           args = {}
         }
         const { response } = await executeTool(tc.function.name, args, userId, context)
+        if (response.message_sent) {
+          messageSent = true
+        }
         messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(response) })
+      }
+      // Se a ferramenta enviou uma mensagem, retorna uma string vazia para evitar envio duplicado
+      if (messageSent) {
+        console.log(`[GROQ] Ferramenta enviou mensagem, retornando resposta vazia`)
+        return { reply: '' }
       }
       continue
     }
@@ -174,11 +192,20 @@ export async function runGemini(
         if (fnCalls && fnCalls.length > 0) {
           console.log(`[PROCESS-AI] Gemini ${modelName} rodada ${round + 1}: ${fnCalls.length} function call(s)`)
           const fnResponses: Part[] = []
+          let messageSent = false
           for (const fn of fnCalls) {
             const { response: toolResp } = await executeTool(fn.name, (fn.args || {}) as Record<string, unknown>, userId, context)
+            if (toolResp.message_sent) {
+              messageSent = true
+            }
             fnResponses.push({
               functionResponse: { name: fn.name, response: toolResp }
             })
+          }
+          // Se a ferramenta enviou uma mensagem, retorna uma string vazia para evitar envio duplicado
+          if (messageSent) {
+            console.log(`[PROCESS-AI] Ferramenta enviou mensagem, retornando resposta vazia`)
+            return { reply: '' }
           }
           userMessage = fnResponses
           continue

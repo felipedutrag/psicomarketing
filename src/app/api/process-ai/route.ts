@@ -170,15 +170,24 @@ export async function POST(req: NextRequest) {
     }
 
     // --- ENVIO DIRETO DA MENSAGEM NO WHATSAPP ---
-    console.log('[PROCESS-AI] Enviando mensagem para ManyChat:', reply)
-    await mcSendMessage(userId, reply)
-    console.log('[PROCESS-AI] Mensagem enviada com sucesso')
+    // Se a resposta for vazia (significa que uma ferramenta já enviou a mensagem), não envia novamente
+    if (reply.trim() === '') {
+      console.log('[PROCESS-AI] Resposta vazia - ferramenta já enviou a mensagem, pulando envio')
+    } else {
+      console.log('[PROCESS-AI] Enviando mensagem para ManyChat:', reply)
+      await mcSendMessage(userId, reply)
+      console.log('[PROCESS-AI] Mensagem enviada com sucesso')
+    }
 
     // Só apaga o buffer após sucesso total (evita perder mensagem em falha)
     await redis.del(bufferKey)
 
     // Atualiza thread no Redis após processamento (mantém últimas N mensagens, sem expirar)
-    thread.push(['user', fullUserText], ['model', reply])
+    // Só adiciona a resposta do modelo se não for vazia
+    thread.push(['user', fullUserText])
+    if (reply.trim() !== '') {
+      thread.push(['model', reply])
+    }
     if (thread.length > CONFIG.MAX_THREAD_SIZE) thread.splice(0, thread.length - CONFIG.MAX_THREAD_SIZE)
     await redis.set(threadKey, JSON.stringify(thread))
 
