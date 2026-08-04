@@ -1,4 +1,4 @@
-﻿const MANYCHAT_AUTH = `4893318:6124c375829053829537d02892ea7ce8`
+const MANYCHAT_AUTH = `4893318:6124c375829053829537d02892ea7ce8`
 const MC_API = 'https://api.manychat.com/fb'
 
 export async function getSubscriber(userId: string | number) {
@@ -57,24 +57,36 @@ export async function sendMessageWithButtons(
 ) {
   console.log('[MANYCHAT] sendMessageWithButtons:', userId, text.substring(0, 100), buttons)
   
-  // Format buttons for ManyChat WhatsApp API
-  const formattedButtons = buttons.map(btn => ({
-    type: btn.url ? 'url' : 'postback',
-    title: btn.text,
-    ...(btn.url ? { url: btn.url } : { payload: btn.payload || btn.text })
-  }))
+  // Format buttons for ManyChat WhatsApp v2 Content API
+  const formattedButtons = buttons.map(btn => {
+    if (btn.url) {
+      return {
+        type: 'url',
+        caption: btn.text,
+        url: btn.url,
+        actions: []
+      }
+    }
+    return {
+      type: 'node',
+      caption: btn.text,
+      target: btn.payload || btn.text,
+      actions: []
+    }
+  })
+
+  const subscriberId = typeof userId === 'string' && /^\d+$/.test(userId) ? Number(userId) : userId
 
   const res = await fetch(`${MC_API}/sending/sendContent`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer 4893318:6124c375829053829537d02892ea7ce8` },
     body: JSON.stringify({
-      subscriber_id: userId,
+      subscriber_id: subscriberId,
       data: {
         version: 'v2',
         content: {
-          type: 'whatsapp',
           messages: [{
-            type: 'buttons',
+            type: 'text',
             text,
             buttons: formattedButtons
           }]

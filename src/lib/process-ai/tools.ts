@@ -102,7 +102,7 @@ export const TOOL_DEFS: ToolDef[] = [
   },
   {
     name: 'send_message_with_buttons',
-    description: 'Envia uma mensagem com botões interativos para o lead via WhatsApp (ManyChat). Use para oferecer opções rápidas como agendar, ver preços, falar com humano, etc. O botão de URL aceita templates: http://psicomarketing.online/?nome={firstname}&id={id} - os placeholders {firstname} e {id} serão preenchidos automaticamente com os dados do webhook.',
+    description: 'Envia uma mensagem com botões interativos para o lead via WhatsApp (ManyChat). ATENÇÃO EXTREMA: Use esta tool APENAS E SOMENTE SE O LEAD SOLICITAR EXPLICITAMENTE o envio de botões ou opções em formato de botão (ex: "me manda o botão", "envia opções por botão", "manda botões"). NUNCA use esta tool espontaneamente se o lead não pediu expressamente por botões. O botão de URL aceita templates: http://psicomarketing.online/?nome={firstname}&id={id} - os placeholders {firstname} e {id} serão preenchidos automaticamente.',
     parameters: {
       type: 'object',
       properties: {
