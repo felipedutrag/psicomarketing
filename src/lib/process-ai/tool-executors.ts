@@ -128,24 +128,26 @@ export async function executeTool(
   if (name === 'send_message_with_buttons') {
     console.log('[PROCESS-AI] Function send_message_with_buttons chamada:', JSON.stringify(args))
     const { text, buttons } = args as { text?: string; buttons?: Array<{ text: string; payload?: string; url?: string }> }
-    if (!text || !buttons || !Array.isArray(buttons) || buttons.length === 0) {
-      return { response: { success: false, error: 'Texto e botões são obrigatórios' } }
+    if (!text) {
+      return { response: { success: false, error: 'Texto da mensagem é obrigatório' } }
     }
     try {
-      // Construir URLs dinâmicas se o botão tiver template
-      const processedButtons = buttons.map(btn => {
-        if (btn.url && (btn.url.includes('{') || btn.url.includes('http://psicomarketing.online'))) {
-          const firstName = context?.webhookFirstName || context?.firstName || 'Lead'
-          const id = context?.webhookUserId || userId
-          const url = btn.url
-            .replace('{firstname}', encodeURIComponent(firstName))
-            .replace('{first_name}', encodeURIComponent(firstName))
-            .replace('{id}', encodeURIComponent(id))
-            .replace('{user_id}', encodeURIComponent(id))
-          return { ...btn, url }
-        }
-        return btn
-      })
+      const firstName = context?.webhookFirstName || context?.firstName || 'Lead'
+      const id = context?.webhookUserId || userId
+
+      // Forçar sempre exatamente 1 botão de URL do site com os parâmetros do lead
+      const firstBtn = (buttons && Array.isArray(buttons) && buttons.length > 0) ? buttons[0] : { text: 'Acessar Site' }
+      const rawUrl = firstBtn.url || `http://psicomarketing.online/?nome={firstname}&id={id}`
+      const url = rawUrl
+        .replace('{firstname}', encodeURIComponent(firstName))
+        .replace('{first_name}', encodeURIComponent(firstName))
+        .replace('{id}', encodeURIComponent(id))
+        .replace('{user_id}', encodeURIComponent(id))
+
+      const processedButtons = [{
+        text: (firstBtn.text || 'Acessar Site').substring(0, 20),
+        url
+      }]
       
       const result = await sendMessageWithButtons(userId, text, processedButtons)
       return { response: { success: true, result } }

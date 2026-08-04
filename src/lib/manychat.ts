@@ -75,26 +75,19 @@ export async function sendMessageWithButtons(
 ) {
   console.log('[MANYCHAT] sendMessageWithButtons:', userId, text.substring(0, 100), buttons)
   
-  // Format buttons for ManyChat WhatsApp v2 Content API (WhatsApp limit: 20 chars for caption, max 3 buttons, omit empty actions)
-  const formattedButtons = buttons.slice(0, 3).map(btn => {
-    const caption = (btn.text || 'Clique aqui').trim().substring(0, 20)
-    if (btn.url) {
-      let cleanUrl = btn.url.trim()
-      if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
-        cleanUrl = `https://${cleanUrl}`
-      }
-      return {
-        type: 'url',
-        caption,
-        url: cleanUrl
-      }
-    }
-    return {
-      type: 'node',
-      caption,
-      target: (btn.payload || btn.text || 'ok').trim().substring(0, 50)
-    }
-  })
+  // Format strictly 1 URL button for ManyChat WhatsApp v2 Content API
+  const firstBtn = (buttons && buttons.length > 0) ? buttons[0] : { text: 'Acessar Site', url: 'https://psicomarketing.online/' }
+  const caption = (firstBtn.text || 'Acessar Site').trim().substring(0, 20)
+  let cleanUrl = (firstBtn.url || 'https://psicomarketing.online/').trim()
+  if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+    cleanUrl = `https://${cleanUrl}`
+  }
+
+  const formattedButtons = [{
+    type: 'url',
+    caption,
+    url: cleanUrl
+  }]
 
   const subscriberId = typeof userId === 'string' && /^\d+$/.test(userId) ? Number(userId) : userId
 
@@ -103,7 +96,6 @@ export async function sendMessageWithButtons(
     data: {
       version: 'v2',
       content: {
-        type: 'whatsapp',
         messages: [{
           type: 'text',
           text,
