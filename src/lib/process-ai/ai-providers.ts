@@ -165,10 +165,15 @@ export async function runGemini(
   context?: ToolContext
 ): Promise<{ reply: string; messageSent?: boolean }> {
   const genAI = new GoogleGenerativeAI(apiKey)
-  const historyParts: Array<{ role: string; parts: Array<{ text: string }> }> = history.map(([r, t]) => ({
-    role: r,
+  let historyParts: Array<{ role: string; parts: Array<{ text: string }> }> = history.map(([r, t]) => ({
+    role: r === 'assistant' ? 'model' : r,
     parts: [{ text: t }]
   }))
+
+  // Garante que o histórico não comece com 'model'
+  while (historyParts.length > 0 && historyParts[0].role === 'model') {
+    historyParts.shift()
+  }
 
   let lastError: unknown = null
   for (const modelName of CONFIG.GEMINI_MODELS) {
