@@ -20,10 +20,11 @@ export function LiveVoiceAgentDemo() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
-      setIdentity({
-        nome: urlParams.get('nome') || null,
-        id: urlParams.get('id') || null
-      });
+      const nome = urlParams.get('nome') || null;
+      const id = urlParams.get('id') || null;
+      console.log('[LiveVoiceAgentDemo] Parâmetros da URL:', { nome, id, url: window.location.search });
+      setIdentity({ nome, id });
+      console.log('[LiveVoiceAgentDemo] Identity setado:', { nome, id });
     }
   }, []);
 

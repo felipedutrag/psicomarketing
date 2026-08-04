@@ -128,6 +128,7 @@ export function useLilithVoice(identity?: Identity) {
     sessionIdRef.current = sessionId
     voiceNameRef.current = selectedVoice
     identityRef.current = identity
+    console.log('[LilithVoice] Identity atualizado:', identity, 'identityRef.current:', identityRef.current)
     const savedSession = loadSession()
     resumptionHandleRef.current = savedSession?.resumptionHandle ?? null
     conversationHistoryRef.current = savedSession?.history ?? []
@@ -235,15 +236,19 @@ export function useLilithVoice(identity?: Identity) {
     }
 
     try {
-      const identityParams = identity 
-        ? `&nome=${encodeURIComponent(identity.nome || '')}&id=${encodeURIComponent(identity.id || '')}`
+      // Capturar o identity atual diretamente no momento da chamada
+      const currentIdentity = identityRef.current
+      const identityParams = currentIdentity 
+        ? `&nome=${encodeURIComponent(currentIdentity.nome || '')}&id=${encodeURIComponent(currentIdentity.id || '')}`
         : ''
+      console.log('[LilithVoice] Chamando config API com params:', identityParams, 'identity:', currentIdentity)
       const res = await fetch(
         getApiUrl(
           `/api/gemini-live/config?sessionId=${sessionIdRef.current}&voiceName=${selectedVoice}${identityParams}`
         )
       )
       const { key: apiKey, tools, systemInstruction: customInstruction, voiceName } = await res.json()
+      console.log('[LilithVoice] System instruction recebida:', customInstruction?.substring(0, 200))
 
       if (!apiKey) {
         setIsRecordingVoice(false)
@@ -428,8 +433,19 @@ export function useLilithVoice(identity?: Identity) {
           reconnectAttemptsRef.current = 0
           setIsReadyToSpeak(true)
           
-          // Enviar uma mensagem vazia para forçar a IA a começar a falar
-          ws.send(JSON.stringify({ realtimeInput: { mediaChunks: [] } }))
+          // Enviar um prompt inicial para forçar a IA a começar a falar
+          console.log('[LilithVoice] Setup completo, enviando prompt inicial')
+          setTimeout(() => {
+            if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+              // Enviar um prompt de texto simples para iniciar a conversa
+              wsRef.current.send(JSON.stringify({ 
+                realtimeInput: { 
+                  text: 'Comece agora.' 
+                } 
+              }))
+              console.log('[LilithVoice] Prompt inicial enviado')
+            }
+          }, 1000)
           return
         }
 
