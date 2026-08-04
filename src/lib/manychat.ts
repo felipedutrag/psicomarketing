@@ -75,50 +75,58 @@ export async function sendMessageWithButtons(
 ) {
   console.log('[MANYCHAT] sendMessageWithButtons:', userId, text.substring(0, 100), buttons)
   
-  // Format buttons for ManyChat WhatsApp v2 Content API
-  const formattedButtons = buttons.map(btn => {
+  // Format buttons for ManyChat WhatsApp v2 Content API (WhatsApp limit: 20 chars for caption, max 3 buttons, omit empty actions)
+  const formattedButtons = buttons.slice(0, 3).map(btn => {
+    const caption = (btn.text || 'Clique aqui').trim().substring(0, 20)
     if (btn.url) {
+      let cleanUrl = btn.url.trim()
+      if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+        cleanUrl = `https://${cleanUrl}`
+      }
       return {
         type: 'url',
-        caption: btn.text,
-        url: btn.url,
-        actions: []
+        caption,
+        url: cleanUrl
       }
     }
     return {
       type: 'node',
-      caption: btn.text,
-      target: btn.payload || btn.text,
-      actions: []
+      caption,
+      target: (btn.payload || btn.text || 'ok').trim().substring(0, 50)
     }
   })
 
   const subscriberId = typeof userId === 'string' && /^\d+$/.test(userId) ? Number(userId) : userId
 
+  const payload = {
+    subscriber_id: subscriberId,
+    data: {
+      version: 'v2',
+      content: {
+        type: 'whatsapp',
+        messages: [{
+          type: 'text',
+          text,
+          buttons: formattedButtons
+        }]
+      }
+    }
+  }
+
+  console.log('[MANYCHAT] sendMessageWithButtons payload:', JSON.stringify(payload))
+
   const res = await fetch(`${MC_API}/sending/sendContent`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: getAuthHeader() },
-    body: JSON.stringify({
-      subscriber_id: subscriberId,
-      data: {
-        version: 'v2',
-        content: {
-          type: 'whatsapp',
-          messages: [{
-            type: 'text',
-            text,
-            buttons: formattedButtons
-          }]
-        }
-      }
-    }),
+    body: JSON.stringify(payload),
   })
   const json = await res.json()
   console.log('[MANYCHAT] sendMessageWithButtons response:', res.status, json)
   if (!res.ok || json.status !== 'success') {
     const errMsg = json.message || `HTTP ${res.status}`
-    console.error('[MANYCHAT] sendMessageWithButtons ERR', res.status, errMsg, JSON.stringify(json.details?.messages || json.details))
-    throw new Error(`ManyChat API Error: ${errMsg}`)
+    const details = JSON.stringify(json.details?.messages || json.details || json)
+    console.error('[MANYCHAT] sendMessageWithButtons ERR', res.status, errMsg, details)
+    throw new Error(`ManyChat API Error: ${errMsg} - ${details}`)
   }
   return json
 }

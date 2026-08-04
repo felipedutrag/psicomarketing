@@ -116,7 +116,7 @@ export const TOOL_DEFS: ToolDef[] = [
           items: {
             type: 'object',
             properties: {
-              text: { type: 'string', description: 'Rótulo do botão (ex: "Agendar reunião")' },
+              text: { type: 'string', description: 'Rótulo do botão (MÁXIMO 20 caracteres por exigência do WhatsApp, ex: "Ver no site", "Agendar agora")' },
               payload: { type: 'string', description: 'Ação/payload enviado quando clicar (ex: "agendar", "falar_humano", "ver_precos")' },
               url: { type: 'string', description: 'URL opcional para botão de link externo. Use template: http://psicomarketing.online/?nome={firstname}&id={id}' }
             },
