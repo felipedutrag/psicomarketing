@@ -123,14 +123,16 @@ export async function POST(req: NextRequest) {
 
         // --- EXECUÇÃO DO AGENTE DE IA EM CASCATA COM FALLBACKS ---
         let reply = ''
+        let messageSent = false
         let lastError: unknown = null
 
         // 1. Modelo Principal: gemini-3.5-flash-lite (tenta os GEMINI_MODELS em ordem)
-        if (!reply && GEMINI_KEY) {
+        if (!reply && !messageSent && GEMINI_KEY) {
           try {
             console.log(`[PROCESS-AI] [1/3] Executando modelo principal Gemini: ${CONFIG.GEMINI_MODELS.join(' -> ')}...`)
             const result = await runGemini(GEMINI_KEY, system, thread, fullUserText, userId, toolContext)
             reply = result.reply
+            messageSent = result.messageSent || false
             console.log('[PROCESS-AI] Resposta recebida via modelo principal (Gemini):', reply)
           } catch (err) {
             lastError = err
@@ -139,11 +141,12 @@ export async function POST(req: NextRequest) {
         }
 
         // 2. Segundo Modelo: nvidia/nemotron-3-ultra-550b-a55b (via NVIDIA NIM)
-        if (!reply && NVIDIA_KEY) {
+        if (!reply && !messageSent && NVIDIA_KEY) {
           try {
             console.log(`[PROCESS-AI] [2/3] Executando segundo modelo: ${CONFIG.SECONDARY_NVIDIA_MODEL}...`)
             const result = await runNvidia(NVIDIA_KEY, system, thread, fullUserText, userId, CONFIG.SECONDARY_NVIDIA_MODEL, toolContext)
             reply = result.reply
+            messageSent = result.messageSent || false
             console.log('[PROCESS-AI] Resposta recebida via segundo modelo (NVIDIA):', reply)
           } catch (err) {
             lastError = err
@@ -152,11 +155,12 @@ export async function POST(req: NextRequest) {
         }
 
         // 3. Fallback Groq: llama-3.3-70b-versatile
-        if (!reply && GROQ_KEY) {
+        if (!reply && !messageSent && GROQ_KEY) {
           try {
             console.log(`[PROCESS-AI] [3/3] Executando fallback Groq: ${CONFIG.GROQ_FALLBACK_MODEL}...`)
             const result = await runGroq(GROQ_KEY, system, thread, fullUserText, userId, CONFIG.GROQ_FALLBACK_MODEL, toolContext)
             reply = result.reply
+            messageSent = result.messageSent || false
             console.log('[PROCESS-AI] Resposta recebida via Groq fallback:', reply)
           } catch (err) {
             lastError = err
@@ -164,7 +168,7 @@ export async function POST(req: NextRequest) {
           }
         }
 
-    if (!reply) {
+    if (!reply && !messageSent) {
       console.error('[PROCESS-AI] Todos os modelos falharam')
       throw lastError instanceof Error ? lastError : new Error('Nenhum modelo disponível')
     }

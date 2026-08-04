@@ -18,7 +18,7 @@ export async function runNvidia(
   userId: string,
   modelName: string = CONFIG.SECONDARY_NVIDIA_MODEL,
   context?: ToolContext
-): Promise<{ reply: string }> {
+): Promise<{ reply: string; messageSent?: boolean }> {
   const messages: Array<Record<string, unknown>> = [
     { role: 'system', content: system },
     ...history.map(([r, t]) => ({ role: r === 'model' ? 'assistant' : 'user', content: t })),
@@ -70,7 +70,7 @@ export async function runNvidia(
       // Se a ferramenta enviou uma mensagem, retorna uma string vazia para evitar envio duplicado
       if (messageSent) {
         console.log(`[NVIDIA] Ferramenta enviou mensagem, retornando resposta vazia`)
-        return { reply: '' }
+        return { reply: '', messageSent: true }
       }
       continue
     }
@@ -91,7 +91,7 @@ export async function runGroq(
   userId: string,
   modelName: string = CONFIG.GROQ_FALLBACK_MODEL,
   context?: ToolContext
-): Promise<{ reply: string }> {
+): Promise<{ reply: string; messageSent?: boolean }> {
   const messages: Array<Record<string, unknown>> = [
     { role: 'system', content: system },
     ...history.map(([r, t]) => ({ role: r === 'model' ? 'assistant' : 'user', content: t })),
@@ -143,7 +143,7 @@ export async function runGroq(
       // Se a ferramenta enviou uma mensagem, retorna uma string vazia para evitar envio duplicado
       if (messageSent) {
         console.log(`[GROQ] Ferramenta enviou mensagem, retornando resposta vazia`)
-        return { reply: '' }
+        return { reply: '', messageSent: true }
       }
       continue
     }
@@ -163,7 +163,7 @@ export async function runGemini(
   userText: string,
   userId: string,
   context?: ToolContext
-): Promise<{ reply: string }> {
+): Promise<{ reply: string; messageSent?: boolean }> {
   const genAI = new GoogleGenerativeAI(apiKey)
   const historyParts: Array<{ role: string; parts: Array<{ text: string }> }> = history.map(([r, t]) => ({
     role: r,
@@ -205,7 +205,7 @@ export async function runGemini(
           // Se a ferramenta enviou uma mensagem, retorna uma string vazia para evitar envio duplicado
           if (messageSent) {
             console.log(`[PROCESS-AI] Ferramenta enviou mensagem, retornando resposta vazia`)
-            return { reply: '' }
+            return { reply: '', messageSent: true }
           }
           userMessage = fnResponses
           continue
