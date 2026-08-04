@@ -43,6 +43,8 @@ export async function sendMessage(userId: string | number, text: string) {
     headers: { 'Content-Type': 'application/json', Authorization: getAuthHeader() },
     body: JSON.stringify({
       subscriber_id: subscriberId,
+      messaging_type: 'message',
+      tag: 'ACCOUNT_UPDATE', // Required for messages outside 24h window
       data: {
         version: 'v2',
         content: {
@@ -93,9 +95,12 @@ export async function sendMessageWithButtons(
 
   const payload = {
     subscriber_id: subscriberId,
+    messaging_type: 'message',
+    tag: 'ACCOUNT_UPDATE', // Required for messages outside 24h window
     data: {
       version: 'v2',
       content: {
+        type: 'whatsapp',
         messages: [{
           type: 'text',
           text,
