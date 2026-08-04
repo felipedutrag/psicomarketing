@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Search, Loader2, Trash2 } from 'lucide-react'
+import { Search, Loader2, Trash2, ArrowRight } from 'lucide-react'
 
 interface ScrapeResultItem {
   nome: string
@@ -71,15 +71,15 @@ export function ScrapingForm() {
     <Card className="h-full">
       <CardHeader>
         <CardTitle className="text-sm font-semibold flex items-center gap-2">
-          <span>🔍</span>
+          <Search className="h-3.5 w-3.5 text-zinc-400" strokeWidth={1.5} />
           <span>Buscar Leads no Google Maps</span>
         </CardTitle>
         <CardDescription>
           Captura automatizada por cidade usando busca parametrizada
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-1.5">
+      <CardContent className="space-y-5">
+        <div className="space-y-3">
           <Label htmlFor="template-url" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
             URL modelo
           </Label>
@@ -95,7 +95,7 @@ export function ScrapingForm() {
           </p>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-3">
           <Label htmlFor="cities" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
             Cidades (uma por linha)
           </Label>
@@ -109,7 +109,7 @@ export function ScrapingForm() {
           />
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-3">
           <Label htmlFor="data-count" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
             Quantidade de dados por cidade
           </Label>
@@ -127,7 +127,8 @@ export function ScrapingForm() {
           <Button
             onClick={handleScrape}
             disabled={isLoading || !templateUrl.trim() || !cities.trim()}
-            className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
+            variant="outline"
+            className="flex-1 border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 font-medium"
           >
             {isLoading ? (
               <>
@@ -136,8 +137,8 @@ export function ScrapingForm() {
               </>
             ) : (
               <>
-                <Search className="mr-2 h-4 w-4" />
                 Buscar Leads
+                <ArrowRight className="h-4 w-4" />
               </>
             )}
           </Button>
@@ -168,7 +169,7 @@ export function ScrapingForm() {
             }`}
           >
             {result.success ? (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <p>✓ {result.count} leads importados de {result.scraped} encontrados!</p>
                 {result.results && result.results.length > 0 && (
                   <ul className="text-[11px] space-y-1 max-h-36 overflow-auto">

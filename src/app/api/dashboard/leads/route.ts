@@ -55,6 +55,29 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, count: parsedLeads.length })
     }
 
+    if (action === 'manual') {
+      const { nome, whatsapp, website, mensagem_inicial } = data
+      const cleanPhone = String(whatsapp || '').replace(/\D/g, '')
+      if (!nome || !nome.trim()) {
+        return NextResponse.json({ error: 'Informe o nome do contato.' }, { status: 400 })
+      }
+      if (!cleanPhone) {
+        return NextResponse.json({ error: 'Informe o número de WhatsApp.' }, { status: 400 })
+      }
+      const lead: Lead = {
+        id: `lead_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+        nome: nome.trim(),
+        whatsapp: cleanPhone,
+        website: website?.trim() || undefined,
+        mensagem_inicial: mensagem_inicial?.trim() || undefined,
+        status: 'pending',
+        created_at: new Date().toISOString(),
+      }
+      await saveLeads([lead])
+      await updateStats()
+      return NextResponse.json({ success: true, lead })
+    }
+
     if (action === 'clear') {
       await clearLeads()
       await updateStats()

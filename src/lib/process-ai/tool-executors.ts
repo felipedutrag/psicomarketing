@@ -58,8 +58,6 @@ export async function executeTool(
         attendeeName,
         attendeeEmail
       }))
-      // Move o lead para a etapa "reunião agendada"
-      await setLeadStage(userId, 'f_reuniao_agendada')
 
       // Resgata o lead do Redis para capturar o telefone, se disponível
       let phone = ''

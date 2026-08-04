@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Loader2, Save, ShieldCheck } from 'lucide-react'
+import { Loader2, ShieldCheck, ArrowRight } from 'lucide-react'
 
 export function DelayConfig() {
   const [delayMin, setDelayMin] = useState<string>('')
@@ -79,7 +79,7 @@ export function DelayConfig() {
           Configure o intervalo de espera randômico entre envios para simular comportamento humano
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5">
         {isLoading ? (
           <div className="flex justify-center py-6">
             <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
@@ -87,7 +87,7 @@ export function DelayConfig() {
         ) : (
           <>
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-1.5">
+              <div className="space-y-3">
                 <Label htmlFor="delay-min" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                   Delay Mínimo (segundos)
                 </Label>
@@ -99,7 +99,7 @@ export function DelayConfig() {
                   onChange={e => setDelayMin(e.target.value)}
                 />
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-3">
                 <Label htmlFor="delay-max" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                   Delay Máximo (segundos)
                 </Label>
@@ -113,7 +113,7 @@ export function DelayConfig() {
               </div>
             </div>
 
-            <Button onClick={handleSave} disabled={isSaving} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
+            <Button onClick={handleSave} disabled={isSaving} variant="outline" className="w-full border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 font-medium">
               {isSaving ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -121,8 +121,8 @@ export function DelayConfig() {
                 </>
               ) : (
                 <>
-                  <Save className="mr-2 h-4 w-4" />
                   Salvar Intervalo Anti-Ban
+                  <ArrowRight className="h-4 w-4" />
                 </>
               )}
             </Button>

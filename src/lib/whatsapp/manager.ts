@@ -14,10 +14,29 @@ export function getWhatsAppClientIfExists(): WhatsAppClient | null {
   return instance
 }
 
-// Inicialização automática - chamada uma vez no startup do servidor
+// Inicialização automática - chamada no startup do servidor e em cada verificação
+// de status. Auto-curativa: se o cliente não estiver rodando/saudável, reinicia.
 export async function initializeWhatsApp(): Promise<void> {
-  if (autoStartPromise) return autoStartPromise
-  
+  const client = getWhatsAppClient()
+
+  // Se já está rodando e saudável, apenas garante o health check ativo.
+  if (client.isStarted()) {
+    try {
+      const healthy = await client.isHealthy()
+      if (healthy) {
+        client.startHealthCheck()
+        return
+      }
+    } catch (err) {
+      console.warn('[WHATSAPP-MANAGER] isHealthy falhou, reiniciando:', err)
+    }
+  }
+
+  // Evita disparos concorrentes de inicialização.
+  if (autoStartPromise) {
+    return autoStartPromise
+  }
+
   autoStartPromise = (async () => {
     try {
       console.log('[WHATSAPP-MANAGER] Inicialização automática do WhatsApp...')
@@ -26,10 +45,11 @@ export async function initializeWhatsApp(): Promise<void> {
       console.log('[WHATSAPP-MANAGER] WhatsApp iniciado com sucesso')
     } catch (error) {
       console.error('[WHATSAPP-MANAGER] Falha na inicialização automática:', error)
-      autoStartPromise = null // Permitir retry
+    } finally {
+      autoStartPromise = null
     }
   })()
-  
+
   return autoStartPromise
 }
 

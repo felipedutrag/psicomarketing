@@ -81,6 +81,9 @@ export async function POST(req: NextRequest) {
       leads = leads.filter(lead => lead.na_fila === true && lead.status !== 'sent' && lead.status !== 'responded')
     }
 
+    // Nunca reenviar leads já enviados ou que responderam, mesmo se selecionados.
+    leads = leads.filter(lead => lead.status !== 'sent' && lead.status !== 'responded')
+
     if (leads.length === 0) {
       return NextResponse.json({ error: 'Nenhum lead pronto para envio' }, { status: 400 })
     }

@@ -63,6 +63,10 @@
   --sidebar-foreground: #f3f4f6;
 }
 
+label {
+  padding-bottom: 5px !important;
+}
+
 @layer base {
   button {
     border-style: none;
@@ -89,4 +93,34 @@
     color: inherit;
     text-decoration: none;
   }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(130, 130, 140, 0.4) transparent;
+}
+
+*::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(130, 130, 140, 0.35);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(130, 130, 140, 0.6);
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }

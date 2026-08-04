@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { Loader2, Save, Clock } from 'lucide-react'
+import { Loader2, Clock, ArrowRight } from 'lucide-react'
 
 export function ScheduleConfig() {
   const [enabled, setEnabled] = useState(false)
@@ -76,7 +76,7 @@ export function ScheduleConfig() {
           Restrinja o disparo automático de mensagens a janelas de horário comercial
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5">
         {isLoading ? (
           <div className="flex justify-center py-6">
             <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
@@ -91,13 +91,13 @@ export function ScheduleConfig() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-1.5">
+              <div className="space-y-3">
                 <Label htmlFor="schedule-start" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                   Horário Início
                 </Label>
                 <Input id="schedule-start" type="time" value={start} onChange={e => setStart(e.target.value)} disabled={!enabled} />
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-3">
                 <Label htmlFor="schedule-end" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                   Horário Fim
                 </Label>
@@ -105,7 +105,7 @@ export function ScheduleConfig() {
               </div>
             </div>
 
-            <Button onClick={handleSave} disabled={isSaving} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
+            <Button onClick={handleSave} disabled={isSaving} variant="outline" className="w-full border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 font-medium">
               {isSaving ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -113,8 +113,8 @@ export function ScheduleConfig() {
                 </>
               ) : (
                 <>
-                  <Save className="mr-2 h-4 w-4" />
                   Salvar Horário Comercial
+                  <ArrowRight className="h-4 w-4" />
                 </>
               )}
             </Button>

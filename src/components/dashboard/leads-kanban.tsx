@@ -11,6 +11,7 @@ import {
   Trash2,
   Send,
   ListPlus,
+  ArrowRight,
   X,
   Globe,
   User
@@ -26,6 +27,11 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
   const [leads, setLeads] = useState<Lead[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [busyId, setBusyId] = useState<string | null>(null)
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  const clearFeedback = () => {
+    setTimeout(() => setFeedback(null), 4000)
+  }
 
   const fetchLeads = async () => {
     setIsLoading(true)
@@ -62,12 +68,25 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
   }
 
   const handleDelete = async (id: string) => {
+    setBusyId(id)
     try {
-      await fetch(`/api/dashboard/leads/${id}`, { method: 'DELETE' })
+      const response = await fetch(`/api/dashboard/leads/${id}`, { method: 'DELETE' })
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok) {
+        setFeedback({ type: 'error', text: data.error || 'Erro ao excluir lead' })
+        clearFeedback()
+        return
+      }
+      setFeedback({ type: 'success', text: 'Lead excluído.' })
+      clearFeedback()
       await fetchLeads()
       if (onRevisionChange) onRevisionChange()
     } catch (error) {
       console.error('Erro ao deletar lead:', error)
+      setFeedback({ type: 'error', text: 'Erro ao excluir lead' })
+      clearFeedback()
+    } finally {
+      setBusyId(null)
     }
   }
 
@@ -156,11 +175,23 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
       </div>
 
       {/* Kanban Columns Container with Generous Spacing */}
-      <div className="flex gap-4 overflow-x-auto pb-6 pt-1">
-        {columns.map((col) => (
+      {feedback && (
+        <div
+          className={`rounded-md border px-3 py-2 text-xs ${
+            feedback.type === 'success'
+              ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
+              : 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400'
+          }`}
+        >
+          {feedback.text}
+        </div>
+      )}
+      <div className="overflow-x-auto pb-6" style={{ transform: 'scaleY(-1)' }}>
+        <div className="flex gap-4 pt-1" style={{ transform: 'scaleY(-1)' }}>
+          {columns.map((col) => (
           <div
             key={col.id}
-            className="flex-1 min-w-[280px] sm:min-w-[300px] max-w-[360px] flex flex-col rounded-[8px] border border-zinc-200/80 bg-[#fbfbfa] p-3 dark:bg-[#181818] dark:border-[#242424]"
+            className="flex-1 min-w-[320px] sm:min-w-[340px] max-w-[400px] flex flex-col rounded-[8px] border border-zinc-200/80 bg-[#fbfbfa] p-3 dark:bg-[#181818] dark:border-[#242424]"
           >
             {/* Column Header */}
             <div className="flex items-center justify-between p-2 rounded-[6px] bg-zinc-100/80 dark:bg-[#1f1f1f] border border-zinc-200/60 dark:border-[#282828] mb-3">
@@ -183,7 +214,7 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
                 col.items.map((lead) => (
                   <Card
                     key={lead.id}
-                    className="p-3.5 space-y-2.5 rounded-[6px] border border-zinc-200/80 dark:border-[#282828] bg-white dark:bg-[#202020] shadow-2xs hover:border-zinc-400 dark:hover:border-zinc-700 transition-all text-xs"
+                    className="p-2.5 space-y-1.5 rounded-[6px] border border-zinc-200/80 dark:border-[#282828] bg-white dark:bg-[#202020] shadow-2xs hover:border-zinc-400 dark:hover:border-zinc-700 transition-all text-xs"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="font-bold text-zinc-900 dark:text-zinc-100 truncate flex items-center gap-1.5">
@@ -191,15 +222,25 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
                         <span className="truncate">{lead.nome}</span>
                       </div>
                       <button
-                        onClick={() => handleDelete(lead.id)}
-                        className="text-zinc-400 hover:text-red-500 cursor-pointer p-1 transition-colors"
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDelete(lead.id)
+                        }}
+                        disabled={busyId === lead.id}
+                        className="bg-transparent text-zinc-400 hover:text-red-500 cursor-pointer p-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         title="Excluir Lead"
+                        aria-label="Excluir Lead"
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        {busyId === lead.id ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <Trash2 className="h-3.5 w-3.5" />
+                        )}
                       </button>
                     </div>
 
-                    <div className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+                    <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono truncate">
                       📱 {lead.whatsapp || 'Sem número'}
                     </div>
 
@@ -208,7 +249,7 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
                         href={lead.website}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
+                        className="inline-flex items-center gap-1 text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
                       >
                         <Globe className="h-3 w-3" />
                         Website
@@ -217,30 +258,30 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
                     )}
 
                     {/* Message Preview Snippet */}
-                    <div className="rounded-[4px] bg-zinc-50 dark:bg-[#161616] p-2.5 text-xs text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-[#262626] line-clamp-3 leading-relaxed">
+                    <div className="rounded-[4px] bg-zinc-50 dark:bg-[#161616] p-2 text-[11px] text-zinc-700 dark:text-zinc-300 border border-zinc-200/60 dark:border-[#262626] line-clamp-2 leading-relaxed">
                       {lead.mensagem_personalizada || lead.mensagem_inicial || 'Sem mensagem personalizada'}
                     </div>
 
                     {/* Card Actions Footer */}
-                    <div className="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-[#282828]">
+                    <div className="flex items-center justify-between pt-1.5 border-t border-zinc-100 dark:border-[#282828]">
                       {col.id !== 'sent' && (
                         <Button
                           onClick={() => updateQueue(lead.na_fila ? 'remove' : 'add', lead.id)}
                           disabled={busyId === lead.id}
                           variant="ghost"
                           size="sm"
-                          className="h-7 px-2 text-xs gap-1 cursor-pointer"
+                          className="h-6 px-1.5 text-[11px] gap-1 cursor-pointer"
                         >
                           {busyId === lead.id ? (
-                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            <Loader2 className="h-3 w-3 animate-spin" />
                           ) : lead.na_fila ? (
                             <>
-                              <X className="h-3.5 w-3.5 text-red-500" />
+                              <X className="h-3 w-3 text-red-500" />
                               <span className="text-red-500 font-medium">Sair da fila</span>
                             </>
                           ) : (
                             <>
-                              <ListPlus className="h-3.5 w-3.5 text-indigo-500" />
+                              <ListPlus className="h-3 w-3 text-indigo-500" />
                               <span>Fila</span>
                             </>
                           )}
@@ -252,10 +293,11 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
                           onClick={() => handleSendSingle(lead.id)}
                           disabled={busyId === lead.id}
                           size="sm"
-                          className="h-7 px-2.5 text-xs gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold cursor-pointer ml-auto"
+                          variant="outline"
+                          className="h-6 px-2 text-[11px] gap-1 border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 font-medium cursor-pointer ml-auto"
                         >
-                          <Send className="h-3 w-3" />
                           Enviar
+                          <ArrowRight className="h-3 w-3" />
                         </Button>
                       )}
                     </div>
@@ -265,6 +307,7 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
             </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   )

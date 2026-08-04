@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { Sparkles, Loader2, CheckCircle } from 'lucide-react'
+import { Loader2, CheckCircle, ArrowRight } from 'lucide-react'
 
 interface MessagePersonalizerProps {
   selectedLeadIds?: string[]
@@ -66,7 +66,7 @@ Sua tarefa é personalizar uma mensagem base para cada lead, usando o nome da pe
           Personalize mensagens automaticamente usando IA com multiprovedores
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5">
         <div className="flex items-center space-x-2 rounded-[6px] bg-zinc-100 dark:bg-[#202020] p-2.5 border border-zinc-200/60 dark:border-[#282828]">
           <Switch
             id="custom-prompt"
@@ -78,7 +78,7 @@ Sua tarefa é personalizar uma mensagem base para cada lead, usando o nome da pe
           </Label>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-3">
           <Label htmlFor="base-message" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
             Mensagem Base
           </Label>
@@ -92,7 +92,7 @@ Sua tarefa é personalizar uma mensagem base para cada lead, usando o nome da pe
         </div>
 
         {useCustomPrompt && (
-          <div className="space-y-1.5">
+          <div className="space-y-3">
             <Label htmlFor="custom-prompt-input" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
               Prompt Personalizado
             </Label>
@@ -110,7 +110,8 @@ Sua tarefa é personalizar uma mensagem base para cada lead, usando o nome da pe
         <Button
           onClick={handlePersonalize}
           disabled={isPersonalizing || !baseMessage.trim()}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
+          variant="outline"
+          className="w-full border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 font-medium"
         >
           {isPersonalizing ? (
             <>
@@ -119,8 +120,8 @@ Sua tarefa é personalizar uma mensagem base para cada lead, usando o nome da pe
             </>
           ) : (
             <>
-              <Sparkles className="mr-2 h-4 w-4" />
               Personalizar Mensagens
+              <ArrowRight className="h-4 w-4" />
             </>
           )}
         </Button>

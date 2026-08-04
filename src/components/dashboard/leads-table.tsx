@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Trash2, Send, Loader2, RefreshCw, ExternalLink, ListPlus, X, Search, Filter, Plus } from 'lucide-react'
+import { Trash2, Send, Loader2, RefreshCw, ExternalLink, ListPlus, X, Search, Filter } from 'lucide-react'
 import type { Lead } from '@/lib/dashboard/config'
 
 const DEFAULT_MESSAGE =
@@ -37,6 +37,7 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
   const [isSending, setIsSending] = useState(false)
   const [queueBusy, setQueueBusy] = useState(false)
   const [filterQuery, setFilterQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState<'todos' | 'enviados' | 'nao-enviados'>('todos')
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const [colWidths, setColWidths] = useState({
@@ -81,11 +82,15 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
   }, [resizingCol, startX, startWidth])
 
   const visibleLeads = leads
-    .filter((lead) => lead.status !== 'sent')
+    .filter((lead) => {
+      if (statusFilter === 'enviados') return lead.status === 'sent'
+      if (statusFilter === 'nao-enviados') return lead.status !== 'sent'
+      return true
+    })
     .filter((lead) =>
       filterQuery
         ? lead.nome.toLowerCase().includes(filterQuery.toLowerCase()) ||
-          lead.whatsapp.includes(filterQuery)
+          String(lead.whatsapp ?? '').includes(filterQuery)
         : true
     )
 
@@ -238,9 +243,30 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
         </div>
 
         {/* Database Search & Filter */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Status filter */}
+          <div className="flex items-center rounded-md border border-zinc-200 bg-white overflow-hidden dark:bg-[#222] dark:border-[#333]">
+            {([
+              { id: 'todos', label: 'Todos' },
+              { id: 'enviados', label: 'Enviados' },
+              { id: 'nao-enviados', label: 'Não enviados' },
+            ] as const).map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setStatusFilter(opt.id)}
+                className={`px-2.5 h-8 text-[11px] font-medium transition-colors cursor-pointer ${
+                  statusFilter === opt.id
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-transparent text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-[#1e1e1e] dark:hover:text-zinc-200'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
           <div className="relative">
-            <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-zinc-400" />
+            <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-zinc-400" strokeWidth={1.5} />
             <input
               type="text"
               placeholder="Filtrar por nome ou zap..."
@@ -250,7 +276,7 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
             />
           </div>
           <Button onClick={fetchLeads} variant="ghost" size="icon" className="h-8 w-8 cursor-pointer" disabled={isLoading}>
-            <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} strokeWidth={1.5} />
           </Button>
         </div>
       </div>

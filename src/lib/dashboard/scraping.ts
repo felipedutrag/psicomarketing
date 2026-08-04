@@ -87,12 +87,19 @@ export function parseManualInput(input: string): Partial<Lead>[] {  const lines 
 
 export async function saveScrapedLeads(places: ScrapedPlace[]): Promise<Lead[]> {
   const existing = await getLeads()
-  const existingPhones = new Set(existing.map(l => l.whatsapp).filter(Boolean))
+  // Dedup por número, normalizando para a mesma forma (ex.: 55 + DD + número).
+  // Cobre leads de qualquer origem e tanto os enviados quanto os não enviados.
+  const existingPhones = new Set(
+    existing
+      .map(l => (l.whatsapp ? normalizePhone(String(l.whatsapp)) : ''))
+      .filter(Boolean)
+  )
 
   const toSave: Lead[] = []
   for (const place of places) {
     const whatsapp = place.whatsapp ? normalizePhone(place.whatsapp) : ''
-    if (whatsapp && existingPhones.has(whatsapp)) continue
+    const phoneKey = whatsapp.replace(/\D/g, '')
+    if (phoneKey && existingPhones.has(phoneKey)) continue
 
     toSave.push({
       id: `lead_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
@@ -103,7 +110,7 @@ export async function saveScrapedLeads(places: ScrapedPlace[]): Promise<Lead[]> 
       status: 'pending',
       created_at: new Date().toISOString(),
     })
-    if (whatsapp) existingPhones.add(whatsapp)
+    if (phoneKey) existingPhones.add(phoneKey)
   }
 
   await saveLeads(toSave)

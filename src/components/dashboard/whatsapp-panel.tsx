@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { RefreshCw, QrCode, Loader2, CheckCircle, XCircle, AlertCircle, Send } from 'lucide-react'
+import { RefreshCw, QrCode, Loader2, CheckCircle, XCircle, AlertCircle, Send, MessageCircle, ArrowRight } from 'lucide-react'
 
 type WhatsAppStatus = 'disconnected' | 'connecting' | 'connected' | 'ready' | 'sending' | 'error'
 
@@ -137,7 +137,7 @@ export function WhatsAppPanel() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-semibold flex items-center gap-2">
-            <span>📱</span>
+            <MessageCircle className="h-3.5 w-3.5 text-zinc-400" strokeWidth={1.5} />
             <span>WhatsApp Integration Engine</span>
           </CardTitle>
           {getStatusBadge()}
@@ -146,9 +146,9 @@ export function WhatsAppPanel() {
           Conecte seu WhatsApp via WebJS para automação de envios
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5">
         {qrCode && (status === 'connecting' || status === 'disconnected') && (
-          <div className="flex flex-col items-center space-y-2 p-4 border border-zinc-200/80 dark:border-[#2a2a2a] rounded-[6px] bg-zinc-50 dark:bg-[#1a1a1a]">
+          <div className="flex flex-col items-center space-y-3 p-4 border border-zinc-200/80 dark:border-[#2a2a2a] rounded-[6px] bg-zinc-50 dark:bg-[#1a1a1a]">
             <QrCode className="h-6 w-6 text-zinc-400" />
             <div className="text-xs text-zinc-500">Escaneie o QR code para conectar</div>
             {qrCode.startsWith('data:') ? (
@@ -162,7 +162,7 @@ export function WhatsAppPanel() {
 
         <div className="flex gap-2">
           {status === 'disconnected' || status === 'error' ? (
-            <Button onClick={handleConnect} disabled={isLoading} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
+            <Button onClick={handleConnect} disabled={isLoading} variant="outline" className="flex-1 border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 font-medium">
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -170,8 +170,8 @@ export function WhatsAppPanel() {
                 </>
               ) : (
                 <>
-                  <QrCode className="mr-2 h-4 w-4" />
                   Conectar WhatsApp
+                  <ArrowRight className="h-4 w-4" />
                 </>
               )}
             </Button>
@@ -213,7 +213,7 @@ export function WhatsAppPanel() {
             <Send className="h-3.5 w-3.5 text-indigo-500" />
             <span>Enviar Mensagem Manual</span>
           </div>
-          <div className="space-y-1">
+          <div className="space-y-3">
             <Label htmlFor="wa-phone" className="text-[11px] text-zinc-600 dark:text-zinc-400">Número (DDI DDD + número)</Label>
             <Input
               id="wa-phone"
@@ -223,7 +223,7 @@ export function WhatsAppPanel() {
               className="font-mono text-xs"
             />
           </div>
-          <div className="space-y-1">
+          <div className="space-y-3">
             <Label htmlFor="wa-message" className="text-[11px] text-zinc-600 dark:text-zinc-400">Mensagem</Label>
             <Textarea
               id="wa-message"
@@ -237,7 +237,8 @@ export function WhatsAppPanel() {
           <Button
             onClick={handleSend}
             disabled={sending || !phone.trim() || !message.trim()}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
+            variant="outline"
+            className="w-full border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 font-medium"
           >
             {sending ? (
               <>
@@ -246,8 +247,8 @@ export function WhatsAppPanel() {
               </>
             ) : (
               <>
-                <Send className="mr-2 h-4 w-4" />
                 Enviar
+                <ArrowRight className="h-4 w-4" />
               </>
             )}
           </Button>

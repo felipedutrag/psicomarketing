@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -46,6 +46,7 @@ export function SendQueue() {
   const [data, setData] = useState<QueueResponse | null>(null)
   const [now, setNow] = useState<number>(Date.now())
   const [busy, setBusy] = useState(false)
+  const autoSendLocked = useRef(false)
 
   const fetchQueue = useCallback(async () => {
     try {
@@ -57,17 +58,64 @@ export function SendQueue() {
     }
   }, [])
 
+  // Disparo automático da fila: quando há leads prontos (dentro da janela, sem
+  // pausa e com delay já decorrido), chama o endpoint de envio. O próprio
+  // endpoint valida conexão/janela/pausa, evitando um pré-check adicional.
+  const processQueue = useCallback(async () => {
+    if (autoSendLocked.current) return
+
+    let json: QueueResponse | null = null
+    try {
+      const response = await fetch('/api/dashboard/whatsapp/queue')
+      json = await response.json()
+    } catch (error) {
+      console.error('Erro ao verificar fila:', error)
+      return
+    }
+    if (!json?.queue) return
+
+    setData(json)
+    if (json.queue.length === 0 || json.paused) return
+
+    const scheduleOn = json.schedule.enabled
+    const withinWindow = !scheduleOn || json.withinWindow
+    if (!withinWindow) return
+
+    const lastSendAt = json.lastSendAt
+    const delayMs = json.delayMin * 1000
+    const ready = lastSendAt ? Date.now() - lastSendAt >= delayMs : true
+    if (!ready) return
+
+    autoSendLocked.current = true
+    try {
+      const sendRes = await fetch('/api/dashboard/whatsapp/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ leadIds: [] }),
+      })
+      if (!sendRes.ok) {
+        const sendJson = await sendRes.json().catch(() => ({}))
+        console.warn('[SEND] Disparo automático não executado:', sendJson.error)
+      }
+      await fetchQueue()
+    } catch (error) {
+      console.error('[SEND] Erro no disparo automático:', error)
+    } finally {
+      autoSendLocked.current = false
+    }
+  }, [fetchQueue])
+
   useEffect(() => {
-    fetchQueue()
+    processQueue()
     const poll = setInterval(() => {
-      if (!document.hidden) fetchQueue()
+      if (!document.hidden) processQueue()
     }, 5000)
     const tick = setInterval(() => setNow(Date.now()), 1000)
     return () => {
       clearInterval(poll)
       clearInterval(tick)
     }
-  }, [fetchQueue])
+  }, [processQueue])
 
   const postAction = async (action: string, leadIds?: string[]) => {
     setBusy(true)

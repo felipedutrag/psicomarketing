@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { Save, RotateCcw, Loader2, CheckCircle, Sparkles, RefreshCw } from 'lucide-react'
+import { RotateCcw, Loader2, CheckCircle, Sparkles, RefreshCw, ArrowRight } from 'lucide-react'
 
 export function PromptEditor() {
   const [customPrompt, setCustomPrompt] = useState('')
@@ -108,7 +108,7 @@ export function PromptEditor() {
           Personalize o prompt usado pelo sistema de IA no WhatsApp
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5">
         <div className="flex items-center space-x-2 rounded-[6px] bg-zinc-100 dark:bg-[#202020] p-2.5 border border-zinc-200/60 dark:border-[#282828]">
           <Switch
             id="use-custom"
@@ -121,7 +121,7 @@ export function PromptEditor() {
           </Label>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-3">
           <Label htmlFor="prompt-editor" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
             Prompt Customizado
           </Label>
@@ -140,7 +140,8 @@ export function PromptEditor() {
           <Button
             onClick={handleSave}
             disabled={isSaving || !customPrompt.trim()}
-            className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
+            variant="outline"
+            className="flex-1 border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 font-medium"
           >
             {isSaving ? (
               <>
@@ -149,8 +150,8 @@ export function PromptEditor() {
               </>
             ) : (
               <>
-                <Save className="mr-2 h-4 w-4" />
                 Salvar Prompt
+                <ArrowRight className="h-4 w-4" />
               </>
             )}
           </Button>

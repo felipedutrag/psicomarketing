@@ -15,9 +15,8 @@ import {
   Bot,
   Settings2,
   ShieldCheck,
-  Sparkles,
-  Zap,
-  CheckCircle2
+  Target,
+  Brain
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
@@ -41,34 +40,34 @@ export function NotionSidebar({
     {
       title: 'VISÃO GERAL',
       items: [
-        { id: 'overview', label: 'Visão Geral & KPIs', emoji: '📊', description: 'Métricas e Painéis' }
+        { id: 'overview', label: 'Visão Geral & KPIs', icon: LayoutDashboard, description: 'Métricas e Painéis' }
       ]
     },
     {
       title: 'GESTÃO DE LEADS',
       items: [
-        { id: 'leads', label: 'Database de Leads', emoji: '📋', description: 'Tabela de Contatos' },
-        { id: 'kanban', label: 'Quadro Kanban', emoji: '🎴', description: 'Pipeline por Status' }
+        { id: 'leads', label: 'Database de Leads', icon: Users, description: 'Tabela de Contatos' },
+        { id: 'kanban', label: 'Quadro Kanban', icon: Kanban, description: 'Pipeline por Status' }
       ]
     },
     {
       title: 'DISPAROS & AUTOMAÇÃO',
       items: [
-        { id: 'queue', label: 'Fila de Disparo', emoji: '⚡', description: 'Envios em Tempo Real' },
-        { id: 'config', label: 'Delays & Anti-Ban', emoji: '🛡️', description: 'Intervalos Humanos' }
+        { id: 'queue', label: 'Fila de Disparo', icon: Send, description: 'Envios em Tempo Real' },
+        { id: 'config', label: 'Delays & Anti-Ban', icon: Settings2, description: 'Intervalos Humanos' }
       ]
     },
     {
       title: 'INTELIGÊNCIA ARTIFICIAL',
       items: [
-        { id: 'ai', label: 'IA & Prompt Engine', emoji: '🤖', description: 'Personalizador de Mensagens' }
+        { id: 'ai', label: 'IA & Prompt Engine', icon: Bot, description: 'Personalizador de Mensagens' }
       ]
     }
   ]
 
   const favorites = [
-    { id: 'leads', label: 'Prospecção Ativa', emoji: '🎯' },
-    { id: 'queue', label: 'Fila Anti-Ban', emoji: '🛡️' }
+    { id: 'leads', label: 'Prospecção Ativa', icon: Target },
+    { id: 'queue', label: 'Fila Anti-Ban', icon: ShieldCheck }
   ]
 
   return (
@@ -80,29 +79,26 @@ export function NotionSidebar({
       {/* Sidebar Collapse/Expand Button */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-4 z-20 flex h-6 w-6 items-center justify-center rounded-full border border-zinc-200 bg-white shadow-xs hover:bg-zinc-100 dark:bg-[#252525] dark:border-[#333] dark:hover:bg-[#2e2e2e] text-zinc-500 dark:text-zinc-400 transition-transform cursor-pointer"
+        className="absolute -right-3 top-4 z-[60] flex h-6 w-6 items-center justify-center rounded-full border border-zinc-200 bg-white shadow-xs hover:bg-zinc-100 dark:bg-[#252525] dark:border-[#333] dark:hover:bg-[#2e2e2e] text-zinc-500 dark:text-zinc-400 transition-transform cursor-pointer"
         title={isCollapsed ? 'Expandir barra lateral' : 'Recolher barra lateral'}
       >
         {isCollapsed ? <ChevronRight className="h-3.5 w-3.5" /> : <ChevronLeft className="h-3.5 w-3.5" />}
       </button>
 
       {/* Workspace Header */}
-      <div className="flex h-14 items-center justify-between border-b border-zinc-200/60 px-3.5 dark:border-[#242424] shrink-0">
+      <div className="flex h-11 items-center justify-between border-b border-zinc-200/60 px-3.5 dark:border-[#242424] shrink-0">
         {!isCollapsed ? (
-          <div className="flex items-center gap-2.5 overflow-hidden cursor-pointer hover:bg-zinc-200/50 dark:hover:bg-[#222222] px-2 py-1.5 rounded-[6px] transition-colors w-full">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] bg-indigo-600 text-white font-bold text-sm shadow-xs">
-              🧠
+          <div className="flex items-center gap-2 overflow-hidden cursor-pointer hover:bg-zinc-200/50 dark:hover:bg-[#222222] px-1.5 py-1 rounded-[6px] transition-colors w-full">
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-zinc-300/80 dark:border-[#333] bg-white dark:bg-[#1f1f1f] text-indigo-500 shadow-xs">
+              <Brain className="h-3 w-3" strokeWidth={1.5} />
             </div>
-            <div className="flex flex-col truncate leading-tight">
-              <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                Psicomarketing OS
-              </span>
-              <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-medium">Notion Workspace</span>
-            </div>
+            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+              Psicomarketing OS
+            </span>
           </div>
         ) : (
-          <div className="flex h-8 w-8 mx-auto items-center justify-center rounded-[6px] bg-indigo-600 text-white font-bold text-sm">
-            🧠
+          <div className="flex h-6 w-6 mx-auto items-center justify-center rounded-full border border-zinc-300/80 dark:border-[#333] bg-white dark:bg-[#1f1f1f] text-indigo-500 shadow-xs">
+            <Brain className="h-3 w-3" strokeWidth={1.5} />
           </div>
         )}
       </div>
@@ -151,7 +147,7 @@ export function NotionSidebar({
                     } ${isCollapsed ? 'justify-center px-0' : ''}`}
                     title={isCollapsed ? item.label : item.description}
                   >
-                    <span className="text-base shrink-0">{item.emoji}</span>
+                    <item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
                     {!isCollapsed && (
                       <div className="flex flex-col items-start leading-tight truncate">
                         <span className="truncate">{item.label}</span>
@@ -178,7 +174,7 @@ export function NotionSidebar({
                   onClick={() => setActiveTab(fav.id)}
                   className="flex w-full items-center gap-3 rounded-[6px] px-2.5 py-2 text-xs bg-transparent border-0 text-zinc-600 hover:bg-zinc-200/50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-[#202020] dark:hover:text-zinc-200 cursor-pointer transition-colors"
                 >
-                  <span className="text-base shrink-0">{fav.emoji}</span>
+                  <fav.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
                   <span className="truncate">{fav.label}</span>
                 </button>
               ))}

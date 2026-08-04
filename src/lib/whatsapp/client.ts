@@ -17,6 +17,8 @@ export class WhatsAppClient {
   private started = false
   private healthCheckInterval: NodeJS.Timeout | null = null
   private isHealthChecking = false
+  private isReconnecting = false
+  private isStarting = false
 
   constructor() {
     this.initialize()
@@ -195,6 +197,10 @@ export class WhatsAppClient {
     return this.client ? this.client.info !== undefined : false
   }
 
+  isStarted(): boolean {
+    return this.started
+  }
+
   // Health check real - verifica se o WhatsApp Web está realmente conectado
   async isHealthy(): Promise<boolean> {
     if (!this.client || !this.isReady()) {
@@ -261,6 +267,8 @@ export class WhatsAppClient {
 
   // Reconexão automática
   private async reconnect(): Promise<void> {
+    if (this.isReconnecting) return
+    this.isReconnecting = true
     console.log('[WHATSAPP] Iniciando reconexão automática...')
     try {
       await this.stop()
@@ -271,24 +279,33 @@ export class WhatsAppClient {
     } catch (error) {
       console.error('[WHATSAPP] Falha na reconexão automática:', error)
       await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'error')
+    } finally {
+      this.isReconnecting = false
     }
   }
 
   // Sobrecarrega start para iniciar health check
   async start(): Promise<void> {
-    if (!this.client) return
-
-    // Se já estiver rodando/conectado, não reinicia o navegador (evita lock da sessão)
-    if (this.started && await this.isHealthy()) {
-      console.log('[WHATSAPP] Cliente já está saudável, ignorando start')
-      this.startHealthCheck()
-      return
-    }
-
-    await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'connecting')
-    console.log('[WHATSAPP] Iniciando cliente...')
+    if (this.isStarting) return
+    this.isStarting = true
 
     try {
+      // Se o client foi destruído, recria uma instância 100% nova para evitar
+      // referências a páginas/frames já destacados ("detached Frames").
+      if (!this.client) {
+        this.initialize()
+      }
+
+      // Se já estiver rodando/conectado, não reinicia o navegador (evita lock da sessão)
+      if (this.started && await this.isHealthy()) {
+        console.log('[WHATSAPP] Cliente já está saudável, ignorando start')
+        this.startHealthCheck()
+        return
+      }
+
+      await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'connecting')
+      console.log('[WHATSAPP] Iniciando cliente...')
+
       await this.initializeWithRetry()
       this.started = true
       this.startHealthCheck()
@@ -296,6 +313,8 @@ export class WhatsAppClient {
       console.error('[WHATSAPP] Erro ao iniciar:', error)
       await redis.set(DASHBOARD_CONFIG.WHATSAPP_STATUS_KEY, 'error')
       throw error
+    } finally {
+      this.isStarting = false
     }
   }
 
@@ -313,6 +332,9 @@ export class WhatsAppClient {
     } catch (error) {
       console.error('[WHATSAPP] Erro ao parar:', error)
     } finally {
+      // Descarta a instância destruída; o próximo start() cria um Client novo.
+      this.client = null
+      this.qrCode = null
       this.started = false
     }
   }

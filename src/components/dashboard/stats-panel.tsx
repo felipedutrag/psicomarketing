@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { RefreshCw, Loader2, Users, MessageSquare, CheckCircle, AlertCircle, TrendingUp, Sparkles, Clock } from 'lucide-react'
+import { RefreshCw, Loader2, Clock, Users, Zap, CheckCircle2, LineChart, AlertTriangle, Activity } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import type { DashboardStats } from '@/lib/dashboard/config'
 
 export function StatsPanel() {
@@ -31,26 +32,24 @@ export function StatsPanel() {
   }, [])
 
   const StatBlock = ({
-    emoji,
+    icon: Icon,
     title,
     value,
-    description,
-    trendColor = 'text-zinc-600 dark:text-zinc-400'
+    description
   }: {
-    emoji: string
+    icon: LucideIcon
     title: string
     value: number | string
     description: string
-    trendColor?: string
   }) => (
     <div className="flex flex-col justify-between rounded-lg border border-zinc-200/80 bg-[#fbfbfa] p-4 dark:bg-[#191919] dark:border-[#2f2f2f] shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
       <div className="flex items-center justify-between">
-        <span className="text-xl">{emoji}</span>
+        <Icon className="h-4 w-4 text-zinc-400 dark:text-zinc-500" strokeWidth={1.5} />
         <span className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{title}</span>
       </div>
       <div className="mt-3">
         <div className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">{value}</div>
-        <p className={`text-xs mt-1 ${trendColor}`}>{description}</p>
+        <p className="text-xs mt-1 text-zinc-600 dark:text-zinc-400">{description}</p>
       </div>
     </div>
   )
@@ -68,8 +67,9 @@ export function StatsPanel() {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
+          <Activity className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" strokeWidth={1.5} />
           <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-            Resumo de Performance (Métricas Notion)
+            Resumo de Performance
           </span>
         </div>
         <Button
@@ -84,47 +84,36 @@ export function StatsPanel() {
         </Button>
       </div>
 
-      <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+      <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         <StatBlock
-          emoji="👥"
+          icon={Users}
           title="Total Leads"
           value={stats.total_leads}
           description="Cadastrados no OS"
         />
         <StatBlock
-          emoji="💬"
-          title="Pendentes"
-          value={stats.pending}
-          description="Aguardando IA"
-          trendColor="text-amber-600 dark:text-amber-400"
-        />
-        <StatBlock
-          emoji="⚡"
+          icon={Zap}
           title="Na Fila"
           value={stats.pending}
           description="Fila Anti-Ban"
-          trendColor="text-indigo-600 dark:text-indigo-400"
         />
         <StatBlock
-          emoji="✅"
+          icon={CheckCircle2}
           title="Enviados"
           value={stats.sent}
           description="Mensagens entregues"
-          trendColor="text-emerald-600 dark:text-emerald-400"
         />
         <StatBlock
-          emoji="📈"
+          icon={LineChart}
           title="Taxa Resposta"
           value={`${stats.response_rate.toFixed(1)}%`}
           description="Engajamento estimado"
-          trendColor="text-purple-600 dark:text-purple-400"
         />
         <StatBlock
-          emoji="⚠️"
+          icon={AlertTriangle}
           title="Erros"
           value={stats.error}
           description="Falhas de disparo"
-          trendColor="text-red-600 dark:text-red-400"
         />
       </div>
 

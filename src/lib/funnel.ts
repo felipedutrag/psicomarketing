@@ -18,62 +18,12 @@ export const FUNNEL_TAG_IDS: Record<FunnelStage, number> = {
 }
 
 export const STAGE_SCRIPTS: Record<FunnelStage, string> = {
-  f_interessado: `### ETAPA: f_interessado (PREVIEW GRATUITO DO SITE)
-**OBJETIVO:** Entregar um preview gratuito do site da psicóloga com IA generativa — ela vê o resultado na hora, sem compromisso.
+  f_interessado: `Adicione a [TAG: f_interessado] assim que o cliente demonstrar intenção ou concordar em receber uma demonstração/preview gratuito do site (ex: "quero ver", "pode mandar", "como fica?", "manda o link", "tenho interesse").`,
 
-**A OFERTA:**
-- "Criamos uma versão do seu site com IA (textos, imagens, estrutura) — grátis, sem cadastro de cartão."
-- "Você acessa o link, navega, pede ajustes por chat/voz. Se gostar, fecha. Se não gostar, **não paga nada**."
+  f_fechamento: `Adicione a [TAG: f_fechamento] quando o cliente aprovar o preview enviado, fizer perguntas sobre contratação, formas de pagamento, valores ou demonstrar intenção clara de fechar o serviço (ex: "gostei", "como faço pra ter esse site?", "quanto custa pra ficar comigo?", "qual o PIX?").`,
 
-**QUANDO APLICAR:**
-- Lead pergunta: "Como funciona?", "Quero ver", "Me mostra um exemplo"
-- Lead responde positivamente a: "Posso gerar um preview do seu site agora?"
-- Lead clica em CTA de "Ver preview grátis"
-
-**COMO CONDUZIR:**
-1. **Valide o interesse:** "Perfeito! O preview é gratuito, roda no navegador e você pede ajustes por texto ou voz."
-2. **Colete o essencial:** "Qual seu WhatsApp com DDD? (ex: 11999999999)" + "Nome da clínica/psicóloga?"
-3. **Gere o preview:** Chame a ferramenta de geração de site (IA) → entregue link público temporário.
-4. **Aplique a tag:** \`update_funnel_stage(stage: 'f_interessado')\`
-
-**PRÓXIMO PASSO:** Lead aprovou o preview → \`f_fechamento\`. Lead não gostou/travou → \`f_quebra_objecao\`.`,
-
-  f_fechamento: `### ETAPA: f_fechamento (CONTRATAÇÃO APÓS APROVAÇÃO DO PREVIEW)
-**OBJETIVO:** Fechar o plano IA Core + plugins após o lead **aprovar o preview do site**.
-
-**QUANDO APLICAR:**
-- Lead diz: "Gostei do site", "Quero esse site", "Como contrata?", "Manda o link de pagamento"
-- Lead confirma: "Pode fazer o checkout", "Fecha pra mim"
-- Lead pede proposta após ver o preview funcionando
-
-**COMO CONDUZIR:**
-1. **Recapitule o que ela aprovou:** "Site com IA + IA Core WhatsApp (R$147/mês) + plugins escolhidos."
-2. **Envie checkout personalizado:** Link Stripe/Asaas com nome, WhatsApp, plano e plugins pré-preenchidos.
-3. **Reforce o risco zero:** "Onboarding incluso. Cancela quando quiser. Sem fidelidade."
-4. **Aplique a tag:** \`update_funnel_stage(stage: 'f_fechamento')\`
-
-**SE TRAVAR:** Dúvida técnica → suporte. Objeção preço → \`f_quebra_objecao\`. Quer falar com humano → \`handoff_to_human\` + \`f_fechamento\`.`,
-
-  f_quebra_objecao: `### ETAPA: f_quebra_objecao (RECUPERAÇÃO PÓS-PREVIEW)
-**OBJETIVO:** Reverter hesitação **depois que o lead viu o preview** e não fechou na hora.
-
-**QUANDO APLICAR:**
-- Lead viu o preview mas diz: "Caro", "Vou pensar", "Não tenho tempo agora", "Preciso conversar com sócio"
-- Lead para de responder após receber o link do preview
-- Lead pede alterações infinitas no preview sem avançar
-
-**COMO CONDUZIR (ESCOLHA A ESTRATÉGIA):**
-| Objeção Real | Resposta-chave | Ação Imediata |
-|--------------|----------------|---------------|
-| **Preço** | "O site sozinho já traz 1-2 pacientes/mês. 1 paciente paga o plano todo." | Mostrar calculadora ROI + oferecer plano só IA Core (R$147) sem plugins |
-| **Tempo/Decisão** | "Entendo. O preview fica no ar 7 dias. Quer que eu agende 10 min pra tirar dúvidas?" | Agendar call curta (Cal.com) + estender preview por +7 dias |
-| **Sócio/Aprovação** | "Manda o link do preview pro seu sócio. Eu espero." | Compartilhar preview + follow-up em 48h |
-| **Não gostou do design** | "A IA refaz em segundos. O que exatamente não curtiu? Cores? Textos? Estrutura?" | Pedir ajuste específico → regenerar preview na hora |
-| **Técnica/Dúvida complexa** | "Chamo especialista pra resolver agora." | \`handoff_to_human\` |
-
-**SE RECUPERAR:** Lead aceita → \`f_fechamento\`.
-**SE PERDER DEFINITIVAMENTE:** Não insista. Marcar "preview não convertido" no CRM. Nutrir com cases/conteúdo (sem tag de funil).`
-}
+  f_quebra_objecao: `Adicione a [TAG: f_quebra_objecao] se o cliente recusar a oferta, apresentar dúvidas/refeições, dizer que não precisa, achar caro ou demonstrar desinteresse no momento (ex: "não tenho interesse", "já tenho site", "agora não", "achei caro").`
+};
 
 // Lê a etapa atual do funil do lead.
 // Fonte da verdade: tags do ManyChat. Fallback/cache: Redis `funnel:{userId}`.
