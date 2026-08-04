@@ -50,17 +50,17 @@ export function LiveVoiceAgentDemo() {
   }, [startLiveDialog, isRecordingVoice]);
 
   return (
-    <Card className="p-4 sm:p-6 md:p-8 bg-zinc-100/70 dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800 backdrop-blur-sm transition-all duration-300">
+    <Card className="p-4 sm:p-6 md:p-8 bg-zinc-100/70 dark:bg-zinc-900/50 border-transparent backdrop-blur-sm transition-all duration-300 pb-4 md:pb-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 sm:pb-6 border-b border-zinc-200 dark:border-zinc-800">
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2 mb-1">
-            <Badge variant="outline" className="text-[10px] sm:text-xs text-zinc-500">
-              Voz Bidirecional + Tool Calling
+            <Badge variant="secondary" className="text-[10px] sm:text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 border-indigo-500/20 px-2 py-0.5">
+              Voz + Tool Calling (Live)
             </Badge>
           </div>
-          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                      Fale com a IA e preencha sua agenda
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
+            Fale com a IA e preencha sua agenda
           </h3>
           <p className="text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
                       Crie agendamentos personalizados, cancele e remaque, deixamos uma agenda fictícia ao lado para você testar.
@@ -80,67 +80,49 @@ export function LiveVoiceAgentDemo() {
               <div
                 className={`w-44 h-44 sm:w-56 sm:h-56 rounded-full relative overflow-hidden transition-all duration-700 ${
                   isSpeaking
-                    ? "scale-105 shadow-[0_25px_70px_-10px_rgba(13,148,136,0.6)] dark:shadow-[0_25px_70px_-10px_rgba(56,189,248,0.4)] ring-1 ring-cyan-300/30"
+                    ? "scale-105 shadow-[0_25px_70px_-10px_rgba(56,189,248,0.4)] ring-1 ring-cyan-300/30"
                     : isRecordingVoice
-                    ? "shadow-[0_20px_60px_-10px_rgba(13,148,136,0.45)] dark:shadow-[0_20px_60px_-10px_rgba(20,184,166,0.3)] ring-1 ring-teal-400/20"
-                    : "shadow-[0_20px_50px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.7)]"
+                    ? "shadow-[0_20px_60px_-10px_rgba(20,184,166,0.3)] ring-1 ring-teal-400/20"
+                    : "shadow-[0_10px_30px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_10px_30px_-5px_rgba(0,0,0,0.5)]"
                 }`}
               >
                 {/* Organic Multi-Layered Geographic Planet Gradient */}
                 <div
-                  className={`absolute inset-0 transition-transform duration-1000 ${
+                  className={`absolute inset-0 opacity-80 ${
                     isSpeaking ? "animate-spin" : isRecordingVoice ? "animate-pulse" : ""
                   }`}
                   style={{
                     background:
                       "radial-gradient(circle at 35% 25%, #bae6fd 0%, #38bdf8 25%, #0d9488 50%, #15803d 75%, #14532d 100%)",
-                    animationDuration: "25s",
+                    animationDuration: isSpeaking ? "3s" : "25s",
                   }}
                 />
 
-                {/* Geographic Continent Curve Overlay Layer */}
-                <div
-                  className="absolute inset-0 opacity-85 mix-blend-color-burn"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 70% 80%, #166534 0%, #047857 40%, transparent 75%)",
-                  }}
-                />
+                {/* Overlay to ensure visibility across themes */}
+                <div className="absolute inset-0 bg-white/10 dark:bg-black/10 pointer-events-none" />
 
-                {/* Top Specular Soft Highlight */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/25 pointer-events-none" />
-
-                {/* Film Grain / Tactile Noise Texture Overlay */}
-                <div
-                  className="absolute inset-0 opacity-25 pointer-events-none mix-blend-overlay"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-                  }}
-                />
+                {/* Minimal Specular Soft Highlight */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-black/20 pointer-events-none" />
               </div>
 
 
               {/* Seamless Notch Cutout Button Overlay at Bottom Center */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20">
-                <div className="bg-zinc-50 dark:bg-zinc-950 p-1.5 sm:p-2 rounded-full">
-                  <button
-                    type="button"
-                    onClick={toggleVoiceRecording}
-                    className={`size-10 sm:size-12 rounded-full flex items-center justify-center transition-all duration-300 ${
-                      isRecordingVoice
-                        ? "bg-rose-600 text-white hover:bg-rose-500 hover:scale-105 shadow-md shadow-rose-600/30"
-                        : "bg-indigo-600 text-white hover:bg-indigo-500 hover:scale-105 shadow-md shadow-indigo-600/30 animate-pulse"
-                    }`}
-                    title={isRecordingVoice ? "Encerrar chamada" : "Iniciar chamada"}
-                  >
-                    {isRecordingVoice ? (
-                      <PhoneOff className="size-4 sm:size-5.5 fill-current" />
-                    ) : (
-                      <Phone className="size-4 sm:size-5.5 fill-current" />
-                    )}
-                  </button>
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={toggleVoiceRecording}
+                className={`absolute bottom-3 left-1/2 -translate-x-1/2 z-20 size-10 sm:size-12 rounded-full flex items-center justify-center pt-1 transition-all duration-300 ${
+                  isRecordingVoice
+                    ? "bg-rose-600 text-white hover:bg-rose-500 hover:scale-105"
+                    : "bg-red-600 text-white hover:bg-red-500 hover:scale-105 animate-pulse"
+                }`}
+                title={isRecordingVoice ? "Encerrar chamada" : "Iniciar chamada"}
+              >
+                {isRecordingVoice ? (
+                  <PhoneOff className="size-4 sm:size-5.5 fill-current" />
+                ) : (
+                  <Phone className="size-4 sm:size-5.5 fill-current" />
+                )}
+              </button>
             </div>
           </div>
 

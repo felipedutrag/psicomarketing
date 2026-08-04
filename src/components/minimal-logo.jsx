@@ -5,7 +5,7 @@ export function MinimalLogo({ hideText = false, muted = false, tableHeader = fal
         className={`relative grid place-items-center rounded-lg border shadow-xs transition-all duration-700 ${tableHeader
             ? "size-9 animate-gradient-shift"
             : subtle
-              ? "size-8 border-zinc-300/40 bg-white/90 dark:border-zinc-700/40 dark:bg-zinc-950/90"
+              ? "size-8 border-indigo-400/60 bg-white/95 shadow-[0_0_12px_2px_rgba(99,102,241,0.15)] dark:border-zinc-700/40 dark:bg-zinc-950/90 dark:shadow-none"
               : muted
                 ? "size-8 border-zinc-300/70 bg-transparent dark:border-zinc-700"
                 : "size-9 border-indigo-300/60 bg-white ring-1 ring-indigo-400/20 shadow-[0_0_8px_1px_rgba(99,102,241,0.1)] dark:border-indigo-500/40 dark:bg-zinc-950 dark:ring-indigo-500/20 dark:shadow-[0_0_10px_2px_rgba(99,102,241,0.12)]"
@@ -17,7 +17,7 @@ export function MinimalLogo({ hideText = false, muted = false, tableHeader = fal
       >
         <svg
           viewBox="0 0 24 24"
-          className={`${muted ? "size-6 text-zinc-400 dark:text-zinc-500" : tableHeader ? "size-6 text-white drop-shadow-[0_0_4px_rgba(0,0,0,0.5)]" : subtle ? "size-6 text-zinc-600 dark:text-zinc-400" : "size-6 text-indigo-600 drop-shadow-[0_0_6px_rgba(99,102,241,0.4)] dark:text-indigo-400 dark:drop-shadow-[0_0_8px_rgba(129,140,248,0.5)]"}`}
+          className={`${muted ? "size-6 text-zinc-400 dark:text-zinc-500" : tableHeader ? "size-6 text-white drop-shadow-[0_0_4px_rgba(0,0,0,0.5)]" : subtle ? "size-6 text-indigo-600 drop-shadow-[0_0_4px_rgba(99,102,241,0.3)] dark:text-zinc-400 dark:drop-shadow-none" : "size-6 text-indigo-600 drop-shadow-[0_0_6px_rgba(99,102,241,0.4)] dark:text-indigo-400 dark:drop-shadow-[0_0_8px_rgba(129,140,248,0.5)]"}`}
           aria-hidden="true"
         >
           <path
@@ -41,7 +41,7 @@ export function MinimalLogo({ hideText = false, muted = false, tableHeader = fal
         </svg>
       </div>
       {!hideText && (
-        <span className="text-sm sm:text-base font-semibold tracking-tight leading-none text-zinc-900 dark:text-zinc-100">
+        <span className={`text-sm sm:text-base font-semibold tracking-tight leading-none ${subtle ? "text-indigo-700 dark:text-zinc-100" : "text-zinc-900 dark:text-zinc-100"}`}>
           Psicomarketing
         </span>
       )}
