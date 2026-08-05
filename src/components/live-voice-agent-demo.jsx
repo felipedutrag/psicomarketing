@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLilithVoice } from "@/hooks/use-lilith-voice";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -95,20 +95,23 @@ const fogAnimation = `
   }
 `;
 
-export function LiveVoiceAgentDemo() {
-  const [identity, setIdentity] = useState({ nome: null, id: null });
+export function LiveVoiceAgentDemo({ placement = "desktop" }) {
+  const [identity] = useState(() => {
+    if (typeof window === "undefined") return { nome: null, id: null };
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
+      nome: urlParams.get("nome") || null,
+      id: urlParams.get("id") || null,
+    };
+  });
 
-  // Ler parâmetros da URL
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search);
-      const nome = urlParams.get('nome') || null;
-      const id = urlParams.get('id') || null;
-      console.log('[LiveVoiceAgentDemo] Parâmetros da URL:', { nome, id, url: window.location.search });
-      setIdentity({ nome, id });
-      console.log('[LiveVoiceAgentDemo] Identity setado:', { nome, id });
-    }
-  }, []);
+  // Como o demo é montado 2x na página (mobile e desktop), só a instância
+  // visível no viewport atual deve responder ao botão global de voz.
+  const isPlacementVisible = useCallback(() => {
+    if (typeof window === "undefined") return placement === "desktop";
+    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+    return isDesktop ? placement === "desktop" : placement === "mobile";
+  }, [placement]);
 
   const {
     isRecordingVoice,
@@ -123,13 +126,13 @@ export function LiveVoiceAgentDemo() {
 
   useEffect(() => {
     const onStartVoice = () => {
-      if (!isRecordingVoice) {
+      if (isPlacementVisible() && !isRecordingVoice) {
         startLiveDialog();
       }
     };
     window.addEventListener("psicomarketing:start-voice", onStartVoice);
     return () => window.removeEventListener("psicomarketing:start-voice", onStartVoice);
-  }, [startLiveDialog, isRecordingVoice]);
+  }, [startLiveDialog, isRecordingVoice, isPlacementVisible]);
 
   return (
     <>

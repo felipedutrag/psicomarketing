@@ -6,6 +6,10 @@ import { GEMINI_LIVE_CONFIG, GEMINI_LIVE_VOICES } from '@/lib/gemini-live/config
 
 const SESSION_KEY = 'lilith_voice_session'
 
+// Trava global da página: garante que apenas UMA sessão de voz fique ativa por vez.
+// Evita que as instâncias mobile/desktop do demo (ambas montadas) falem simultaneamente.
+let activeVoiceInstanceId: string | null = null
+
 export type Voice = typeof GEMINI_LIVE_VOICES[number]
 
 // Re-exportar para compatibilidade com componentes existentes
@@ -56,7 +60,7 @@ function loadSession(): SessionData | null {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function normalizeSchemaTypes(schema: any): any {
   if (!schema || typeof schema !== 'object') return schema
   if (Array.isArray(schema)) return schema.map(normalizeSchemaTypes)
@@ -123,6 +127,11 @@ export function useLilithVoice(identity?: Identity) {
   const voiceNameRef = useRef(selectedVoice)
   const startLiveDialogRef = useRef<(() => Promise<void>) | null>(null)
   const reconnectAttemptsRef = useRef(0)
+  const [instanceId] = useState(() => {
+    if (typeof window === 'undefined') return 'live_instance'
+    return `lilith_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`
+  })
+  const startingRef = useRef(false)
 
   useEffect(() => {
     sessionIdRef.current = sessionId
@@ -184,6 +193,8 @@ export function useLilithVoice(identity?: Identity) {
   }, [stopAllPlayback])
 
   const stopLiveDialog = useCallback(() => {
+    activeVoiceInstanceId = null
+    startingRef.current = false
     shouldReconnectRef.current = false
     cleanupAudio()
     if (wsRef.current) {
@@ -220,6 +231,18 @@ export function useLilithVoice(identity?: Identity) {
 
   const startLiveDialog = useCallback(async () => {
     if (typeof window === 'undefined') return
+
+    if (activeVoiceInstanceId !== null && activeVoiceInstanceId !== instanceId) {
+      console.warn('[LilithVoice] Já existe uma sessão de voz ativa na página. Ignorando início duplicado.')
+      return
+    }
+    if (startingRef.current) {
+      console.warn('[LilithVoice] Início de sessão já em andamento. Ignorando chamada duplicada.')
+      return
+    }
+    startingRef.current = true
+    activeVoiceInstanceId = instanceId
+
     if (window.speechSynthesis) window.speechSynthesis.cancel()
     setIsRecordingVoice(true)
     shouldReconnectRef.current = true
@@ -252,6 +275,8 @@ export function useLilithVoice(identity?: Identity) {
 
       if (!apiKey) {
         setIsRecordingVoice(false)
+        activeVoiceInstanceId = null
+        startingRef.current = false
         return
       }
 
@@ -376,6 +401,8 @@ export function useLilithVoice(identity?: Identity) {
         } else {
           shouldReconnectRef.current = false
           setIsRecordingVoice(false)
+          activeVoiceInstanceId = null
+          startingRef.current = false
         }
       }
 
@@ -384,7 +411,7 @@ export function useLilithVoice(identity?: Identity) {
       }
 
       ws.onopen = () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         const normalizedTools = (tools || []).map((t: any) => ({
           ...t,
           parameters: normalizeSchemaTypes(t.parameters),
@@ -402,7 +429,7 @@ export function useLilithVoice(identity?: Identity) {
           },
         ]
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         const setupPayload: any = {
           model: GEMINI_LIVE_CONFIG.DEFAULT_MODEL,
           generationConfig: {
@@ -422,7 +449,7 @@ export function useLilithVoice(identity?: Identity) {
       }
 
       ws.onmessage = async (event) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         const data = JSON.parse(
           typeof event.data === 'string' ? event.data : await event.data.text()
         ) as any
@@ -523,9 +550,9 @@ export function useLilithVoice(identity?: Identity) {
             '[ToolFunction]',
             functionCalls.map((f: any) => f.name).join(', ')
           )
-          // eslint-disable-next-line no-async-promise-executor
+           
           ;(async () => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+             
             const dedupKey = JSON.stringify(
               functionCalls.map((f: any) => ({ name: f.name, args: f.args }))
             )
@@ -549,7 +576,7 @@ export function useLilithVoice(identity?: Identity) {
                   // Registra que o usuário completou agendamento por voz
                   return { name: f.name, id: f.id, response: { status: 'success', message: 'Agendamento por voz registrado' } }
                 }
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                 
                 let finalResponse: any
                 try {
                   // Adicionar contexto de identificação aos argumentos
@@ -619,18 +646,24 @@ export function useLilithVoice(identity?: Identity) {
           }
         }
       }
+
+      startingRef.current = false
     } catch (error) {
       console.error('[useLilithVoice] Erro:', error)
       setIsRecordingVoice(false)
       setIsReadyToSpeak(false)
+      activeVoiceInstanceId = null
+      startingRef.current = false
     }
   }, [
     selectedVoice,
     cleanupAudio,
+    stopAllPlayback,
     stopLiveDialog,
     persistResumptionHandle,
     convertFloat32ToPcmBase64,
     saveHistoryToSupabase,
+    instanceId,
   ])
 
   useEffect(() => {

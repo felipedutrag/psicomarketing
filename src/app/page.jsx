@@ -66,7 +66,7 @@ export default async function Home({ searchParams }) {
 
         {/* Live Voice Agent Interactive Demo - Mobile Only (Before Modulos) */}
         <section id="live-demo-mobile" className="block space-y-4 scroll-mt-24 md:hidden">
-          <LiveVoiceAgentDemo />
+          <LiveVoiceAgentDemo placement="mobile" />
         </section>
 
         {/* Interactive Connectors Ecosystem Workspace */}
@@ -85,7 +85,7 @@ export default async function Home({ searchParams }) {
 
         {/* Live Voice Agent Interactive Demo - Desktop Only (After Modulos) */}
         <section id="live-demo-desktop" className="hidden space-y-4 scroll-mt-24 md:block">
-          <LiveVoiceAgentDemo />
+          <LiveVoiceAgentDemo placement="desktop" />
         </section>
 
         {/* Timeline Pipeline */}

@@ -62,31 +62,32 @@ export function ThemeProvider({
   defaultTheme = 'system',
   enableSystem = true,
 }: ThemeProviderProps) {
-  const savedTheme = useClientTheme()
   const systemTheme = useSystemTheme()
-  const [overrideTheme, setOverrideTheme] = useState<'light' | 'dark' | 'system' | null>(null)
+  const [themeState, setThemeState] = useState<'light' | 'dark' | 'system'>(() => {
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem(STORAGE_KEY) as any) || defaultTheme
+    }
+    return defaultTheme
+  })
 
-  const theme = overrideTheme ?? savedTheme ?? defaultTheme
-  const resolvedTheme: 'light' | 'dark' = theme === 'system' ? (enableSystem ? systemTheme : 'light') : theme
+  const resolvedTheme: 'light' | 'dark' = themeState === 'system' ? (enableSystem ? systemTheme : 'light') : themeState
 
   useEffect(() => {
     applyThemeClass(resolvedTheme, attribute)
   }, [attribute, resolvedTheme])
 
   const setTheme = useCallback((nextTheme: 'light' | 'dark' | 'system') => {
-    const allowed = nextTheme === 'light' || nextTheme === 'dark' || nextTheme === 'system'
-    if (!allowed) return
-    setOverrideTheme(nextTheme)
+    setThemeState(nextTheme)
     localStorage.setItem(STORAGE_KEY, nextTheme)
   }, [])
 
   const value = useMemo(
     () => ({
-      theme,
+      theme: themeState,
       resolvedTheme,
       setTheme,
     }),
-    [theme, resolvedTheme, setTheme],
+    [themeState, resolvedTheme, setTheme],
   )
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
