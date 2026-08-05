@@ -173,11 +173,12 @@ export async function POST(req: NextRequest) {
     // --- ENVIO DIRETO DA MENSAGEM NO WHATSAPP ---
     // Se a resposta for vazia (significa que uma ferramenta já enviou a mensagem), não envia novamente
     let toolExecuted = false
-    if (reply.trim() === '') {
+    const replyStr = typeof reply === 'string' ? reply : String(reply || '');
+    if (replyStr.trim() === '') {
       console.log('[PROCESS-AI] Resposta vazia - ferramenta já enviou a mensagem, pulando envio')
       toolExecuted = true
     } else {
-      await mcSendMessage(userId, reply)
+      await mcSendMessage(userId, replyStr)
     }
 
     // Só apaga o buffer após sucesso total (evita perder mensagem em falha)
@@ -188,13 +189,13 @@ export async function POST(req: NextRequest) {
     thread.push(['user', fullUserText])
     if (toolExecuted) {
       thread.push(['model', '[Ação de envio de botões realizada com sucesso]'])
-    } else if (reply.trim() !== '') {
-      thread.push(['model', reply])
+    } else if (replyStr.trim() !== '') {
+      thread.push(['model', replyStr])
     }
     if (thread.length > CONFIG.MAX_THREAD_SIZE) thread.splice(0, thread.length - CONFIG.MAX_THREAD_SIZE)
     await redis.set(threadKey, JSON.stringify(thread))
 
-    return NextResponse.json({ status: 'ok', reply, thread: JSON.stringify(thread) })
+    return NextResponse.json({ status: 'ok', reply: replyStr, thread: JSON.stringify(thread) })
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error'
     console.error('[PROCESS_AI_ERROR]', errorMessage, err)
