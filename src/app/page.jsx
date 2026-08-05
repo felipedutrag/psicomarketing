@@ -64,6 +64,11 @@ export default async function Home({ searchParams }) {
           <Separator />
         </div>
 
+        {/* Live Voice Agent Interactive Demo - Mobile Only (Before Modulos) */}
+        <section id="live-demo-mobile" className="block space-y-4 scroll-mt-24 md:hidden">
+          <LiveVoiceAgentDemo />
+        </section>
+
         {/* Interactive Connectors Ecosystem Workspace */}
         <section id="modulos" className="space-y-4 scroll-mt-24">
           <div className="space-y-1">
@@ -78,8 +83,8 @@ export default async function Home({ searchParams }) {
           <FeatureTabs plugins={content.connectors} />
         </section>
 
-        {/* Live Voice Agent Interactive Demo - Visible on all devices */}
-        <section id="live-demo" className="space-y-4 scroll-mt-24">
+        {/* Live Voice Agent Interactive Demo - Desktop Only (After Modulos) */}
+        <section id="live-demo-desktop" className="hidden space-y-4 scroll-mt-24 md:block">
           <LiveVoiceAgentDemo />
         </section>
 
