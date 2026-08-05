@@ -57,7 +57,7 @@ export const TOOL_DEFS: ToolDef[] = [
   },
   {
     name: 'get_availability',
-    description: 'Busca os próximos horários disponíveis na agenda para sugerir opções de reunião ao lead. Retorna uma lista de horários em formato ISO.',
+    description: 'Busca os próximos horários disponíveis na agednda para sugerir opções de reunião ao lead. Retorna uma lista de horários em formato ISO.',
     parameters: { type: 'object', properties: {} }
   },
   {
