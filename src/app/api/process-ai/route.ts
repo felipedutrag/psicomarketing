@@ -172,8 +172,10 @@ export async function POST(req: NextRequest) {
 
     // --- ENVIO DIRETO DA MENSAGEM NO WHATSAPP ---
     // Se a resposta for vazia (significa que uma ferramenta já enviou a mensagem), não envia novamente
+    let toolExecuted = false
     if (reply.trim() === '') {
       console.log('[PROCESS-AI] Resposta vazia - ferramenta já enviou a mensagem, pulando envio')
+      toolExecuted = true
     } else {
       await mcSendMessage(userId, reply)
     }
@@ -184,7 +186,9 @@ export async function POST(req: NextRequest) {
     // Atualiza thread no Redis após processamento (mantém últimas N mensagens, sem expirar)
     // Só adiciona a resposta do modelo se não for vazia
     thread.push(['user', fullUserText])
-    if (reply.trim() !== '') {
+    if (toolExecuted) {
+      thread.push(['model', '[Ação de envio de botões realizada com sucesso]'])
+    } else if (reply.trim() !== '') {
       thread.push(['model', reply])
     }
     if (thread.length > CONFIG.MAX_THREAD_SIZE) thread.splice(0, thread.length - CONFIG.MAX_THREAD_SIZE)

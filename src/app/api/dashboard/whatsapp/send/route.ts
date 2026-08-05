@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getLeads, updateLead } from '@/lib/dashboard/scraping'
-import { setWhatsAppStatus, getRandomDelay, formatPhoneNumber, getSendDelay, setLastSendTime, getQueuePaused, getScheduleWindow, isWithinWindow, updateStats } from '@/lib/dashboard/whatsapp'
+import { getLeads, getLeadById, updateLead } from '@/lib/dashboard/scraping'
+import { setWhatsAppStatus, getWhatsAppStatus, getRandomDelay, formatPhoneNumber, getSendDelay, setLastSendTime, getQueuePaused, getScheduleWindow, isWithinWindow, updateStats } from '@/lib/dashboard/whatsapp'
 import { getWhatsAppClient, getWhatsAppClientIfExists } from '@/lib/whatsapp/manager'
 
 const DEFAULT_MESSAGE =
@@ -92,6 +92,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'A fila de envio está pausada. Retome-a antes de enviar.' }, { status: 400 })
     }
 
+    const currentStatus = await getWhatsAppStatus()
+    if (currentStatus === 'sending') {
+      return NextResponse.json({ error: 'A fila de envio já está em processamento.' }, { status: 400 })
+    }
+
     const scheduleWindow = await getScheduleWindow()
     if (!isWithinWindow(new Date(), scheduleWindow)) {
       return NextResponse.json(
@@ -123,23 +128,29 @@ export async function POST(req: NextRequest) {
         continue
       }
 
-      const targetPhone = formatPhoneNumber(lead.whatsapp)
-      const text = lead.mensagem_personalizada || lead.mensagem_inicial || DEFAULT_MESSAGE
+      // Verificação atômica: recarrega o lead para garantir que não foi enviado por outra instância
+      const currentLead = await getLeadById(lead.id)
+      if (!currentLead || currentLead.status === 'sent' || currentLead.status === 'responded') {
+        continue
+      }
+
+      const targetPhone = formatPhoneNumber(currentLead.whatsapp)
+      const text = currentLead.mensagem_personalizada || currentLead.mensagem_inicial || DEFAULT_MESSAGE
 
       try {
         await sendWithReconnect(client, targetPhone, text)
-        await updateLead(lead.id, {
+        await updateLead(currentLead.id, {
           status: 'sent',
           na_fila: false,
           data_envio: new Date().toISOString(),
         })
-        results.push({ lead: lead.nome, phone: targetPhone, status: 'sent' })
+        results.push({ lead: currentLead.nome, phone: targetPhone, status: 'sent' })
       } catch (error) {
-        await updateLead(lead.id, {
+        await updateLead(currentLead.id, {
           status: 'error',
           erro: error instanceof Error ? error.message : 'Erro ao enviar',
         })
-        results.push({ lead: lead.nome, phone: targetPhone, status: 'error' })
+        results.push({ lead: currentLead.nome, phone: targetPhone, status: 'error' })
       }
 
       // Delay anti-ban configurável entre as mensagens
