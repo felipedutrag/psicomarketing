@@ -34,7 +34,7 @@ export function MinimalHeader() {
               >
                 {link.label}
               </a>
-              {(index === 1 || index === 2) && (
+              {(index === 0 || index === 1 || index === 2) && (
                 <span aria-hidden className="mx-0.5 h-4 w-px shrink-0 bg-zinc-200 dark:bg-zinc-800" />
               )}
             </Fragment>

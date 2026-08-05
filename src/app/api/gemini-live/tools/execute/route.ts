@@ -29,10 +29,10 @@ export async function POST(req: NextRequest) {
 
     if (name === 'agendarConsulta') {
       const { nome, dia, horario, tipoConsulta } = (args || {}) as AgendarConsultaArgs
-      
+
       // Tentar obter id dos parâmetros de contexto da URL
       const contextId = args?.contextId as string | undefined
-      
+
       // Criar o objeto de agendamento
       const agendamento = {
         id: `b-${Date.now()}`,
@@ -42,33 +42,42 @@ export async function POST(req: NextRequest) {
         tipoConsulta: tipoConsulta || 'Sessão de Acolhimento',
         status: 'Confirmado via IA Live',
       }
-      
+
       // Enviar confirmação via WhatsApp com oferta se o id estiver disponível
       let manychatResult = null
       if (contextId) {
         try {
           const message = [
-            `✅ Confirmação de Agendamento (simulado)`,
+            `✨ *AGENDAMENTO REALIZADO COM SUCESSO!* (Demonstração)`,
             ``,
-            `Olá, ${nome || 'paciente'}! Sua consulta foi agendada pela Gaby:`,
-            `• Tipo: ${tipoConsulta || 'Sessão de Acolhimento'}`,
-            `• Dia: ${dia || 'Quinta-feira'}`,
-            `• Horário: ${horario || '15:00'}`,
+            `Olá, *${nome || 'Doutor(a)'}*! Veja como seu cliente recebe a confirmação enviada pela *Gaby*:`,
             ``,
-            `🎁 OFERTA ESPECIAL: Deseja implementar esse nível de atendimento em seu consultório?`,
+            `📋 *Resumo da Sessão:*`,
+            `• *Serviço:* ${tipoConsulta || 'Sessão de Acolhimento'}`,
+            `• *Data:* ${dia || 'Quinta-feira'}`,
+            `• *Horário:* ${horario || '15:00'}`,
             ``,
-            `Se fechar nos próximos 5 minutos, você ganha DE BRINDE uma landing page de alta conversão, com 7 dias de garantia!`,
+            `----------------------------------------`,
             ``,
-            `💰 Link de pagamento: https://invoice.infinitepay.io/plans/psicomarketing/g4Ssfk658T`,
+            `🚀 *QUER ESSA MESMA EFICIÊNCIA NO SEU CONSULTÓRIO?*`,
             ``,
-            `Se precisar remarcar ou cancelar, é só chamar a Gaby. 😉`,
+            `Garanta a *Gaby* atendendo seus pacientes 24/7 por apenas *R$ 147/mês* (sem fidelidade).`,
+            ``,
+            `🔥 *BÔNUS EXCLUSIVO (Próximos 5 minutos):*`,
+            `🎁 *Ganha 01 Landing Page de Alta Conversão* pronta para captar pacientes no Google/Instagram.`,
+            `🛡️ *7 dias de garantia incondicional* (risco zero).`,
+            ``,
+            `💳 *Clique no link para ativar seu sistema agora:*`,
+            `https://invoice.infinitepay.io/plans/psicomarketing/g4Ssfk658T`,
+            ``,
+            `Dúvidas? É só responder essa mensagem! 😉`,
           ].join('\n')
           manychatResult = await sendMessage(contextId, message)
         } catch (err) {
           console.error('[agendarConsulta] Erro ao enviar confirmação WhatsApp:', err)
         }
       }
-      
+
       return NextResponse.json({
         status: 'success',
         message: `Consulta de ${nome || 'Paciente'} agendada com sucesso para ${dia || 'esta semana'} às ${horario || '15:00'}.`,
@@ -88,7 +97,7 @@ export async function POST(req: NextRequest) {
     if (name === 'voice_booking_completed') {
       const { contextId } = (args || {}) as VoiceBookingCompletedArgs
       console.log('[Gemini Live] voice_booking_completed chamada com contextId:', contextId)
-      
+
       if (contextId) {
         try {
           // Adicionar tag de fechamento no ManyChat
@@ -106,7 +115,7 @@ export async function POST(req: NextRequest) {
           }, { status: 500 })
         }
       }
-      
+
       return NextResponse.json({
         status: 'success',
         message: 'Agendamento por voz registrado (sem ID disponível para tag)'

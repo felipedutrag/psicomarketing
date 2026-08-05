@@ -43,7 +43,7 @@ export default async function Home({ searchParams }) {
         <section className="flex flex-col gap-6 sm:gap-10 pt-2">
           <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 pt-0.5 sm:pt-1.5 md:pt-2 pb-4 sm:pb-6 md:pb-8">
             <h1 className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center">
-              Sua secretária de IA com <br /><span className="text-rose-500 dark:text-rose-400 font-bold underline underline-offset-4 decoration-primary/30">super poderes</span>
+              Sua secretária de IA com <br /><span className="text-indigo-600 dark:text-indigo-400 font-bold underline underline-offset-4 decoration-primary/30">super poderes</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
               {content.heroDescription}
@@ -65,7 +65,7 @@ export default async function Home({ searchParams }) {
         </div>
 
         {/* Interactive Connectors Ecosystem Workspace */}
-        <section id="modulos" className="hidden space-y-4 scroll-mt-24 md:block">
+        <section id="modulos" className="space-y-4 scroll-mt-24">
           <div className="space-y-1">
             <Badge variant="outline" className="text-[10px] sm:text-xs">{content.connectorsBadge}</Badge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
@@ -78,7 +78,7 @@ export default async function Home({ searchParams }) {
           <FeatureTabs plugins={content.connectors} />
         </section>
 
-        {/* Live Voice Agent Interactive Demo */}
+        {/* Live Voice Agent Interactive Demo - Visible on all devices */}
         <section id="live-demo" className="space-y-4 scroll-mt-24">
           <LiveVoiceAgentDemo />
         </section>
@@ -119,7 +119,7 @@ export default async function Home({ searchParams }) {
           <Separator />
         </div>
 
-        {/* Final Investment Section & Calculator (desktop only) */}
+        {/* Final Investment Section & Calculator */}
         <section id="investimento" className="hidden space-y-0.5 sm:space-y-6 scroll-mt-24 pt-4 md:block md:pt-6">
           <div className="space-y-1">
             <Badge variant="outline" className="text-[10px] sm:text-xs">
