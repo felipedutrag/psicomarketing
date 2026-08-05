@@ -61,10 +61,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Resgata o buffer do Redis (só deleta após sucesso para não perder mensagem)
-    const messages = await redis.lrange<string>(bufferKey, 0, -1)
+    const messagesRaw = await redis.lrange<unknown>(bufferKey, 0, -1)
+    const messages = (messagesRaw || []).map(m => String(m));
     console.log('[PROCESS-AI] Mensagens do buffer:', messages.length, messages)
 
-    if (!messages || messages.length === 0) {
+    if (messages.length === 0) {
       console.log('[PROCESS-AI] Buffer vazio')
       return NextResponse.json({ status: 'empty_buffer' })
     }
