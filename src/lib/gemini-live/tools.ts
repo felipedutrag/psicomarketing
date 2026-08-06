@@ -1,4 +1,4 @@
-import { TOOL_DEFS } from '@/lib/process-ai/tools'
+import { TOOL_DEFS, TOOL_NAMES } from '@/lib/process-ai/tools'
 
 export interface ToolParameter {
   type: string
@@ -42,8 +42,8 @@ export const GEMINI_LIVE_TOOLS: ToolDeclaration[] = [
     },
   },
   {
-    name: 'voice_booking_completed',
-    description: TOOL_DEFS.find(t => t.name === 'voice_booking_completed')?.description ?? 'Registra agendamento por voz e move o lead para fechamento.',
+    name: TOOL_NAMES.voiceBookingCompleted,
+    description: TOOL_DEFS.find(t => t.name === TOOL_NAMES.voiceBookingCompleted)?.description ?? 'Registra agendamento por voz e move o lead para fechamento.',
     parameters: {
       type: 'OBJECT',
       properties: {},

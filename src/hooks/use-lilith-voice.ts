@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { getApiUrl } from '@/lib/utils'
 import { GEMINI_LIVE_CONFIG, GEMINI_LIVE_VOICES } from '@/lib/gemini-live/config'
+import { TOOL_NAMES } from '@/lib/process-ai/tool-names'
 
 const SESSION_KEY = 'lilith_voice_session'
 
@@ -571,7 +572,7 @@ export function useLilithVoice(identity?: Identity) {
                   setTimeout(stopLiveDialog, 400)
                   return { name: f.name, id: f.id, response: { status: 'success' } }
                 }
-                if (f.name === 'voice_booking_completed') {
+                if (f.name === TOOL_NAMES.voiceBookingCompleted) {
                   console.log('[LilithVoice] voice_booking_completed chamada')
                   // Registra que o usuário completou agendamento por voz
                   return { name: f.name, id: f.id, response: { status: 'success', message: 'Agendamento por voz registrado' } }

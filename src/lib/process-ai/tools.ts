@@ -1,4 +1,5 @@
 import { SchemaType } from '@google/generative-ai'
+import { TOOL_NAMES } from './tool-names'
 
 export type ToolDef = {
   name: string
@@ -10,18 +11,7 @@ export type ToolDef = {
   }
 }
 
-export const TOOL_NAMES = {
-  getLeadStage: 'get_lead_stage',
-  updateFunnelStage: 'update_funnel_stage',
-  saveLeadData: 'save_lead_data',
-  getAvailability: 'get_availability',
-  bookAppointment: 'book_appointment',
-  handoffToHuman: 'handoff_to_human',
-  cancelAppointment: 'cancel_appointment',
-  sendMessageWithButtons: 'send_message_with_buttons',
-  voiceBookingCompleted: 'voice_booking_completed',
-} as const
-
+export { TOOL_NAMES }
 export const TOOL_DEFS: ToolDef[] = [
   {
     name: TOOL_NAMES.getLeadStage,
