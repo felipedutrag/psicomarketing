@@ -1,5 +1,6 @@
 import { Redis } from '@upstash/redis'
 import { DASHBOARD_CONFIG, type WhatsAppStatus, type Lead } from './config'
+import { supabase } from './supabase'
 
 const redis = Redis.fromEnv()
 
@@ -22,9 +23,11 @@ export async function setQRCode(qrCode: string): Promise<void> {
 }
 
 export async function updateStats(): Promise<void> {
-  const keys = await redis.keys(`${DASHBOARD_CONFIG.LEADS_KEY}:*`)
+  const { data: leads, error } = await supabase.from('leads').select('status')
+  if (error) throw new Error(error.message)
+
   const stats = {
-    total_leads: keys.length,
+    total_leads: leads?.length ?? 0,
     pending: 0,
     personalized: 0,
     sent: 0,
@@ -34,19 +37,10 @@ export async function updateStats(): Promise<void> {
     last_updated: new Date().toISOString(),
   }
 
-  if (keys.length > 0) {
-    const pipeline = redis.pipeline()
-    for (const key of keys) {
-      pipeline.hgetall(key)
-    }
-    const results = await pipeline.exec() as (Record<string, unknown> | null)[]
-
-    for (const lead of results) {
-      if (!lead) continue
-      const status = lead.status as string
-      if (status in stats) {
-        stats[status as keyof typeof stats]++
-      }
+  for (const lead of leads || []) {
+    const status = lead.status as string
+    if (status in stats) {
+      stats[status as keyof typeof stats]++
     }
   }
 

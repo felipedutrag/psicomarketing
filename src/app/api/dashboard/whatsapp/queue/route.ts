@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getLeads, updateLead } from '@/lib/dashboard/scraping'
+import { getLeads, updateLeadsBatch } from '@/lib/dashboard/scraping'
 import { getSendDelay, getLastSendTime, getQueuePaused, setQueuePaused, getScheduleContext } from '@/lib/dashboard/whatsapp'
 
 // Fila explícita: só entram leads com na_fila === true (adicionados manualmente)
@@ -43,9 +43,7 @@ export async function POST(req: NextRequest) {
         if (!leadIds || leadIds.length === 0) {
           return NextResponse.json({ error: 'Nenhum lead informado' }, { status: 400 })
         }
-        for (const id of leadIds) {
-          await updateLead(id, { na_fila: true })
-        }
+        await updateLeadsBatch(leadIds, { na_fila: true })
         return NextResponse.json({ success: true, count: leadIds.length })
       }
 
@@ -53,9 +51,7 @@ export async function POST(req: NextRequest) {
         if (!leadIds || leadIds.length === 0) {
           return NextResponse.json({ error: 'Nenhum lead informado' }, { status: 400 })
         }
-        for (const id of leadIds) {
-          await updateLead(id, { na_fila: false })
-        }
+        await updateLeadsBatch(leadIds, { na_fila: false })
         return NextResponse.json({ success: true, count: leadIds.length })
       }
 
@@ -64,9 +60,7 @@ export async function POST(req: NextRequest) {
         const queued = leads.filter(
           lead => lead.na_fila === true && lead.status !== 'sent' && lead.status !== 'responded'
         )
-        for (const lead of queued) {
-          await updateLead(lead.id, { na_fila: false })
-        }
+        await updateLeadsBatch(queued.map(lead => lead.id), { na_fila: false })
         return NextResponse.json({ success: true, count: queued.length })
       }
 
