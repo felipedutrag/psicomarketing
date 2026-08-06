@@ -1,10 +1,16 @@
-import { Plus_Jakarta_Sans, IBM_Plex_Mono, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, IBM_Plex_Mono, Playfair_Display, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
+});
+
+const grotesk = Space_Grotesk({
+  variable: "--font-logo",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const mono = IBM_Plex_Mono({
@@ -28,7 +34,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR" className={`${jakarta.variable} ${mono.variable} ${playfair.variable}`} suppressHydrationWarning>
+    <html lang="pt-BR" className={`${jakarta.variable} ${grotesk.variable} ${mono.variable} ${playfair.variable}`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

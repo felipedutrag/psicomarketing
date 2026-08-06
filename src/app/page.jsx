@@ -9,7 +9,16 @@ import { PlanCalculator } from "@/components/plan-calculator";
 import { MinimalFooter } from "@/components/minimal-footer";
 import { siteContent as content } from "@/content/site-content";
 import { SectionBadge } from "@/components/section-badge";
-import { Boxes, Workflow, Scale, Coins } from "lucide-react";
+import {
+  Boxes,
+  Workflow,
+  Scale,
+  Coins,
+  Sparkles,
+  HeartPulse,
+  MessageCircle,
+  ShieldCheck,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -43,6 +52,9 @@ export default async function Home({ searchParams }) {
         {/* Hero & Calendar Section */}
         <section className="flex flex-col gap-6 sm:gap-10 pt-2">
           <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center space-y-3 pt-0.5 sm:pt-1.5 md:pt-2 pb-4 sm:pb-6 md:pb-8">
+            <SectionBadge icon={Sparkles} className="self-center">
+              {content.heroBadge}
+            </SectionBadge>
             <h1 className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center">
               Sua secretária de IA com <br /><span className="text-indigo-600 dark:text-indigo-400 font-bold underline underline-offset-4 decoration-primary/30">super poderes</span>
             </h1>
@@ -51,6 +63,22 @@ export default async function Home({ searchParams }) {
             </p>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-0">
               <StartVoiceButton label={content.primaryCtaLabel} />
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-1 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-400">
+              <span className="inline-flex items-center gap-1.5">
+                <HeartPulse className="size-3.5 text-indigo-500" />
+                Feito para psicólogos
+              </span>
+              <span aria-hidden className="hidden sm:inline text-zinc-300 dark:text-zinc-600">•</span>
+              <span className="inline-flex items-center gap-1.5">
+                <MessageCircle className="size-3.5 text-indigo-500" />
+                WhatsApp + Google Calendar
+              </span>
+              <span aria-hidden className="hidden sm:inline text-zinc-300 dark:text-zinc-600">•</span>
+              <span className="inline-flex items-center gap-1.5">
+                <ShieldCheck className="size-3.5 text-indigo-500" />
+                Zero conflitos de agenda
+              </span>
             </div>
           </div>
 
@@ -61,7 +89,7 @@ export default async function Home({ searchParams }) {
           </Card>
         </section>
 
-        <div className="-my-3 md:-my-4">
+        <div className="hidden -my-3 md:-my-4 md:block">
           <Separator />
         </div>
 
@@ -74,20 +102,28 @@ export default async function Home({ searchParams }) {
         <section id="modulos" className="space-y-4 scroll-mt-24">
           <div className="space-y-2.5 sm:space-y-3">
             <SectionBadge icon={Boxes}>{content.connectorsBadge}</SectionBadge>
-            <h2 className="max-w-[22ch] text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight tracking-tight">
+            <h2 className="max-w-[22ch] text-2xl sm:text-3xl md:text-3xl font-semibold leading-tight tracking-tight">
               {content.connectorsTitle}
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base md:text-base text-zinc-700 dark:text-zinc-400">
               {content.connectorsDescription}
             </p>
           </div>
           <FeatureTabs plugins={content.connectors} />
         </section>
 
+        <div className="hidden -my-3 md:-my-4 md:block">
+          <Separator />
+        </div>
+
         {/* Live Voice Agent Interactive Demo - Desktop Only (After Modulos) */}
         <section id="live-demo-desktop" className="hidden space-y-4 scroll-mt-24 md:block">
           <LiveVoiceAgentDemo placement="desktop" />
         </section>
+
+        <div className="hidden -my-3 md:-my-4 md:block">
+          <Separator />
+        </div>
 
         {/* Timeline Pipeline */}
         <section id="fluxo" className="hidden space-y-4 scroll-mt-24 md:block">
@@ -126,7 +162,7 @@ export default async function Home({ searchParams }) {
         </div>
 
         {/* Final Investment Section & Calculator */}
-        <section id="investimento" className="hidden space-y-0.5 sm:space-y-6 scroll-mt-24 pt-4 md:block md:pt-6">
+        <section id="investimento" className="hidden space-y-4 scroll-mt-24 md:block">
           <div className="space-y-2.5 sm:space-y-3">
             <SectionBadge icon={Coins}>
               {content.investmentBadge}

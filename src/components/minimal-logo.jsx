@@ -21,27 +21,17 @@ export function MinimalLogo({ hideText = false, muted = false, tableHeader = fal
           aria-hidden="true"
         >
           <path
-            d="M12 4.5v13m-4.5-8c0 3.5 9 3.5 9 0"
+            d="M12 4.5v15.5m-4.5-8c0 3.5 9 3.5 9 0"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.8"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <circle
-            cx="12"
-            cy="17.5"
-            r="1.6"
-            className={
-              muted
-                ? "fill-zinc-400 text-zinc-400 dark:fill-zinc-500 dark:text-zinc-500"
-                : "fill-indigo-600 text-indigo-600 dark:fill-indigo-400 dark:text-indigo-400"
-            }
-          />
         </svg>
       </div>
       {!hideText && (
-        <span className={`text-sm sm:text-base font-medium tracking-tight leading-none ${subtle ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-900 dark:text-zinc-100"}`}>
+        <span className={`font-logo text-sm sm:text-base font-medium tracking-tight leading-none ${subtle ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-900 dark:text-zinc-100"}`}>
           Psicomarketing
         </span>
       )}

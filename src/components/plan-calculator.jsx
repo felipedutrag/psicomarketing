@@ -107,7 +107,6 @@ function groupSlotsByDate(slots) {
 
 export function PlanCalculator() {
   const [selectedPlugins, setSelectedPlugins] = useState([]);
-  const [micPermission, setMicPermission] = useState("prompt");
 
   // Inline Checkout State
   const [isCheckoutExpanded, setIsCheckoutExpanded] = useState(false);
@@ -126,9 +125,7 @@ export function PlanCalculator() {
 
   const {
     isRecordingVoice,
-    isSpeaking,
     isReadyToSpeak,
-    toggleVoiceRecording,
     sendTextToVoice,
   } = useLilithVoice();
 
@@ -145,24 +142,6 @@ export function PlanCalculator() {
 
   // eslint-disable-next-line react-hooks/incompatible-library -- watch() do react-hook-form não memoizável, uso previsto
   const whatsappValue = watch("whatsapp");
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !navigator.permissions) return;
-    let active = true;
-    navigator.permissions
-      .query({ name: "microphone" })
-      .then((status) => {
-        if (!active) return;
-        setMicPermission(status.state);
-        status.addEventListener("change", () => {
-          setMicPermission(status.state);
-        });
-      })
-      .catch(() => { });
-    return () => {
-      active = false;
-    };
-  }, []);
 
   useEffect(() => {
     if (isReadyToSpeak && isRecordingVoice && !greetedRef.current) {
@@ -336,76 +315,14 @@ export function PlanCalculator() {
   const groupedDates = groupSlotsByDate(availableSlots);
   const currentDateGroup = groupedDates[carouselIndex];
 
-  const voiceHelpBar = (
-    <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900 md:bg-zinc-100/80 md:backdrop-blur md:dark:bg-zinc-900/60 relative z-10">
-      <div
-        className={`flex items-center transition-all duration-300 ${
-          isRecordingVoice || isSpeaking ? "gap-3.5" : "gap-2"
-        }`}
-      >
-        <button
-          type="button"
-          onClick={toggleVoiceRecording}
-          className="group relative m-0 hidden shrink-0 cursor-pointer appearance-none border-0 bg-transparent p-0 sm:block"
-          aria-label={
-            isRecordingVoice
-              ? "Encerrar chamada de voz"
-              : "Iniciar chamada de voz com nossa agente"
-          }
-        >
-          <span
-            className={`relative block overflow-hidden rounded-full transition-all duration-300 ${
-              isRecordingVoice || isSpeaking
-                ? "h-7 w-7 scale-110 ring-2 ring-teal-300/70 shadow-[0_0_22px_6px_rgba(13,148,136,0.45)]"
-                : "h-5 w-5"
-            }`}
-            style={{
-              background:
-                "conic-gradient(#bae6fd 0%, #38bdf8 30%, #0d9488 55%, #38bdf8 70%, #bae6fd 100%)",
-              animation: "spin 8s linear infinite",
-            }}
-          >
-            <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/40 via-transparent to-black/25" />
-            <span className="relative flex h-full w-full items-center justify-center text-[8px] font-bold text-white drop-shadow-sm">
-              ?
-            </span>
-          </span>
-
-          <span
-            className={`pointer-events-none absolute left-1/2 top-full z-20 mt-2 hidden w-56 -translate-x-1/2 rounded-lg border border-zinc-200 bg-white p-2.5 text-center text-xs font-semibold text-zinc-700 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 sm:block dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-200 ${
-              isRecordingVoice ? "hidden" : ""
-            }`}
-          >
-            {micPermission === "denied"
-              ? "Permita o microfone no navegador para falar."
-              : "Clique aqui para tirar dúvidas!"}
-          </span>
-        </button>
-        <button
-          type="button"
-          onClick={toggleVoiceRecording}
-          className="cursor-pointer appearance-none border-0 bg-transparent p-0 text-left text-sm font-bold text-zinc-900 transition-colors hover:text-indigo-600 dark:text-zinc-100 dark:hover:text-indigo-400"
-        >
-          Clique aqui para tirar dúvidas!
-        </button>
-      </div>
-      <span className="hidden font-mono text-sm font-semibold md:inline">
-        <span className="text-zinc-600 dark:text-zinc-400">Plano base: </span>
-        <span className="text-indigo-600 dark:text-indigo-400 font-bold">R$ {BASE_PLAN.price}/mês</span>
-      </span>
-    </div>
-  );
-
   return (
     <div className="space-y-8 mobile-only:space-y-4">
       {/* Top 2 Columns Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mobile-only:gap-0 mobile-only:flex mobile-only:flex-col mobile-only:gap-y-4">
         {/* Left Column: Plugin Selection Grid */}
-        <div className="space-y-5 lg:col-span-7 mobile-only:space-y-0">
-          <div className="hidden lg:block">{voiceHelpBar}</div>
-
-          <div className="hidden lg:block space-y-5">
-          <div className="grid gap-3.5 grid-cols-1 sm:grid-cols-2">
+        <div className="space-y-5 lg:col-span-7 lg:flex lg:flex-col mobile-only:space-y-0">
+          <div className="hidden lg:block lg:flex-1">
+          <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 h-full auto-rows-fr">
             {AVAILABLE_PLUGINS.map((plugin) => {
               const isSelected = selectedPlugins.includes(plugin.id);
 
@@ -414,7 +331,7 @@ export function PlanCalculator() {
                   key={plugin.id}
                   type="button"
                   onClick={() => togglePlugin(plugin.id)}
-                  className={`group relative flex flex-col justify-between rounded-xl border p-5 sm:p-6 h-full text-left transition-all duration-200 ${isSelected
+                  className={`group relative flex flex-col justify-between rounded-xl border p-6 sm:p-7 h-full text-left transition-all duration-200 ${isSelected
                     ? "border-indigo-500 bg-indigo-500/10 shadow-xs dark:border-indigo-500/70 dark:bg-indigo-950/40"
                     : "border-zinc-200 bg-zinc-100 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 md:border-zinc-200/90 md:bg-zinc-100/70 md:dark:border-zinc-800/90 md:dark:bg-zinc-900/50"
                     }`}
@@ -439,7 +356,7 @@ export function PlanCalculator() {
                     </p>
                   </div>
 
-                  <div className="mt-4 flex items-center justify-between border-t border-zinc-200/60 pt-2.5 dark:border-zinc-800/60">
+                  <div className="mt-5 flex items-center justify-between border-t border-zinc-200/60 pt-3 dark:border-zinc-800/60">
                     <Badge variant="outline" className="text-[10px] py-0.5 px-2">
                       {plugin.category}
                     </Badge>
@@ -506,7 +423,7 @@ export function PlanCalculator() {
 
         {/* Right Column: Live Plan Summary & Total */}
         <div className="lg:col-span-5 space-y-5 lg:space-y-5 mobile-only:mt-0 mobile-only:pt-0">
-          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100 p-[18px] sm:p-[26px] md:p-[34px] shadow-sm dark:border-indigo-500/20 dark:bg-zinc-900 md:bg-zinc-100/90 md:backdrop-blur md:dark:bg-zinc-900/80 mobile-only:mt-0 mobile-only:p-4 mobile-only:!mt-0">
+          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100 p-[18px] sm:p-[26px] md:p-[34px] shadow-sm dark:border-indigo-500/20 dark:bg-zinc-900 md:bg-zinc-100/90 md:backdrop-blur md:dark:bg-zinc-900/80 h-full mobile-only:mt-0 mobile-only:p-4 mobile-only:!mt-0">
             <div className="space-y-5 mobile-only:space-y-4">
               {/* Header */}
               <div className="border-b border-zinc-200/80 pb-4 dark:border-zinc-800 mobile-only:pb-3">
