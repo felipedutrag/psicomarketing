@@ -151,7 +151,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
           <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">
             Teste a IA agora: simule um agendamento
           </h3>
-          <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
+          <p className="max-w-4xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
             Pressione o microfone e peça para criar, cancelar ou remarcar uma consulta na agenda fictícia ao lado — sem conectar nada.
           </p>
         </div>
@@ -285,7 +285,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
               <div className="flex items-center justify-between mb-2 sm:mb-3 border-b border-indigo-500/10 pb-2 sm:pb-2.5">
                 <span className="text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  <span className="hidden sm:inline">Agendamentos da Sessão (Lilith Live)</span>
+                  <span className="hidden sm:inline">Agendamentos da Sessão</span>
                   <span className="sm:hidden">Agendamentos</span>
                 </span>
                 <Badge variant="outline" className="text-[9px] sm:text-[10px] border-indigo-500/30 text-indigo-500">
