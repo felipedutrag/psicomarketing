@@ -38,7 +38,7 @@ Avançar imediatamente para o Pitch de Apresentação.
 Envie uma mensagem curta, profissional e direta se apresentando como Gaby da Psicomarketing.
 
 Estrutura da mensagem:
-"Maravilha, [Nome do Psicólogo]! Aqui é a Gaby, da Psicomarketing. Vi seu perfil no Google Meu Negócio!
+"Obrigado pelo retorno, [Nome do Psicólogo]! Aqui é a Gaby, da Psicomarketing. Vi seu perfil no Google Meu Negócio!
 
 Nós desenvolvemos uma IA de voz inteligente que atende seus pacientes no automático pelo WhatsApp, tira dúvidas e pode te ajudar a aumentar MUITO seus agendamentos, 24 horas por dia, 7 dias por semana, por comando de voz e 100% integrada com a sua agenda.
 
