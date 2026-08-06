@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
 import { getWhatsAppStatus, getQRCode, setWhatsAppStatus } from '@/lib/dashboard/whatsapp'
-import { getWhatsAppClientIfExists, initializeWhatsApp } from '@/lib/whatsapp/manager'
+import { getWhatsAppClientIfExists } from '@/lib/whatsapp/manager'
 
 export async function GET() {
   try {
-    // Auto-inicialização se ainda não iniciado
-    await initializeWhatsApp()
-    
+    // Somente leitura: o cliente não é iniciado/reconectado aqui. A reconexão
+    // acontece apenas quando um envio falha, evitando o loop que consumia as
+    // requisições enquanto o painel ficava aberto.
     const status = await getWhatsAppStatus()
     const qrCode = await getQRCode()
     

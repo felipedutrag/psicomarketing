@@ -44,7 +44,7 @@ function formatUntil(ms: number): string {
 
 export function SendQueue() {
   const [data, setData] = useState<QueueResponse | null>(null)
-  const [now, setNow] = useState<number>(Date.now())
+  const [now, setNow] = useState<number>(() => Date.now())
   const [busy, setBusy] = useState(false)
   const autoSendLocked = useRef(false)
 
@@ -122,9 +122,10 @@ export function SendQueue() {
     } finally {
       autoSendLocked.current = false
     }
-  }, [fetchQueue])
+  }, [fetchQueue, data])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- disparo automático agendado (async)
     processQueue()
     const poll = setInterval(() => {
       if (!document.hidden) processQueue()

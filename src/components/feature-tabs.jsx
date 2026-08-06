@@ -56,13 +56,13 @@ export function FeatureTabs({ plugins }) {
   return (
     <div className="space-y-6">
       {/* Category Filter Pills */}
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:pb-0">
         {categories.map((cat) => (
           <button
             key={cat.id}
             type="button"
             onClick={() => setActiveCategory(cat.id)}
-            className={`rounded-full px-3 py-1.5 text-[11px] sm:px-4 sm:py-2 sm:text-sm font-semibold transition-all duration-200 ${
+            className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-[11px] sm:px-4 sm:py-2 sm:text-sm font-semibold transition-all duration-200 sm:shrink ${
               activeCategory === cat.id
                 ? "border border-indigo-500/50 bg-indigo-500/10 text-indigo-700 shadow-xs dark:border-indigo-500/40 dark:bg-indigo-950/50 dark:text-indigo-300"
                 : "border border-zinc-200/80 bg-white/80 text-zinc-700 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950/80 dark:text-zinc-400 dark:hover:text-zinc-100"
@@ -81,7 +81,7 @@ export function FeatureTabs({ plugins }) {
           return (
             <div
               key={plugin.id}
-              className="group relative flex flex-col justify-between rounded-xl border border-zinc-200/90 bg-zinc-100/70 p-4 sm:p-6 shadow-xs backdrop-blur transition-all duration-300 hover:border-indigo-500/40 hover:shadow-md dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-indigo-500/30"
+              className="group relative flex flex-col justify-between rounded-xl border border-zinc-200 bg-zinc-100 p-4 sm:p-6 shadow-xs transition-all duration-300 hover:border-indigo-500/40 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-500/30 md:border-zinc-200/90 md:bg-zinc-100/70 md:backdrop-blur md:dark:border-zinc-800/90 md:dark:bg-zinc-900/50"
             >
               <div className="space-y-3.5">
                 {/* Header Row */}
@@ -122,7 +122,7 @@ export function FeatureTabs({ plugins }) {
                         <Mic className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" />
                       </span>
                       <span className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 leading-snug">
-                        "Aumente o valor do CPC."
+                        &ldquo;Reduza meu custo por clique.&rdquo;
                       </span>
                     </div>
                   </div>
@@ -143,7 +143,7 @@ export function FeatureTabs({ plugins }) {
                         <Mic className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" />
                       </span>
                       <span className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 leading-snug">
-                        "Resuma a performance de hoje"
+                        &ldquo;Resuma a performance de hoje.&rdquo;
                       </span>
                     </div>
                   </div>

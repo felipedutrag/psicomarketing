@@ -6,6 +6,12 @@ import { getWhatsAppClient, getWhatsAppClientIfExists } from '@/lib/whatsapp/man
 const DEFAULT_MESSAGE =
   'Olá, me chamo Gabriele, achei seu contato no Google Meu Negócio e queria apresentar uma solução que pode aumentar seus atendimentos e reduzir gastos com anúncios. Você pode falar 1 minuto?'
 
+// Lock de concorrência em memória (processo único). O status 'sending' no Redis
+// é usado apenas para exibição no painel — usar o Redis como lock fazia o envio
+// ficar bloqueado para sempre ("já está em processamento") se o processo
+// morresse no meio do disparo, pois o status persistia.
+let sendInProgress = false
+
 // Envia mensagem com fallback de reconexão automática
 async function sendWithReconnect(client: any, phone: string, message: string, maxRetries = 2): Promise<any> {
   let lastError: Error | null = null
@@ -92,8 +98,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'A fila de envio está pausada. Retome-a antes de enviar.' }, { status: 400 })
     }
 
-    const currentStatus = await getWhatsAppStatus()
-    if (currentStatus === 'sending') {
+    if (sendInProgress) {
       return NextResponse.json({ error: 'A fila de envio já está em processamento.' }, { status: 400 })
     }
 
@@ -105,10 +110,12 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    sendInProgress = true
     await setWhatsAppStatus('sending')
 
     const client = getWhatsAppClient()
     if (!client.isReady()) {
+      sendInProgress = false
       await setWhatsAppStatus('error')
       return NextResponse.json(
         { error: 'WhatsApp não conectado. Conecte-se primeiro para enviar mensagens.' },
@@ -121,7 +128,8 @@ export async function POST(req: NextRequest) {
     const results = []
     let skipped = 0
 
-    for (const lead of leads) {
+    for (let i = 0; i < leads.length; i++) {
+      const lead = leads[i]
       if (!lead.whatsapp) {
         skipped++
         results.push({ lead: lead.nome, phone: '', status: 'skipped' })
@@ -153,9 +161,11 @@ export async function POST(req: NextRequest) {
         results.push({ lead: currentLead.nome, phone: targetPhone, status: 'error' })
       }
 
-      // Delay anti-ban configurável entre as mensagens
-      const delay = getRandomDelay(delayMin * 1000, delayMax * 1000)
-      await new Promise(resolve => setTimeout(resolve, delay))
+      // Delay anti-ban configurável entre as mensagens (não após a última)
+      if (i < leads.length - 1) {
+        const delay = getRandomDelay(delayMin * 1000, delayMax * 1000)
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
     }
 
     // Registra o fim do disparo para a fila calcular o próximo envio
@@ -175,5 +185,8 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     await setWhatsAppStatus('error')
     return NextResponse.json({ error: error instanceof Error ? error.message : 'Erro ao enviar mensagens' }, { status: 500 })
+  } finally {
+    // Garante que o lock é liberado mesmo se o processo continuar após erro
+    sendInProgress = false
   }
 }

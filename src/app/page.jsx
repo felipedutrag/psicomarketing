@@ -8,7 +8,8 @@ import { ComparisonTable } from "@/components/comparison-table";
 import { PlanCalculator } from "@/components/plan-calculator";
 import { MinimalFooter } from "@/components/minimal-footer";
 import { siteContent as content } from "@/content/site-content";
-import { Badge } from "@/components/ui/badge";
+import { SectionBadge } from "@/components/section-badge";
+import { Boxes, Workflow, Scale, Coins } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -53,7 +54,7 @@ export default async function Home({ searchParams }) {
             </div>
           </div>
 
-          <Card className="w-full overflow-hidden border-zinc-200/90 bg-zinc-100/70 dark:border-zinc-800/90 dark:bg-zinc-900/50">
+          <Card className="w-full overflow-hidden border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 md:border-zinc-200/90 md:bg-zinc-100/70 md:dark:border-zinc-800/90 md:dark:bg-zinc-900/50">
             <CardContent className="p-0">
               <BotFlowScene />
             </CardContent>
@@ -71,12 +72,12 @@ export default async function Home({ searchParams }) {
 
         {/* Interactive Connectors Ecosystem Workspace */}
         <section id="modulos" className="space-y-4 scroll-mt-24">
-          <div className="space-y-1">
-            <Badge variant="outline" className="text-[10px] sm:text-xs">{content.connectorsBadge}</Badge>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
+          <div className="space-y-2.5 sm:space-y-3">
+            <SectionBadge icon={Boxes}>{content.connectorsBadge}</SectionBadge>
+            <h2 className="max-w-[22ch] text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight tracking-tight">
               {content.connectorsTitle}
             </h2>
-            <p className="max-w-3xl text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
               {content.connectorsDescription}
             </p>
           </div>
@@ -90,8 +91,8 @@ export default async function Home({ searchParams }) {
 
         {/* Timeline Pipeline */}
         <section id="fluxo" className="hidden space-y-4 scroll-mt-24 md:block">
-          <div className="space-y-1">
-            <Badge variant="outline" className="text-[10px] sm:text-xs">Fluxo de Automação</Badge>
+          <div className="space-y-2.5 sm:space-y-3">
+            <SectionBadge icon={Workflow}>Fluxo de Automação</SectionBadge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               {content.flowTitle}
             </h2>
@@ -108,8 +109,8 @@ export default async function Home({ searchParams }) {
 
         {/* Notion-Style Comparison Matrix */}
         <section className="hidden space-y-4 md:block">
-          <div className="space-y-1">
-            <Badge variant="outline" className="text-[10px] sm:text-xs">Comparativo Direto</Badge>
+          <div className="space-y-2.5 sm:space-y-3">
+            <SectionBadge icon={Scale}>Comparativo Direto</SectionBadge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               Manual vs. Automação Inteligente
             </h2>
@@ -126,10 +127,10 @@ export default async function Home({ searchParams }) {
 
         {/* Final Investment Section & Calculator */}
         <section id="investimento" className="hidden space-y-0.5 sm:space-y-6 scroll-mt-24 pt-4 md:block md:pt-6">
-          <div className="space-y-1">
-            <Badge variant="outline" className="text-[10px] sm:text-xs">
+          <div className="space-y-2.5 sm:space-y-3">
+            <SectionBadge icon={Coins}>
               {content.investmentBadge}
-            </Badge>
+            </SectionBadge>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               {content.investmentTitle}
             </h2>

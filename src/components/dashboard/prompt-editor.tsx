@@ -32,6 +32,7 @@ export function PromptEditor() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- busca de dados no mount (async)
     fetchPrompts()
   }, [])
 

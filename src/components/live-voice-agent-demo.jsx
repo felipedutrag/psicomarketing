@@ -2,11 +2,13 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useLilithVoice } from "@/hooks/use-lilith-voice";
+import { SectionBadge } from "@/components/section-badge";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
   CalendarCheck,
   CheckCircle2,
+  Mic,
   Play,
   PhoneOff,
 } from "lucide-react";
@@ -137,20 +139,20 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
   return (
     <>
       <style>{fogAnimation}</style>
-      <Card className="p-4 sm:p-6 md:p-8 bg-zinc-100/70 dark:bg-zinc-900/50 border-transparent backdrop-blur-sm transition-all duration-300 pb-4 md:pb-6">
+      <Card className="p-4 sm:p-6 md:p-8 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 transition-all duration-300 pb-4 md:pb-6 md:bg-zinc-100/70 md:dark:bg-zinc-900/50 md:border-transparent md:backdrop-blur-sm">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 sm:pb-6 border-b border-zinc-200 dark:border-zinc-800">
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <Badge variant="secondary" className="text-[10px] sm:text-xs font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 border-indigo-500/20 px-2 py-0.5">
+            <SectionBadge icon={Mic}>
               Voz + Tool Calling (Live)
-            </Badge>
+            </SectionBadge>
           </div>
-          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
-            Fale com a IA e preencha sua agenda
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">
+            Teste a IA agora: simule um agendamento
           </h3>
-          <p className="text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
-                      Crie agendamentos personalizados, cancele e remaque, deixamos uma agenda fictícia ao lado para você testar.
+          <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
+            Pressione o microfone e peça para criar, cancelar ou remarcar uma consulta na agenda fictícia ao lado — sem conectar nada.
           </p>
         </div>
       </div>
@@ -158,7 +160,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
       {/* Main Interactive Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 mt-4 sm:mt-6">
         {/* Left Column: ElevenLabs Style Audio Orb & Connect Controls */}
-        <div className="lg:col-span-5 flex flex-col items-center justify-between p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-950/60 rounded-xl border border-zinc-200 dark:border-zinc-800 text-center relative overflow-hidden">
+        <div className="lg:col-span-5 flex flex-col items-center justify-between p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 text-center relative overflow-hidden md:bg-zinc-50 md:dark:bg-zinc-950/60">
           {/* Authentic ChatGPT Advanced Voice & ElevenLabs Planet Orb */}
           <div className="relative my-2 sm:my-4 flex flex-col items-center justify-center w-full min-h-[200px] sm:min-h-[260px]">
             {/* Main Planet Sphere with Notch Cutout Container */}
@@ -278,7 +280,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
         {/* Right Column: Session Bookings Feed */}
         <div className="lg:col-span-7 flex flex-col justify-between space-y-4 sm:space-y-5">
           {/* Session Bookings Feed */}
-          <div className="flex-1 bg-indigo-500/5 dark:bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-3 sm:p-5 flex flex-col justify-between">
+          <div className="flex-1 bg-indigo-500/5 dark:bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-3 sm:p-5 flex flex-col justify-between md:bg-indigo-500/5 md:dark:bg-indigo-950/20">
             <div>
               <div className="flex items-center justify-between mb-2 sm:mb-3 border-b border-indigo-500/10 pb-2 sm:pb-2.5">
                 <span className="text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
@@ -293,15 +295,15 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
 
               <div className="space-y-2 sm:space-y-2.5 max-h-[140px] sm:max-h-[180px] overflow-y-auto pr-1">
                 {displayBookings.length === 0 ? (
-                  <div className="flex items-center justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white/60 dark:bg-zinc-900/60 border border-dashed border-zinc-300/70 dark:border-zinc-700/70 text-zinc-400 dark:text-zinc-500 text-center">
+                  <div className="flex items-center justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-center md:bg-white/60 md:dark:bg-zinc-900/60">
                     Sem agendamentos ainda!
                   </div>
                 ) : (
                 displayBookings.map((b) => (
-                  <div
-                    key={b.id}
-                    className="flex items-center justify-between text-[10px] sm:text-xs p-2 sm:p-3 rounded-lg bg-white/90 dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800/80 shadow-xs"
-                  >
+<div
+                      key={b.id}
+                      className="flex items-center justify-between text-[10px] sm:text-xs p-2 sm:p-3 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs md:bg-white/90 md:dark:bg-zinc-900/90 md:border-zinc-200/80 md:dark:border-zinc-800/80"
+                    >
                     <div className="flex items-center gap-1.5 sm:gap-2.5">
                       <CalendarCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-500 shrink-0" />
                       <span className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">{b.nome}</span>

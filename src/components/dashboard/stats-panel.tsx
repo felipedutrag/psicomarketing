@@ -6,6 +6,31 @@ import { RefreshCw, Loader2, Clock, Users, Zap, CheckCircle2, LineChart, AlertTr
 import type { LucideIcon } from 'lucide-react'
 import type { DashboardStats } from '@/lib/dashboard/config'
 
+function StatBlock({
+  icon: Icon,
+  title,
+  value,
+  description
+}: {
+  icon: LucideIcon
+  title: string
+  value: number | string
+  description: string
+}) {
+  return (
+    <div className="flex flex-col justify-between rounded-lg border border-zinc-200/80 bg-[#fbfbfa] p-4 dark:bg-[#191919] dark:border-[#2f2f2f] shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+      <div className="flex items-center justify-between">
+        <Icon className="h-4 w-4 text-zinc-400 dark:text-zinc-500" strokeWidth={1.5} />
+        <span className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{title}</span>
+      </div>
+      <div className="mt-3">
+        <div className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">{value}</div>
+        <p className="text-xs mt-1 text-zinc-600 dark:text-zinc-400">{description}</p>
+      </div>
+    </div>
+  )
+}
+
 export function StatsPanel() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -24,35 +49,13 @@ export function StatsPanel() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- busca de dados no mount + polling (async)
     fetchStats()
     const interval = setInterval(() => {
       if (!document.hidden) fetchStats()
     }, 30000)
     return () => clearInterval(interval)
   }, [])
-
-  const StatBlock = ({
-    icon: Icon,
-    title,
-    value,
-    description
-  }: {
-    icon: LucideIcon
-    title: string
-    value: number | string
-    description: string
-  }) => (
-    <div className="flex flex-col justify-between rounded-lg border border-zinc-200/80 bg-[#fbfbfa] p-4 dark:bg-[#191919] dark:border-[#2f2f2f] shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-      <div className="flex items-center justify-between">
-        <Icon className="h-4 w-4 text-zinc-400 dark:text-zinc-500" strokeWidth={1.5} />
-        <span className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{title}</span>
-      </div>
-      <div className="mt-3">
-        <div className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">{value}</div>
-        <p className="text-xs mt-1 text-zinc-600 dark:text-zinc-400">{description}</p>
-      </div>
-    </div>
-  )
 
   if (!stats) {
     return (

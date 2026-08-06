@@ -70,6 +70,7 @@ export default function AutomacaoCheckout() {
     }
 
     if (urlMcSubscriberId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- preenchimento único via URL (init com guard)
       setMcSubscriberId(urlMcSubscriberId);
     }
 
@@ -288,6 +289,7 @@ export default function AutomacaoCheckout() {
                   <div className={styles.pixBody}>
                     <div className={styles.qrCodeContainer}>
                       {(pixData.pix?.code) ? (
+                        // eslint-disable-next-line @next/next/no-img-element -- QR dinâmico por URL remota
                         <img
                           src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(pixData.pix.code)}`}
                           alt="QR Code PIX"

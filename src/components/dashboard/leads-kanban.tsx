@@ -47,6 +47,7 @@ export function LeadsKanban({ revision = 0, onRevisionChange }: LeadsKanbanProps
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- busca de dados no mount (async)
     fetchLeads()
   }, [revision])
 

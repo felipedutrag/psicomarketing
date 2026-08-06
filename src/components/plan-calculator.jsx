@@ -143,6 +143,7 @@ export function PlanCalculator() {
     defaultValues: { fullName: "", email: "", whatsapp: "", selectedDate: "" },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library -- watch() do react-hook-form não memoizável, uso previsto
   const whatsappValue = watch("whatsapp");
 
   useEffect(() => {
@@ -336,7 +337,7 @@ export function PlanCalculator() {
   const currentDateGroup = groupedDates[carouselIndex];
 
   const voiceHelpBar = (
-    <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100/80 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900/60 relative z-10">
+    <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-100 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-zinc-800 dark:bg-zinc-900 md:bg-zinc-100/80 md:backdrop-blur md:dark:bg-zinc-900/60 relative z-10">
       <div
         className={`flex items-center transition-all duration-300 ${
           isRecordingVoice || isSpeaking ? "gap-3.5" : "gap-2"
@@ -415,7 +416,7 @@ export function PlanCalculator() {
                   onClick={() => togglePlugin(plugin.id)}
                   className={`group relative flex flex-col justify-between rounded-xl border p-5 sm:p-6 h-full text-left transition-all duration-200 ${isSelected
                     ? "border-indigo-500 bg-indigo-500/10 shadow-xs dark:border-indigo-500/70 dark:bg-indigo-950/40"
-                    : "border-zinc-200/90 bg-zinc-100/70 hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-zinc-700"
+                    : "border-zinc-200 bg-zinc-100 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 md:border-zinc-200/90 md:bg-zinc-100/70 md:dark:border-zinc-800/90 md:dark:bg-zinc-900/50"
                     }`}
                 >
                   <div className="space-y-2 flex-1">
@@ -465,7 +466,7 @@ export function PlanCalculator() {
                     onClick={() => togglePlugin(plugin.id)}
                     className={`group relative flex flex-col justify-between rounded-xl border p-4 h-full text-left transition-all duration-200 ${isSelected
                       ? "border-indigo-500 bg-indigo-500/10 shadow-xs dark:border-indigo-500/70 dark:bg-indigo-950/40"
-                      : "border-zinc-200/90 bg-zinc-100/70 hover:border-zinc-300 dark:border-zinc-800/90 dark:bg-zinc-900/50 dark:hover:border-zinc-700"
+                      : "border-zinc-200 bg-zinc-100 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
                       }`}
                   >
                     <div className="space-y-2 flex-1">
@@ -505,7 +506,7 @@ export function PlanCalculator() {
 
         {/* Right Column: Live Plan Summary & Total */}
         <div className="lg:col-span-5 space-y-5 lg:space-y-5 mobile-only:mt-0 mobile-only:pt-0">
-          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100/90 p-[18px] sm:p-[26px] md:p-[34px] shadow-sm backdrop-blur dark:border-indigo-500/20 dark:bg-zinc-900/80 mobile-only:mt-0 mobile-only:p-4 mobile-only:!mt-0">
+          <div className="flex flex-col justify-between rounded-xl border border-indigo-500/30 bg-zinc-100 p-[18px] sm:p-[26px] md:p-[34px] shadow-sm dark:border-indigo-500/20 dark:bg-zinc-900 md:bg-zinc-100/90 md:backdrop-blur md:dark:bg-zinc-900/80 mobile-only:mt-0 mobile-only:p-4 mobile-only:!mt-0">
             <div className="space-y-5 mobile-only:space-y-4">
               {/* Header */}
               <div className="border-b border-zinc-200/80 pb-4 dark:border-zinc-800 mobile-only:pb-3">
@@ -594,7 +595,7 @@ export function PlanCalculator() {
       {isCheckoutExpanded && (
         <div
           ref={checkoutRef}
-          className="rounded-2xl border border-indigo-500/30 bg-white/90 dark:bg-zinc-900/90 p-4 sm:p-6 lg:p-8 shadow-xl backdrop-blur transition-all duration-300 animate-in fade-in slide-in-from-top-4"
+          className="rounded-2xl border border-indigo-500/30 bg-white dark:bg-zinc-900 p-4 sm:p-6 lg:p-8 shadow-xl md:bg-white/90 md:backdrop-blur md:dark:bg-zinc-900/90 transition-all duration-300 animate-in fade-in slide-in-from-top-4"
         >
           {/* Header & Steps Indicator */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-4 sm:pb-5 mb-4 sm:mb-6">
@@ -722,12 +723,12 @@ export function PlanCalculator() {
                     </Label>
 
                     {loadingSlots ? (
-                      <div className="flex flex-col items-center justify-center py-6 sm:py-8 gap-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50">
+                      <div className="flex flex-col items-center justify-center py-6 sm:py-8 gap-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950">
                         <Loader2 className="size-6 sm:size-8 text-indigo-600 animate-spin" />
                         <p className="text-zinc-500 text-xs sm:text-sm">Buscando horários disponíveis na agenda...</p>
                       </div>
                     ) : groupedDates.length > 0 ? (
-                      <div className="mx-auto w-full space-y-3 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50/50 dark:bg-zinc-950/50">
+                      <div className="mx-auto w-full space-y-3 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50 dark:bg-zinc-950">
                         <div className="relative">
                           <div className="grid grid-cols-1 gap-3 min-h-[220px]">
                             {currentDateGroup?.slots.slice(0, 3).map((slot) => (
@@ -807,7 +808,7 @@ export function PlanCalculator() {
                 </div>
 
                 {/* Summary & Confirm Column */}
-                <div className="lg:col-span-12 flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 bg-zinc-50/80 dark:bg-zinc-950/80 space-y-6 mt-6">
+                <div className="lg:col-span-12 flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 bg-zinc-50 dark:bg-zinc-950 space-y-6 mt-6 md:bg-zinc-50/80 md:dark:bg-zinc-950/80">
                   <div className="space-y-4">
                     <div className="flex items-center gap-2.5">
                       <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 ring-1 ring-indigo-500/20">
@@ -912,7 +913,7 @@ export function PlanCalculator() {
                       Código PIX Copia e Cola
                     </Label>
                     <div className="relative">
-                      <div className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-zinc-50/80 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-xl font-mono text-[10px] sm:text-xs text-zinc-600 dark:text-zinc-400 min-h-[60px] sm:min-h-[70px] pr-24 sm:pr-28 break-all leading-relaxed">
+                      <div className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl font-mono text-[10px] sm:text-xs text-zinc-600 dark:text-zinc-400 min-h-[60px] sm:min-h-[70px] pr-24 sm:pr-28 break-all leading-relaxed">
                         {pixData.code}
                       </div>
                       <button
@@ -937,7 +938,7 @@ export function PlanCalculator() {
                 </div>
 
                 <div className="lg:col-span-5 space-y-5">
-                  <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50/80 dark:bg-zinc-950/80 space-y-3 text-sm">
+                  <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50 dark:bg-zinc-950 space-y-3 text-sm md:bg-zinc-50/80 md:dark:bg-zinc-950/80">
                     <div className="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-2">
                       <span className="text-zinc-600 dark:text-zinc-400">Valor Total</span>
                       <span className="font-extrabold text-indigo-600 dark:text-indigo-400 text-lg font-mono">
