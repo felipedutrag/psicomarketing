@@ -209,6 +209,19 @@ export class WhatsAppClient {
     return this.started
   }
 
+  // Aguarda o cliente ficar pronto (info disponível + health check OK).
+  // Usado após reconectar para garantir que o envio não ocorra antes do ready.
+  async waitForReady(timeoutMs = 45000): Promise<boolean> {
+    const startTime = Date.now()
+    while (Date.now() - startTime < timeoutMs) {
+      if (this.isReady() && (await this.isHealthy())) {
+        return true
+      }
+      await sleep(1500)
+    }
+    return this.isReady() && (await this.isHealthy())
+  }
+
   // Health check real - verifica se o WhatsApp Web está realmente conectado
   async isHealthy(): Promise<boolean> {
     if (!this.client || !this.isReady()) {

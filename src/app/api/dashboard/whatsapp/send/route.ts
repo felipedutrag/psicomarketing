@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getLeads, getLeadById, updateLead } from '@/lib/dashboard/scraping'
 import { setWhatsAppStatus, getWhatsAppStatus, getRandomDelay, formatPhoneNumber, getSendDelay, setLastSendTime, getQueuePaused, getScheduleWindow, isWithinWindow, updateStats } from '@/lib/dashboard/whatsapp'
-import { getWhatsAppClient, getWhatsAppClientIfExists } from '@/lib/whatsapp/manager'
+import { getWhatsAppClient, getWhatsAppClientIfExists, initializeWhatsApp } from '@/lib/whatsapp/manager'
 
 const DEFAULT_MESSAGE =
   'Olá, me chamo Gabriele, achei seu contato no Google Meu Negócio e queria apresentar uma solução que pode aumentar seus atendimentos e reduzir gastos com anúncios. Você pode falar 1 minuto?'
@@ -12,24 +12,35 @@ const DEFAULT_MESSAGE =
 // morresse no meio do disparo, pois o status persistia.
 let sendInProgress = false
 
+// Garante que o cliente esteja conectado antes de enviar. Se não estiver,
+// tenta (re)conectar aguardando o ready. Retorna true se pronto, false caso
+// contrário (ex.: cooldown de reconexão ativo ou QR pendente).
+async function ensureWhatsAppReady(client: any): Promise<boolean> {
+  if (client.isReady()) return true
+
+  console.log('[SEND] WhatsApp não conectado, tentando reconectar...')
+  try {
+    await initializeWhatsApp()
+    return await client.waitForReady(45000)
+  } catch (error) {
+    console.error('[SEND] Falha na reconexão:', error instanceof Error ? error.message : error)
+    return false
+  }
+}
+
 // Envia mensagem com fallback de reconexão automática
 async function sendWithReconnect(client: any, phone: string, message: string, maxRetries = 2): Promise<any> {
   let lastError: Error | null = null
-  
+
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      // Verificar saúde antes de cada tentativa
-      if (attempt > 1 || !client.isReady()) {
-        console.log(`[SEND] Tentativa ${attempt}/${maxRetries} - verificando conexão...`)
-        const healthy = await client.isHealthy()
-        if (!healthy) {
-          console.warn(`[SEND] Cliente não saudável, reconectando (tentativa ${attempt})...`)
-          await client.stop()
-          await new Promise(r => setTimeout(r, 2000))
-          await client.start()
-        }
+      // Verificar saúde antes de cada tentativa (incluindo a primeira)
+      console.log(`[SEND] Tentativa ${attempt}/${maxRetries} - verificando conexão...`)
+      const connected = await ensureWhatsAppReady(client)
+      if (!connected) {
+        throw new Error('WhatsApp não conectado após tentativa de reconexão')
       }
-      
+
       const result = await client.sendMessage(phone, message)
       if (attempt > 1) {
         console.log(`[SEND] Reconexão bem-sucedida na tentativa ${attempt}`)
@@ -38,14 +49,20 @@ async function sendWithReconnect(client: any, phone: string, message: string, ma
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error))
       console.error(`[SEND] Erro na tentativa ${attempt}:`, lastError.message)
-      
+
       if (attempt < maxRetries) {
+        // Força stop/start limpo antes da próxima tentativa para sair de estados ruins
+        try {
+          await client.stop()
+        } catch {
+          // ignora
+        }
         // Esperar antes de tentar novamente
         await new Promise(r => setTimeout(r, 3000 * attempt))
       }
     }
   }
-  
+
   throw lastError || new Error('Falha ao enviar após tentativas de reconexão')
 }
 
@@ -57,7 +74,8 @@ export async function POST(req: NextRequest) {
     if (phone && message) {
       const client = getWhatsAppClient()
 
-      if (!client.isReady()) {
+      // Não retorna 400 imediatamente: tenta reconectar antes
+      if (!(await ensureWhatsAppReady(client))) {
         return NextResponse.json(
           { error: 'WhatsApp não conectado. Conecte-se primeiro para enviar mensagens.' },
           { status: 400 }
@@ -114,7 +132,7 @@ export async function POST(req: NextRequest) {
     await setWhatsAppStatus('sending')
 
     const client = getWhatsAppClient()
-    if (!client.isReady()) {
+    if (!(await ensureWhatsAppReady(client))) {
       sendInProgress = false
       await setWhatsAppStatus('error')
       return NextResponse.json(
