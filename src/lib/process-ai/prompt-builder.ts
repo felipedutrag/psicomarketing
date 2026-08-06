@@ -7,14 +7,8 @@ export async function buildSystemPrompt(firstName: string, stage: FunnelStage): 
   // Verificar se existe prompt customizado no Redis
   const basePrompt = (await getCustomPrompt()) || (await getDefaultPrompt())
 
-  const buttonRestriction = `\n\n# ATENÇÃO CRÍTICA SOBRE BOTÕES:\nVocê só deve usar a tool send_message_with_buttons se o cliente solicitar EXPLICITAMENTE o envio de botões (ex: "manda botões", "envia com botão", "opções por botão"). Caso o cliente NÃO peça expressamente por botões, NUNCA chame a tool send_message_with_buttons; responda sempre com texto simples.`
-
-  const promptWithRule = basePrompt.includes('ATENÇÃO CRÍTICA SOBRE BOTÕES')
-    ? basePrompt
-    : basePrompt + buttonRestriction
-
   const cleanName = firstName || "Lead"
-  return promptWithRule
+  return basePrompt
     .replace(/\$\{firstName\}/g, cleanName)
     .replace(/\\?\$\{firstName\}/g, cleanName)
     .replace(/\$\{stage\}/g, stage)

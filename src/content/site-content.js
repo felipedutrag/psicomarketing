@@ -3,7 +3,7 @@ export const siteContent = {
   heroBadge: "Ecossistema de IA Expansível para Psicólogos",
   heroTitle: "A sua secretária de IA com super poderes",
   heroDescription:
-        "Sua agenda se preenche sozinha enquanto você atende. IA responde, agenda e otimiza seus anúncios — tudo por voz.",
+        "Sua agenda se preenche sozinha enquanto você atende. IA responde e agenda — tudo por voz.",
   primaryCtaLabel: "Testar Agendamento por Voz",
   secondaryCtaLabel: "Testar Voz",
   visualTitle: "Agenda Lotada no Piloto Automático",

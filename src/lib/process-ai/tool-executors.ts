@@ -2,6 +2,7 @@ import { Redis } from '@upstash/redis'
 import { getNextAvailableSlots, createBooking, cancelBooking, formatSlot } from '@/lib/calcom'
 import { getLeadStage, setLeadStage, getStageScript, type FunnelStage } from '@/lib/funnel'
 import { sendMessageWithButtons } from '@/lib/manychat-buttons'
+import { TOOL_NAMES } from './tools'
 
 const redis = Redis.fromEnv()
 
@@ -11,13 +12,13 @@ export async function executeTool(
   userId: string,
   context?: { firstName?: string; webhookUserId?: string; webhookFirstName?: string }
 ): Promise<{ response: Record<string, unknown> }> {
-  if (name === 'get_lead_stage') {
+  if (name === TOOL_NAMES.getLeadStage) {
     console.log('[PROCESS-AI] Function get_lead_stage chamada')
     const stage = await getLeadStage(userId)
     return { response: { stage, stageScript: getStageScript(stage) } }
   }
 
-  if (name === 'update_funnel_stage') {
+  if (name === TOOL_NAMES.updateFunnelStage) {
     const { stage } = args as { stage?: string }
     console.log('[PROCESS-AI] Function update_funnel_stage chamada:', stage)
     if (!stage) {
@@ -27,7 +28,7 @@ export async function executeTool(
     return { response: { success: true, stage: newStage } }
   }
 
-  if (name === 'voice_booking_completed') {
+  if (name === TOOL_NAMES.voiceBookingCompleted) {
     console.log('[PROCESS-AI] Function voice_booking_completed chamada')
     // Adicionar tag de fechamento quando usuário fizer agendamento por voz
     try {
@@ -39,7 +40,7 @@ export async function executeTool(
     }
   }
 
-  if (name === 'save_lead_data') {
+  if (name === TOOL_NAMES.saveLeadData) {
     console.log('[PROCESS-AI] Function save_lead_data chamada:', JSON.stringify(args))
     const { email, perfil, volume_atendimentos, principal_dor } = args as {
       email?: string; perfil?: string; volume_atendimentos?: string; principal_dor?: string
@@ -48,7 +49,7 @@ export async function executeTool(
     return { response: { success: true } }
   }
 
-  if (name === 'get_availability') {
+  if (name === TOOL_NAMES.getAvailability) {
     console.log('[PROCESS-AI] Function get_availability chamada')
     const slots = await getNextAvailableSlots()
     const formatted = slots.map(s => ({ start: s, label: formatSlot(s) }))
@@ -56,7 +57,7 @@ export async function executeTool(
     return { response: { slots: formatted } }
   }
 
-  if (name === 'book_appointment') {
+  if (name === TOOL_NAMES.bookAppointment) {
     const { start, attendeeName, attendeeEmail } = args as { start?: string; attendeeName?: string; attendeeEmail?: string }
     console.log('[PROCESS-AI] Function book_appointment chamada:', JSON.stringify(args))
     try {
@@ -107,13 +108,13 @@ export async function executeTool(
     }
   }
 
-  if (name === 'handoff_to_human') {
+  if (name === TOOL_NAMES.handoffToHuman) {
     console.log('[PROCESS-AI] Function handoff_to_human chamada')
     await setLeadStage(userId, 'f_fechamento')
     return { response: { success: true, message: 'Lead transferido para o humano (Felipe).' } }
   }
 
-  if (name === 'cancel_appointment') {
+  if (name === TOOL_NAMES.cancelAppointment) {
     console.log('[PROCESS-AI] Function cancel_appointment chamada')
     const { reason } = args as { reason?: string }
     try {
@@ -137,7 +138,7 @@ export async function executeTool(
     }
   }
 
-  if (name === 'send_message_with_buttons') {
+  if (name === TOOL_NAMES.sendMessageWithButtons) {
     console.log('[PROCESS-AI] Function send_message_with_buttons chamada:', JSON.stringify(args))
     const { text, buttons } = args as { text?: string; buttons?: Array<{ text: string; payload?: string; url?: string }> }
     if (!text) {

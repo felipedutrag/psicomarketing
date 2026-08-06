@@ -102,10 +102,10 @@ export default async function Home({ searchParams }) {
         <section id="modulos" className="space-y-4 scroll-mt-24">
           <div className="space-y-2.5 sm:space-y-3">
             <SectionBadge icon={Boxes}>{content.connectorsBadge}</SectionBadge>
-            <h2 className="max-w-[22ch] text-2xl sm:text-3xl md:text-3xl font-semibold leading-tight tracking-tight">
+            <h2 className="max-w-[22ch] text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tracking-tight">
               {content.connectorsTitle}
             </h2>
-            <p className="max-w-3xl text-sm sm:text-base md:text-base text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
               {content.connectorsDescription}
             </p>
           </div>
@@ -132,7 +132,7 @@ export default async function Home({ searchParams }) {
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               {content.flowTitle}
             </h2>
-            <p className="max-w-3xl text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
               {content.flowDescription}
             </p>
           </div>
@@ -150,7 +150,7 @@ export default async function Home({ searchParams }) {
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               Manual vs. Automação Inteligente
             </h2>
-            <p className="max-w-3xl text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
               Entenda por que clínicas e psicólogos estão migrando para o modelo modular.
             </p>
           </div>
@@ -170,7 +170,7 @@ export default async function Home({ searchParams }) {
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
               {content.investmentTitle}
             </h2>
-            <p className="max-w-3xl text-xs sm:text-sm md:text-base text-zinc-700 dark:text-zinc-400">
+            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
               {content.investmentDescription}
             </p>
           </div>

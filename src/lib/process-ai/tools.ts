@@ -10,14 +10,26 @@ export type ToolDef = {
   }
 }
 
+export const TOOL_NAMES = {
+  getLeadStage: 'get_lead_stage',
+  updateFunnelStage: 'update_funnel_stage',
+  saveLeadData: 'save_lead_data',
+  getAvailability: 'get_availability',
+  bookAppointment: 'book_appointment',
+  handoffToHuman: 'handoff_to_human',
+  cancelAppointment: 'cancel_appointment',
+  sendMessageWithButtons: 'send_message_with_buttons',
+  voiceBookingCompleted: 'voice_booking_completed',
+} as const
+
 export const TOOL_DEFS: ToolDef[] = [
   {
-    name: 'get_lead_stage',
+    name: TOOL_NAMES.getLeadStage,
     description: 'Obtém a etapa atual do funil de vendas do lead (ex: f_interessado, f_reuniao_agendada, f_quebra_objecao, f_fechamento). Use para saber onde o lead está no funil.',
     parameters: { type: 'object', properties: {} }
   },
   {
-    name: 'update_funnel_stage',
+    name: TOOL_NAMES.updateFunnelStage,
     description: 'Move o lead para uma nova etapa do funil. Etapas válidas: f_interessado (quando manifestar interesse no link/site), f_fechamento (quando fizer agendamento por voz ou demonstrar intenção de fechar), f_quebra_objecao (quando recusar após oferta pós agendamento). Use ao avançar ou desviar o lead no funil.',
     parameters: {
       type: 'object',
@@ -31,7 +43,7 @@ export const TOOL_DEFS: ToolDef[] = [
     }
   },
   {
-    name: 'save_lead_data',
+    name: TOOL_NAMES.saveLeadData,
     description: 'Salva dados úteis do lead como email, perfil e principal dor. Use sempre que o lead informar essas informações.',
     parameters: {
       type: 'object',
@@ -56,12 +68,12 @@ export const TOOL_DEFS: ToolDef[] = [
     }
   },
   {
-    name: 'get_availability',
+    name: TOOL_NAMES.getAvailability,
     description: 'Busca os próximos horários disponíveis na agednda para sugerir opções de reunião ao lead. Retorna uma lista de horários em formato ISO.',
     parameters: { type: 'object', properties: {} }
   },
   {
-    name: 'book_appointment',
+    name: TOOL_NAMES.bookAppointment,
     description: 'Agenda a reunião do lead em um horário específico obtido do get_availability. Confirma o agendamento no Cal.com e retorna um link de checkout para o lead.',
     parameters: {
       type: 'object',
@@ -83,12 +95,12 @@ export const TOOL_DEFS: ToolDef[] = [
     }
   },
   {
-    name: 'handoff_to_human',
+    name: TOOL_NAMES.handoffToHuman,
     description: 'Sinaliza que o lead quer fechar/contratar e transfere o atendimento para um humano (Felipe). Aplica a tag de fechamento para a equipe entrar em contato.',
     parameters: { type: 'object', properties: {} }
   },
   {
-    name: 'cancel_appointment',
+    name: TOOL_NAMES.cancelAppointment,
     description: 'Cancela a reunião de teste que foi agendada. Remove o agendamento do Cal.com e limpa os dados de booking do lead. Só pode ser usada se o lead já tiver uma reunião agendada.',
     parameters: {
       type: 'object',
@@ -101,7 +113,7 @@ export const TOOL_DEFS: ToolDef[] = [
     }
   },
   {
-    name: 'send_message_with_buttons',
+    name: TOOL_NAMES.sendMessageWithButtons,
     description: 'Envia uma mensagem com botão interativo de URL para o lead via WhatsApp. Use SOMENTE quando o fluxo indicar envio do link/site ao lead (ex: lead concordou em ver a demonstração, disse "pode mandar", "manda aí", "quero ver", "sim"). NÃO use em respostas de objeção, perguntas, saudações ou qualquer outra situação. O botão de URL aceita templates: http://psicomarketing.online/?nome={firstname}&id={id} — os placeholders são preenchidos automaticamente.',
     parameters: {
       type: 'object',
@@ -127,7 +139,7 @@ export const TOOL_DEFS: ToolDef[] = [
     }
   },
   {
-    name: 'voice_booking_completed',
+    name: TOOL_NAMES.voiceBookingCompleted,
     description: 'Registra que o usuário completou um agendamento por voz na landing page e move o lead para a etapa de fechamento (f_fechamento). Use quando o usuário demonstrar interesse após testar a IA de voz ou fazer um agendamento simulado.',
     parameters: { type: 'object', properties: {} }
   }

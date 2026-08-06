@@ -41,8 +41,8 @@ function findChromeExecutable(): string | undefined {
   ]
   const base = process.env.PUPPETEER_CACHE_DIR || path.join(os.homedir(), '.cache', 'puppeteer')
   for (const candidate of candidates) {
-    const p = path.join(base, candidate)
-    if (fs.existsSync(p)) return p
+    const p = path.join(/*turbopackIgnore: true*/ base, candidate)
+    if (fs.existsSync(/*turbopackIgnore: true*/ p)) return p
   }
   return undefined
 }

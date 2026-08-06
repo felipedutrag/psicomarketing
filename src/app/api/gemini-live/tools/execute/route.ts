@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendMessage } from '@/lib/manychat'
+import { executeTool } from '@/lib/process-ai/tool-executors'
 
 interface ToolRequestBody {
   name: string
@@ -16,10 +17,6 @@ interface AgendarConsultaArgs {
 
 interface ExplicarPluginArgs {
   plugin?: string
-}
-
-interface VoiceBookingCompletedArgs {
-  contextId?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -95,31 +92,25 @@ export async function POST(req: NextRequest) {
     }
 
     if (name === 'voice_booking_completed') {
-      const { contextId } = (args || {}) as VoiceBookingCompletedArgs
+      const contextId = args?.contextId as string | undefined
       console.log('[Gemini Live] voice_booking_completed chamada com contextId:', contextId)
 
-      if (contextId) {
-        try {
-          // Adicionar tag de fechamento no ManyChat
-          const { setLeadStage } = await import('@/lib/funnel')
-          await setLeadStage(contextId, 'f_fechamento')
-          return NextResponse.json({
-            status: 'success',
-            message: 'Tag de fechamento adicionada após agendamento por voz',
-          })
-        } catch (err) {
-          console.error('[Gemini Live] Erro ao adicionar tag f_fechamento:', err)
-          return NextResponse.json({
-            status: 'error',
-            error: err instanceof Error ? err.message : 'Erro ao adicionar tag de fechamento'
-          }, { status: 500 })
-        }
+      if (!contextId) {
+        return NextResponse.json({
+          status: 'success',
+          message: 'Agendamento por voz registrado (sem ID disponível para tag)'
+        })
       }
 
-      return NextResponse.json({
-        status: 'success',
-        message: 'Agendamento por voz registrado (sem ID disponível para tag)'
-      })
+      const { response } = await executeTool(name, args || {}, contextId)
+      if (!response.success) {
+        return NextResponse.json({
+          status: 'error',
+          error: response.error
+        }, { status: 500 })
+      }
+
+      return NextResponse.json({ status: 'success', ...response })
     }
 
     return NextResponse.json({

@@ -1,3 +1,5 @@
+import { TOOL_DEFS } from '@/lib/process-ai/tools'
+
 export interface ToolParameter {
   type: string
   description: string
@@ -41,7 +43,7 @@ export const GEMINI_LIVE_TOOLS: ToolDeclaration[] = [
   },
   {
     name: 'voice_booking_completed',
-    description: 'Registra que o usuário completou um agendamento por voz na landing page e move o lead para a etapa de fechamento (f_fechamento). Use quando o usuário demonstrar interesse após testar a IA de voz ou fazer um agendamento simulado.',
+    description: TOOL_DEFS.find(t => t.name === 'voice_booking_completed')?.description ?? 'Registra agendamento por voz e move o lead para fechamento.',
     parameters: {
       type: 'OBJECT',
       properties: {},
