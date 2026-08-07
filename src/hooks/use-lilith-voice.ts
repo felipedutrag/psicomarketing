@@ -96,6 +96,7 @@ export interface VoiceOptions {
 export function useLilithVoice(identity?: Identity, options?: VoiceOptions) {
   const [isRecordingVoice, setIsRecordingVoice] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
+  const [isSessionActive, setIsSessionActive] = useState(false)
   const [isReadyToSpeak, setIsReadyToSpeak] = useState(false)
   const [scheduledBookings, setScheduledBookings] = useState<unknown[]>([])
   const [transcripts, setTranscripts] = useState<unknown[]>([])
@@ -217,6 +218,7 @@ export function useLilithVoice(identity?: Identity, options?: VoiceOptions) {
     }
     setIsRecordingVoice(false)
     setIsReadyToSpeak(false)
+    setIsSessionActive(false)
     saveSession(
       conversationHistoryRef.current,
       false,
@@ -395,6 +397,7 @@ export function useLilithVoice(identity?: Identity, options?: VoiceOptions) {
           saveSession(conversationHistoryRef.current, false, sessionIdRef.current, null, voiceNameRef.current, optionsRef.current?.sessionKey)
         }
         setIsReadyToSpeak(false)
+        setIsSessionActive(false)
 
         if (
           shouldReconnectRef.current &&
@@ -424,7 +427,7 @@ export function useLilithVoice(identity?: Identity, options?: VoiceOptions) {
       }
 
       ws.onopen = () => {
-         
+        setIsSessionActive(true)
         const normalizedTools = (tools || []).map((t: any) => ({
           ...t,
           parameters: normalizeSchemaTypes(t.parameters),
@@ -732,6 +735,7 @@ export function useLilithVoice(identity?: Identity, options?: VoiceOptions) {
   return {
     isRecordingVoice,
     isSpeaking,
+    isSessionActive,
     isReadyToSpeak: isReadyToSpeak && !isSpeaking,
     scheduledBookings,
     transcripts,

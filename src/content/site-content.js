@@ -12,7 +12,7 @@ export const siteContent = {
   connectorsBadge: "Arquitetura de Conectores",
   connectorsTitle: "Seu Whatsapp atendendo 24/7",
   connectorsDescription:
-          "Escolha os módulos que fazem sentido para você e deixe o agendamento com a IA — seus pacientes marcando consulta 24/7, no automático.",
+          "Configure seu assistente tanto para o lado do paciente quanto para o lado do psicólogo — atendimento e agendamento rodando 24/7, no automático.",
   connectors: [
     {
       id: "smart-booking",
