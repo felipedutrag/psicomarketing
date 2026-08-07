@@ -66,7 +66,7 @@ export function BotFlowScene() {
       {/* Top Header Metrics */}
       <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 border-b border-zinc-200/80 pb-2 sm:pb-3 dark:border-zinc-800/80">
         <div className="flex items-center gap-2 min-w-0 flex-1">
-          <div className="flex size-6 sm:size-7 md:size-8 items-center justify-center bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 shrink-0">
+          <div className="flex size-6 sm:size-7 md:size-8 items-center justify-center bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50 shrink-0">
             <Calendar className="size-3 sm:size-3.5 md:size-4" />
           </div>
           <div className="min-w-0">
