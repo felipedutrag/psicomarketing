@@ -21,7 +21,7 @@ export function StartVoiceButton({ label }) {
     <Button
       size="sm"
       onClick={handleClick}
-      className="group relative h-9 sm:h-10 rounded-full bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-3.5 sm:px-5 text-xs sm:text-sm font-semibold text-white shadow-[0_10px_30px_-8px_rgba(139,92,246,0.7)] ring-1 ring-white/20 transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_14px_40px_-8px_rgba(139,92,246,0.9)] hover:brightness-110 active:scale-95"
+      className="group relative h-9 sm:h-10 rounded-full bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-3.5 sm:px-5 text-xs sm:text-sm font-semibold text-white shadow-[0_10px_30px_-8px_rgba(139,92,246,0.7)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_14px_40px_-8px_rgba(139,92,246,0.9)] hover:brightness-110 active:scale-95"
     >
       <span className="relative flex items-center gap-2">
         {label}

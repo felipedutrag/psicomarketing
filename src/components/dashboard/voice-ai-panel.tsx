@@ -300,9 +300,11 @@ export function VoiceAIPanel({ startSignal = 0 }: { startSignal?: number }) {
                   type="button"
                   onClick={toggleVoiceRecording}
                   className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 size-10 sm:size-12 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer ${
-                    isRecordingVoice
-                      ? 'bg-white text-black hover:bg-zinc-100 hover:scale-105'
-                      : 'bg-white text-black hover:bg-zinc-100 hover:scale-105 animate-pulse'
+                    isSpeaking
+                      ? 'bg-rose-600 text-white hover:bg-rose-500 hover:scale-105 shadow-[0_0_20px_rgba(225,29,72,0.5)]'
+                      : isRecordingVoice
+                        ? 'bg-white text-black hover:bg-zinc-100 hover:scale-105'
+                        : 'bg-white text-black hover:bg-zinc-100 hover:scale-105 animate-pulse'
                   }`}
                   title={isRecordingVoice ? 'Encerrar chamada' : 'Iniciar chamada'}
                 >

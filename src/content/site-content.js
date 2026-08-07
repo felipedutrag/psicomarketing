@@ -10,9 +10,9 @@ export const siteContent = {
   visualDescription:
       "Veja sua semana sendo preenchida automaticamente com consultas qualificadas oriundas dos seus anúncios e conectores.",
   connectorsBadge: "Arquitetura de Conectores",
-  connectorsTitle: "Sua clínica atendendo sozinha, 24h por dia",
+  connectorsTitle: "Seu Whatsapp atendendo 24/7",
   connectorsDescription:
-          "Escolha os módulos que fazem sentido para você e deixe o resto com a IA.",
+          "Escolha os módulos que fazem sentido para você e deixe o agendamento com a IA — seus pacientes marcando consulta 24/7, no automático.",
   connectors: [
     {
       id: "smart-booking",

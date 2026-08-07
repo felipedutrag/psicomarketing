@@ -15,8 +15,6 @@ import {
   Scale,
   Coins,
   Sparkles,
-  HeartPulse,
-  MessageCircle,
 } from "lucide-react";
 import {
   Card,
@@ -62,17 +60,6 @@ export default async function Home({ searchParams }) {
             </p>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-0">
               <StartVoiceButton label={content.primaryCtaLabel} />
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-0 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-400">
-              <span className="inline-flex items-center gap-1.5">
-                <HeartPulse className="size-3.5 text-indigo-500" />
-                Feito para psicólogos
-              </span>
-              <span aria-hidden className="hidden sm:inline text-zinc-300 dark:text-zinc-600">•</span>
-              <span className="inline-flex items-center gap-1.5">
-                <MessageCircle className="size-3.5 text-indigo-500" />
-                WhatsApp + Google Calendar
-              </span>
             </div>
           </div>
 
