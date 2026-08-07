@@ -327,7 +327,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
 
                 <div className="space-y-2 sm:space-y-2.5 max-h-[140px] sm:max-h-[180px] lg:max-h-[240px] overflow-y-auto pr-1 lg:flex-1">
                   {displayBookings.length === 0 ? (
-                    <div className="flex items-center mt-3g justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-center md:bg-white/60 md:dark:bg-zinc-900/60 lg:min-h-[96px]">
+                    <div className="flex items-center mt-3 justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-center md:bg-white/60 md:dark:bg-zinc-900/60 lg:min-h-[96px]">
                       Sem agendamentos ainda!
                     </div>
                   ) : (
