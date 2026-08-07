@@ -52,13 +52,16 @@ export default async function Home({ searchParams }) {
             <SectionBadge icon={Sparkles} className="self-center">
               {content.heroBadge}
             </SectionBadge>
-            <h1 className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center">
+            <h1
+              className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center mb-4 sm:mb-5"
+              style={{ lineHeight: 1.05 }}
+            >
               Sua secretária de IA com <br /><span className="text-indigo-600 dark:text-indigo-400 font-bold underline underline-offset-4 decoration-primary/30">super poderes</span>
             </h1>
-            <p className="text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
+            <p className="text-sm sm:text-base md:text-lg leading-snug text-zinc-700 dark:text-zinc-400">
               {content.heroDescription}
             </p>
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-0">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-2 sm:pt-3">
               <StartVoiceButton label={content.primaryCtaLabel} />
             </div>
           </div>
@@ -81,14 +84,16 @@ export default async function Home({ searchParams }) {
 
         {/* Interactive Connectors Ecosystem Workspace */}
         <section id="modulos" className="space-y-4 scroll-mt-24">
-          <div className="space-y-2.5 sm:space-y-3">
-            <SectionBadge icon={Boxes}>{content.connectorsBadge}</SectionBadge>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tracking-tight">
-              {content.connectorsTitle}
-            </h2>
-            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
-              {content.connectorsDescription}
-            </p>
+          <div>
+            <SectionBadge icon={Boxes} className="mb-2.5 sm:mb-3">{content.connectorsBadge}</SectionBadge>
+            <div className="space-y-1.5 sm:space-y-2">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tracking-tight">
+                {content.connectorsTitle}
+              </h2>
+              <p className="max-w-3xl text-sm sm:text-base md:text-lg leading-tight text-zinc-700 dark:text-zinc-400">
+                {content.connectorsDescription}
+              </p>
+            </div>
           </div>
           <FeatureTabs plugins={content.connectors} />
         </section>
@@ -108,14 +113,16 @@ export default async function Home({ searchParams }) {
 
         {/* Timeline Pipeline */}
         <section id="fluxo" className="hidden space-y-4 scroll-mt-24 md:block">
-          <div className="space-y-2.5 sm:space-y-3">
-            <SectionBadge icon={Workflow}>Fluxo de Automação</SectionBadge>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
-              {content.flowTitle}
-            </h2>
-            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
-              {content.flowDescription}
-            </p>
+          <div>
+            <SectionBadge icon={Workflow} className="mb-2.5 sm:mb-3">Fluxo de Automação</SectionBadge>
+            <div className="space-y-1.5 sm:space-y-2">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
+                {content.flowTitle}
+              </h2>
+              <p className="max-w-3xl text-sm sm:text-base md:text-lg leading-tight text-zinc-700 dark:text-zinc-400">
+                {content.flowDescription}
+              </p>
+            </div>
           </div>
           <ProcessTimeline steps={content.flowSteps} />
         </section>
@@ -126,14 +133,16 @@ export default async function Home({ searchParams }) {
 
         {/* Notion-Style Comparison Matrix */}
         <section className="hidden space-y-4 md:block">
-          <div className="space-y-2.5 sm:space-y-3">
-            <SectionBadge icon={Scale}>Comparativo Direto</SectionBadge>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
-              Manual vs. Automação Inteligente
-            </h2>
-            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
-              Entenda por que clínicas e psicólogos estão migrando para o modelo modular.
-            </p>
+          <div>
+            <SectionBadge icon={Scale} className="mb-2.5 sm:mb-3">Comparativo Direto</SectionBadge>
+            <div className="space-y-1.5 sm:space-y-2">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
+                Manual vs. Automação Inteligente
+              </h2>
+              <p className="max-w-3xl text-sm sm:text-base md:text-lg leading-tight text-zinc-700 dark:text-zinc-400">
+                Entenda por que clínicas e psicólogos estão migrando para o modelo modular.
+              </p>
+            </div>
           </div>
           <ComparisonTable />
         </section>
@@ -144,16 +153,18 @@ export default async function Home({ searchParams }) {
 
         {/* Final Investment Section & Calculator */}
         <section id="investimento" className="hidden space-y-4 scroll-mt-24 md:block">
-          <div className="space-y-2.5 sm:space-y-3">
-            <SectionBadge icon={Coins}>
+          <div>
+            <SectionBadge icon={Coins} className="mb-2.5 sm:mb-3">
               {content.investmentBadge}
             </SectionBadge>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
-              {content.investmentTitle}
-            </h2>
-            <p className="max-w-3xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
-              {content.investmentDescription}
-            </p>
+            <div className="space-y-1.5 sm:space-y-2">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
+                {content.investmentTitle}
+              </h2>
+              <p className="max-w-3xl text-sm sm:text-base md:text-lg leading-tight text-zinc-700 dark:text-zinc-400">
+                {content.investmentDescription}
+              </p>
+            </div>
           </div>
 
           <div className="w-full rounded-2xl border border-zinc-200 bg-zinc-100 p-4 sm:p-6 md:p-8 md:border-zinc-200/90 md:bg-zinc-100/70 md:backdrop-blur-sm md:dark:border-zinc-800/90 md:dark:bg-zinc-900/50 dark:border-zinc-800 dark:bg-zinc-900">

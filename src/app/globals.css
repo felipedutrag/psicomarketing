@@ -6,6 +6,8 @@
 
 @theme {
   --font-logo: "Space Grotesk", sans-serif;
+  --font-display: "Sora", sans-serif;
+  --font-serif: "Fraunces", serif;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -97,6 +99,18 @@ label {
     color: inherit;
     text-decoration: none;
   }
+}
+
+/* Títulos da landing em Sora (display) */
+.site-scope h1,
+.site-scope h2,
+.site-scope h3,
+.site-scope h4,
+.site-scope h5,
+.site-scope h6 {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
 }
 
 * {

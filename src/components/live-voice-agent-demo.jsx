@@ -193,18 +193,20 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
       <style>{fogAnimation}</style>
       {/* Header - outside the card */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 sm:mb-6">
-        <div className="space-y-1.5">
-          <div className="flex flex-wrap items-center gap-2 mb-2">
+        <div>
+          <div className="flex flex-wrap items-center gap-2 mb-2.5 sm:mb-3">
             <SectionBadge icon={Mic}>
               Voz + Tool Calling (Live)
             </SectionBadge>
           </div>
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">
-            Simule um agendamento
-          </h3>
-          <p className="max-w-4xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
-            Pressione o microfone e veja como Gaby pode ser útil no seu dia a dia.
-          </p>
+          <div className="space-y-1.5 sm:space-y-2">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">
+              Simule um agendamento
+            </h3>
+            <p className="max-w-4xl text-sm sm:text-base md:text-lg leading-tight text-zinc-700 dark:text-zinc-400">
+              Pressione o microfone e veja como Gaby pode ser útil no seu dia a dia.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -330,7 +332,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
           </div>
 
           {/* Right Column: Session Bookings Feed */}
-          <div className="lg:col-span-7 flex flex-col">
+          <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-5">
             {/* Session Bookings Feed */}
             <div className="lg:flex-1 bg-indigo-500/5 dark:bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-3.5 sm:p-5 flex flex-col md:bg-indigo-500/5 md:dark:bg-indigo-950/20">
               <div className="flex items-center justify-between gap-2 mb-3 sm:mb-4">

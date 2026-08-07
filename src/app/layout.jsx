@@ -1,4 +1,4 @@
-import { Plus_Jakarta_Sans, IBM_Plex_Mono, Playfair_Display, Space_Grotesk } from "next/font/google";
+import { Plus_Jakarta_Sans, IBM_Plex_Mono, Fraunces, Sora, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -13,15 +13,23 @@ const grotesk = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
 });
 
+const sora = Sora({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 const mono = IBM_Plex_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
-const playfair = Playfair_Display({
+const fraunces = Fraunces({
   variable: "--font-serif",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 export const metadata = {
@@ -34,7 +42,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR" className={`${jakarta.variable} ${grotesk.variable} ${mono.variable} ${playfair.variable}`} suppressHydrationWarning>
+    <html lang="pt-BR" className={`${jakarta.variable} ${grotesk.variable} ${sora.variable} ${mono.variable} ${fraunces.variable}`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
