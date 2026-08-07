@@ -8,8 +8,6 @@ import {
   Calendar,
   Mail,
   Cpu,
-  Play,
-  Pause,
   Sparkles,
   Volume2,
   TrendingUp,
@@ -27,7 +25,6 @@ const ICON_MAP = {
 
 export function FeatureTabs({ plugins }) {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   const categories = [
     { id: "all", label: "Todos os Módulos" },
@@ -112,7 +109,7 @@ export function FeatureTabs({ plugins }) {
               {/* Module-Specific Live Interactive Previews */}
               <div className="mt-5 pt-3.5 border-t border-zinc-200/80 dark:border-zinc-800/80">
                 {plugin.id === "google-ads" && (
-                  <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-[10px] sm:text-xs dark:border-zinc-800 dark:bg-zinc-900/50">
+                  <div className="flex min-h-[92px] flex-col justify-center gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50 p-3 text-[10px] sm:text-xs dark:border-zinc-800 dark:bg-zinc-900/50">
                     <div className="flex items-center justify-between gap-2">
                       <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-400">
                         <Volume2 className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" /> Google Ads por Voz
@@ -133,7 +130,7 @@ export function FeatureTabs({ plugins }) {
                 )}
 
                 {plugin.id === "facebook-ads" && (
-                  <div className="flex min-h-[108px] flex-col justify-center gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50 p-3.5 text-[10px] sm:text-xs dark:border-zinc-800 dark:bg-zinc-900/50">
+                  <div className="flex min-h-[92px] flex-col justify-center gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50 p-3 text-[10px] sm:text-xs dark:border-zinc-800 dark:bg-zinc-900/50">
                     <div className="flex items-center justify-between gap-2">
                       <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-400">
                         <TrendingUp className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" /> Meta Ads por Voz
@@ -154,38 +151,22 @@ export function FeatureTabs({ plugins }) {
                 )}
 
                 {plugin.id === "native-voice" && (
-                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-50 p-3 text-[10px] sm:text-xs space-y-2.5 dark:border-zinc-800 dark:bg-zinc-900/50">
-                    <div className="flex items-center justify-between gap-2 font-semibold text-indigo-800 dark:text-indigo-300 text-[10px] sm:text-xs">
-                                          <span className="min-w-0 truncate">Sua Voz Comanda a Agenda</span>
-                      <span className="shrink-0 rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[10px] sm:text-[11px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
-                        0:14
+                  <div className="flex min-h-[92px] flex-col justify-center gap-2.5 rounded-xl border border-zinc-200/80 bg-zinc-50 p-3 text-[10px] sm:text-xs dark:border-zinc-800 dark:bg-zinc-900/50">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide text-zinc-700 dark:text-zinc-400">
+                        <Volume2 className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" /> Sua Voz Comanda a Agenda
+                      </span>
+                      <span className="rounded bg-indigo-500/15 px-1.5 py-0.5 font-mono text-[9px] sm:text-[10px] leading-none text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                        ativo
                       </span>
                     </div>
-                    <div className="flex items-center gap-2.5">
-                      <button
-                        type="button"
-                        onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-                        aria-label={isPlayingAudio ? "Pausar áudio de exemplo" : "Reproduzir áudio de exemplo"}
-                        className="flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white shadow-xs hover:bg-indigo-500 transition-colors"
-                      >
-                        {isPlayingAudio ? <Pause className="size-3.5 sm:size-4" /> : <Play className="size-3.5 sm:size-4 ml-0.5" />}
-                      </button>
-                      <div className="flex h-7 sm:h-8 flex-1 min-w-0 items-center gap-[2px]">
-                        {[
-                          40, 80, 50, 95, 60, 85, 45, 90, 40, 70, 85, 50, 95, 35, 60, 75, 55, 90, 45, 65,
-                          55, 88, 42, 92, 58, 78, 48, 86, 38, 72, 90, 52, 96, 40, 62, 70, 58, 84, 44, 68,
-                        ].map((h, i) => (
-                          <span
-                            key={i}
-                            className={`flex-1 basis-0 rounded-full transition-all duration-300 ${
-                              isPlayingAudio
-                                                      ? "bg-indigo-500/60 dark:bg-indigo-400/60 animate-pulse"
-                                                      : "bg-indigo-500/30 dark:bg-indigo-400/30"
-                            }`}
-                            style={{ height: `${isPlayingAudio ? Math.max(15, Math.min(100, h * 0.9)) : Math.max(15, h)}%` }}
-                          />
-                        ))}
-                      </div>
+                    <div className="flex items-center gap-3">
+                      <span className="relative flex size-8 sm:size-9 shrink-0 items-center justify-center rounded-full bg-indigo-500/15 ring-1 ring-indigo-500/30">
+                        <Mic className="size-3 sm:size-3.5 text-indigo-600 dark:text-indigo-400" />
+                      </span>
+                      <span className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 leading-snug">
+                        &ldquo;Agende o João para amanhã às 10h.&rdquo;
+                      </span>
                     </div>
                   </div>
                 )}
@@ -217,7 +198,7 @@ export function FeatureTabs({ plugins }) {
                 )}
 
                 {plugin.id === "custom-plugin" && (
-                  <div className="flex min-h-[108px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-950 p-3.5 text-[10px] sm:text-xs font-mono text-indigo-400 space-y-1 dark:border-zinc-800">
+                  <div className="flex min-h-[92px] flex-col justify-center rounded-xl border border-zinc-200/80 bg-zinc-950 p-3 text-[10px] sm:text-xs font-mono text-indigo-400 space-y-1.5 dark:border-zinc-800">
                     <span className="text-[9px] sm:text-[10px] text-zinc-500 font-sans block">Integração via API</span>
                     <div className="space-y-0.5 break-all leading-relaxed">
                       <p>definePlugin(&apos;SuaAPI&apos;, &#123;</p>

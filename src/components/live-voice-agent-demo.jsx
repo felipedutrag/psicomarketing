@@ -282,13 +282,12 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
                 <button
                   type="button"
                   onClick={toggleVoiceRecording}
-                  className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 size-10 sm:size-12 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    isSessionActive
-                      ? "bg-rose-600 text-white hover:bg-rose-500 hover:scale-105 shadow-[0_0_20px_rgba(225,29,72,0.5)]"
-                      : isRecordingVoice
-                        ? "bg-white text-black hover:bg-zinc-100 hover:scale-105"
-                        : "bg-white text-black hover:bg-zinc-100 hover:scale-105 animate-pulse"
-                  }`}
+                  className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 size-10 sm:size-12 rounded-full flex items-center justify-center transition-all duration-300 ${isSessionActive
+                    ? "bg-rose-600 text-white hover:bg-rose-500 hover:scale-105 shadow-[0_0_20px_rgba(225,29,72,0.5)]"
+                    : isRecordingVoice
+                      ? "bg-white text-black hover:bg-zinc-100 hover:scale-105"
+                      : "bg-white text-black hover:bg-zinc-100 hover:scale-105 animate-pulse"
+                    }`}
                   title={isRecordingVoice ? "Encerrar chamada" : "Iniciar chamada"}
                 >
                   {isRecordingVoice ? (
@@ -328,7 +327,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
 
                 <div className="space-y-2 sm:space-y-2.5 max-h-[140px] sm:max-h-[180px] lg:max-h-[240px] overflow-y-auto pr-1 lg:flex-1">
                   {displayBookings.length === 0 ? (
-                    <div className="flex items-center justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-center md:bg-white/60 md:dark:bg-zinc-900/60 lg:min-h-[96px]">
+                    <div className="flex items-center mt-3g justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-center md:bg-white/60 md:dark:bg-zinc-900/60 lg:min-h-[96px]">
                       Sem agendamentos ainda!
                     </div>
                   ) : (
