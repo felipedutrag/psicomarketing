@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { after } from 'next/server'
 import { sendMessage } from '@/lib/manychat'
 import { executeTool } from '@/lib/process-ai/tool-executors'
 import { setLeadStage } from '@/lib/funnel'
@@ -42,8 +43,9 @@ export async function POST(req: NextRequest) {
         status: 'Confirmado via IA Live',
       }
 
-      // Enviar confirmação via WhatsApp e tracking (tag + analytics) em background,
-      // SEM bloquear a resposta — a IA de voz continua falando imediatamente.
+      // Enviar confirmação via WhatsApp e tracking (tag + analytics) em background
+      // com `after()`, que mantém o trabalho rodando DEPOIS da resposta — sem bloquear
+      // a IA de voz. O `after` garante que as promises não são mortas quando o handler retorna.
       const hasContextId = Boolean(contextId)
       if (contextId) {
         const message = [
@@ -64,17 +66,14 @@ export async function POST(req: NextRequest) {
           `🚀 *QUER ESSA MESMA EFICIÊNCIA NO SEU CONSULTÓRIO?*`,
         ].join('\n')
 
-        // Dispara confirmação WhatsApp em background (fire-and-forget), sem await.
-        void (async () => {
+        after(async () => {
+          // 1. Confirmação WhatsApp
           try {
             await sendMessage(contextId, message)
           } catch (err) {
             console.error('[agendarConsulta] Erro ao enviar confirmação WhatsApp:', err)
           }
-        })()
-
-        // Tag + analytics em background (fire-and-forget), não bloqueiam a resposta.
-        void (async () => {
+          // 2. Analytics (fire-and-forget dentro do after)
           try {
             const convertingMessage = await getConvertingMessage(contextId)
             await upsertAnalytics({
@@ -86,12 +85,13 @@ export async function POST(req: NextRequest) {
           } catch (analyticsErr) {
             console.error('[agendarConsulta] Erro ao registrar analytics de agendamento:', analyticsErr)
           }
+          // 3. Tag f_fechamento
           try {
             await setLeadStage(contextId, 'f_fechamento')
           } catch (tagErr) {
             console.error('[agendarConsulta] Erro ao marcar tag f_fechamento:', tagErr)
           }
-        })()
+        })
       }
 
       return NextResponse.json({
