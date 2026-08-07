@@ -23,9 +23,9 @@ export function MinimalLogo({ hideText = false, muted = false, tableHeader = fal
   return (
     <div className={`inline-flex items-center gap-1.5 ${muted ? "opacity-80" : ""}`}>
       {prominent ? (
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="grid size-9 shrink-0 place-items-center rounded-lg border border-indigo-500/40 bg-indigo-500/10 dark:border-zinc-600/40 dark:bg-zinc-950">
-            <div className="size-8 text-indigo-600 transition-all duration-700 dark:text-zinc-400">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="grid size-7 sm:size-9 shrink-0 place-items-center rounded-lg border border-zinc-300/80 bg-white dark:border-zinc-600/40 dark:bg-zinc-950">
+            <div className="size-6 sm:size-8 text-zinc-500 transition-all duration-700 dark:text-zinc-400">
               {iconSvg}
             </div>
           </div>

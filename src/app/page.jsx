@@ -54,7 +54,7 @@ export default async function Home({ searchParams }) {
             </SectionBadge>
             <h1
               className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center mb-4 sm:mb-5"
-              style={{ lineHeight: 1.05 }}
+              style={{ lineHeight: "clamp(1.05, 1.2 - 0.03vw, 1.15)" }}
             >
               Sua secretária de IA com <br /><span className="text-indigo-600 dark:text-indigo-400 font-bold underline underline-offset-4 decoration-primary/30">super poderes</span>
             </h1>
