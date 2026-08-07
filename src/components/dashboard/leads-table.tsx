@@ -231,7 +231,6 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
       {/* Notion Database Table Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-200/60 dark:border-[#2b2b2b]">
         <div className="flex items-center gap-2">
-          <span className="text-lg">📋</span>
           <div>
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               Tabela de Leads (Banco de Dados)
@@ -337,23 +336,23 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
                 />
               </TableHead>
               <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.nome }}>
-                Aa Nome
+                Nome
                 <div onMouseDown={(e) => handleMouseDown('nome', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
               </TableHead>
               <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.whatsapp }}>
-                📱 WhatsApp
+                WhatsApp
                 <div onMouseDown={(e) => handleMouseDown('whatsapp', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
               </TableHead>
               <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.mensagem }}>
-                💬 Mensagem
+                Mensagem
                 <div onMouseDown={(e) => handleMouseDown('mensagem', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
               </TableHead>
               <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.website }}>
-                🔗 Website
+                Website
                 <div onMouseDown={(e) => handleMouseDown('website', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
               </TableHead>
               <TableHead className="relative text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none overflow-hidden" style={{ width: colWidths.status }}>
-                🏷️ Status
+                Status
                 <div onMouseDown={(e) => handleMouseDown('status', e)} className="absolute right-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-indigo-500/50 transition-colors" />
               </TableHead>
               <TableHead className="relative text-right text-xs font-semibold text-zinc-600 dark:text-zinc-400 select-none" style={{ width: colWidths.acoes }}>

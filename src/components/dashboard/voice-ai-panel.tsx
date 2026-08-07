@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -159,18 +159,25 @@ function SendIcon() {
   return <MessageCircle className="h-3.5 w-3.5 text-zinc-400" strokeWidth={1.5} />
 }
 
-export function VoiceAIPanel() {
+export function VoiceAIPanel({ startSignal = 0 }: { startSignal?: number }) {
   const {
     isRecordingVoice,
     isSpeaking,
     selectedVoice,
     setSelectedVoice,
     toggleVoiceRecording,
+    startLiveDialog,
     sendTextToVoice,
     GEMINI_LIVE_VOICES,
   } = useDashboardVoice()
 
   const [lastCommand, setLastCommand] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (startSignal > 0 && !isRecordingVoice) {
+      startLiveDialog()
+    }
+  }, [startSignal, isRecordingVoice, startLiveDialog])
 
   const runCommand = (prompt: string) => {
     const sent = sendTextToVoice(prompt)

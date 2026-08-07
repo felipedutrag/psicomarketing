@@ -17,7 +17,6 @@ import {
   Sparkles,
   HeartPulse,
   MessageCircle,
-  ShieldCheck,
 } from "lucide-react";
 import {
   Card,
@@ -64,7 +63,7 @@ export default async function Home({ searchParams }) {
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-0">
               <StartVoiceButton label={content.primaryCtaLabel} />
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-1 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-400">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-0 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-400">
               <span className="inline-flex items-center gap-1.5">
                 <HeartPulse className="size-3.5 text-indigo-500" />
                 Feito para psicólogos
@@ -73,11 +72,6 @@ export default async function Home({ searchParams }) {
               <span className="inline-flex items-center gap-1.5">
                 <MessageCircle className="size-3.5 text-indigo-500" />
                 WhatsApp + Google Calendar
-              </span>
-              <span aria-hidden className="hidden sm:inline text-zinc-300 dark:text-zinc-600">•</span>
-              <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="size-3.5 text-indigo-500" />
-                Zero conflitos de agenda
               </span>
             </div>
           </div>
@@ -175,9 +169,9 @@ export default async function Home({ searchParams }) {
             </p>
           </div>
 
-          <div className="w-full">
-              <PlanCalculator />
-            </div>
+          <div className="w-full rounded-2xl border border-zinc-200 bg-zinc-100 p-4 sm:p-6 md:p-8 md:border-zinc-200/90 md:bg-zinc-100/70 md:backdrop-blur-sm md:dark:border-zinc-800/90 md:dark:bg-zinc-900/50 dark:border-zinc-800 dark:bg-zinc-900">
+            <PlanCalculator />
+          </div>
         </section>
       </div>
 

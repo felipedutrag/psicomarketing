@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Search, Loader2, Trash2, ArrowRight } from 'lucide-react'
+import { Search, Loader2, ArrowRight } from 'lucide-react'
 
 interface ScrapeResultItem {
   nome: string
@@ -44,24 +44,6 @@ export function ScrapingForm() {
       setResult(data)
     } catch (error) {
       setResult({ success: false, error: 'Erro ao buscar leads' })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleClear = async () => {
-    setIsLoading(true)
-    try {
-      const response = await fetch('/api/dashboard/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'clear' })
-      })
-
-      const data = await response.json()
-      setResult(data)
-    } catch (error) {
-      setResult({ success: false, error: 'Erro ao limpar leads' })
     } finally {
       setIsLoading(false)
     }
@@ -141,16 +123,6 @@ export function ScrapingForm() {
                 <ArrowRight className="h-4 w-4" />
               </>
             )}
-          </Button>
-
-          <Button
-            onClick={handleClear}
-            variant="outline"
-            disabled={isLoading}
-            className="border-red-300 text-red-600 dark:border-red-900/50 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer"
-          >
-            <Trash2 className="mr-1.5 h-3.5 w-3.5" />
-            Limpar
           </Button>
         </div>
 

@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import {
   Star,
-  Share2,
   MoreHorizontal
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -11,11 +10,13 @@ import type { LucideIcon } from 'lucide-react'
 interface NotionHeaderProps {
   activeTabTitle?: string
   activeIcon?: LucideIcon
+  onOrbClick?: () => void
 }
 
 export function NotionHeader({
   activeTabTitle = 'Central de Prospecção & Vendas',
-  activeIcon: ActiveIcon = Star
+  activeIcon: ActiveIcon = Star,
+  onOrbClick
 }: NotionHeaderProps) {
   const [isStarred, setIsStarred] = useState(true)
 
@@ -34,10 +35,21 @@ export function NotionHeader({
 
         {/* Topbar Action Buttons (Frameless Notion Buttons) */}
         <div className="flex items-center gap-1">
-          <div className="hidden sm:inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/15 px-2.5 py-0.5 rounded-full mr-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Sistema Ativo
-          </div>
+          {/* Gaby Orb — ativa a IA da Dashboard */}
+          <button
+            type="button"
+            onClick={onOrbClick}
+            className="relative mr-1 hidden sm:flex size-5 items-center justify-center cursor-pointer rounded-full border-0 bg-transparent p-0 transition-transform hover:scale-110"
+            title="Ativar IA da Dashboard"
+          >
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rose-400/40" />
+            <span
+              className="relative inline-flex h-3.5 w-3.5 rounded-full shadow-[0_0_10px_rgba(244,63,94,0.7)] ring-1 ring-white/30 dark:ring-white/20"
+              style={{
+                background: "radial-gradient(circle at 30% 30%, #ffe4e6 0%, #f43f5e 50%, #9f1239 100%)",
+              }}
+            />
+          </button>
 
           <button
             onClick={() => setIsStarred(!isStarred)}
@@ -45,13 +57,6 @@ export function NotionHeader({
             title="Favoritar página"
           >
             <Star className={`h-3.5 w-3.5 ${isStarred ? 'fill-amber-400 text-amber-400' : ''}`} />
-          </button>
-
-          <button
-            className="flex items-center gap-1.5 h-7 px-2 rounded-[4px] border-0 bg-transparent text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/60 dark:hover:bg-[#252525] dark:hover:text-zinc-200 cursor-pointer transition-colors"
-          >
-            <Share2 className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Compartilhar</span>
           </button>
 
           <button

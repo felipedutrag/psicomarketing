@@ -40,10 +40,15 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState('overview')
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const [isNewLeadOpen, setIsNewLeadOpen] = useState(false)
+  const [voiceStartSignal, setVoiceStartSignal] = useState(0)
 
   const handleLeadCreated = () => {
     setLeadsRevision((v) => v + 1)
     setActiveTab('leads')
+  }
+
+  const handleOrbClick = () => {
+    setVoiceStartSignal((v) => v + 1)
   }
 
   const tabTitles: Record<string, { title: string; icon: LucideIcon }> = {
@@ -75,6 +80,7 @@ export default function DashboardPage() {
         <NotionHeader
           activeTabTitle={currentTabInfo.title}
           activeIcon={currentTabInfo.icon}
+          onOrbClick={handleOrbClick}
         />
 
         {/* Notion Content Canvas */}
@@ -307,11 +313,9 @@ export default function DashboardPage() {
           )}
 
           {/* Tab 5.1: Voice AI Dashboard Control */}
-          {activeTab === 'voz' && (
-            <div className="space-y-6 animate-in fade-in duration-200">
-              <VoiceAIPanel />
-            </div>
-          )}
+          <div className={activeTab === 'voz' ? 'space-y-6 animate-in fade-in duration-200' : 'hidden'}>
+            <VoiceAIPanel startSignal={voiceStartSignal} />
+          </div>
 
           {/* Tab 6: Automation Configs & Delays */}
           {activeTab === 'config' && (

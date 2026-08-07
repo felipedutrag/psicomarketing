@@ -15,9 +15,24 @@ import {
   Mic,
   Play,
   PhoneOff,
+  Sparkles,
+  Wand2,
 } from "lucide-react";
 
 const initialBookings = [];
+
+const exampleCommands = [
+  "Agende uma consulta com a Ana amanhã às 10h",
+  "Remarque o João para sexta às 14h",
+  "Cancele a consulta do Pedro",
+  "Quais horários têm livre hoje?",
+];
+
+const howItWorks = [
+  { step: "1", title: "Fale no microfone", text: "Pressione o botão do orbe e diga o que quer fazer." },
+  { step: "2", title: "A IA executa as tools", text: "Gaby entende, agenda, remarca ou cancela sozinha." },
+  { step: "3", title: "Agenda atualiza na hora", text: "Veja cada registro aparecer aqui em tempo real." },
+];
 
 const fogAnimation = `
   @keyframes fogMove {
@@ -155,9 +170,8 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
   return (
     <>
       <style>{fogAnimation}</style>
-      <Card className="p-4 sm:p-6 md:p-8 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 transition-all duration-300 pb-4 md:pb-6 md:bg-zinc-100/70 md:dark:bg-zinc-900/50 md:border-transparent md:backdrop-blur-sm">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 sm:pb-6 border-b border-zinc-200 dark:border-zinc-800">
+      {/* Header - outside the card */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 sm:mb-6">
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <SectionBadge icon={Mic}>
@@ -173,10 +187,11 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
         </div>
       </div>
 
+      <Card className="p-4 sm:p-6 md:p-8 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 transition-all duration-300 pb-4 md:pb-6 md:bg-zinc-100/70 md:dark:bg-zinc-900/50 md:border-transparent md:backdrop-blur-sm">
       {/* Main Interactive Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 mt-4 sm:mt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         {/* Left Column: ElevenLabs Style Audio Orb & Connect Controls */}
-        <div className="lg:col-span-5 flex flex-col items-center justify-between p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 text-center relative overflow-hidden md:bg-zinc-50 md:dark:bg-zinc-950/60">
+        <div className="lg:col-span-5 flex flex-col items-center justify-center p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 text-center relative overflow-hidden md:bg-zinc-50 md:dark:bg-zinc-950/60">
           {/* Authentic ChatGPT Advanced Voice & ElevenLabs Planet Orb */}
           <div className="relative my-2 sm:my-4 flex flex-col items-center justify-center w-full min-h-[200px] sm:min-h-[260px]">
             {/* Main Planet Sphere with Notch Cutout Container */}
@@ -297,7 +312,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
         <div className="lg:col-span-7 flex flex-col justify-between space-y-4 sm:space-y-5">
           {/* Session Bookings Feed */}
           <div className="flex-1 bg-indigo-500/5 dark:bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-3 sm:p-5 flex flex-col justify-between md:bg-indigo-500/5 md:dark:bg-indigo-950/20">
-            <div>
+            <div className="flex flex-col h-full">
               <div className="flex items-center justify-between mb-2 sm:mb-3 border-b border-indigo-500/10 pb-2 sm:pb-2.5">
                 <span className="text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -309,9 +324,9 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
                 </Badge>
               </div>
 
-              <div className="space-y-2 sm:space-y-2.5 max-h-[140px] sm:max-h-[180px] overflow-y-auto pr-1">
+              <div className="space-y-2 sm:space-y-2.5 max-h-[140px] sm:max-h-[180px] lg:max-h-[240px] overflow-y-auto pr-1 lg:flex-1">
                 {displayBookings.length === 0 ? (
-                  <div className="flex items-center justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-center md:bg-white/60 md:dark:bg-zinc-900/60">
+                  <div className="flex items-center justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-center md:bg-white/60 md:dark:bg-zinc-900/60 lg:min-h-[96px]">
                     Sem agendamentos ainda!
                   </div>
                 ) : (
@@ -333,6 +348,55 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
                   </div>
                 ))
                 )}
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop-only: Example commands + How it works */}
+          <div className="hidden lg:flex flex-col gap-4">
+            <div className="rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white/70 dark:bg-zinc-950/40 p-4 sm:p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                  Comandos de exemplo
+                </span>
+              </div>
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-2">
+                {exampleCommands.map((cmd) => (
+                  <span
+                    key={cmd}
+                    className="rounded-lg border border-zinc-200/80 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-2.5 py-2 text-[11px] text-zinc-600 dark:text-zinc-400 leading-snug"
+                  >
+                    &ldquo;{cmd}&rdquo;
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white/70 dark:bg-zinc-950/40 p-4 sm:p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Wand2 className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                  Como funciona
+                </span>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {howItWorks.map((s) => (
+                  <div
+                    key={s.step}
+                    className="rounded-lg border border-zinc-200/80 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-2.5 py-2.5"
+                  >
+                    <span className="inline-flex size-5 items-center justify-center rounded-full bg-indigo-500/15 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 mb-1.5">
+                      {s.step}
+                    </span>
+                    <p className="text-[11px] font-semibold text-zinc-900 dark:text-zinc-100 leading-tight">
+                      {s.title}
+                    </p>
+                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 leading-snug mt-0.5">
+                      {s.text}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

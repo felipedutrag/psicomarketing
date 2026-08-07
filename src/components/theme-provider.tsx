@@ -49,11 +49,24 @@ function applyThemeClass(resolvedTheme: 'light' | 'dark', attribute = 'class') {
   root.style.colorScheme = resolvedTheme
 }
 
+function disableTransitions() {
+  const style = document.createElement('style')
+  style.appendChild(
+    document.createTextNode(`*{-webkit-transition:none!important;transition:none!important}`)
+  )
+  document.head.appendChild(style)
+  return () => {
+    window.getComputedStyle(document.body)
+    setTimeout(() => document.head.removeChild(style), 1)
+  }
+}
+
 interface ThemeProviderProps {
   children: React.ReactNode
   attribute?: 'class' | 'data-theme'
   defaultTheme?: 'light' | 'dark' | 'system'
   enableSystem?: boolean
+  disableTransitionOnChange?: boolean
 }
 
 export function ThemeProvider({
@@ -61,6 +74,7 @@ export function ThemeProvider({
   attribute = 'class',
   defaultTheme = 'system',
   enableSystem = true,
+  disableTransitionOnChange = false,
 }: ThemeProviderProps) {
   const systemTheme = useSystemTheme()
   const [themeState, setThemeState] = useState<'light' | 'dark' | 'system'>(() => {
@@ -73,8 +87,13 @@ export function ThemeProvider({
   const resolvedTheme: 'light' | 'dark' = themeState === 'system' ? (enableSystem ? systemTheme : 'light') : themeState
 
   useEffect(() => {
+    let restoreTransitions: (() => void) | undefined
+    if (disableTransitionOnChange) {
+      restoreTransitions = disableTransitions()
+    }
     applyThemeClass(resolvedTheme, attribute)
-  }, [attribute, resolvedTheme])
+    if (restoreTransitions) restoreTransitions()
+  }, [attribute, resolvedTheme, disableTransitionOnChange])
 
   const setTheme = useCallback((nextTheme: 'light' | 'dark' | 'system') => {
     setThemeState(nextTheme)

@@ -320,9 +320,9 @@ export function PlanCalculator() {
       {/* Top 2 Columns Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 mobile-only:gap-0 mobile-only:flex mobile-only:flex-col mobile-only:gap-y-4">
         {/* Left Column: Plugin Selection Grid */}
-        <div className="space-y-5 lg:col-span-7 lg:flex lg:flex-col mobile-only:space-y-0">
-          <div className="hidden lg:block lg:flex-1">
-          <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 h-full auto-rows-fr">
+        <div className="space-y-5 lg:col-span-7 lg:flex lg:flex-col lg:h-full mobile-only:space-y-0">
+          <div className="hidden lg:flex lg:flex-col lg:flex-1">
+          <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 flex-1 auto-rows-fr">
             {AVAILABLE_PLUGINS.map((plugin) => {
               const isSelected = selectedPlugins.includes(plugin.id);
 
@@ -571,7 +571,7 @@ export function PlanCalculator() {
 
                   <div className="space-y-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="fullName" className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                      <Label htmlFor="fullName" className="block text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                         Nome Completo
                       </Label>
                       <Input
@@ -725,7 +725,7 @@ export function PlanCalculator() {
                 </div>
 
                 {/* Summary & Confirm Column */}
-                <div className="lg:col-span-12 flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 bg-zinc-50 dark:bg-zinc-950 space-y-6 mt-6 md:bg-zinc-50/80 md:dark:bg-zinc-950/80">
+                <div className="lg:col-span-5 flex flex-col justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 sm:p-6 bg-zinc-50 dark:bg-zinc-950 space-y-6 md:mt-0 md:bg-zinc-50/80 md:dark:bg-zinc-950/80">
                   <div className="space-y-4">
                     <div className="flex items-center gap-2.5">
                       <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 ring-1 ring-indigo-500/20">

@@ -56,7 +56,7 @@ export function FeatureTabs({ plugins }) {
   return (
     <div className="space-y-6">
       {/* Category Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:pb-0">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible sm:pb-0 max-sm:hidden">
         {categories.map((cat) => (
           <button
             key={cat.id}
@@ -81,7 +81,11 @@ export function FeatureTabs({ plugins }) {
           return (
             <div
               key={plugin.id}
-              className="group relative flex flex-col justify-between rounded-xl border border-zinc-200 bg-zinc-100 p-4 sm:p-6 shadow-xs transition-all duration-300 hover:border-indigo-500/40 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-500/30 md:border-zinc-200/90 md:bg-zinc-100/70 md:backdrop-blur md:dark:border-zinc-800/90 md:dark:bg-zinc-900/50"
+              className={`group relative flex flex-col justify-between rounded-xl border border-zinc-200 bg-zinc-100 p-4 sm:p-6 shadow-xs transition-all duration-300 hover:border-indigo-500/40 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-500/30 md:border-zinc-200/90 md:bg-zinc-100/70 md:backdrop-blur md:dark:border-zinc-800/90 md:dark:bg-zinc-900/50               ${
+                plugin.id === "google-ads" || plugin.id === "facebook-ads" || plugin.id === "custom-plugin"
+                  ? "max-sm:hidden"
+                  : ""
+              }`}
             >
               <div className="space-y-3.5">
                 {/* Header Row */}
