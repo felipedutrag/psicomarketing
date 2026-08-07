@@ -3,16 +3,16 @@ export const siteContent = {
   heroBadge: "Ecossistema de IA Expansível para Psicólogos",
   heroTitle: "A sua secretária de IA com super poderes",
   heroDescription:
-        "Enquanto você atende, a Gaby cuida do resto: responde, agenda e confirma cada paciente — tudo por voz, 24h por dia.",
+    "Enquanto você atende, a Gaby cuida do resto: responde, agenda e confirma cada paciente — tudo por voz, 24h por dia.",
   primaryCtaLabel: "Testar Agendamento por Voz",
   secondaryCtaLabel: "Testar Voz",
   visualTitle: "Agenda Lotada no Piloto Automático",
   visualDescription:
-      "Veja sua semana sendo preenchida automaticamente com consultas qualificadas oriundas dos seus anúncios e conectores.",
+    "Veja sua semana sendo preenchida automaticamente com consultas qualificadas oriundas dos seus anúncios e conectores.",
   connectorsBadge: "Arquitetura de Conectores",
   connectorsTitle: "Seu Whatsapp atendendo 24/7",
   connectorsDescription:
-          "Configure seu assistente tanto para o lado do paciente quanto para o lado do psicólogo — atendimento e agendamento rodando 24/7, no automático.",
+    "Configure seu assistente tanto para o lado do paciente quanto para o lado do psicólogo.",
   connectors: [
     {
       id: "smart-booking",
@@ -94,7 +94,7 @@ export const siteContent = {
   investmentBadge: "Investimento estratégico",
   investmentTitle: "Quanto vale ter um ecossistema completo rodando por você?",
   investmentDescription:
-        "Previsibilidade de caixa. Foco no clínico. Zero burocracia.",
+    "Previsibilidade de caixa. Foco no clínico. Zero burocracia.",
   investmentCtaLabel: "Montar meus conectores",
   investmentCtaHref: "https://wa.me/5511989819696?text=Quero%20montar%20meu%20ecossistema%20de%20conectores",
   investmentFootnote: "Implementação com foco em performance, ética e previsibilidade.",
