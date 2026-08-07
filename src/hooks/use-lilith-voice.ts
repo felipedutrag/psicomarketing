@@ -131,6 +131,7 @@ export function useLilithVoice(identity?: Identity, options?: VoiceOptions) {
   const newTurnRef = useRef(false)
   const identityRef = useRef(identity)
   const optionsRef = useRef(options)
+  const bookingCompletedRef = useRef(false)
 
   const sessionIdRef = useRef(sessionId)
   const resumptionHandleRef = useRef<string | null>(null)
@@ -256,6 +257,7 @@ export function useLilithVoice(identity?: Identity, options?: VoiceOptions) {
     }
     startingRef.current = true
     activeVoiceInstanceId = instanceId
+    bookingCompletedRef.current = false
 
     if (window.speechSynthesis) window.speechSynthesis.cancel()
     setIsRecordingVoice(true)
@@ -587,6 +589,23 @@ export function useLilithVoice(identity?: Identity, options?: VoiceOptions) {
                 if (f.name === 'desligar_conexao') {
                   setTimeout(stopLiveDialog, 400)
                   return { name: f.name, id: f.id, response: { status: 'success' } }
+                }
+                if (f.name === 'agendarConsulta') {
+                  // Trava anti-loop: só permite UM agendamento real por sessão.
+                  // Chamadas repetidas retornam sucesso sem re-executar o tool,
+                  // evitando múltiplas confirmações de WhatsApp e agendamentos duplicados.
+                  if (bookingCompletedRef.current) {
+                    console.warn('[LilithVoice] agendarConsulta já executado nesta sessão — ignorando repetição (loop).')
+                    return {
+                      name: f.name,
+                      id: f.id,
+                      response: {
+                        status: 'success',
+                        message: 'A consulta já foi agendada nesta demonstração. Siga para o fechamento da conversa.',
+                      },
+                    }
+                  }
+                  bookingCompletedRef.current = true
                 }
                 if (f.name === TOOL_NAMES.voiceBookingCompleted) {
                   console.log('[LilithVoice] voice_booking_completed chamada')
