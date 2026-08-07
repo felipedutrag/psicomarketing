@@ -312,7 +312,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
           {/* Right Column: Session Bookings Feed */}
           <div className="lg:col-span-7 flex flex-col">
             {/* Session Bookings Feed */}
-            <div className="lg:flex-1 bg-indigo-500/5 dark:bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-3 sm:p-5 flex flex-col md:bg-indigo-500/5 md:dark:bg-indigo-950/20">
+            <div className="lg:flex-1 bg-indigo-500/5 dark:bg-indigo-950/20 border border-indigo-500/20 rounded-xl pt-2 px-4 sm:p-5 flex flex-col md:bg-indigo-500/5 md:dark:bg-indigo-950/20">
               <div className="flex flex-col lg:h-full">
                 <div className="flex items-center justify-between border-b border-indigo-500/10 pb-2 sm:pb-2.5">
                   <span className="text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
@@ -325,7 +325,7 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
                   </Badge>
                 </div>
 
-                <div className="space-y-2 sm:space-y-2.5 max-h-[140px] sm:max-h-[180px] lg:max-h-[240px] overflow-y-auto pr-1 lg:flex-1">
+                <div className="space-y-2 mb-3 sm:space-y-2.5 max-h-[140px] sm:max-h-[180px] lg:max-h-[240px] overflow-y-auto pr-1 lg:flex-1">
                   {displayBookings.length === 0 ? (
                     <div className="flex items-center mt-3 justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-center md:bg-white/60 md:dark:bg-zinc-900/60 lg:min-h-[96px]">
                       Sem agendamentos ainda!
@@ -334,14 +334,14 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
                     displayBookings.map((b) => (
                       <div
                         key={b.id}
-                        className="flex items-center justify-between text-[10px] sm:text-xs p-2 sm:p-3 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs md:bg-white/90 md:dark:bg-zinc-900/90 md:border-zinc-200/80 md:dark:border-zinc-800/80"
+                        className="mt-5 flex items-center justify-between text-[10px] sm:text-xs p-1 sm:p-3 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs md:bg-white/90 md:dark:bg-zinc-900/90 md:border-zinc-200/80 md:dark:border-zinc-800/80"
                       >
-                        <div className="flex items-center gap-1.5 sm:gap-2.5">
+                        <div className="p-4 flex items-center gap-1.5 sm:gap-2.5">
                           <CalendarCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-500 shrink-0" />
                           <span className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">{b.nome}</span>
                           <span className="text-zinc-500 text-[9px] sm:text-xs hidden sm:inline">• {b.tipoConsulta}</span>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 pr-4">
                           <Badge variant="secondary" className="text-[9px] sm:text-[10px] sm:text-xs font-mono bg-zinc-100 dark:bg-zinc-800">
                             {b.dia} às {b.horario}
                           </Badge>
