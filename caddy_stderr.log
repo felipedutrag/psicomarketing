@@ -1,0 +1,120 @@
+{"level":"info","ts":1786058830.2484338,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058830.2484338,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058830.2484338,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058830.2489774,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058830.2489774,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058830.2489774,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058830.2489774,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x26b065643800"}
+{"level":"info","ts":1786058830.2489774,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058830.2489774,"logger":"http.auto_https","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+{"level":"info","ts":1786058830.252013,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0x26b065643800"}
+{"level":"info","ts":1786058830.252013,"logger":"http","msg":"servers shutting down with eternal grace period"}
+Error: loading initial config: loading new config: http app module: start: listening on :443: listen tcp :443: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+{"level":"info","ts":1786058832.4642913,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058832.4642913,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058832.4642913,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058832.4642913,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058832.4642913,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058832.4642913,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058832.4642913,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0xe3a0c472d00"}
+{"level":"info","ts":1786058832.4642913,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058832.4642913,"logger":"http.auto_https","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+{"level":"info","ts":1786058832.467083,"logger":"http","msg":"servers shutting down with eternal grace period"}
+{"level":"info","ts":1786058832.467083,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0xe3a0c472d00"}
+Error: loading initial config: loading new config: http app module: start: listening on :80: listen tcp :80: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+{"level":"info","ts":1786058836.6470926,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058836.6470926,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058836.6470926,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058836.6470926,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058836.6470926,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058836.6470926,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058836.6470926,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x1d0a7945000"}
+{"level":"info","ts":1786058836.6470926,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058836.6470926,"logger":"http.auto_https","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+{"level":"info","ts":1786058836.6502302,"logger":"http","msg":"servers shutting down with eternal grace period"}
+{"level":"info","ts":1786058836.6502302,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0x1d0a7945000"}
+Error: loading initial config: loading new config: http app module: start: listening on :443: listen tcp :443: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+{"level":"info","ts":1786058844.801985,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058844.8026085,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058844.8026085,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058844.8026085,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058844.8026085,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058844.8026085,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058844.8026085,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058844.8026085,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x13b5f87d600"}
+{"level":"info","ts":1786058844.8026085,"logger":"http.auto_https","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+{"level":"info","ts":1786058844.8048053,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0x13b5f87d600"}
+{"level":"info","ts":1786058844.8048053,"logger":"http","msg":"servers shutting down with eternal grace period"}
+Error: loading initial config: loading new config: http app module: start: listening on :443: listen tcp :443: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+{"level":"info","ts":1786058866.554385,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058866.554385,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058866.554385,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058866.554385,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058866.554385,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058866.554385,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058866.554385,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058866.554385,"logger":"http.auto_https","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+{"level":"info","ts":1786058866.554385,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x1b4d348e3c80"}
+{"level":"info","ts":1786058866.5568914,"logger":"http","msg":"servers shutting down with eternal grace period"}
+{"level":"info","ts":1786058866.5568914,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0x1b4d348e3c80"}
+Error: loading initial config: loading new config: http app module: start: listening on :443: listen tcp :443: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+{"level":"info","ts":1786058868.6897576,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058868.6897576,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058868.6897576,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058868.6897576,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058868.6897576,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058868.6897576,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058868.6902657,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x1d4eca235900"}
+{"level":"info","ts":1786058868.6902657,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058868.6902657,"logger":"http.auto_https","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+{"level":"info","ts":1786058868.6918426,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0x1d4eca235900"}
+{"level":"info","ts":1786058868.6918426,"logger":"http","msg":"servers shutting down with eternal grace period"}
+Error: loading initial config: loading new config: http app module: start: listening on :443: listen tcp :443: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+{"level":"info","ts":1786058872.839068,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058872.839068,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058872.839068,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058872.839068,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058872.839068,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058872.839068,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058872.840205,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058872.840205,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x1fd9a183e200"}
+{"level":"info","ts":1786058872.840205,"logger":"http.auto_https","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+{"level":"info","ts":1786058872.8425598,"logger":"http","msg":"servers shutting down with eternal grace period"}
+{"level":"info","ts":1786058872.8425598,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0x1fd9a183e200"}
+Error: loading initial config: loading new config: http app module: start: listening on :80: listen tcp :80: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+{"level":"info","ts":1786058880.9870749,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058880.9870749,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058880.9870749,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058880.9870749,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058880.9870749,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058880.9870749,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058880.9870749,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058880.9870749,"logger":"http.auto_https","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+{"level":"info","ts":1786058880.987593,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x3f0e2674f980"}
+{"level":"info","ts":1786058880.9896169,"logger":"http","msg":"servers shutting down with eternal grace period"}
+{"level":"info","ts":1786058880.9896169,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0x3f0e2674f980"}
+Error: loading initial config: loading new config: http app module: start: listening on :443: listen tcp :443: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+{"level":"info","ts":1786058897.1335237,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058897.1341426,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058897.1341426,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058897.1341426,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058897.1341426,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058897.1341426,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058897.1341426,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x356a7e17ee00"}
+{"level":"info","ts":1786058897.1341426,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058897.1341426,"logger":"http.auto_https","msg":"automatic HTTP->HTTPS redirects are disabled","server_name":"srv0"}
+{"level":"info","ts":1786058897.1367552,"logger":"http","msg":"servers shutting down with eternal grace period"}
+{"level":"info","ts":1786058897.1367552,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0x356a7e17ee00"}
+Error: loading initial config: loading new config: http app module: start: listening on :443: listen tcp :443: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).
+{"level":"info","ts":1786058929.2794862,"msg":"maxprocs: Leaving GOMAXPROCS=8: CPU quota undefined"}
+{"level":"info","ts":1786058929.2794862,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15200804044,"previous":9223372036854775807}
+{"level":"info","ts":1786058929.2794862,"msg":"using config from file","file":"D:\\psicomarketing\\Caddyfile"}
+{"level":"info","ts":1786058929.2794862,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"warn","ts":1786058929.2794862,"msg":"Caddyfile input is not formatted; run 'caddy fmt --overwrite' to fix inconsistencies","adapter":"caddyfile","file":"D:\\psicomarketing\\Caddyfile","line":2}
+{"level":"warn","ts":1786058929.2794862,"logger":"admin","msg":"admin endpoint disabled"}
+{"level":"info","ts":1786058929.2794862,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1786058929.2794862,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0xee1fb9cfb80"}
+{"level":"info","ts":1786058929.2794862,"logger":"http.auto_https","msg":"automatic HTTP->HTTPS redirects are disabled","server_name":"srv0"}
+{"level":"info","ts":1786058929.2811184,"logger":"http","msg":"servers shutting down with eternal grace period"}
+{"level":"info","ts":1786058929.2811184,"logger":"tls.cache.maintenance","msg":"stopped background certificate maintenance","cache":"0xee1fb9cfb80"}
+Error: loading initial config: loading new config: http app module: start: listening on :443: listen tcp :443: bind: Normalmente é permitida apenas uma utilização de cada endereço de soquete (protocolo/endereço de rede/porta).

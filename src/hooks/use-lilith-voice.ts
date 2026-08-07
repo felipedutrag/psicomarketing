@@ -30,11 +30,12 @@ function saveSession(
   isActive: boolean,
   sessionId: string,
   resumptionHandle: string | null,
-  voiceName: string
+  voiceName: string,
+  key: string = SESSION_KEY
 ) {
   try {
     localStorage.setItem(
-      SESSION_KEY,
+      key,
       JSON.stringify({
         history: (history || []).slice(-GEMINI_LIVE_CONFIG.MAX_HISTORY_SIZE),
         isActive,
@@ -47,9 +48,9 @@ function saveSession(
   } catch {}
 }
 
-function loadSession(): SessionData | null {
+function loadSession(key: string = SESSION_KEY): SessionData | null {
   try {
-    const raw = localStorage.getItem(SESSION_KEY)
+    const raw = localStorage.getItem(key)
     if (!raw) return null
     const data = JSON.parse(raw) as SessionData
     if (Date.now() - data.timestamp > GEMINI_LIVE_CONFIG.SESSION_EXPIRY_MS) {
@@ -85,7 +86,14 @@ interface Identity {
   id?: string | null
 }
 
-export function useLilithVoice(identity?: Identity) {
+export interface VoiceOptions {
+  configUrl?: string
+  executeUrl?: string
+  sessionKey?: string
+  historyUrl?: string
+}
+
+export function useLilithVoice(identity?: Identity, options?: VoiceOptions) {
   const [isRecordingVoice, setIsRecordingVoice] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [isReadyToSpeak, setIsReadyToSpeak] = useState(false)
@@ -94,13 +102,13 @@ export function useLilithVoice(identity?: Identity) {
 
   const [selectedVoice, setSelectedVoice] = useState(() => {
     if (typeof window === 'undefined') return GEMINI_LIVE_CONFIG.DEFAULT_VOICE
-    const saved = loadSession()
+    const saved = loadSession(options?.sessionKey)
     return saved?.voiceName || GEMINI_LIVE_CONFIG.DEFAULT_VOICE
   })
 
   const [sessionId] = useState(() => {
     if (typeof window === 'undefined') return 'live_session'
-    const saved = loadSession()
+    const saved = loadSession(options?.sessionKey)
     return (
       saved?.sessionId ??
       `live_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`
@@ -121,6 +129,7 @@ export function useLilithVoice(identity?: Identity) {
   const lastToolCallRef = useRef<string | null>(null)
   const newTurnRef = useRef(false)
   const identityRef = useRef(identity)
+  const optionsRef = useRef(options)
 
   const sessionIdRef = useRef(sessionId)
   const resumptionHandleRef = useRef<string | null>(null)
@@ -138,11 +147,12 @@ export function useLilithVoice(identity?: Identity) {
     sessionIdRef.current = sessionId
     voiceNameRef.current = selectedVoice
     identityRef.current = identity
+    optionsRef.current = options
     console.log('[LilithVoice] Identity atualizado:', identity, 'identityRef.current:', identityRef.current)
-    const savedSession = loadSession()
+    const savedSession = loadSession(options?.sessionKey)
     resumptionHandleRef.current = savedSession?.resumptionHandle ?? null
     conversationHistoryRef.current = savedSession?.history ?? []
-  }, [sessionId, selectedVoice, identity])
+  }, [sessionId, selectedVoice, identity, options])
 
   const persistResumptionHandle = useCallback((handle: string | null) => {
     if (handle === resumptionHandleRef.current) return
@@ -153,7 +163,7 @@ export function useLilithVoice(identity?: Identity) {
     if (conversationHistoryRef.current.length === 0) return
     try {
       const userId = '8024902234'
-      await fetch(getApiUrl('/api/gemini-live/voice-history'), {
+      await fetch(getApiUrl(optionsRef.current?.historyUrl || '/api/gemini-live/voice-history'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -212,7 +222,8 @@ export function useLilithVoice(identity?: Identity) {
       false,
       sessionIdRef.current,
       resumptionHandleRef.current,
-      voiceNameRef.current
+      voiceNameRef.current,
+      optionsRef.current?.sessionKey
     )
   }, [cleanupAudio])
 
@@ -266,9 +277,10 @@ export function useLilithVoice(identity?: Identity) {
         ? `&nome=${encodeURIComponent(currentIdentity.nome || '')}&id=${encodeURIComponent(currentIdentity.id || '')}`
         : ''
       console.log('[LilithVoice] Chamando config API com params:', identityParams, 'identity:', currentIdentity)
+      const baseConfigUrl = optionsRef.current?.configUrl || '/api/gemini-live/config'
       const res = await fetch(
         getApiUrl(
-          `/api/gemini-live/config?sessionId=${sessionIdRef.current}&voiceName=${selectedVoice}${identityParams}`
+          `${baseConfigUrl}?sessionId=${sessionIdRef.current}&voiceName=${selectedVoice}${identityParams}`
         )
       )
       const { key: apiKey, tools, systemInstruction: customInstruction, voiceName } = await res.json()
@@ -380,7 +392,7 @@ export function useLilithVoice(identity?: Identity) {
             event.reason || event.code
           )
           resumptionHandleRef.current = null
-          saveSession(conversationHistoryRef.current, false, sessionIdRef.current, null, voiceNameRef.current)
+          saveSession(conversationHistoryRef.current, false, sessionIdRef.current, null, voiceNameRef.current, optionsRef.current?.sessionKey)
         }
         setIsReadyToSpeak(false)
 
@@ -533,7 +545,8 @@ export function useLilithVoice(identity?: Identity) {
               true,
               sessionIdRef.current,
               resumptionHandleRef.current,
-              voiceNameRef.current
+              voiceNameRef.current,
+              optionsRef.current?.sessionKey
             )
           }
           currentUtteranceRef.current = { userText: '', modelText: '' }
@@ -586,7 +599,7 @@ export function useLilithVoice(identity?: Identity) {
                     contextId: identityRef.current?.id || null
                   }
                   
-                  const res = await fetch(getApiUrl('/api/gemini-live/tools/execute'), {
+                  const res = await fetch(getApiUrl(optionsRef.current?.executeUrl || '/api/gemini-live/tools/execute'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: f.name, args: enrichedArgs }),
@@ -707,7 +720,8 @@ export function useLilithVoice(identity?: Identity) {
         isRecordingVoice,
         sessionIdRef.current,
         resumptionHandleRef.current,
-        voiceNameRef.current
+        voiceNameRef.current,
+        optionsRef.current?.sessionKey
       )
       saveHistoryToSupabase()
     }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import {
   ChevronLeft,
   ChevronRight,
@@ -16,9 +16,11 @@ import {
   Settings2,
   ShieldCheck,
   Target,
-  Brain
+  Brain,
+  AudioLines,
+  TrendingUp
 } from 'lucide-react'
-import { useTheme } from 'next-themes'
+import { useTheme } from '@/components/theme-provider'
 
 interface NotionSidebarProps {
   activeTab: string
@@ -33,7 +35,16 @@ export function NotionSidebar({
   isCollapsed,
   setIsCollapsed
 }: NotionSidebarProps) {
-  const { theme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
+
+  // true no cliente / false no SSR — evita mismatch de hidratação nos ícones de tema
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  )
+
   const [searchQuery, setSearchQuery] = useState('')
 
   const sections = [
@@ -51,6 +62,12 @@ export function NotionSidebar({
       ]
     },
     {
+      title: 'ANALYTICS & VENDAS',
+      items: [
+        { id: 'analytics', label: 'Analytics & Funil', icon: TrendingUp, description: 'Conversões e Receita' }
+      ]
+    },
+    {
       title: 'DISPAROS & AUTOMAÇÃO',
       items: [
         { id: 'queue', label: 'Fila de Disparo', icon: Send, description: 'Envios em Tempo Real' },
@@ -60,7 +77,8 @@ export function NotionSidebar({
     {
       title: 'INTELIGÊNCIA ARTIFICIAL',
       items: [
-        { id: 'ai', label: 'IA & Prompt Engine', icon: Bot, description: 'Personalizador de Mensagens' }
+        { id: 'ai', label: 'IA & Prompt Engine', icon: Bot, description: 'Personalizador de Mensagens' },
+        { id: 'voz', label: 'Controle por Voz', icon: AudioLines, description: 'IA de Voz da Dashboard' }
       ]
     }
   ]
@@ -185,48 +203,60 @@ export function NotionSidebar({
 
       {/* Sidebar Footer */}
       <div className="border-t border-zinc-200/60 dark:border-[#242424] p-3 space-y-2 shrink-0">
-        {!isCollapsed ? (
-          <>
-            <div className="flex items-center justify-between rounded-[6px] bg-zinc-100 dark:bg-[#1f1f1f] px-2.5 py-2 text-xs">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[11px] font-medium text-zinc-700 dark:text-zinc-300">WhatsApp Engine</span>
+{!isCollapsed ? (
+            <>
+              <div className="flex items-center justify-between rounded-[6px] bg-zinc-100 dark:bg-[#1f1f1f] px-2.5 py-2 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[11px] font-medium text-zinc-700 dark:text-zinc-300">WhatsApp Engine</span>
+                </div>
+                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                  ONLINE
+                </span>
               </div>
-              <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                ONLINE
-              </span>
-            </div>
 
-            <div className="flex items-center justify-between px-1 pt-1">
-              <div className="flex items-center gap-2">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-bold text-[10px]">
-                  C
+              <div className="flex items-center justify-between px-1 pt-1">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-bold text-[10px]">
+                    C
+                  </div>
+                  <div className="flex flex-col text-left leading-none">
+                    <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">Cadelo Lead OS</span>
+                    <span className="text-[9px] text-zinc-400">Administrador</span>
+                  </div>
                 </div>
-                <div className="flex flex-col text-left leading-none">
-                  <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">Cadelo Lead OS</span>
-                  <span className="text-[9px] text-zinc-400">Administrador</span>
-                </div>
+                <button
+                  onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                  className="rounded-[6px] p-1.5 border-0 bg-transparent hover:bg-zinc-200/60 dark:hover:bg-[#252525] text-zinc-500 dark:text-zinc-400 cursor-pointer transition-colors"
+                  title="Alternar tema Notion (Light/Dark)"
+                >
+                  {!mounted ? (
+                    <span className="h-4 w-4" />
+                  ) : isDark ? (
+                    <Sun className="h-4 w-4" />
+                  ) : (
+                    <Moon className="h-4 w-4" />
+                  )}
+                </button>
               </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center gap-2 py-1">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" title="WhatsApp Engine Online" />
               <button
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="rounded-[6px] p-1.5 border-0 bg-transparent hover:bg-zinc-200/60 dark:hover:bg-[#252525] text-zinc-500 dark:text-zinc-400 cursor-pointer transition-colors"
-                title="Alternar tema Notion (Light/Dark)"
+                onClick={() => setTheme(isDark ? 'light' : 'dark')}
+                className="rounded-[6px] p-1.5 border-0 bg-transparent hover:bg-zinc-200/60 dark:hover:bg-[#252525] text-zinc-500 dark:text-zinc-400 cursor-pointer"
               >
-                {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                {!mounted ? (
+                  <span className="h-4 w-4" />
+                ) : isDark ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
               </button>
             </div>
-          </>
-        ) : (
-          <div className="flex flex-col items-center gap-2 py-1">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" title="WhatsApp Engine Online" />
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="rounded-[6px] p-1.5 border-0 bg-transparent hover:bg-zinc-200/60 dark:hover:bg-[#252525] text-zinc-500 dark:text-zinc-400 cursor-pointer"
-            >
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-          </div>
-        )}
+          )}
       </div>
     </aside>
   )

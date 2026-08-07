@@ -15,6 +15,8 @@ import { DelayConfig } from '@/components/dashboard/delay-config'
 import { ScheduleConfig } from '@/components/dashboard/schedule-config'
 import { SendQueue } from '@/components/dashboard/send-queue'
 import { NewLeadModal } from '@/components/dashboard/new-lead-modal'
+import { VoiceAIPanel } from '@/components/dashboard/voice-ai-panel'
+import { AnalyticsPanel } from '@/components/dashboard/analytics-panel'
 
 import {
   Bot,
@@ -26,7 +28,9 @@ import {
   Users,
   Kanban,
   Send,
-  Settings2
+  Settings2,
+  AudioLines,
+  TrendingUp
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -46,8 +50,10 @@ export default function DashboardPage() {
     overview: { title: 'Visão Geral & KPIs', icon: LayoutDashboard },
     leads: { title: 'Database de Leads', icon: Users },
     kanban: { title: 'Quadro Kanban de Prospecção', icon: Kanban },
+    analytics: { title: 'Analytics & Funil de Vendas', icon: TrendingUp },
     queue: { title: 'Fila de Disparo Anti-Ban', icon: Send },
     ai: { title: 'IA & Personalização de Mensagens', icon: Bot },
+    voz: { title: 'Controle por Voz (IA da Dashboard)', icon: AudioLines },
     config: { title: 'Configurações de Envio & Delays', icon: Settings2 }
   }
 
@@ -125,6 +131,18 @@ export default function DashboardPage() {
               </button>
 
               <button
+                onClick={() => setActiveTab('analytics')}
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] text-xs font-medium cursor-pointer border-0 shadow-none transition-colors ${
+                  activeTab === 'analytics'
+                    ? 'bg-zinc-200/80 text-zinc-900 dark:bg-[#252525] dark:text-zinc-100 font-semibold'
+                    : 'bg-transparent text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-[#1e1e1e] dark:hover:text-zinc-200'
+                }`}
+              >
+                <TrendingUp className="h-3.5 w-3.5" strokeWidth={1.5} />
+                <span>Analytics</span>
+              </button>
+
+              <button
                 onClick={() => setActiveTab('ai')}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] text-xs font-medium cursor-pointer border-0 shadow-none transition-colors ${
                   activeTab === 'ai'
@@ -134,6 +152,18 @@ export default function DashboardPage() {
               >
                 <Bot className="h-3.5 w-3.5" strokeWidth={1.5} />
                 <span>IA & Prompt</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('voz')}
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] text-xs font-medium cursor-pointer border-0 shadow-none transition-colors ${
+                  activeTab === 'voz'
+                    ? 'bg-zinc-200/80 text-zinc-900 dark:bg-[#252525] dark:text-zinc-100 font-semibold'
+                    : 'bg-transparent text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-[#1e1e1e] dark:hover:text-zinc-200'
+                }`}
+              >
+                <AudioLines className="h-3.5 w-3.5" strokeWidth={1.5} />
+                <span>Controle por Voz</span>
               </button>
 
               <button
@@ -258,6 +288,13 @@ export default function DashboardPage() {
             </div>
           )}
 
+          {/* Tab 3.1: Analytics & Sales Funnel */}
+          {activeTab === 'analytics' && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              <AnalyticsPanel />
+            </div>
+          )}
+
           {/* Tab 5: AI & Message Personalization */}
           {activeTab === 'ai' && (
             <div className="grid gap-6 lg:grid-cols-2 items-start animate-in fade-in duration-200">
@@ -266,6 +303,13 @@ export default function DashboardPage() {
                 onPersonalized={() => setLeadsRevision((v) => v + 1)}
               />
               <PromptEditor />
+            </div>
+          )}
+
+          {/* Tab 5.1: Voice AI Dashboard Control */}
+          {activeTab === 'voz' && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              <VoiceAIPanel />
             </div>
           )}
 

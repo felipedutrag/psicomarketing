@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { Redis } from '@upstash/redis';
 import { upsertLead } from '@/services/notion';
+import { upsertAnalytics, getConvertingMessage } from '@/lib/analytics';
 
+const redis = Redis.fromEnv();
 const CAL_API_KEY = process.env.CALCOM_API_KEY;
 const EVENT_TYPE_ID = 5650035; // evento com disponibilidade completa
 
@@ -109,9 +112,9 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { name, email, phone, start } = body;
+    const { name, email, phone, start, subscriber_id } = body;
 
-    console.log('[cal/booking] Tentando agendar:', { name, email, phone, start });
+    console.log('[cal/booking] Tentando agendar:', { name, email, phone, start, subscriber_id });
 
     if (!name || !email || !phone || !start) {
       return NextResponse.json({ error: 'Campos obrigatórios: name, email, phone, start' }, { status: 400 });
@@ -136,6 +139,10 @@ export async function POST(request) {
       const externalId = crypto.randomUUID();
       const amountCents = 9900; // R$ 99,00
 
+      // Salva a meta do pedido no Redis para o webhook da GGPIX identificar o cliente
+      const orderMeta = { subscriber_id: subscriber_id || null, name, email, phone, tipo: 'assinatura' };
+      await redis.set(`pix:${externalId}`, JSON.stringify(orderMeta), { ex: 86400 });
+
       const ggRes = await fetch('https://ggpixapi.com/api/v1/pix/in', {
         method: 'POST',
         headers: {
@@ -158,6 +165,10 @@ export async function POST(request) {
       const ggData = await ggRes.json();
       if (ggRes.ok) {
         pixInfo = ggData;
+        // Também salva a meta com o ID da GGPIX para o webhook resolver por transactionId
+        if (ggData.id) {
+          await redis.set(`pix:${ggData.id}`, JSON.stringify(orderMeta), { ex: 86400 });
+        }
       }
     } catch (pixErr) {
       console.error('[pix/booking] Erro ao gerar PIX:', pixErr.message);
@@ -204,6 +215,23 @@ export async function POST(request) {
       console.log(`[Notion] Lead '${name}' sincronizado após agendamento.`);
     } catch (notionErr) {
       console.error('[Notion] Erro ao sincronizar lead:', notionErr.message);
+    }
+
+    // 4. --- REGISTRO DE CONVERSÃO NO ANALYTICS ---
+    if (subscriber_id) {
+      try {
+        const convertingMessage = await getConvertingMessage(String(subscriber_id));
+        await upsertAnalytics({
+          mcUserId: String(subscriber_id),
+          nome: name,
+          email,
+          telefone: phone,
+          event: 'agendamento',
+          convertingMessage,
+        });
+      } catch (analyticsErr) {
+        console.error('[cal/booking] Erro ao registrar analytics:', analyticsErr.message);
+      }
     }
 
     return NextResponse.json({

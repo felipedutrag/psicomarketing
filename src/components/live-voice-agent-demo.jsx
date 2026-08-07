@@ -2,6 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useLilithVoice } from "@/hooks/use-lilith-voice";
+
+// Beacon de analytics: dispara 1x por carregamento de página quando a landing
+// é acessada com o ?id= do ManyChat (duas instâncias montam: mobile e desktop).
+let landingAnalyticsSent = false;
 import { SectionBadge } from "@/components/section-badge";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -123,6 +127,18 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
     selectedVoice,
     scheduledBookings,
   } = useLilithVoice(identity);
+
+  // Registra a conversão "acesso à landing" para leads vindos do ManyChat (?id=)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!identity?.id || landingAnalyticsSent) return;
+    landingAnalyticsSent = true;
+    fetch("/api/analytics", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: identity.id, nome: identity.nome || null, event: "landing_visit" }),
+    }).catch(() => {});
+  }, [identity]);
 
   const displayBookings = [...scheduledBookings, ...initialBookings];
 

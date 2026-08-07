@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendMessage } from '@/lib/manychat'
 import { executeTool } from '@/lib/process-ai/tool-executors'
+import { setLeadStage } from '@/lib/funnel'
+import { upsertAnalytics, getConvertingMessage } from '@/lib/analytics'
 
 interface ToolRequestBody {
   name: string
@@ -64,6 +66,25 @@ export async function POST(req: NextRequest) {
           manychatResult = await sendMessage(contextId, message)
         } catch (err) {
           console.error('[agendarConsulta] Erro ao enviar confirmação WhatsApp:', err)
+        }
+
+        // Marca a tag de agendamento (f_fechamento) no ManyChat e registra a
+        // conversão no analytics da dashboard (agendou_at / etapa fechamento).
+        try {
+          await setLeadStage(contextId, 'f_fechamento')
+        } catch (tagErr) {
+          console.error('[agendarConsulta] Erro ao marcar tag f_fechamento:', tagErr)
+        }
+        try {
+          const convertingMessage = await getConvertingMessage(contextId)
+          await upsertAnalytics({
+            mcUserId: contextId,
+            nome: nome || null,
+            event: 'agendamento',
+            convertingMessage,
+          })
+        } catch (analyticsErr) {
+          console.error('[agendarConsulta] Erro ao registrar analytics de agendamento:', analyticsErr)
         }
       }
 

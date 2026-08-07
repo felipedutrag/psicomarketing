@@ -1,0 +1,13 @@
+{
+	admin off
+	auto_https off
+}
+
+http://localhost:3000 {
+	reverse_proxy 127.0.0.1:3001
+}
+
+https://localhost:8443 {
+	reverse_proxy 127.0.0.1:3001
+	tls internal
+}

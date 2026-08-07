@@ -66,7 +66,8 @@ export async function POST(req: Request) {
         phone: body.phone || body.telefone || body.payerPhone,
         email: body.email || body.payerEmail,
         subscriber_id: body.subscriber_id || body.subscriberId,
-        name: randomName
+        name: randomName,
+        tipo: body.tipo || 'assinatura'
     };
     await redis.set(`pix:${externalId}`, JSON.stringify(orderMeta), { ex: 86400 });
 

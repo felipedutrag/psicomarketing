@@ -29,6 +29,14 @@ export default function AutomacaoCheckout() {
     return null;
   });
 
+  // Renovação mensal: checkout sem reserva de horário (link enviado após pagamento)
+  const [isRenovacao] = useState(() => {
+    if (typeof window !== "undefined") {
+      return searchParams.get("renovacao") === "1";
+    }
+    return false;
+  });
+
   // PIX
   const [pixData, setPixData] = useState(null);
   const [pixLoading, setPixLoading] = useState(false);
@@ -46,6 +54,35 @@ export default function AutomacaoCheckout() {
       return () => clearTimeout(timer);
     }
   }, [step, paymentStatus, timeLeft]);
+
+  // Polling de status do PIX (marca como aprovado quando o pagamento for confirmado)
+  useEffect(() => {
+    if (step !== 2 || paymentStatus === "approved") return;
+    const orderId = pixData?.pix?.id;
+    if (!orderId) return;
+
+    let cancelled = false;
+    const check = async () => {
+      try {
+        const res = await fetch(`/api/ggpix/payment-status?order_id=${encodeURIComponent(orderId)}`);
+        const data = await res.json();
+        if (!cancelled && data.is_paid) {
+          setPaymentStatus("approved");
+          localStorage.removeItem('pixData');
+          localStorage.removeItem('pixTimestamp');
+        }
+      } catch (err) {
+        console.error("Erro ao consultar status do PIX:", err);
+      }
+    };
+
+    check();
+    const interval = setInterval(check, 8000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [step, paymentStatus, pixData]);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -110,7 +147,9 @@ export default function AutomacaoCheckout() {
     }
 
     const savedSlot = localStorage.getItem('selectedSlot');
-    if (savedSlot && !urlDate) {
+    if (isRenovacao) {
+      // Renovação mensal: não exige reserva de horário
+    } else if (savedSlot && !urlDate) {
       setSelectedSlot(savedSlot);
     } else if (!savedSlot && !urlDate && !urlName) {
       window.location.href = "/#investimento";
@@ -119,7 +158,7 @@ export default function AutomacaoCheckout() {
     // Persistência do PIX
     const savedPix = localStorage.getItem('pixData');
     const savedPixTime = localStorage.getItem('pixTimestamp');
-    if (savedPix && savedPixTime) {
+    if (savedPix && savedPixTime && !isRenovacao) {
       const elapsed = (Date.now() - parseInt(savedPixTime)) / 1000;
       if (elapsed < 15 * 60) {
         setPixData(JSON.parse(savedPix));
@@ -130,7 +169,7 @@ export default function AutomacaoCheckout() {
         localStorage.removeItem('pixTimestamp');
       }
     }
-  }, [searchParams]);
+  }, [searchParams, isRenovacao]);
 
   const handleReset = () => {
     localStorage.removeItem('pixData');
@@ -142,33 +181,60 @@ export default function AutomacaoCheckout() {
 
   async function handleFinalSubmit(e) {
     if (e) e.preventDefault();
-    if (!form.nome || !form.email || !form.telefone || !selectedSlot) return;
+    if (!form.nome || !form.email || !form.telefone) return;
+    if (!isRenovacao && !selectedSlot) return;
 
     setStatus("submitting");
     setPixLoading(true);
     setSubmitError(null);
 
     try {
-      const res = await fetch("/api/cal/slots", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.nome,
-          email: form.email,
-          phone: form.telefone,
-          start: selectedSlot,
-          subscriber_id: mcSubscriberId
-        }),
-      });
+      if (isRenovacao) {
+        // Renovação: gera PIX direto, sem criar agendamento no Cal
+        const pixRes = await fetch("/api/ggpix/pix", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            total: 99,
+            name: form.nome,
+            phone: form.telefone,
+            email: form.email,
+            subscriber_id: mcSubscriberId,
+            tipo: "renovacao",
+          }),
+        });
+        const pixDataRes = await pixRes.json();
+        if (!pixDataRes.success || !pixDataRes.pix_code) {
+          throw new Error(pixDataRes.error || "Erro ao gerar PIX de renovação");
+        }
+        const savedPix = { pix: { code: pixDataRes.pix_code, id: pixDataRes.order_id } };
+        setPixData(savedPix);
+        localStorage.setItem('pixData', JSON.stringify(savedPix));
+        localStorage.setItem('pixTimestamp', Date.now().toString());
+        setStep(2);
+        setStatus("success");
+      } else {
+        const res = await fetch("/api/cal/slots", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: form.nome,
+            email: form.email,
+            phone: form.telefone,
+            start: selectedSlot,
+            subscriber_id: mcSubscriberId
+          }),
+        });
 
-      const data = await res.json();
-      if (data.status !== "success") throw new Error(data.error || "Erro ao processar");
+        const data = await res.json();
+        if (data.status !== "success") throw new Error(data.error || "Erro ao processar");
 
-      setPixData(data);
-      localStorage.setItem('pixData', JSON.stringify(data));
-      localStorage.setItem('pixTimestamp', Date.now().toString());
-      setStep(2); // Avança para o pagamento
-      setStatus("success");
+        setPixData(data);
+        localStorage.setItem('pixData', JSON.stringify(data));
+        localStorage.setItem('pixTimestamp', Date.now().toString());
+        setStep(2); // Avança para o pagamento
+        setStatus("success");
+      }
     } catch (e) {
       setSubmitError(e.message);
       setStatus("error");
@@ -214,13 +280,20 @@ export default function AutomacaoCheckout() {
             {/* PASSO 1: DADOS */}
             {step === 1 && (
               <div className={styles.formContent}>
-                <div className={styles.selectedTimeInfo}>
-                  <p className={styles.subtitle}>Horário reservado:</p>
-                  <strong>{formatSelectedDate(selectedSlot)}</strong>
-                  <Link href="/#investimento" className={styles.changeTime}>Alterar horário</Link>
-                </div>
+                {isRenovacao ? (
+                  <div className={styles.selectedTimeInfo}>
+                    <p className={styles.subtitle}>Renovação da assinatura mensal (R$ 99,00)</p>
+                    <strong>Sem necessidade de reservar horário</strong>
+                  </div>
+                ) : (
+                  <div className={styles.selectedTimeInfo}>
+                    <p className={styles.subtitle}>Horário reservado:</p>
+                    <strong>{formatSelectedDate(selectedSlot)}</strong>
+                    <Link href="/#investimento" className={styles.changeTime}>Alterar horário</Link>
+                  </div>
+                )}
 
-                <h3 className={styles.formTitle}>Finalizar Pedido</h3>
+                <h3 className={styles.formTitle}>{isRenovacao ? "Renovar Assinatura" : "Finalizar Pedido"}</h3>
                 <form onSubmit={handleFinalSubmit} className={styles.form}>
                   <div className={styles.field}>
                     <label className={styles.label}>Seu Nome</label>
@@ -346,7 +419,7 @@ export default function AutomacaoCheckout() {
           <div className={styles.summaryCard}>
             <h3 className={styles.formTitle}>Resumo do Pedido</h3>
             <div className={styles.planInfo}>
-              <div className={styles.summaryItem}><span>Assinatura Mensal IA</span><span>R$ 99,00</span></div>
+              <div className={styles.summaryItem}><span>{isRenovacao ? "Renovação Mensal IA" : "Assinatura Mensal IA"}</span><span>R$ 99,00</span></div>
               <div className={styles.summaryItem}><span>Setup & Ativação</span><span className={styles.free}>INCLUSO</span></div>
             </div>
             <div className={styles.summaryTotal}><span>Total</span><span className={styles.totalAmount}>R$ 99,00</span></div>

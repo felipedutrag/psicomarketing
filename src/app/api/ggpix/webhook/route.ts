@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { upsertLead } from '@/services/notion';
 import { sendMessage, addTagById, findSubscriberByPhone, findSubscriberByEmail } from '@/lib/manychat';
+import { insertPayment, upsertAnalytics, getConvertingMessage, buildRenewalLink, markRenewalSent } from '@/lib/analytics';
 import { Redis } from '@upstash/redis';
 
 const redis = new Redis({
@@ -60,7 +61,7 @@ export async function POST(req: Request) {
       console.log('[GGPIX WEBHOOK] GGPIX_WEBHOOK_TOKEN is not set - skipping header validation');
     }
 
-    const { transactionId, externalId, status, amount, paidAt, payer } = body;
+    const { transactionId, externalId, status, amount, paidAt, payer, orderId, id } = body;
     console.log('[GGPIX WEBHOOK] Extracted Transaction Details:', {
       transactionId,
       externalId,
@@ -123,6 +124,71 @@ export async function POST(req: Request) {
         || (payer?.email ? await findSubscriberByEmail(payer.email) : null);
 
     console.log('[GGPIX WEBHOOK] Customer ManyChat subscriber ID:', subscriberId);
+
+    // 6.1. Persistir pagamento no Supabase (idempotente por transaction_id)
+    let paymentRecord: { paymentId: number | null; renewalLinkSent: boolean } = { paymentId: null, renewalLinkSent: false };
+    try {
+      paymentRecord = await insertPayment({
+        mcUserId: cachedMeta?.subscriber_id ? String(cachedMeta.subscriber_id) : null,
+        externalId: externalId || null,
+        transactionId: transactionId || null,
+        orderId: orderId || id || null,
+        status: 'paid',
+        tipo: cachedMeta?.tipo || 'assinatura',
+        amountCents: typeof amount === 'number' ? amount : null,
+        amountBRL: typeof amountBRL === 'number' ? amountBRL : parseFloat(amountBRL),
+        payerName: payer?.name || cachedMeta?.name || null,
+        payerEmail: payer?.email || cachedMeta?.email || null,
+        payerPhone: payer?.phone || cachedMeta?.phone || null,
+        payerDocument: payer?.document || null,
+        paidAt: paidAt || new Date().toISOString(),
+        raw: body,
+      });
+      console.log('[GGPIX WEBHOOK] Pagamento persistido:', JSON.stringify(paymentRecord));
+    } catch (paymentErr) {
+      console.error('[GGPIX WEBHOOK] Erro ao persistir pagamento:', paymentErr);
+    }
+
+    // 6.2. Registrar conversão de venda no analytics (funil)
+    const leadMcUserId = cachedMeta?.subscriber_id ? String(cachedMeta.subscriber_id) : subscriberId ? String(subscriberId) : null;
+    if (leadMcUserId) {
+      try {
+        const convertingMessage = await getConvertingMessage(leadMcUserId);
+        await upsertAnalytics({
+          mcUserId: leadMcUserId,
+          nome: cachedMeta?.name || payer?.name,
+          email: cachedMeta?.email || payer?.email,
+          telefone: cachedMeta?.phone || payer?.phone,
+          event: 'pagamento',
+          convertingMessage,
+          externalId: externalId || transactionId || null,
+        });
+      } catch (analyticsErr) {
+        console.error('[GGPIX WEBHOOK] Erro ao registrar analytics de pagamento:', analyticsErr);
+      }
+    }
+
+    // 6.3. Enviar link de renovação mensal via WhatsApp (uma única vez por pagamento)
+    if (subscriberId && cachedMeta?.subscriber_id) {
+      if (!paymentRecord.renewalLinkSent) {
+        try {
+          const renewalLink = buildRenewalLink({
+            mcUserId: String(cachedMeta.subscriber_id),
+            name: cachedMeta?.name || payer?.name,
+            email: cachedMeta?.email || payer?.email,
+            phone: cachedMeta?.phone || payer?.phone,
+          });
+          const renewalMessage = `✅ Pagamento confirmado! Sua automação está ativa por mais um mês.\n\n🔁 Para renovar no próximo ciclo mensal, guarde este link:\n${renewalLink}\n\nA equipe Psicomarketing já está cuidando de você. 💜`;
+          console.log('[GGPIX WEBHOOK] Enviando link de renovação:', subscriberId);
+          await sendMessage(subscriberId, renewalMessage);
+          if (transactionId) await markRenewalSent(transactionId, renewalLink);
+        } catch (renewalErr) {
+          console.error('[GGPIX WEBHOOK] Erro ao enviar link de renovação:', renewalErr);
+        }
+      } else {
+        console.log('[GGPIX WEBHOOK] Link de renovação já enviado para esta transação, ignorando.');
+      }
+    }
 
     let sendResult = null;
     if (subscriberId) {

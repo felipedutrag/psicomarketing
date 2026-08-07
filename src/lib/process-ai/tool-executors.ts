@@ -2,6 +2,7 @@ import { Redis } from '@upstash/redis'
 import { getNextAvailableSlots, createBooking, cancelBooking, formatSlot } from '@/lib/calcom'
 import { getLeadStage, setLeadStage, getStageScript, type FunnelStage } from '@/lib/funnel'
 import { sendMessageWithButtons } from '@/lib/manychat-buttons'
+import { upsertAnalytics, getConvertingMessage } from '@/lib/analytics'
 import { TOOL_NAMES } from './tools'
 
 const redis = Redis.fromEnv()
@@ -33,6 +34,17 @@ export async function executeTool(
     // Adicionar tag de fechamento quando usuário fizer agendamento por voz
     try {
       await setLeadStage(userId, 'f_fechamento')
+      // Registra a conversão de agendamento no analytics (funil da dashboard)
+      try {
+        const convertingMessage = await getConvertingMessage(userId)
+        await upsertAnalytics({
+          mcUserId: userId,
+          event: 'agendamento',
+          convertingMessage,
+        })
+      } catch (analyticsErr) {
+        console.error('[PROCESS-AI] Erro ao registrar analytics de agendamento por voz:', analyticsErr)
+      }
       return { response: { success: true, message: 'Tag de fechamento adicionada após agendamento por voz' } }
     } catch (err) {
       console.error('[PROCESS-AI] voice_booking_completed falhou:', err)
@@ -91,6 +103,21 @@ export async function executeTool(
         ...(phone ? { phone } : {}),
         date: start || ''
       })
+
+      // Registra a conversão de agendamento no analytics (funil de vendas)
+      try {
+        const convertingMessage = await getConvertingMessage(userId)
+        await upsertAnalytics({
+          mcUserId: userId,
+          nome: attendeeName,
+          email: attendeeEmail,
+          telefone: phone,
+          event: 'agendamento',
+          convertingMessage,
+        })
+      } catch (analyticsErr) {
+        console.error('[PROCESS-AI] Erro ao registrar analytics de agendamento:', analyticsErr)
+      }
 
       return {
         response: {
