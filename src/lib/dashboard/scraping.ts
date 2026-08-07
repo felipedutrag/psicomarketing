@@ -70,6 +70,17 @@ export async function clearLeads(): Promise<void> {
   if (error) throw new Error(error.message)
 }
 
+export async function deleteLeadsWithoutPhone(): Promise<number> {
+  const { data, error } = await supabase
+    .from('leads')
+    .delete()
+    .or('whatsapp.is.null,whatsapp.eq.')
+    .select('id')
+  if (error) throw new Error(error.message)
+
+  return (data || []).length
+}
+
 export function parseManualInput(input: string): Partial<Lead>[] {  const lines = input.split('\n').filter(line => line.trim())
   const leads: Partial<Lead>[] = []
 

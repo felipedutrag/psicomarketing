@@ -38,6 +38,8 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
   const [queueBusy, setQueueBusy] = useState(false)
   const [filterQuery, setFilterQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<'todos' | 'enviados' | 'nao-enviados'>('todos')
+  const [hideInQueue, setHideInQueue] = useState(false)
+  const [selectRecentCount, setSelectRecentCount] = useState('')
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const [colWidths, setColWidths] = useState({
@@ -87,6 +89,7 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
       if (statusFilter === 'nao-enviados') return lead.status !== 'sent'
       return true
     })
+    .filter((lead) => (hideInQueue ? !lead.na_fila : true))
     .filter((lead) =>
       filterQuery
         ? lead.nome.toLowerCase().includes(filterQuery.toLowerCase()) ||
@@ -128,6 +131,12 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
     }
   }
 
+  const handleSelectRecent = () => {
+    const count = parseInt(selectRecentCount, 10)
+    if (!count || count <= 0) return
+    onSelectionChange(visibleLeads.slice(0, count).map((lead) => lead.id))
+  }
+
   const updateQueue = async (action: 'add' | 'remove', ids: string[], message: string) => {
     if (ids.length === 0) return
     setQueueBusy(true)
@@ -158,6 +167,34 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
       await fetchLeads()
     } catch (error) {
       console.error('Erro ao deletar lead:', error)
+    }
+  }
+
+  const handleDeleteWithoutPhone = async () => {
+    if (!window.confirm('Excluir todos os contatos sem telefone? Essa ação não pode ser desfeita.')) return
+    setIsLoading(true)
+    setFeedback(null)
+    try {
+      const response = await fetch('/api/dashboard/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'clear-no-phone' }),
+      })
+      const data = await response.json()
+      if (data.success) {
+        setFeedback({
+          type: 'success',
+          text: `${data.count || 0} contato(s) sem telefone excluído(s).`,
+        })
+      } else {
+        setFeedback({ type: 'error', text: data.error || 'Erro ao excluir contatos sem telefone' })
+      }
+      await fetchLeads()
+    } catch (error) {
+      console.error('Erro ao excluir contatos sem telefone:', error)
+      setFeedback({ type: 'error', text: 'Erro ao excluir contatos sem telefone' })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -243,6 +280,31 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
 
         {/* Database Search & Filter */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Select recent X */}
+          <div className="flex items-center gap-0.5 rounded-md border border-zinc-200 bg-white px-1 dark:bg-[#222] dark:border-[#333] focus-within:ring-1 focus-within:ring-indigo-500/50">
+            <input
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              placeholder="X"
+              value={selectRecentCount}
+              onChange={(e) => setSelectRecentCount(e.target.value.replace(/\D/g, ''))}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleSelectRecent()
+              }}
+              className="h-8 w-10 bg-transparent py-0 text-center text-xs border-0 focus:outline-none"
+              title="Selecionar os X leads mais recentes"
+            />
+            <Button
+              onClick={handleSelectRecent}
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2 text-[11px] text-zinc-500 hover:text-indigo-600 cursor-pointer"
+              disabled={!selectRecentCount}
+            >
+              Selecionar
+            </Button>
+          </div>
           {/* Status filter */}
           <div className="flex items-center rounded-md border border-zinc-200 bg-white overflow-hidden dark:bg-[#222] dark:border-[#333]">
             {([
@@ -264,6 +326,18 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
               </button>
             ))}
           </div>
+          <button
+            type="button"
+            onClick={() => setHideInQueue((v) => !v)}
+            className={`h-8 rounded-md border px-2.5 text-[11px] font-medium transition-colors cursor-pointer ${
+              hideInQueue
+                ? 'border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-700/60 dark:bg-blue-950/60 dark:text-blue-300'
+                : 'border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:bg-[#222] dark:border-[#333] dark:text-zinc-400 dark:hover:bg-[#1e1e1e] dark:hover:text-zinc-200'
+            }`}
+            title={hideInQueue ? 'Mostrar contatos na fila' : 'Ocultar contatos na fila'}
+          >
+            ⚡ Ocultar na fila
+          </button>
           <div className="relative">
             <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-zinc-400" strokeWidth={1.5} />
             <input
@@ -274,6 +348,10 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
               className="h-8 rounded-md border border-zinc-200 bg-white dark:bg-[#222] dark:border-[#333] pl-8 pr-3 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
             />
           </div>
+          <Button onClick={handleDeleteWithoutPhone} variant="outline" className="h-8 gap-1 text-xs cursor-pointer text-red-600 dark:text-red-400 hover:text-red-700" disabled={isLoading}>
+            <Trash2 className="h-3.5 w-3.5" />
+            Excluir sem telefone
+          </Button>
           <Button onClick={fetchLeads} variant="ghost" size="icon" className="h-8 w-8 cursor-pointer" disabled={isLoading}>
             <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} strokeWidth={1.5} />
           </Button>

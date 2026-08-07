@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { saveLeads, getLeads, clearLeads, parseManualInput, saveScrapedLeads } from '@/lib/dashboard/scraping'
+import { saveLeads, getLeads, clearLeads, parseManualInput, saveScrapedLeads, deleteLeadsWithoutPhone } from '@/lib/dashboard/scraping'
 import { updateStats } from '@/lib/dashboard/whatsapp'
 import type { Lead } from '@/lib/dashboard/config'
 
@@ -82,6 +82,12 @@ export async function POST(req: NextRequest) {
       await clearLeads()
       await updateStats()
       return NextResponse.json({ success: true })
+    }
+
+    if (action === 'clear-no-phone') {
+      const count = await deleteLeadsWithoutPhone()
+      await updateStats()
+      return NextResponse.json({ success: true, count })
     }
 
     return NextResponse.json({ error: 'Ação inválida' }, { status: 400 })
