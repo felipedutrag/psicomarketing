@@ -42,57 +42,63 @@ export async function POST(req: NextRequest) {
         status: 'Confirmado via IA Live',
       }
 
-      // Enviar confirmação via WhatsApp com oferta se o id estiver disponível
-      let manychatResult = null
+      // Enviar confirmação via WhatsApp e tracking (tag + analytics) em background,
+      // SEM bloquear a resposta — a IA de voz continua falando imediatamente.
+      const hasContextId = Boolean(contextId)
       if (contextId) {
-        try {
-          const message = [
-            `✨ *AGENDAMENTO REALIZADO COM SUCESSO!* (Demonstração)`,
-            ``,
-            `Olá, *${nome || 'Doutor(a)'}*! Veja como seu cliente recebe a confirmação enviada pela *Gaby*:`,
-            ``,
-            `📋 *Resumo da Sessão:*`,
-            `• *Serviço:* ${tipoConsulta || 'Sessão de Acolhimento'}`,
-            `• *Data:* ${dia || 'Quinta-feira'}`,
-            `• *Horário:* ${horario || '15:00'}`,
-            ``,
-            `💻 *Link da consulta (Google Meet):*`,
-            `https://meet.google.com/mme-pfzs-fer`,
-            ``,
-            `----------------------------------------`,
-            ``,
-            `🚀 *QUER ESSA MESMA EFICIÊNCIA NO SEU CONSULTÓRIO?*`,
-          ].join('\n')
-          manychatResult = await sendMessage(contextId, message)
-        } catch (err) {
-          console.error('[agendarConsulta] Erro ao enviar confirmação WhatsApp:', err)
-        }
+        const message = [
+          `✨ *AGENDAMENTO REALIZADO COM SUCESSO!* (Demonstração)`,
+          ``,
+          `Olá, *${nome || 'Doutor(a)'}*! Veja como seu cliente recebe a confirmação enviada pela *Gaby*:`,
+          ``,
+          `📋 *Resumo da Sessão:*`,
+          `• *Serviço:* ${tipoConsulta || 'Sessão de Acolhimento'}`,
+          `• *Data:* ${dia || 'Quinta-feira'}`,
+          `• *Horário:* ${horario || '15:00'}`,
+          ``,
+          `💻 *Link da consulta (Google Meet):*`,
+          `https://meet.google.com/mme-pfzs-fer`,
+          ``,
+          `----------------------------------------`,
+          ``,
+          `🚀 *QUER ESSA MESMA EFICIÊNCIA NO SEU CONSULTÓRIO?*`,
+        ].join('\n')
 
-        // Marca a tag de agendamento (f_fechamento) no ManyChat e registra a
-        // conversão no analytics da dashboard (agendou_at / etapa fechamento).
-        try {
-          await setLeadStage(contextId, 'f_fechamento')
-        } catch (tagErr) {
-          console.error('[agendarConsulta] Erro ao marcar tag f_fechamento:', tagErr)
-        }
-        try {
-          const convertingMessage = await getConvertingMessage(contextId)
-          await upsertAnalytics({
-            mcUserId: contextId,
-            nome: nome || null,
-            event: 'agendamento',
-            convertingMessage,
-          })
-        } catch (analyticsErr) {
-          console.error('[agendarConsulta] Erro ao registrar analytics de agendamento:', analyticsErr)
-        }
+        // Dispara confirmação WhatsApp em background (fire-and-forget), sem await.
+        void (async () => {
+          try {
+            await sendMessage(contextId, message)
+          } catch (err) {
+            console.error('[agendarConsulta] Erro ao enviar confirmação WhatsApp:', err)
+          }
+        })()
+
+        // Tag + analytics em background (fire-and-forget), não bloqueiam a resposta.
+        void (async () => {
+          try {
+            const convertingMessage = await getConvertingMessage(contextId)
+            await upsertAnalytics({
+              mcUserId: contextId,
+              nome: nome || null,
+              event: 'agendamento',
+              convertingMessage,
+            })
+          } catch (analyticsErr) {
+            console.error('[agendarConsulta] Erro ao registrar analytics de agendamento:', analyticsErr)
+          }
+          try {
+            await setLeadStage(contextId, 'f_fechamento')
+          } catch (tagErr) {
+            console.error('[agendarConsulta] Erro ao marcar tag f_fechamento:', tagErr)
+          }
+        })()
       }
 
       return NextResponse.json({
         status: 'success',
         message: `Consulta de ${nome || 'Paciente'} agendada com sucesso para ${dia || 'esta semana'} às ${horario || '15:00'}.`,
         agendamento,
-        manychat: manychatResult ? { enviado: true } : { enviado: false, motivo: 'ID não disponível' }
+        manychat: { enviado: hasContextId }
       })
     }
 
