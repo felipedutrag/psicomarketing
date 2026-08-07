@@ -114,6 +114,26 @@ const fogAnimation = `
       box-shadow: 0 35px 90px -15px rgba(244,63,94,0.6);
     }
   }
+
+  @keyframes bookingIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes micNudge {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(4px);
+    }
+  }
 `;
 
 export function LiveVoiceAgentDemo({ placement = "desktop" }) {
@@ -312,44 +332,66 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
           {/* Right Column: Session Bookings Feed */}
           <div className="lg:col-span-7 flex flex-col">
             {/* Session Bookings Feed */}
-            <div className="lg:flex-1 bg-indigo-500/5 dark:bg-indigo-950/20 border border-indigo-500/20 rounded-xl pt-2 px-4 sm:p-5 flex flex-col md:bg-indigo-500/5 md:dark:bg-indigo-950/20">
-              <div className="flex flex-col lg:h-full">
-                <div className="flex items-center justify-between border-b border-indigo-500/10 pb-2 sm:pb-2.5">
-                  <span className="text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2">
+            <div className="lg:flex-1 bg-indigo-500/5 dark:bg-indigo-950/20 border border-indigo-500/20 rounded-xl p-3.5 sm:p-5 flex flex-col md:bg-indigo-500/5 md:dark:bg-indigo-950/20">
+              <div className="flex items-center justify-between gap-2 mb-3 sm:mb-4">
+                <span className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                  <span className="inline-flex size-6 sm:size-7 shrink-0 items-center justify-center rounded-lg bg-indigo-500/15 dark:bg-indigo-400/10">
                     <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <span className="hidden sm:inline">Agendamentos da Sessão</span>
-                    <span className="sm:hidden">Agendamentos</span>
                   </span>
-                  <Badge variant="outline" className="text-[9px] sm:text-[10px] border-indigo-500/30 text-indigo-500">
-                    {displayBookings.length} {displayBookings.length === 1 ? "registro" : "registros"}
-                  </Badge>
-                </div>
+                  <span className="hidden sm:inline">Agendamentos da Sessão</span>
+                  <span className="sm:hidden">Agendamentos</span>
+                </span>
+                <Badge variant="outline" className="text-[9px] sm:text-[10px] border-indigo-500/30 text-indigo-500 bg-indigo-500/5 shrink-0">
+                  {displayBookings.length} {displayBookings.length === 1 ? "registro" : "registros"}
+                </Badge>
+              </div>
 
-                <div className="space-y-2 mb-3 sm:space-y-2.5 max-h-[140px] sm:max-h-[180px] lg:max-h-[240px] overflow-y-auto pr-1 lg:flex-1">
-                  {displayBookings.length === 0 ? (
-                    <div className="flex items-center mt-3 justify-center text-[10px] sm:text-xs p-3 sm:p-4 rounded-lg bg-white dark:bg-zinc-900 border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-center md:bg-white/60 md:dark:bg-zinc-900/60 lg:min-h-[96px]">
-                      Sem agendamentos ainda!
+              <div className="space-y-2 sm:space-y-2.5 lg:flex-1">
+                {displayBookings.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center gap-2.5 rounded-lg border border-dashed border-indigo-500/25 bg-white/60 dark:bg-zinc-900/60 px-4 py-6 sm:py-8 text-center lg:min-h-[160px]">
+                    <span className="inline-flex size-9 sm:size-10 items-center justify-center rounded-full bg-indigo-500/10 text-indigo-500 dark:text-indigo-400">
+                      <CalendarCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </span>
+                    <div className="space-y-0.5">
+                      <p className="text-[11px] sm:text-xs font-semibold text-zinc-600 dark:text-zinc-300">
+                        Sem agendamentos ainda
+                      </p>
+                      <p className="text-[10px] sm:text-[11px] text-zinc-400 dark:text-zinc-500 leading-snug max-w-[220px]">
+                        Toque no microfone e peça para a Gaby agendar uma consulta.
+                      </p>
                     </div>
-                  ) : (
-                    displayBookings.map((b) => (
-                      <div
-                        key={b.id}
-                        className="mt-5 flex items-center justify-between text-[10px] sm:text-xs p-1 sm:p-3 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xs md:bg-white/90 md:dark:bg-zinc-900/90 md:border-zinc-200/80 md:dark:border-zinc-800/80"
-                      >
-                        <div className="p-4 flex items-center gap-1.5 sm:gap-2.5">
-                          <CalendarCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-500 shrink-0" />
-                          <span className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">{b.nome}</span>
-                          <span className="text-zinc-500 text-[9px] sm:text-xs hidden sm:inline">• {b.tipoConsulta}</span>
-                        </div>
-                        <div className="flex items-center gap-2 pr-4">
-                          <Badge variant="secondary" className="text-[9px] sm:text-[10px] sm:text-xs font-mono bg-zinc-100 dark:bg-zinc-800">
-                            {b.dia} às {b.horario}
-                          </Badge>
-                        </div>
+                    <span
+                      className="inline-flex items-center gap-1 text-[10px] font-medium text-indigo-500 dark:text-indigo-400 mt-0.5"
+                      style={{ animation: "micNudge 2s ease-in-out infinite" }}
+                    >
+                      <Mic className="w-3 h-3" />
+                      Experimente agora
+                    </span>
+                  </div>
+                ) : (
+                  displayBookings.map((b, i) => (
+                    <div
+                      key={b.id}
+                      className="booking-in flex items-center gap-2.5 sm:gap-3 rounded-lg border border-zinc-200/80 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 px-2.5 sm:px-3.5 py-2.5 sm:py-3 shadow-xs transition-all duration-200 hover:border-indigo-500/40 hover:shadow-sm"
+                      style={{ animation: `bookingIn 0.35s ease-out both`, animationDelay: `${Math.min(i, 5) * 60}ms` }}
+                    >
+                      <span className="inline-flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-md bg-indigo-500/10 text-indigo-500 dark:text-indigo-400">
+                        <CalendarCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[11px] sm:text-xs font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                          {b.nome}
+                        </p>
+                        <p className="text-[9px] sm:text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
+                          {b.tipoConsulta}
+                        </p>
                       </div>
-                    ))
-                  )}
-                </div>
+                      <Badge variant="secondary" className="shrink-0 text-[9px] sm:text-[10px] sm:text-xs font-mono bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border border-indigo-500/15">
+                        {b.dia} às {b.horario}
+                      </Badge>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
