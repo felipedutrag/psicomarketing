@@ -279,9 +279,9 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
         </div>
 
         {/* Database Search & Filter */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1.5">
           {/* Select recent X */}
-          <div className="flex items-center gap-0.5 rounded-md border border-zinc-200 bg-white px-1 dark:bg-[#222] dark:border-[#333] focus-within:ring-1 focus-within:ring-indigo-500/50">
+          <div className="flex items-center rounded-md border border-zinc-200 bg-white dark:bg-[#222] dark:border-[#333] focus-within:ring-1 focus-within:ring-indigo-500/50">
             <input
               type="text"
               inputMode="numeric"
@@ -292,19 +292,32 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleSelectRecent()
               }}
-              className="h-8 w-10 bg-transparent py-0 text-center text-xs border-0 focus:outline-none"
+              className="h-6 w-8 bg-transparent py-0 pl-0.5 text-center text-[11px] border-0 focus:outline-none"
               title="Selecionar os X leads mais recentes"
             />
             <Button
               onClick={handleSelectRecent}
               variant="ghost"
               size="sm"
-              className="h-7 px-2 text-[11px] text-zinc-500 hover:text-indigo-600 cursor-pointer"
+              className="h-6 px-1.5 text-[11px] text-zinc-500 hover:text-indigo-600 cursor-pointer"
               disabled={!selectRecentCount}
             >
               Selecionar
             </Button>
           </div>
+
+          {/* Search */}
+          <div className="relative">
+            <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-zinc-400" strokeWidth={1.5} />
+            <input
+              type="text"
+              placeholder="Buscar nome ou zap..."
+              value={filterQuery}
+              onChange={(e) => setFilterQuery(e.target.value)}
+              className="h-7 w-40 rounded-md border border-zinc-200 bg-white dark:bg-[#222] dark:border-[#333] pl-8 pr-3 text-[11px] focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
+            />
+          </div>
+
           {/* Status filter */}
           <div className="flex items-center rounded-md border border-zinc-200 bg-white overflow-hidden dark:bg-[#222] dark:border-[#333]">
             {([
@@ -316,7 +329,7 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
                 key={opt.id}
                 type="button"
                 onClick={() => setStatusFilter(opt.id)}
-                className={`px-2.5 h-8 text-[11px] font-medium transition-colors cursor-pointer ${
+                className={`px-2.5 h-7 text-[11px] font-medium transition-colors cursor-pointer ${
                   statusFilter === opt.id
                     ? 'bg-indigo-600 text-white'
                     : 'bg-transparent text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-[#1e1e1e] dark:hover:text-zinc-200'
@@ -326,34 +339,35 @@ export function LeadsTable({ selectedIds, onSelectionChange, revision = 0 }: Lea
               </button>
             ))}
           </div>
+
+          {/* Hide in queue */}
           <button
             type="button"
             onClick={() => setHideInQueue((v) => !v)}
-            className={`h-8 rounded-md border px-2.5 text-[11px] font-medium transition-colors cursor-pointer ${
+            className={`h-7 rounded-md border px-2.5 text-[11px] font-medium transition-colors cursor-pointer ${
               hideInQueue
                 ? 'border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-700/60 dark:bg-blue-950/60 dark:text-blue-300'
                 : 'border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:bg-[#222] dark:border-[#333] dark:text-zinc-400 dark:hover:bg-[#1e1e1e] dark:hover:text-zinc-200'
             }`}
             title={hideInQueue ? 'Mostrar contatos na fila' : 'Ocultar contatos na fila'}
           >
-            ⚡ Ocultar na fila
+            Ocultar na fila
           </button>
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-zinc-400" strokeWidth={1.5} />
-            <input
-              type="text"
-              placeholder="Filtrar por nome ou zap..."
-              value={filterQuery}
-              onChange={(e) => setFilterQuery(e.target.value)}
-              className="h-8 rounded-md border border-zinc-200 bg-white dark:bg-[#222] dark:border-[#333] pl-8 pr-3 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500/50"
-            />
-          </div>
-          <Button onClick={handleDeleteWithoutPhone} variant="outline" className="h-8 gap-1 text-xs cursor-pointer text-red-600 dark:text-red-400 hover:text-red-700" disabled={isLoading}>
-            <Trash2 className="h-3.5 w-3.5" />
-            Excluir sem telefone
+
+          {/* Delete without phone */}
+          <Button
+            onClick={handleDeleteWithoutPhone}
+            variant="outline"
+            className="h-7 gap-1 px-2.5 text-[11px] cursor-pointer text-red-600 dark:text-red-400 hover:text-red-700"
+            disabled={isLoading}
+          >
+            <Trash2 className="h-3 w-3" />
+            Sem telefone
           </Button>
-          <Button onClick={fetchLeads} variant="ghost" size="icon" className="h-8 w-8 cursor-pointer" disabled={isLoading}>
-            <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} strokeWidth={1.5} />
+
+          {/* Refresh */}
+          <Button onClick={fetchLeads} variant="ghost" size="icon" className="h-7 w-7 cursor-pointer" disabled={isLoading}>
+            <RefreshCw className={`h-3 w-3 ${isLoading ? 'animate-spin' : ''}`} strokeWidth={1.5} />
           </Button>
         </div>
       </div>
