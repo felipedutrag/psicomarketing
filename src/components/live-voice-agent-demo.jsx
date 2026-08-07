@@ -180,10 +180,10 @@ export function LiveVoiceAgentDemo({ placement = "desktop" }) {
             </SectionBadge>
           </div>
           <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">
-            Simule um agendamento com Gaby
+            Simule um agendamento
           </h3>
           <p className="max-w-4xl text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-400">
-            Pressione o microfone e teste a inteligência da nossa IA.
+            Pressione o microfone e veja como Gaby pode ser útil no seu dia a dia.
           </p>
         </div>
       </div>
