@@ -30,7 +30,7 @@ export function MinimalLogo({ hideText = false, muted = false, tableHeader = fal
             </div>
           </div>
           <div className="flex flex-col justify-center leading-none">
-            <span className="font-logo -mt-1.5 text-base sm:text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+            <span className="font-logo -mt-1.5 text-sm sm:text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
               Psicomarketing
             </span>
             <span className="-mt-0.5 font-serif italic text-[10px] sm:text-[11px] font-medium text-zinc-500 dark:text-zinc-400">

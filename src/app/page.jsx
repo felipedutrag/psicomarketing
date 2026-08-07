@@ -53,15 +53,15 @@ export default async function Home({ searchParams }) {
               {content.heroBadge}
             </SectionBadge>
             <h1
-              className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center mb-4 sm:mb-5"
+              className="text-2xl sm:text-3xl leading-tight font-semibold md:text-5xl max-w-[24ch] mx-auto text-center mb-2 sm:mb-5"
               style={{ lineHeight: "clamp(1.05, 1.2 - 0.03vw, 1.15)" }}
             >
               Sua secretária de IA com <br /><span className="text-indigo-600 dark:text-indigo-400 font-bold underline underline-offset-4 decoration-primary/30">super poderes</span>
             </h1>
-            <p className="text-sm sm:text-base md:text-lg leading-snug text-zinc-700 dark:text-zinc-400">
+            <p className="text-sm sm:text-base md:text-lg leading-snug text-zinc-700 dark:text-zinc-400 mb-1.5 sm:mb-3">
               {content.heroDescription}
             </p>
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-2 sm:pt-3">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 pt-0.5 sm:pt-3">
               <StartVoiceButton label={content.primaryCtaLabel} />
             </div>
           </div>
