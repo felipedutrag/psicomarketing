@@ -1,140 +1,64 @@
-# 🚀 Psicomarketing Dashboard
-
-> **Plataforma Completa de Automação de Prospecção, Personalização de Mensagens com IA e Disparos Inteligentes via WhatsApp**
-
----
-
-## 📌 Visão Geral
-
-O **Psicomarketing Dashboard** é uma solução *end-to-end* para automatizar a captação de leads B2B (focado em psicólogos, clínicas e profissionais de saúde), a personalização avançada de abordagens com Inteligência Artificial e a gestão completa de envios pelo WhatsApp.
-
-Com uma interface moderna e reativa (Shadcn UI, estilo da home), o sistema combina robôs de scraping no Google Maps, um motor de IA multi-provedor (*fallback*) e integração nativa com WhatsApp Web e Redis.
-
----
-
-## 🔥 Principais Recursos
-
-O dashboard está estruturado em **3 abas**: **Visão Geral**, **Leads** e **Config**.
-
-### 1. 📊 Painel de Estatísticas (Visão Geral)
-- **Total de Leads**, **Pendentes**, **Enviados**, **Respondidos**, **Taxa de Resposta (%)** e **Erros**.
-- Atualização automática com cache (TTL) para não pesar no Redis — e pausa quando a aba não está visível.
-
-### 2. 🔍 Prospecção e Scraping (Google Maps)
-- Busca por **URL modelo** usando o parâmetro `${CIDADE}`.
-- Processamento **multi-cidades** em lote.
-- Captura de Nome, WhatsApp e Website.
-- **Dedup automática** por número e **Limpeza de Base**.
-
-### 3. 👥 Gestão de Leads e Fila de Envio (Leads)
-- **Tabela interativa:** Nome, WhatsApp, mensagem expansível, Website, Status e indicador **"Na fila"**.
-- **Fila de Envio explícita:** leads **não** entram automaticamente — você adiciona com **"Adicionar à fila"** (seleção em lote) ou pelo ícone de cada linha. A fila mostra **contagem regressiva** até o próximo disparo.
-- **Controles da fila:** **Pausar/Retomar**, **Limpar Fila** e **remover um lead da fila sem apagá-lo**.
-- **Personalização com IA:** gere mensagens humanizadas por lead (fallback Gemini → NVIDIA → Groq).
-- **Configurações de Envio:** delay anti-ban (mínimo/máximo em segundos) e **janela de horário** (ex.: 09:00 às 17:00).
-
-### 4. 🤖 Personalização de Mensagens com IA Resiliente
-- **Fallback em cadeia:**
-  1. **Google Gemini** (`gemini-3.5-flash-lite`) — *Principal*
-  2. **NVIDIA AI** (`nemotron-3-ultra`) — *Fallback 1*
-  3. **Groq AI** (`llama-3.3-70b`) — *Fallback 2*
-- **Prompt customizável** e adaptação do nome/tratamento de cada profissional.
-
-### 5. 📱 WhatsApp Web (Visão Geral)
-- **QR Code** para conexão e badges de status (`disconnected`, `connecting`, `connected`, `ready`, `sending`, `error`).
-- **Envio manual unitário** e **disparo em lote** da fila.
-
-### 6. ⏱️ Configurações de Envio (Leads)
-- **Delay anti-ban dinâmico (jitter)** entre mensagens, com mínimo e máximo configuráveis.
-- **Janela de Horário:** restringe a fila a um intervalo diário (início/fim). Fora do horário, a fila fica suspensa automaticamente e o envio é **bloqueado** na API, com contagem regressiva até a próxima abertura.
-
-### 7. ⚙️ Editor de Prompt do Process-AI (Config)
-- Personalize o prompt da atendente virtual **Gabriele Fontaine** (regras de WhatsApp, oferta R$ 97/mês, link do site) com opção de reset ao padrão.
-
----
-
-## ⚡ Envio funciona com o navegador minimizado ou fechado?
-
-**Sim.** O disparo de mensagens é processado **no servidor** — o `whatsapp-web.js` mantém a sessão do WhatsApp rodando via **Puppeteer em headless**, independente do navegador. O dashboard apenas envia o comando; minimizar a aba ou fechar o navegador **não interrompe** a conexão nem os envios em andamento.
-
-> O polling do dashboard pausa quando a aba está oculta — isso só afeta a *atualização da tela*, nunca o disparo.
-
----
-
-## 🛠️ Arquitetura e Tecnologias
-
-- **Frontend:** Next.js 16 (App Router), React 19, TypeScript
-- **UI:** Tailwind CSS v4, Shadcn UI, Lucide Icons
-- **Scraping:** Puppeteer (Headless Browser)
-- **Dados & Cache:** Upstash Redis
-- **Mensageria:** `whatsapp-web.js`
-- **IA:** `@google/generative-ai`, NVIDIA AI API, Groq
-
----
-
-## 📂 Estrutura de Pastas do Dashboard
-
-```
-src/
-├── app/
-│   ├── dashboard/                 # Página principal (abas Visão Geral / Leads / Config)
-│   └── api/dashboard/             # Endpoints (Leads, WhatsApp, Queue, Stats, Send-Delay, Send-Schedule)
-├── components/
-│   └── dashboard/
-│       ├── stats-panel.tsx          # Cards e métricas
-│       ├── scraping-form.tsx        # Busca no Google Maps
-│       ├── whatsapp-panel.tsx       # QR Code + envio manual
-│       ├── leads-table.tsx          # Tabela + adicionar/remover da fila
-│       ├── message-personalizer.tsx # Personalização com IA
-│       ├── send-queue.tsx           # Fila de envio (pause, countdown, remover)
-│       ├── delay-config.tsx         # Delay anti-ban
-│       ├── schedule-config.tsx      # Janela de horário de envio
-│       └── prompt-editor.tsx        # Editor do prompt do robô
-└── lib/
-    └── dashboard/  # Regras de negócio, Redis, scraping e helpers da fila/cronograma
-```
-
----
-
-## 🚀 Como Executar
-
-### 1. Pré-requisitos
-- **Node.js** (v18+)
-- Conta no **Upstash Redis**
-- Chaves de API das LLMs (Gemini, NVIDIA, Groq)
-
-### 2. Variáveis de Ambiente (`.env.local`)
-```env
-UPSTASH_REDIS_REST_URL="https://seu-redis.upstash.io"
-UPSTASH_REDIS_REST_TOKEN="seu-token-redis"
-
-GEMINI_API_KEY="sua-chave-gemini"
-NVIDIA_API_KEY="sua-chave-nvidia"
-GROQ_API_KEY="sua-chave-groq"
-
-PRIMARY_MODEL="gemini-3.5-flash-lite"
-```
-
-### 3. Instalação e execução
-```bash
-npm install
-npm run dev
-```
-Acesse `http://localhost:3000/dashboard`.
-
----
-
-## 🔄 Fluxo de Trabalho Recomendado
-
-1. **Mineração:** abra **Visão Geral**, defina cidades e busque leads no Google Maps.
-2. **Personalização:** na aba **Leads**, selecione e **Personalize Mensagens com IA**.
-3. **Fila:** selecione os leads e clique em **Adicionar à fila** (ou use o ícone por linha).
-4. **Programação:** defina a **janela de horário** e o **delay anti-ban** nas configurações de envio.
-5. **Conexão:** conecte o WhatsApp pelo QR Code em **Visão Geral**.
-6. **Disparo:** confirme a fila e clique em **Enviar Agora** — acompanhe o countdown e as estatísticas.
-
----
+# 🚀 Psicomarketing — B2B Lead Scraping & AI-Driven WhatsApp Outreach Engine
 
 <p align="center">
-  <i>Psicomarketing Dashboard — Desenvolvido para maximizar conversões B2B com eficiência e inteligência.</i>
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Google_Maps_Scraper-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Google Maps" />
+  <img src="https://img.shields.io/badge/WhatsApp_Web.js-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" alt="WhatsApp Web" />
+  <img src="https://img.shields.io/badge/Multi--LLM_Fallback-7928CA?style=for-the-badge&logo=openai&logoColor=white" alt="Multi-LLM" />
 </p>
+
+---
+
+## 📌 Overview
+
+**Psicomarketing Dashboard** is an end-to-end B2B prospecting, lead generation, and automated messaging platform tailored for clinical psychologists, therapists, and healthcare clinics.
+
+The system orchestrates Google Maps business scraping, cascades AI message customization (Gemini 3.5 Flash → NVIDIA Nemotron → Groq Llama 3.3), and operates headless WhatsApp Web dispatch queues with anti-ban delays and business-hour scheduling.
+
+---
+
+## ✨ Key Features
+
+- 🔍 **Google Maps Prospecting:** Automated extraction of clinic names, WhatsApp numbers, websites, and addresses across multiple cities.
+- 🤖 **Cascading Multi-LLM Personalization:** Generates highly tailored, professional outreach pitches with automated provider failovers.
+- 📱 **Headless WhatsApp Dispatch:** Background execution via Puppeteer (`whatsapp-web.js`) that persists even when the browser is closed.
+- 🛡️ **Anti-Ban Architecture:** Dynamic jitter delays between messages and configurable daily dispatch windows.
+- 📊 **Real-Time Operational Analytics:** Visual delivery rates, response tracking, and lead lifecycle indicators.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Framework** | Next.js (App Router, Server Actions) |
+| **Language** | TypeScript |
+| **Scraping & Automation** | Cheerio, Puppeteer, `whatsapp-web.js` |
+| **Artificial Intelligence** | Google Gemini, NVIDIA AI, Groq SDK |
+| **Persistence & Cache** | Redis, Notion API Client |
+
+---
+
+## 🚀 Getting Started
+
+```bash
+# Clone repository
+git clone https://github.com/felipedutrag/psicomarketing.git
+cd psicomarketing
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+---
+
+## 👤 Author
+
+Developed by **Felipe Dutra**  
+- **GitHub:** [@felipedutrag](https://github.com/felipedutrag)  
+- **Email:** [felipedutra@outlook.com](mailto:felipedutra@outlook.com)
