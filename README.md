@@ -1,4 +1,4 @@
-﻿# 🧠 Psicomarketing — AI Clinical Receptionist, Voice Agent & Automated B2B Prospecting Suite
+# 🧠 Psicomarketing — AI Clinical Receptionist, Voice Agent & Automated B2B Prospecting Suite
 
 <p align=center>
   <img src=https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white alt=Next.js 16 />
@@ -24,7 +24,7 @@
 
 ## 🏗️ System Architecture
 
-`mermaid
+```mermaid
 flowchart TD
     subgraph Reception & Voice Interaction
         Patient([Patient Voice / Web Audio]) <-->|Bidirectional Audio PCM 16kHz/24kHz| LiveHook[use-lilith-voice Hook]
@@ -49,7 +49,7 @@ flowchart TD
         WABot & LiveHook --> Redis[(Upstash Redis Cache & Rate Limiter)]
         LiveHook --> Analytics[ManyChat & Pixel Conversion Beacon]
     end
-`
+```
 
 ---
 
@@ -81,7 +81,7 @@ flowchart TD
 
 ## 📂 Project Structure
 
-`
+```
 psicomarketing/
 ├── scripts/
 │   ├── scrapers/
@@ -111,7 +111,7 @@ psicomarketing/
 │       └── notion.ts                # Clinical appointment Notion CRM integration
 ├── package.json
 └── tsconfig.json
-`
+```
 
 ---
 
@@ -124,16 +124,16 @@ psicomarketing/
 
 ### 1. Clone the Repository
 
-`ash
+```bash
 git clone https://github.com/felipedutrag/psicomarketing.git
 cd psicomarketing
-`
+```
 
 ### 2. Configure Environment Variables
 
 Create a .env.local file:
 
-`env
+```env
 # Gemini Live & Multimodal
 GEMINI_API_KEY=your_gemini_api_key
 
@@ -148,24 +148,24 @@ CALCOM_API_KEY=your_calcom_key
 # Redis & Persistence
 UPSTASH_REDIS_REST_URL=your_upstash_url
 UPSTASH_REDIS_REST_TOKEN=your_upstash_token
-`
+```
 
 ### 3. Run Development Server
 
-`ash
+```bash
 npm install
 npm run dev
-`
+```
 
 ### 4. Execute the Prospecting Pipeline
 
-`ash
+```bash
 # Scrape leads and generate personalized pitches
 npm run pipeline
 
 # Authenticate and run WhatsApp outreach
 npm run whatsapp
-`
+```
 
 ---
 
