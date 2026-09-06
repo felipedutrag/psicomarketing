@@ -31,7 +31,7 @@ flowchart TD
         LiveHook <-->|Secure WebSocket Stream| GeminiLive[Gemini Live API Voice Gateway]
         GeminiLive -->|Function Call Events| ToolExec[Voice Tool Executor]
         ToolExec -->|CRUD Appointments| CalCom[Cal.com & Calendar Engine]
-        ToolExec -->|Patient Records & Sync| NotionDB[(Notion CRM Database)]
+        ToolExec -->|Patient Records & Sync| NotionDB[("Notion CRM Database")]
     end
 
     subgraph B2B Prospecting & Acquisition Pipeline
@@ -46,7 +46,7 @@ flowchart TD
     end
 
     subgraph Analytics & Telemetry
-        WABot & LiveHook --> Redis[(Upstash Redis Cache & Rate Limiter)]
+        WABot & LiveHook --> Redis[("Upstash Redis Cache & Rate Limiter")]
         LiveHook --> Analytics[ManyChat & Pixel Conversion Beacon]
     end
 ```
